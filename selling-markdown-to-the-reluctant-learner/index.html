@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Selling markdown to the reluctant learner</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Mon Sep 02 2013</span>
+      <div class="postBody"><p>If you write on the web then it is safe to assume that you use html to format your text. It can be as simple as wrapping your words around a <code>&lt;strong&gt;&lt;/strong&gt;</code> tag to make it bold or around <code>&lt;em&gt;&lt;/em&gt;</code> to add emphasis. Then there are anchor tags for the links to other resources, image tags, headings etc.  Writing on the web is more complex than writing on say a piece of paper because you not only have to think about what you are going to write you have to keep in mind to format your words properly as well.</p>
+<p>It is also safe to assume that most of you do not type these tags with hand but instead use a text editor that wraps your text around the proper tags. A click of a button and the text is bold. A click of a button and the text is emphasized. A click of a button and .... well you get my point. </p>
+<p>While this may all sound simple my limited experience on writing for the web tells me that that every time you leave the keyboard to reach for that button to click you break your typing rhythm. This is where markdown comes in handy. It allows you to concentrate on your words while providing shortcuts to format them. </p>
+<p>But this convenience does not come for free. There is a slight learning curve associated with markdown. Though if you take time to learn it can make writing on the web a more pleasurable experience. I will cover some of the most common formatting that we use while writing and show how it can be done in a simpler way using markdown. Hopefully after reading this article you will be encouraged to learn markdown.</p>
+<p>On the left hand side I give the markdown syntax and on the right followed by a '-&gt;' it's HTML equivalent. </p>
+<ol>
+<li><p>Headings :  In html there are 6 levels of headings. H1 to H6 in the decreasing order of importance.So H1 is the most important heading and H6 is the least important one. Markdown makes it trivial to create headings. </p>
+<pre><code>#Heading -&gt; &lt;h1&gt;Heading 1&lt;/h1&gt;
+##Heading -&gt; &lt;h2&gt;Heading 2&lt;/h2&gt;
+###Heading -&gt; &lt;h3&gt;Heading 3&lt;/h3&gt;
+####Heading -&gt; &lt;h4&gt;Heading 4&lt;/h4&gt;
+#####Heading -&gt; &lt;h5&gt;Heading 5&lt;/h5&gt;
+######Heading - &gt; &lt;h6&gt;Heading 6&lt;/h6&gt;</code></pre>
+<p>"#" tells the markdown interpreter to interpret the text following it as a heading and the number of tags give the order of the heading.     So a single "#" is h1 while a "##" h2  and so on.</p>
+</li>
+<li><p>Emphasis :   <code>_Emphasized text_ -&gt; &lt;em&gt;Emphasized text&lt;/em&gt;</code></p>
+</li>
+<li>Bold : <code>** Bold text ** -&gt; &lt;strong&gt; Bold text &lt;/strong&gt;</code></li>
+<li>Links : <code>[link text](url to the link) - &gt; &lt;a href="url of the link"&gt;link text&lt;/a&gt;</code></li>
+<li>Images : <code>![alt text](image url)-&gt; &lt;img src ="image url" alt ="alt text"/&gt;</code></li>
+<li>Horizontal rules : <code>--- -&gt; &lt;hr&gt;</code></li>
+</ol>
+<p>If you are reading this syntax for the first time it might look a bit cryptic to you but it is actually much better than using a text editor. For example imagine a piece of text </p>
+<p>"It was raining hard."</p>
+<p>Now you want to bold the word "hard". You could either </p>
+<ol>
+<li>Stop typing</li>
+<li>Reach for your mouse, </li>
+<li>Find the bold button on your editor</li>
+<li>Highlight the text you want to transform</li>
+<li>Finally click the bold button to change the text.</li>
+</ol>
+<p>Or just wrap the text inside <code>** **</code>. To me the markdown methods sounds much simpler. </p>
+<p>There are <a href="http://mashable.com/2013/06/24/markdown-tools/">tonnes</a> of markdown editors available on the web. They mostly fall into one of the two categories</p>
+<ul>
+<li>Eager preview</li>
+<li>Preview on demand.</li>
+</ul>
+<p>The former type of editors display the converted text as you type it. While the latter shows you a preview when you explicitly ask for it. Personally I prefer the preview on demand editors since once you learn markdown the eager preview becomes a distraction. Whatever editor you may chose though I am certain that once you learn how to use markdown it will make writing on the web painless and even enjoyable.</p>
+<p>This article only scratches the surface of what markdown can do as the purpose of this article was to introduce you to it's syntax. If you want to learn more about it check out the <a href="http://daringfireball.net/projects/markdown/">reference</a>. I suggest rather that learning it all in one go just look at the ones that you need at the moment this way it will be much more easier to grasp. </p>
+<p>Bonus : See the original <a href="/selling-markdown-to-the-reluctant-learner/edit">markdown text</a> for this post and compare it to the rendered screen that you are reading right now.</p>
+</div>
+    </div>
+   
+  </body>
+</html>

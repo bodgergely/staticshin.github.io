@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Specter has tags</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Mon Jul 22 2013</span>
+      <div class="postBody"><p>It is funny how I keep saying that specter is un-opinionated when quite clearly  I have forced my own opinions about what a blogging platform should be on specter. Take for instace the issue of tagging. I decided that tags are an overkill for a blog and omitted them from specter all together. My reasoning was two fold : </p>
+<ol>
+<li><p>Tag abuse is a common problem in blogs. Often I see that a blog post is categorized into lots of different tags which is sometimes confusing. I don't blame the authors at all. Categorization is a tough task. Jeff Atwood  expresses the same <a href="http://www.codinghorror.com/blog/2005/03/trees-treeviews-and-ui.html">sentiment</a></p>
+<blockquote>
+<p><strong>Categorization is an expert activity</strong></p>
+<p>If left to their own devices, your users aren't likely to do any better than Gomer Pyle-- unless they happen to be experts in library science and information mapping. Categorization is extraordinarily difficult to do correctly unless you're an expert in the field. And even then, there is disagreement.</p>
+</blockquote>
+</li>
+<li><p>I was drunk on the power of elastic search. If you have used elastic search at all then you will know what I mean. Having the power of full text search at your disposal things like tagging start to look trivial. If you need to find something just use search... or so I thought.</p>
+</li>
+</ol>
+<p>Fellow <a href="http://bioselement.com/">blogger</a>  and <a href="https://github.com/BiosElement">git-hubber</a>, William Chambers, brought me back to my senses.  His comments on an <a href="http://www.staticshin.com/inspiration-behind-specter">article</a> that I wrote</p>
+<blockquote>
+<p>In principle I agree on your decision not to have tags, but in reality that could turn into a mess. If for example I want to do a search for all your game reviews, I'd have to either hope you typed "Game Review" somewhere in the article or search for "Game" and deal with cruft from other meanings.Anything larger than a single-topic blog would probably need something more advanced</p>
+</blockquote>
+<p>forced me to reconsider my stance on tags. I soon realized my folly. While elastic search is pretty good at searching text I can not expect it to give me contextual results. For instance the term game might be used for </p>
+<ul>
+<li>A video game</li>
+<li>A sport or any other recreational activity</li>
+<li>Hunting</li>
+</ul>
+<p>While we as humans can make out the meaning of the word game from the context it has been used it. Elastic search can not. Thus the search for game would return everything that has the word game in it. Which might not be what the user actually wanted.</p>
+<p>Hence I decided to add tags to specter and after some slight changes to the editor and the underlying code it is now possible to tag your posts.</p>
+<p><img src="http://farm3.staticflickr.com/2887/9344761592_cc49de649d_o.png" alt="tags"></p>
+<p>This process is straight forward. In the preview pane of your editor just type the tags the you want for your post. If you want to delete tags just press backspace or hit the x button on top of the tag. That's it. Clicking on a tag in the post will take you to a list of posts in that category. Just as you would expect. I hope you guys find this feature useful.</p>
+<p>A big thanks to <a href="http://xoxco.com/projects/code/tagsinput/">xoxco</a> for creating the awesome tags-input plugin.</p>
+</div>
+    </div>
+   
+  </body>
+</html>

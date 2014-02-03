@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Inspiration behind specter</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Fri Jul 12 2013</span>
+      <div class="postBody"><p><a href="http://brislink.github.io/specter">Specter</a> was inspired by <a href="https://github.com/gschier/simple-blog">Simple</a>  created by <a href="http://schier.co/">Gregory Schier</a>. What I liked most about <em>simple</em> was it's ease of use. In the authors own words</p>
+<blockquote>
+<p>To speed things up, Simple doesn't make use of user sessions. Since there are no sessions, there is no admin user. Simple makes all admin pages (new post, edit, etc) accessible to the public but requires a master password to do anything serious.</p>
+</blockquote>
+<p>The first time I used the application I was thrilled to find a blogging system that was so easy and yet so effective. Clearly Gregory put in a lot of thought in building it. It had a straightforward setup in which you defined your preferences and tweaked some defaults. I found it a lot more easier than fiddling around with admin panels. </p>
+<p>I used Gregory's idea as a starting point to create my own blogging platform and change some of the things that I did not like about <em>simple</em>. One of them was mongoDb. I love mongoDb but sadly there are no cheap ways to host one. In addition to that I wanted to create a blogging system that had search built in. This was a very important requirement for me. Why? Because I feel that a good search solution makes the posts on your blog easier to find and if your posts are easier to find the users will find them! </p>
+<p>Therefore, after a lot of deliberation I chose elastic search as a data store. In addition to providing full text search it can be used to store documents just like mongoDb and <a href="https://qbox.io/">qbox</a> offered free ,upto 1Gb, hosting. Perfect! </p>
+<p>Later during the development process I realized that having a search engine built in means that I can get rid of some other features from my application. One of those features was <em>tagging</em>. Tagging is used many blogging platforms to categorize the posts so that they are easier to discover. But with a search engine this was not necessary. The reader could simply search on a topic that he wants to read.  For instance if a reader wanted to read latest reviews that you wrote he could simply search for keyword "review" to get a list of latest reviews.   </p>
+<p>Second I wanted to improve the editor. While Gregory's editor was quite good I did not like the idea of it sending markdown back to the server to render it and show a preview. It would be much simpler to do it on the client side. I had already built <a href="http://brislink.github.io/Abstract">abstract</a>, a client side markdown editor. So I could use that in my application.</p>
+<p>Due to the nature of these changes I could not reuse the code that Gregory had already written. I had to rewrite the entire application from scratch and it took a lot time.Besides that specter is in spirit <em>simple</em>. Thank you Gregory for creating such a wonderful application.</p>
+</div>
+    </div>
+   
+  </body>
+</html>

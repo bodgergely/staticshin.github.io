@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>The problem with jekyll and other static site generators</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Mon Jun 24 2013</span>
+      <div class="postBody"><p>Those of you that don't know, static site generators are tools that make creating html pages easy. Here is how they usually work </p>
+<ul>
+<li>They take in a template (the details for creating the templates vary from one generator to other) that serves a a layout of the common parts of your page. For instance in all of the  pages of your website the header and footer parts are the same. So instead of adding them over and over you just create a template and reuse.</li>
+<li>They take in the data to render on a template. The data is usually in the form of handwritten markdown files.</li>
+<li>They combine the templates with the data and produce the html page as the output.</li>
+</ul>
+<p>The simplicity of the process is very alluring. Recently I too was <a href="http://www.staticshin.com/blogging-is-fun-again">charmed</a> by the ease of use of static site generators and moved my entire blog to jekyll hosted on github pages.</p>
+<p>There are a few  glaring faults with static site generators however. One of them is they don't manipulate your data well. Sure if you want a simple blog with some posts, ordered by their date of posting, you will do fine. But cracks start to show if you plan on doing anything more dynamic. </p>
+<p>The other problem is with the actual management of the data. Since your posts are in flat files once you have written a considerable amount of blog posts all of that data arranged in files will start to look scary. Though there is an upside to that in easy backing up. </p>
+<p>There is also the problem of editing the posts. Once again since all of the posts are in flat files that are sitting in your directory the only way to edit them if you have your computer with you. On top of that you are limited to native os based applications to edit your posts. Most people my self included prefer the convenience that the browser based editors offer. </p>
+<ul>
+<li>Light weight - check</li>
+<li>Portable - check</li>
+<li>Built in spell check - check</li>
+</ul>
+<p>To be fair this is not the fault of static site generators. They do their jobs well, which is making it easy for you to create raw html. This makes them extremely good tools for prototyping but I am not too sure about using them for bigger applications where it is necessary to expose the data in a variety of formats. A blog that is updated regularly can have a lot of posts in a short amount of time and it can become cumbersome to mange all that data.  </p>
+<p>I agree with the sentiment of  static site generators though. That is blogging should not be hard. Hosting you blogging software should not be hard. Writing your posts should not be hard. I created <a href="http://brislink.gihub.io/specter">specter</a>  to address these issues. </p>
+<ul>
+<li>Specter runs on elastic search which you can host for free in minutes with <a href="https://qbox.io/">qbox</a></li>
+<li>The writing environment of specter is based on <a href="http://brislink.github.io/Abstract">abstract</a> a minimalist editor that I created before I even started work on specter. Because writing is the most important aspect of blogging.</li>
+<li>Specter is easy to use. <a href="/create">create</a> , <a href="/the-problem-with-jekyll-and-other-static-site-generators/edit">edit</a>, <a href="/the-problem-with-jekyll-and-other-static-site-generators/delete">delete</a> handlers perform the bulk of operations on data.  There are no sessions, just a static file that identifies the contributors of your blogs.</li>
+</ul>
+<p>The core functionality and defaults of specter are small and highly extensible.This makes is very easy to build your own specter in tune with the philosophy of the <a href="/building-my-own-node">platform</a> that it is built upon     </p>
+</div>
+    </div>
+   
+  </body>
+</html>

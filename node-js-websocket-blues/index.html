@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Node js websocket blues</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Mon Oct 14 2013</span>
+      <div class="postBody"><p>I am new to this whole web socket thing. Up until now I have't really felt the need for them. I knew the theory behind it but I was't sure how I could use them in the applications that I was building. That coupled with the fact that the support of websockets with free PAAS providers like heroku and appfog is limited discouraged me from looking into them deeply. But I am working on this new side project that uses web rtc and web sockets seemed like a very natural choice to use in a signalling server. So I decided to learn it. </p>
+<p>The client side api of web sockets is simple. Here is a sample code that connects to <a href="http://www.websocket.org/echo.html">echo websocket server</a>.  </p>
+<pre><code>var socket = new WebSocket("ws://echo.websocket.org/");
+
+socket.onopen = function(event){
+
+//socket connected
+ socket.send("A message to the server");
+};
+
+socket.onmessage = function(event){
+
+console.log("Message from the server: " + event.data);
+
+};
+
+socket.onclose = function(event){
+
+//handle the close event
+};
+
+socket.onerror = function(event){
+
+//handle the error event
+};</code></pre>
+<p>Nice clean api. So far so good. I was encouraged. But things got a little complicated when I started looking into libraries for server side implementations of web sockets. Specifically I was looking for node js libraries, since node js is the language I am most comfortable with. I had heard a lot about socket.io so I looked at it first.  The project was failing builds and it was more of a api in itself rather than a pure web socket implementation. It was not what I needed. For instance it used a fall-backs to add support for web browsers that have not implemented web sockets . I am not targeting these browsers (since I am developing a web rtc app and if they don't support sockets they probably don't support web rtc as well) hence I had no need for fall-backs. Another thing with socket.io was that it added a lot of features of it's own like the concept of 'rooms' which while very nice feature meant that I had to learn more to do things the socket.io way. </p>
+<p>So I decided to look else where. I came upon <a href="http://stackoverflow.com/questions/16392260/which-websocket-library-to-use-with-node-js">this excellent question</a> on stackoverflow that listed all the libraries that implement web sockets. After studying them I chose ws since it was simplest ( and according to the author the fastest ) and wrote a basic websocket server.  The thing that I liked the most about ws was that it used almost the same api as the one on the client side. Specifically there were three events that defined the life of a socket.</p>
+<ol>
+<li>on connection</li>
+<li>on message</li>
+<li>on close.</li>
+</ol>
+<p>Once more I was very impressed with how simple it was to create a socket server and created a basic server after a couple of hours. All I had to do was figure out a way to make it work with express which was quite easy after reading the examples in the repo. Now I had to implement my specific requirements the first of which was I wanted to authenticate the web socket. That is if the connection is from a un authenticated source it should be closed as soon as possible. </p>
+<p>I was using passport 'local-strategy'  for authentication. There was no mention of authenticating the socket. Once more I turned to stack overflow for help.  <a href="http://stackoverflow.com/questions/11541835/how-can-i-get-expresss-sessionid-for-a-websocket-connection">This answer</a> pointed me in the right direction (if you are facing a similar problem don't forget to read the comments of the answer). All I had to do now was replace the memory store with the redis store to get the session data. However at this point I encountered another probelm. How to reuse redis client? Well I don't know if this was the best way to solve but here is what I did. I created a new module.</p>
+<pre><code>var redis = require('redis').createClient();
+
+export.exposeConnection = function(){
+
+return redis;
+};</code></pre>
+<p>Now node js modules are <a href="http://nodejs.org/api/modules.html#modules_caching">cached</a> by default. So I could create a redis client once and just <code>require</code> it whenever I needed it. It was easy to get the session data once I solved the problem of reusing the client</p>
+<pre><code>redis.get("sess:"+sessionID,function(err,session){
+
+            if(err||!session){
+
+            socket.close();
+}
+
+if(session){
+            //rest of the code
+    }
+
+});</code></pre>
+<p>Another problem solved. I was moving along quite swiftly. I was making good progress. And then I hit a wall. I will explain the scenario. </p>
+<ul>
+<li>A user logs in. </li>
+<li>His socket is authenticated on the first request and he is saved in a hash of "online users" in the format <code>{"username":{"socket":socket}}</code>.  </li>
+<li>A user has a list of contacts. If his contacts are available that is in the hash then they are made aware of the user's status.</li>
+<li>This step is repeated if every time the status is changed. </li>
+</ul>
+<p>In short I wanted to make the contacts of the user aware of his/her presence. A simple requirement. Here is my implementation of it. </p>
+<pre><code>function setStatus(contacts,status,initiatingSocket){
+
+    initiatingSocket.contactsOnline = [];
+    if(!contacts.length&gt;0){return;}
+    var contactsLength = contacts.length;
+
+    for(var i=0;i&lt;contactsLength;i++){
+
+        if(!clients.hasOwnProperty(contacts[i])){continue;}
+        var socket = clients[contacts[i]].socket;
+        socket.send(JSON.stringify({ contact:initiatingSocket.name, status:status}));        
+        initiatingSocket.contactsOnline.push(contacts[i]);
+
+    }
+
+     if(initiatingSocket.readyState===3){return}
+     initiatingSocket.send(JSON.stringify({contacts:initiatingSocket.contactsOnline}));
+    return;
+}</code></pre>
+<p><strong>Explanation</strong></p>
+<ul>
+<li>The contacts of the user are iterated and the individual socket is checked against the hash of online users.</li>
+<li>If the socket is in the list it sends a message to the client that the user is online (has a status of 1).</li>
+<li>The name is added to the list of users online contacts. </li>
+<li>After the loop is competed a message is sent by the initiating socket that contains a list of it's online contacts. </li>
+</ul>
+<p>At this point all the contacts of the user and the user itself is aware of who all are online. </p>
+<p>Now it works well. The only problem is the loop itself. I am not a performance maniac but node js being a single threaded will block the application for the duration of the loop. I could use <a href="http://nodejs.org/api/process.html#process_process_nexttick_callback">process.nextTick</a> but it won't be of much help. For a small number of contacts and concurrent users this would work fine. But what if there are a large number of users having good amount of contacts (say about a hundred each) then for status change for every user the loop will execute a hundred times. Each loop blocking the application for it's duration. Not good.  This is the same problem that the guys at facebook <a href="https://www.facebook.com/note.php?note_id=14218138919">talk about</a> . Maintaining presence is quite costly. I am not assuming a traffic like facebook gets but this is the type of problem for which node js is not a good fit.  So I am going to do the same thing those folks did.</p>
+<p>I am going to use erlang. I am not as fluent as I would like to be in erlang but this is a very good use case for it. It's light weight threads should be able to solve the problem of concurrency. And using pattern matching I could probably write the code above in a better way . Plus it has quite a good web socket library in <a href="https://github.com/extend/cowboy">cowboy</a>. </p>
+<p>However I won't be abandoning node js completely. Here is what I am thinking. I would use 2 sockets on the client. I would authenticate the socket using node js. The in the call back of the first one I will make a request with the second that would actually deal with presence notification part. So my application will be divided into two parts. A node js server that handles the authentication. Erlang web socket server that handles signalling. But before that I want to lock down some other stuff like making web rtc calls between two online users before re-writing my signalling server.</p>
+<p>The days ahead are going to be exciting. I will keep you guys posted. </p>
+</div>
+    </div>
+   
+  </body>
+</html>

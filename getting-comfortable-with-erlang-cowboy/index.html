@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Getting comfortable with erlang, cowboy?</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Wed Nov 06 2013</span>
+      <div class="postBody"><p>I have been able to grasp the fundamentals of erlang programming quickly. Pattern matching, message passing and other basics of the language felt natural to me even though I had never programmed in a functional language before. So with bubbling enthusiasm I decided to <a href="http://www.staticshin.com/node-js-websocket-blues">write my web socket application</a> in erlang. Well the use case was pretty good. I needed message passing and concurrency and erlang gives those two for free but I underestimated the effort that it would take to learn OTP.</p>
+<p>My previous experience with frameworks has been quite good. I did not have much trouble learning Asp.net MVC or express after getting a hang of c# and javascript. OTP however was quite a challenge and even now I don't feel fluent in it. The main problem was that I was trying to learn too much at the same time. I switched my editor to emacs, fiddled around with rebar for dependency management and building, tired to learn relex for creating releases while I still hadn't written a hello world in cowboy. Any one who is new to web development in erlang will probably use these tools for their application and this post might help flatten learning curve a little. </p>
+<h4>The editor</h4>
+<p>You can use any text editor to program in erlang but emacs is the recommended one.  After <a href="http://www.gnu.org/software/emacs/manual/html_node/efaq/Installing-Emacs.html">installing</a> emacs on your machine open up the terminal and type <code>emacs .emacs</code></p>
+<p>Now copy the <a href="http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html#id64260">code from the erlang emacs manual</a> in the file that pops up and save it. That's it you are ready for erlang development.</p>
+<p>This was the easy part though. Emacs comes with it's own key bindings that may seem strange if you are used to modern editors like sublime text or brackets. Working with emacs becomes a lot simpler once you learn how to read the bindings. Consider a simple example <code>C-x C-s</code> which saves the current file you are working on.</p>
+<p>This seems cryptic at first. Here is how you read it. Control+x followed by Control + s  </p>
+<p><code>M-x</code> is read as alt+x</p>
+<p>Setting up  emacs on erlang gives you a lot of useful features like syntax highlighting, indenting code(<code>M-C-\</code>) and compilation(<code>C-c C-k</code>). For a full reference of what can be done with emacs check out this [post] (<a href="http://www.erlang.org/doc/man/erlang.el.html">http://www.erlang.org/doc/man/erlang.el.html</a>). Granted it may take a while to get used to it but development in erlang will be a lot more fun once you learn how to use it.</p>
+<h4>The file structure</h4>
+<p>OTP applications follow a predefined file structure. There will be at least two folders in your project directory. <code>src</code> and <code>ebin</code>. Besides this the root folder will also have configuration files for relex and rebar . The <code>src</code> folder contains the source files viz  <code>*.app</code>, <code>*_app.erl</code>,<code>*_sup.erl</code></p>
+<p>Developing otp applications involves editing the files in the src folder compiling them and then generating a release. </p>
+<h4>Building application</h4>
+<p><a href="https://github.com/basho/rebar">Rebar</a> takes care of building and compiling src files. For this purpose it needs a config file. A very basic config file looks like</p>
+<pre><code>{deps, [
+    {cowboy, ".*", {git, "https://github.com/extend/cowboy.git",{branch, "master"}}},
+
+{'lager', ".*", {  
+        git, "git://github.com/basho/lager.git", "master"}  
+    }  
+]}.</code></pre>
+<p>What this does is tell rebar of dependencies of the application. In the config file above there are two dependencies cowboy and lager .So when the first time you complie your app you can type <code>rebar get-deps compile</code> in the terminal and it will fetch all the dependencies and generate beam files in the ebin folder.  For all subsequent compilations you can use <code>rebar compile</code>. </p>
+<p>Rebar does more than compilation though. For each build it can run unit tests as well. However that is a topic for another post and for now we just want the basics.</p>
+<h4>Releasing applications</h4>
+<p>The second step is generating a release of the application the you have compiled. A release is simply your application that is packaged to run on your server or another machine. It is self contained so all you need to do is copy the <code>_rel</code> folder and you are good to go. <a href="https://github.com/erlware/relx">Relx</a> helps in creating releases. Like rebar it has a config file. A simple relex configuration looks like</p>
+<pre><code>{release, {app, "1"}, [app]}.
+{extended_start_script, true}.</code></pre>
+<p>The config is pretty straightforward the first tuple contains the atom <code>release</code> another tuple containing app name and a version number followed by a list containing name of applications to be released.</p>
+<p><code>extended_start_script</code> instructs relex to create a start script in the release folder. </p>
+<p>After creating relex.config in the root just run <code>relex</code> from your terminal and you should have a release in your <code>_rel</code> folder </p>
+<h4>Starting the application.</h4>
+<p>After building and generating a release I was quite confused about what to do next. I did not know how to start the application. It turns out that the _rel folder has the start script in the bin sub folder. So if you app name is say  hello then this should do the trick </p>
+<p><code>_rel/bin/app console</code></p>
+<p><code>console</code> command simply allows all the status messages from app to be printed on the terminal.</p>
+<p>This basic tutorial should be enough for getting your OTP applications to run. I have not covered the use of cowboy framework here intentionally. It is quite a lenghty topic and in subsequent posts I will cover it in more detail as I get to know it better.  </p>
+<br><br></div>
+    </div>
+   
+  </body>
+</html>

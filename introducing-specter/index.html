@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Introducing specter</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Fri Jun 21 2013</span>
+      <div class="postBody"><p>A lot of bloggers implement google search into their blogs to allow discovery of old archives. While it works well the search results from google are hard to theme according to your blog design and worse google basically forces you to display advertisements on search results. Not cool. There should be an easy way to allow users to search though their content and on their terms. But searching through thousands on lines of text is not that easy. Usually this is achieved with the help of a full text search engine that indexes the contents of the database  to allow search operations on it .For simple blogs however this is an overkill. I mean in the days of static site generators, which I myself <a href="http://www.staticshin.com/blogging-is-fun-again">enjoyed</a> for quite a while by the way, this contrived way of implementing search is not acceptable. </p>
+<p>Racking my brain trying to find a solution for the problem I had this wacky idea to build a blogging platform on top of elasticsearch. People have been <a href="http://karussell.wordpress.com/2011/07/13/jetslide-uses-elasticsearch-as-database/">using</a> it as a primary data store so it could work. So I decided to give it a try. After three weeks of hard work I am pleased to announce <a href="https://github.com/brislink/specter">specter</a>, a simple blogging platform that is highly configurable, easily deploy able and supports full text search by default. Woot!</p>
+<h2>Specter for bloggers</h2>
+<p>All right so you are a regular blogger and you wonder why would you want to change from your blogging framework to specter. While building specter I have put in a lot of work in building a system that is <strong>easy to use</strong>. Here are some of it's features</p>
+<ul>
+<li><strong>A pleasant writing environment </strong></li>
+</ul>
+<p>Before I even started working on specter I made <a href="http://brislink.github.io/Abstract/">abstract</a> . It is a minimalist markdwon based editor. There are no buttons just you and the stuff you want to write. A smart  preview on demand window that switches the view to editing when you are typing and to preview when you change focus and save your progress automatically. Writing in abstract is very intuitive and I have got a good response from the people who have tried it. Coming back the editing tool in specter is based on abstract. It has all of the things that you like about it while adding some more</p>
+<ul>
+<li>No more typing different sections of an article. Just write it in one go and specter will take care of analyzing it and displaying a summary.</li>
+<li>The first image is automatically used as a cover on the index page. </li>
+</ul>
+<p>You write you blog post and let specter worry about everything else.</p>
+<ul>
+<li><strong>URL based operations</strong></li>
+</ul>
+<p>There are no sessions in specter. Every action is url based. If you want to create an article point the browser to <code>yourdomain/create</code>.Similarly there are handles for <code>yourdomain/your-post/edit</code> and <code>yourdomain/your-post/delete</code>. </p>
+<p>As an example here are the handlers for my blog</p>
+<p><a href="/create">create</a> , <a href="/introducing-specter/edit">edit</a> and <a href="/introducing-specter/delete">delete</a></p>
+<p>Don't fret though all of these actions require secret that is defined in your contributors file which is as easy as editing the file in the text editor of your choice and if you are still hesitant you can simply change the url to something absurd like <code>yourdomain/jonnybravo</code> for create :) Anything is possible.</p>
+<ul>
+<li><strong>Highly configurable</strong></li>
+</ul>
+<p>The example of url renaming that you saw is just a simple demonstration of how configurable it actually is. All of the fronted stuff in specter is built using twitter bootstrap so just by replacing the default css with one of the <a href="http://bootswatch.com/">swatches</a> you can quickly create beautiful blog designs. But remember nothing is stopping you from creating your own them from scratch as well. The views are just <em>html</em>, using mustache tempting engine, you can do anything to them that you would to a simple <em>html</em> page.</p>
+<p>Besides views you can configure who are the users of your applications, what their roles are, how many pages to show on index page, how many search results to show when queried etc.</p>
+<ul>
+<li><strong> Search engine by default</strong></li>
+</ul>
+<p>Specter has a built in search engine that allows your users to quickly and efficiently search for post based on keywords. Everything builds towards keywords, from post tile to body and even image captions. So rest assured the user will find your content if it is there.</p>
+<ul>
+<li><strong>Easy to deploy</strong></li>
+</ul>
+<p>All this will be for naught if one could not deploy the application. Thankfully specter is easy to deploy. <a href="https://qbox.io/">qbox</a> provides free upto 1Gb of storage hosting for your database and <a href="https://www.heroku.com/">heroku</a> for your app. I am employing both of these services and am pretty satisfied with them. You don't need to spend a dime to host specter. Unless you application becomes <strong>crazy</strong> popular you can keep it hosted for free too.</p>
+<h2>Specter for hackers</h2>
+<ul>
+<li>It is <a href="https://github.com/brislink/specter">open source</a> YEAH!</li>
+<li>Built on node js</li>
+<li>Uses mustache for templating</li>
+<li>Uses elastic search as backend</li>
+</ul>
+<p>So give it a try. Let me know what you think. Raise issues if you find any and most of all have fun while blogging. </p>
+</div>
+    </div>
+   
+  </body>
+</html>

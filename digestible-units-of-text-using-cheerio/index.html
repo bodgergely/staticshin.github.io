@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Digestible units of text using cheerio</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Thu Jun 27 2013</span>
+      <div class="postBody"><p>There are basically three kinds of index pages in a blog</p>
+
+<ol><li><p>Those that contain only the title of the post like <a href="/">my blog</a></p></li><li><p>Those that contain a title of the post and a short summary like <a href="http://alistapart.com/">this one</a>.</p></li><li><p>Those that contain the entire post in the index itself <a href="http://www.codinghorror.com">like this for example</a></p></li></ol>
+
+<p>It can be a bit tricky to program the preference of what type of index page the user wants.  Scenario 1 and scenario 3 are quite easy to implement. They are all or nothing cases. Scenario 3 for instance requires no more effort than fetching an additional field, that contains the detail of the post.Scenario 2 is a lot more difficult to program. The first hurdle is how to display the summary?</p>
+
+<p> Is is okay to just extract a fragment of the string? Not really. That is just a quick and dirty solution that causes more problems than it solves. For instance there is no way to check if the string fragment that has been extracted is meaningful or not. For instance consider this example</p>
+
+<blockquote><p>There is one glaring fault with static site generators however. That is they don't manipulate your data well. Sure if you want a simple blog with some posts ordered by their date of posting you will do fine. But cracks start to show if you plan of doing anything more dynamic. The other problem is with the actual management of the data. Since all of the data is in flat files once you write a considerable amount of blog posts all of that data in one place arranged in files will start to look scary. Though there is an upside to that in easy backing up.</p></blockquote>
+
+<p>Here is the result of extracting 100 characters from this string after removing all the html tags</p>
+
+<blockquote><p>There is one glaring fault with static site generators however. That is they don't manipulate your d</p></blockquote>
+
+<p>Another problem with this method is that the formatting is not preserved. What if the first 100 characters are a part of a list. Well tough luck.</p>
+
+<p>To over come this problem I had figure out a way to show the first n elements of the post, where n can be configured by the user. Since the input is all in html I needed an html parser for node. <a href="https://github.com/MatthewMueller/cheerio">Cheerio</a> was perfect for my use case. So for instance if I want the first two elements of the html string all I had to do is</p>
+
+<pre><code>var $ = cheerio.load(html);
+var elements = $("*").slice(0,2);</code></pre>
+
+<p>All right that is one problem solved. Now how do I combine these selected elements and form a complete html fragment. Well I could not figure out this one myself and had to look for <a href="http://stackoverflow.com/questions/17328691/how-can-i-join-n-selected-elements-to-create-an-html-fragment-in-jquery/17328791#17328791">help</a> on stackoverflow. Luckily the solution was still simple enough. Apparently I could wrap the elements inside div and return them like this</p>
+
+<pre><code>$('&lt;div /&gt;').append($("*").slice(0,2).clone()).html()</code></pre>
+
+<p>That's it small digestible chunks of text for use on the index page. I hope this helps someone who faces a similar problem</p></div>
+    </div>
+   
+  </body>
+</html>

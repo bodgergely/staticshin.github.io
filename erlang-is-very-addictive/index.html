@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Erlang is very addictive</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Wed Aug 07 2013</span>
+      <div class="postBody"><p>A few days ago I stumbled upon an article by Joe Armstrong, <a href="http://pragprog.com/articles/erlang">what's all this fuss about Erlang</a>. Most of the stuff written in the article is about concurrent processing. I liked what Joe wrote but having never done concurrent programming I could not appreciate it fully. One thing that stood out for me was in the last paragraph which I later learnt was called <a href="http://en.wikipedia.org/wiki/Pattern_matching">pattern matching</a>, a common feature of some functional programming languages.</p>
+<pre><code>area({rectangle, Width, Ht}) -&gt; Width * Ht;
+
+area({square, X}) -&gt; X * X;
+
+area({circle, R}) -&gt; 3.14159 * R * R.</code></pre>
+<p>It took me a while to recover from a state of dumbfounded disbelief that I was in after reading the piece of code. If you forget about all the symbols any one can read and understand what is happening here. Area is being calculated for three different figure types: a circle, a square and a rectangle. These few lines of code instantly sold me on Erlang. Could it really be that easy? I was still a bit skeptical but I summoned up some courage to learn more about it.</p>
+<p><a href="http://learnyousomeerlang.com/content">Learn you some Erlang</a>  proved to be very helpful. The <a href="http://ferd.ca/">author</a> explains the concepts of Erlang in a fun way. After spending a few days with Erlang, I have got to say that it is one of the most rewarding programming languages that I have come across. </p>
+<p>Just for fun I re-visited some parts of the code that I wrote for <a href="http://brislink.github.io/specter/">specter</a> and translated it in Erlang. For instance <a href="https://github.com/brislink/specter/blob/master/helpers/getUserRole.js#L1">here</a> is a piece of code that checks for the user role.   </p>
+<pre><code>var contibutor = admin.length&gt;0 ? setContibutorDetails("admin",admin[0]) : 
+                         user.length&gt;0? setContibutorDetails("user",user[0]):
+                          guest.length&gt;0?setContibutorDetails("guest",guest[0]):false;</code></pre>
+<p>In Erlang it could be done like so.</p>
+<pre><code>contributor(admin,details)-&gt; setContributorDetails(details);
+contributor(user,details)-&gt; setContributorDetails(details);
+contributor(guest,details)-&gt; setContributorDetails(details).</code></pre>
+<p>which looks a lot simpler. Learning a new language can be a daunting task. Especially if the language is the one that challenges the way you write programs. Erlang is one such language.  I can hardly call it radical considering the it has been out for almost two decades but it is still radical to me. Already I have started approaching the problems in a different way. The programs that I write seem more readable to me and frankly I have warmed up to Erlang. </p>
+<p>I have also started learning about concurrent programming. While most of this stuff is arcane knowledge in other programming languages, Erlang introduces it pretty early since it is a fundamental part of the language. Lately I have started to use message passing to solve problems in clever ways. I am glad I took a dive into the wonderful world of eralng and reader if you are inclined towards programming you should check it out some time. Maybe you will like it.</p>
+</div>
+    </div>
+   
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Wrinqle a library that combines gen_events and web sockets in cowboy</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Sat Nov 23 2013</span>
+      <div class="postBody"><p>A few days back I wrote a <a href="http://www.staticshin.com/node-js-websocket-blues">post</a> in which I outlined a problem that I encountered while using web sockets in node js. Long story short I had trouble managing socket connections in node js. For instance there was no standard way to send a data to a particular socket. The only way was to store the active socket connections in an object and then query the object to get the socket that you want to communicate to.</p>
+<p>While this solution worked it had problems. First of all it was not a very elegant way to do things. My code grew a lot and it was difficult to handle all the edge cases (especially keeping track of socket's life). Another problem was that due to the nature of the work what I wrote was essentially blocking code. There was no way out of looping over objects and performing cpu intensive tasks on it and this scared me. </p>
+<p>I am not implying that my app would have required millions of simultaneous connections but it is usually a good idea to design with some foresight in case the unexpected rise does happen. It is better than rewriting the whole application again to be honest.  My third and final problem was making the code run on several different machines. The only way I know node can work on different machines is by copying the application on the machine and balancing it using a load balancer like nginx or something.  Which gave rise to yet another problem how do I get the nodes to communicate with each other. That is how do I know if a websocket has been registered on an individual node or not?</p>
+<p>I investigated some other solutions like using a messaging queue but I found the integration difficult with web sockets. Yes I could send messages but I would still need to save every socket connection if I wanted to send a message to it individually. Socket.io 's "rooms" concept was the only thing that made sense to me. But socket io project has been failing builds and I don't want most of the features that it offers like support for older browsers. </p>
+<p>So to sum up</p>
+<ol>
+<li>I needed a way to communicate to individual sockets.</li>
+<li>I did not want to write lot's of code to achieve this task.</li>
+<li>I wanted the final application to be able run on more than one machine if the need arises. </li>
+</ol>
+<p>At this point I stopped to think if what I was doing was really right. I love node js and I have already invested much time in learning it but the present situation was not looking good with node. I needed something else. I needed a language that was concurrent. Allowed management of processes and facilitated communication between independent processes. In short I needed erlang. To be fair I had luck on my side as I already knew the basics of erlang language. So the decision was not made out of thin air but by an understanding of working of a different language that was well suited to my requirements. Perhaps if I was not aware of it I would have just gone ahead and used node js despite knowing very well that on it's own it is not a very good solution.</p>
+<p>While I considered my self well acquainted with the core language the frameworks presented a <a href="http://www.staticshin.com/getting-comfortable-with-erlang-cowboy">difficulty</a> as the learning curve was a bit high and I found myself between a rock and hard place. Getting up to speed with OTP  and cowboy proved to be difficult and yet I could not fall back to my preferred language. Breakthrough came after reading <a href="http://blog.dberg.org/2012/04/using-gproc-and-cowboy-to-pass-messages.html">this post</a> by Adam Denenberg. Before I talk about that let me first write a bit about how cowboy works. </p>
+<p>Cowboy is an http server for erlang very much like express for node js. In cowboy for each web socket connection an erlang process is created. This provides an ecellent isolation for independent sockets. Some of you might be asking yourself if this approach is too expensive? Maybe in another language this would have been an expensive operation but in erlang processes are  dirt cheap. Process are like threads but they are not os threads like in other languages rather they can be thought of as "mini threads"  which work just like os threads but are maintained by the erlang VM. There is no harm in spawning one for every  connection.  </p>
+<p>I was very excited when I first became aware of this fact. It solved my greatest problem for free, which was providing independent communication channel for sockets. I need not store socket connections anymore. The were already there as processes. Now all I had to do was find a way to "talk" with them. Adam's post showed me the way there. He used gproc to register the processes with a key and then send the message to all the processes that were registered with that key. </p>
+<p>I took a different approach. I made use of gen_events and pg/2 module to register the processes and talk to them. gen_event is an OTP behavior for creating events in erlang.  pg/2 is a module that allows management of processes. I created a few event handlers using gen_event</p>
+<ol>
+<li>send_message-&gt; a handler to send messages to a single channel or multiple channels</li>
+<li>subscribe - &gt; a handler to subscribe channels to another channel</li>
+<li>publish - &gt; a handler to publish a message to all of it's subscribers. </li>
+</ol>
+<p>A channel is an <em>active</em> socket that is open for communication. With the above handlers you can send messages to a single channel, to multiple channels and to subscribers of a channel. They all have their own pros and cons which I shall explain in another post. The best part of all this is that my code is tiny, &lt;  500 lines in total. Erlang enabled me to handle a complex problem in an elegant way. I have released my code as a library named <a href="https://github.com/brickcap/wrinqle">wrinqle</a> on github under the MIT licence. The documentation is non existent right now but I am working on a web page that will describe the api in detail.</p>
+<p>Wrinqle will form the basis of my pet project of which I will be talking about a lot about in the coming days. </p>
+</div>
+    </div>
+   
+  </body>
+</html>

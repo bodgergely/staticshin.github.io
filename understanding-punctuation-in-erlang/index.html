@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Understanding punctuation in erlang</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Wed Nov 13 2013</span>
+      <div class="postBody"><p>One thing that troubled me while I was learning erlang was the punctuation syntax of the language. While most languages have a single terminator between statements erlang has 3. Punctuation can seem a bit daunting to the new comers so with this post I will try to make it as simple as possible. </p>
+<p>Erlang has 3 punctuation symbols</p>
+<ol>
+<li>comma (,) -&gt; This is read as and. As in the execution continues to the statement following the comma.</li>
+<li>semicolon (;) -&gt; This is read as or. A semicolon marks the end of execution in a clause.</li>
+<li>Full stop (.)-&gt;  The end. Marks the end of execution of a code block. </li>
+</ol>
+<p>Time for an example (courtesy <a href="http://pragprog.com/articles/erlang">Joe Armstrong</a>)</p>
+<pre><code>-module(geometry).
+-export([area/1]).
+
+area({rectangle, Width, Ht}) -&gt; erlang:display("Illustrating comma"),
+                                 Width * Ht;
+area({square, X}) -&gt; X * X;
+area({circle, R}) -&gt; 3.14159 * R * R.</code></pre>
+<p>Let us for an instant forget about what is happening in this program and just focus on the punctuation symbols.</p>
+<ol>
+<li>The <code>module</code> and <code>export</code> statements are followed by a (.) indicating their end. </li>
+<li>The first <code>area({rectangle,Width,Ht})</code> function clause has two statements in it. <code>erlang:display()</code> terminated by a comma and <code>Width*height</code> terminated by a semicolon. The comma termination indicates that "this is not the end of the block. There are more statements to follow so execute them". When a <code>;</code> is encountered it tells the compiler that the clause has ended and move on to the next one. Any expression after <code>;</code> will be illegal.</li>
+<li><code>area({square, X})</code> Again <code>;</code> tells the compiler to move on to the next clause in case the current clause is not matched.</li>
+<li><code>area({circle, R})</code> Here a <code>.</code> is encountered which tells the compiler that the block has finished. There are no more clauses. </li>
+</ol>
+<p>Expressions like <code>case</code>, <code>if</code> and <code>fun()</code> etc which are terminated by an end follow the same rules of punctuation except that the statement <em>immediately</em> before the end should not have any terminator. The end statement can be followed by a <code>;</code> indicating the end of the clause or a <code>.</code> or with a <code>,</code> . Time for some more examples</p>
+<pre><code>add_pid(Pid,Name)-&gt;
+Member = pg2:get_members(Name),
+    case Member of
+    [Pid]-&gt; ok;
+    {error,_} -&gt;pg2:create(Name),
+            pg2:join(Name,Pid)
+    end.</code></pre>
+<p>Again don't try to think about what the code does and just focus on the punctuation. This is a basic case statement. There are two clauses in the case.</p>
+<ol>
+<li>First <code>[Pid]</code> clause is evaluated. Like a function clause it is terminated with a <code>;</code> . Nothing special here.</li>
+<li>The second pattern {error,_} does something different. Besides providing a pattern it tells the compiler that this is the last clause of the case which is why there is no terminator after the last statement. It ends with an <code>end</code> and <code>.</code></li>
+</ol>
+<p>Notice that immediately before the end statement there is no punctuation mark. Here is a more complex example</p>
+<pre><code>deliver_message(Channels,Msg) -&gt;
+    lists:foreach( 
+      fun(N)-&gt;
+          Member = pg2:get_members(N),
+          case Member of
+          [Pid] -&gt; Pid ! {jiffy:encode({[{status,200},{msg,Msg}]})};
+          {error,_}-&gt;self()!{jiffy:encode({[{status,404}]})}
+          end
+      end,Channels).</code></pre>
+<p>So let us break this one down now.</p>
+<ol>
+<li><code>lists:foreach</code> takes an anonymous function. An anonymous function terminates with an <code>end</code>. </li>
+<li>To complicate matters the anonymous functions also has a case statement which also terminates with an <code>end</code>.</li>
+<li>The principle is still the same.  The last statement of the final pattern ends without a punctuation. </li>
+<li>The program does nothing after evaluating the case and hence the end of the anonymous function. </li>
+<li><p>There can be no punctuation on the statement immediately before end and hence the end of the case statement has nothing after it. </p>
+<p>To recap. There are three punctuation symbols in erlang. A <code>,</code> is read as an and (indicating continuity of execution). A <code>;</code> is read as an or (indicating end of a clause).  A <code>.</code> which marks the end.  The end statement has the same rules with the exception that any statement immediately preceding it can not have any punctuation in it.</p>
+</li>
+</ol>
+<p>Hopefully this article will make erlag syntax a bit easier for you.  I am still new to erlang so if any regular reading this post finds any error in my examples or explanation please let me know in the comments. </p>
+</div>
+    </div>
+   
+  </body>
+</html>

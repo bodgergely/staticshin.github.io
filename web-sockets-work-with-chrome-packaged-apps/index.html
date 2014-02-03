@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Web sockets work with chrome packaged apps</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Sun Oct 13 2013</span>
+      <div class="postBody"><p>Although both chrome os and mozilla os offer the ability to create native packaged applications (which behave like desktop applications ) using html , css and javascript it is not clear if they support all features of html 5.  Applications made using mozilla os for example <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=750011">can not use</a> webRTC at present. In chrome os however web rtc is supported. </p>
+<p>So I wondered if it was possible to use html 5 web sockets on chrome apps. I could not find much documentation regarding my question so I decided to try it myself. I cloned the excellent <a href="https://github.com/GoogleChrome/chrome-app-samples">github repository</a> of samples and chose the simplest one (hello world) to test the functionality. Well it works. Here is my <a href="https://github.com/brickcap/chrome-app-websocktes">repo</a></p>
+<p>To run a packaged app you need to go to tools-&gt; extensions -&gt; load unpacked extensions and navigate to where you have cloned the extension. It will then be available from the new tabs page in the extension categories. </p>
+<p>There were a few interesting things I noticed while developing chrome apps. </p>
+<ol>
+<li>You can use external browser libraries like jquery. Although the libraries must be present in the local folder. That is they can not be downloaded from the cdn.</li>
+<li>The html files represent the "windows" all the presentation logic is written in the html markup.</li>
+<li>The app run time is managed by background script. This script is mandatory and must be specified in a manifest file.</li>
+<li>However the dom manipulation can be done by other client side libraries they are included on the html page just like any other web application.</li>
+</ol>
+<p>My first experience with chrome apps has been quite positive. It is good to know that they support both Web sockets and web rtc. I wish that in the future it becomes possible to run these apps on mobiles. There is a large subset of applications that could benefit from it. I am planning to experiment with apps on mozilla os as well but there is still a lot to discover in chrome apps. </p>
+</div>
+    </div>
+   
+  </body>
+</html>

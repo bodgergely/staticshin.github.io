@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Abstract is now available offline</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Fri Aug 30 2013</span>
+      <div class="postBody"><p>I like writing in web browser for two reasons</p>
+<ol>
+<li>The browser based editors are really light. They open up and close in a matter of seconds.</li>
+<li>They have an excellent spell check.</li>
+</ol>
+<p>That is all I need while I am writing. While your preference of editors may vary I use Abstract, a minimalist markdown based editor that I created, for all of my writing. I made it to suit my requirements and I was happy with the result until I found out that it had no offline version.  </p>
+<p>It never occurred to me that there could be situations where there is limited or even no access to internet. Until I visited my grandmother a couple of days back I was quite content in using Abstract <a href="http://brislink.github.io/Abstract">online</a>. I knew that she had no internet connection but I thought that since I had a local copy of the repository with me I would be able to use it offline. </p>
+<p>So I open up my laptop and fire up Abstract only to realize that I was fetching the dependencies from the internet.Thankfully I had the copies of dependencies on my local machine too. Hence I decided to make a standalone offline version for  circumstances like these where there is no online access. </p>
+<p>The transformation was relatively simple. I copied all the javascript and css files that I was getting from the cdn into my local folder , pointed to the right location in the html file and I was set. The first thing that I did after I came back was to create a new branch and upload the offline version there. It is only 300 kb in size and you can download it <a href="https://github.com/brislink/Abstract/archive/offline.zip">here</a>.</p>
+<p>I was also considered creating browser extensions for Abstract but I finally decided against it. Why?</p>
+<ol>
+<li><p>There is no unified standard for browser extensions. I would have to learn how to create extension for each browser and then make it. Too much work for me with little reward.</p>
+</li>
+<li><p>It is not needed. Since I already created an offline version it would open up in any (modern) browser you are using just by double clicking the html file. It will just work. As simple as that. </p>
+</li>
+</ol>
+<p>So there was no need to write an extension upload it on the market place and have you search and download it from there. Too much work for you as well. Now you can simply download the offline branch of the <a href="https://github.com/brislink/Abstract/archive/offline.zip">repo</a> extract it and you are good to go. It will work with whatever (modern) browser that you have set as default. Nice and easy.</p>
+<p>There is only one change that I have made in the way that Abstract works. You might already know that Abstract saves all the data in your browser using HTML 5 local storage API. Previously I used to use the title of the draft as the <em>key</em> and all the <em>meta data</em> used to go with the contents of the post itself. While it worked fine this method was slower. Because to list all the drafts Abstract had to read not only the key but the contents of the post as well to get all the meta data from it.</p>
+<p>I changed this behavior by adding the meta data to the key itself. So the <em>date</em>, <em>word count</em> and <em>title</em> are all a part of the key now. Abstract only reads the contents of the post if you actually decide to edit it. This makes it a tad bit more faster in loading the drafts especially if you have a large number of them.</p>
+<p>So that's it. You can now use Abstract even if you don't have any internet connection. Happy writing.</p>
+</div>
+    </div>
+   
+  </body>
+</html>

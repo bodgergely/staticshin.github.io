@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Local storage to the rescue.</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Sat Apr 06 2013</span>
+      <div class="postBody"><p>A key feature in brislink is the ability to broadcast blog posts.Any user who has added the scripts provided in his / her accounts page into their blog, can make that blog broadcastable.Any viewer reading the posts on that blog will then automatically broadcast it.This allows brislink to :</p>
+
+<ul><li><p>Maintain a log of users’ posts across various blogs.</p><p>A lot of us write posts in multiple blogs. It is common these days because nearly every organization has a blog.An employee,for example can be  contributer to the blog of his organization and at the same time an admin to his personal blog.Or they might maintain multiple blogs.I myself blog for brislink and on my <a href="http://www.staticshin.com">personal blog</a>.So it useful to keep a track of all their contributions across multiple blogs.</p></li><li><p>Track how popular a post it based on number of times it has been read in a day.</p><p>The intention was to create a simple contention mechanism for the selection posts on the landing page.I could not display them all at once.So I decided to display only the ones that have been most read or in other words most broadcasted.The time slot was kept small, one day, so no matter how popular a post is on a day, there will be fresh contention for the top spot the next.</p></li></ul>
+
+<h3>The problem</h3>
+
+<p>The problem that I faced while implementing the feature no 2 was how to determine if a user reading the post has already broadcasted the page or not.Otherwise a simple page refresh could be used to increment the number of reads.Storing the value on cookies and posting them to the application to process those cookies involved a lot of overhead.I had limited resources and had to find a way that was more resource efficient.</p>
+
+<h3>The HTML5 solution</h3>
+
+<p>HTML5 introduced a new feature called local storage that allowed the developers to persist data on client side.I had heard about local storage before but I was reluctant to use that.My main worry was browser (in)compatibility.However <a href="http://caniuse.com/#search=local%20storage">the compatibility table</a> and <a href="http://diveintohtml5.info/storage.html">this excellent tutorial</a> allayed my doubts.I could store the posts that have been broadcasted on client side using a very simple api and perform a check before broadcasting to see if that post exists on local storage or not.</p>
+
+<p>However there was one more problem that I had to overcome.</p>
+
+<h3>Problem number 2</h3>
+
+<p>I could not use a single variable for different pages on the same domain.At first I had decided that I would use something like <code>broadcast:true</code> for every page that has been broadcasted.Though I soon found out that the variable is overwritten every time a new page is visited.That is the variables are unique only across the domains.Not across the various paths in the domain.For instance the pair <code>a:b</code> will be the same for <code>http://www.abc.com</code> and <code>http://www.abc.com/path-to-a-resource</code> and hence will be overwritten. </p>
+
+<h3>URL solution</h3>
+
+<p>To solve this problem I had to devise unique identifiers for every page that is broadcasted.<em>Voila!</em> The answer presented itself to me.I could use the URL of the page.I modified the original key value pair to <code>url:true</code>.My local storage on chrome looks something like this.</p>
+
+<p><figure><img src="http://farm9.staticflickr.com/8380/8625041662_f2983ed3f5_b.jpg" alt="LocalStorage"><figcaption>LocalStorage</figcaption></figure></p>
+
+<p>This was it.This is the solution that I am using in brislink.Since I am broadcasting this blog on brislink too, if you open the dev tools in your browser right now you should see something like <code>http://blog.brislink.com/2013/04/06/local-storage-to-the-rescue/:true</code> in your local storage.In chrome it can be found under resources in the dev tools.Local storage can be used in a lot of clever ways.Let me know how you use it.</p>
+
+<p><strong>brislink has reincarnated as <a href="http://brislink.github.io/specter/">specter</a>, the posts in the brislink blog have moved to my <a href="http://www.staticshin.com/">personal blog</a></strong></p></div>
+    </div>
+   
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Simplifying the build process with buildify</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Sun May 26 2013</span>
+      <div class="postBody">
+<p>After building <a href="http://brislink.github.io/Abstract">abstract</a> I realized that my code was fickle .I turned to code review for <a href="http://codereview.stackexchange.com/questions/26514/need-suggestions-to-improve-the-code-for-an-open-source-web-based-drafting-appli">help</a>. <a href="http://codereview.stackexchange.com/users/11919/joseph-the-dreamer">Joseph the dreamer</a> was kind enough to help me. One of the suggestions that he offered was</p>
+
+<blockquote>
+  <p>I suggest you break down your application into concerns. Break them so that you separate your UI code, your IO code (read/write), your logic and your utilities. Then you could use a dependency system like Require to manage these separated code into modules. Don’t worry if you end up with multiple files. You can use their optimizer after you got everything done.</p>
+</blockquote>
+
+<p>Breaking the javascript files into multiple modules / files can increase the number of downloads for the end user unless a build tool is employed that concatenates all those files into one. So I looked at the suggested library and I was shocked by how opinionated it was. Just take a look at <a href="https://github.com/requirejs/example-jquery-cdn">this example</a> which is like hello world of require. Even in this simplistic case one has to include the library, write configuration files and load modules before anything can be done.</p>
+
+<p>Now most of the community thinks that this is a good way to write javascript code but I was not expecting this and it did not fit in with my way of developing a client side application. So I started looking for alternatives. During my research I stumbled upon <a href="https://github.com/powmedia/buildify">buildify</a> , a build tool for javascript.</p>
+
+<p>Just take a look at the introductory example. Yes you still have to write a configuration file but the process is drastically simplified.  Not only can you specify which files to concatenate but you can also define javascript templates (they make use of mustache) which can simplify the building process a lot.</p>
+
+<p>The templating system helped me a lot with abstract. Initially all of my code was wrapped inside a <code>$(function(){})</code>. However when I broke the file into different modules I was faced with a problem. How to I break the global function? Initially I thought since all the files would be concatenated I can just do this</p>
+
+<pre><code> $(function){ 
+
+// contents of my first file
+</code></pre>
+
+<p>followed by </p>
+
+<pre><code>//contents of my last file
+
+}();
+</code></pre>
+
+<p>and sure enough it worked. But this was really ugly way of doing things and JS Hint went crazy on me and I could not uglify  it since the javascript was invalid. It was after that I decided to use templating. The solution using templates is a lot cleaner and easier. All I had to do was create another file, that I called base like this </p>
+
+<pre><code>$(function(){
+
+  
+
+ });
+</code></pre>
+
+<p>and then tell my build file to wrap all the concatenated files in the template. My final build file looked like this</p>
+
+<pre><code>var buildify = require('buildify');
+
+buildify().concat(['jquery.autosize.js','markdown.js','StaticVariables.js',
+ 'models.js','helpers.js','drafts.js']).
+wrap('base.js').
+save('./index.js').
+uglify().save('./index.min.js');
+</code></pre>
+
+<p>As you can see this method of building is quite nice. The method chaining gives a clear indication of the flow of the build process. Just by reading the code one can infer that</p>
+
+<ol>
+  <li>
+    <p>The files specified in the <code>concat</code> function are joined</p>
+  </li>
+  <li>
+    <p>The concatenated files are wrapped inside the <code>base.js</code> file</p>
+  </li>
+  <li>
+    <p>The final result is then saved in the index file for development and in index.min.js for production.</p>
+  </li>
+</ol>
+
+<p>The more I have worked with this build process the more I like it. It is unassuming and gives you the freedom of doing things the way you want. I am a lot happier with my code now. All that remains is to write unit tests (ack!)</p>
+
+<p><strong>brislink has reincarnated as <a href="http://brislink.github.io/specter/">specter</a>, the posts in the brislink blog have moved to my <a href="http://www.staticshin.com/">personal blog</a></strong>  </p>
+
+
+
+  
+
+
+
+
+
+</div>
+    </div>
+   
+  </body>
+</html>

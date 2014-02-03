@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Local storage math</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticsihn</a></h1>
+    <div id="post">
+      <span>Akshat Jiwan Sharma, Thu Apr 18 2013</span>
+      <div class="postBody"><p>W3 has <a href="http://dev.w3.org/html5/webstorage/#disk-space" target="_blank">suggested</a> that browsers impose certain restrictions on local storage.These restrictions are two fold</p>
+
+<ol>
+  <li>They suggest that there be an arbitrary limit of 5MB of data per domain</li>
+  <li>That browsers guard against data being stored on sub-domains to prevent circumvention against restriction 1</li>
+</ol>
+
+<p><a href="http://blog.brislink.com/2013/04/06/local-storage-to-the-rescue/">Recently</a> I started using HTML5 local storage in brislnk.So obviously my initial reaction on the 5MB limit was why so little? Disk space is quite cheap these days and I would have expected the recommendation to be a lot higher.I decided to measure exactly how much I can store within the limit.</p>
+
+<p>The first hurdle that I encountered was how do I actually measure the stored data? <a href="http://stackoverflow.com/questions/3027142/calculating-usage-of-localstorage-space" target="_blank">Stackoverflow user morgon</a> helped me there.As mentioned in the comments, the results were accurate enough for my needs.So I decided to give it a go</p>
+
+<p><img src="http://farm9.staticflickr.com/8116/8660566196_72067dbec2_b.jpg" width="1024" height="576" alt="demo" class="img-polaroid" /></p>
+
+<p>The results were surprising.563 bytes for 8 items stored! Not bad at all.I expected it to be a lot more.For brislink I store URL of the pages that have already been broadcasted so these results may vary for you depending upon what you are actually storing.</p>
+
+<p>Using <strong>JSON.stringify(localstorage)</strong> I got a json string of the entire data stored in local storage for the domain.How about we count the number of characters in the string? Using <a href="http://www.javascriptkit.com/script/script2/charcount.shtml" target="_blank">this character counting tool</a> I found out that the string had 545 characters.So more or less each character is equal to one byte.Sweet.</p>
+
+<p>How many URL’s can I store this way?Simple</p>
+
+<blockquote>
+  <p>8 URL’S take 563 bytes</p>
+</blockquote>
+
+<blockquote>
+  <p>1 URL will take 563/8 = 70.375 bytes</p>
+</blockquote>
+
+<p>This will depend upon the number of characters in a url which will vary a lot but remember I am just looking for an estimate.</p>
+
+<p>Number of URLs that I can store</p>
+
+<blockquote>
+  <p>1000 X 1000 X 5/ 70.375 = 71,047.95737</p>
+</blockquote>
+
+<p>Wow that is quite a lot.I don’t think that I am ever going to write that many articles.Now that I have an idea of how much space I am using and how to calculate it, I have figured out a way to reduce it.Initially my strategy for storing the key value pairs was</p>
+
+<blockquote>
+  <p>url : true</p>
+</blockquote>
+
+<p>I don’t think I need a ‘true’ with every url.Any truthy value will suffice.So I am modifying it to </p>
+
+<blockquote>
+  <p>url : 1 </p>
+</blockquote>
+
+<p>Storing true with every URL cost me 4 bytes.Storing ‘1’ costs 1 byte.That is quite a reduction and best of all it is easy to implement into my code.</p>
+
+<p>You can carry out these tests easily in your browser.If you are reading this article and have not turned javascript off then already a key value pair has been stored by your browser.To calculate the size of local storage for the current domain just type this in the console of your browser.</p>
+
+<blockquote>
+  <p>JSON.stringify(localstorage).length;  </p>
+</blockquote>
+
+<p><strong>brislink has reincarnated as <a href="http://brislink.github.io/specter/">specter</a>, the posts in the brislink blog have moved to my <a href="http://www.staticshin.com/">personal blog</a></strong></p>
+</div>
+    </div>
+   
+  </body>
+</html>

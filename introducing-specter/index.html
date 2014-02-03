@@ -8,7 +8,7 @@
   <body>
     <h1><a href="/">staticshin</a></h1>
     <div id="post">
-      <span>Akshat Jiwan Sharma, Fri Jun 21 2013</span>
+      <span>Akshat Jiwan Sharma,  Fri Jun 21 2013</span>
       <div class="postBody"><p>A lot of bloggers implement google search into their blogs to allow discovery of old archives. While it works well the search results from google are hard to theme according to your blog design and worse google basically forces you to display advertisements on search results. Not cool. There should be an easy way to allow users to search though their content and on their terms. But searching through thousands on lines of text is not that easy. Usually this is achieved with the help of a full text search engine that indexes the contents of the database  to allow search operations on it .For simple blogs however this is an overkill. I mean in the days of static site generators, which I myself <a href="http://www.staticshin.com/blogging-is-fun-again">enjoyed</a> for quite a while by the way, this contrived way of implementing search is not acceptable. </p>
 <p>Racking my brain trying to find a solution for the problem I had this wacky idea to build a blogging platform on top of elasticsearch. People have been <a href="http://karussell.wordpress.com/2011/07/13/jetslide-uses-elasticsearch-as-database/">using</a> it as a primary data store so it could work. So I decided to give it a try. After three weeks of hard work I am pleased to announce <a href="https://github.com/brislink/specter">specter</a>, a simple blogging platform that is highly configurable, easily deploy able and supports full text search by default. Woot!</p>
 <h2>Specter for bloggers</h2>
@@ -52,6 +52,44 @@
 <p>So give it a try. Let me know what you think. Raise issues if you find any and most of all have fun while blogging. </p>
 </div>
     </div>
-   
+
+    <div id="disqus_thread"></div>
+    <hr>
+    <span>
+        <a href="/about">about</a>
+        <a href="/staticshin">staticshin</a>
+    </span>
+    <noscript>
+      Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+</div>
+<div>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function ()
+  {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37138783-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function ()
+  {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
   </body>
+
 </html>

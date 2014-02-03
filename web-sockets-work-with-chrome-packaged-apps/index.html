@@ -8,7 +8,7 @@
   <body>
     <h1><a href="/">staticshin</a></h1>
     <div id="post">
-      <span>Akshat Jiwan Sharma, Sun Oct 13 2013</span>
+      <span>Akshat Jiwan Sharma,  Sun Oct 13 2013</span>
       <div class="postBody"><p>Although both chrome os and mozilla os offer the ability to create native packaged applications (which behave like desktop applications ) using html , css and javascript it is not clear if they support all features of html 5.  Applications made using mozilla os for example <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=750011">can not use</a> webRTC at present. In chrome os however web rtc is supported. </p>
 <p>So I wondered if it was possible to use html 5 web sockets on chrome apps. I could not find much documentation regarding my question so I decided to try it myself. I cloned the excellent <a href="https://github.com/GoogleChrome/chrome-app-samples">github repository</a> of samples and chose the simplest one (hello world) to test the functionality. Well it works. Here is my <a href="https://github.com/brickcap/chrome-app-websocktes">repo</a></p>
 <p>To run a packaged app you need to go to tools-&gt; extensions -&gt; load unpacked extensions and navigate to where you have cloned the extension. It will then be available from the new tabs page in the extension categories. </p>
@@ -22,6 +22,44 @@
 <p>My first experience with chrome apps has been quite positive. It is good to know that they support both Web sockets and web rtc. I wish that in the future it becomes possible to run these apps on mobiles. There is a large subset of applications that could benefit from it. I am planning to experiment with apps on mozilla os as well but there is still a lot to discover in chrome apps. </p>
 </div>
     </div>
-   
+
+    <div id="disqus_thread"></div>
+    <hr>
+    <span>
+        <a href="/about">about</a>
+        <a href="/staticshin">staticshin</a>
+    </span>
+    <noscript>
+      Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+</div>
+<div>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function ()
+  {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37138783-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function ()
+  {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
   </body>
+
 </html>

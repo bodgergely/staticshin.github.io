@@ -8,7 +8,7 @@
   <body>
     <h1><a href="/">staticshin</a></h1>
     <div id="post">
-      <span>Akshat Jiwan Sharma, Wed Nov 06 2013</span>
+      <span>Akshat Jiwan Sharma,  Wed Nov 06 2013</span>
       <div class="postBody"><p>I have been able to grasp the fundamentals of erlang programming quickly. Pattern matching, message passing and other basics of the language felt natural to me even though I had never programmed in a functional language before. So with bubbling enthusiasm I decided to <a href="http://www.staticshin.com/node-js-websocket-blues">write my web socket application</a> in erlang. Well the use case was pretty good. I needed message passing and concurrency and erlang gives those two for free but I underestimated the effort that it would take to learn OTP.</p>
 <p>My previous experience with frameworks has been quite good. I did not have much trouble learning Asp.net MVC or express after getting a hang of c# and javascript. OTP however was quite a challenge and even now I don't feel fluent in it. The main problem was that I was trying to learn too much at the same time. I switched my editor to emacs, fiddled around with rebar for dependency management and building, tired to learn relex for creating releases while I still hadn't written a hello world in cowboy. Any one who is new to web development in erlang will probably use these tools for their application and this post might help flatten learning curve a little. </p>
 <h4>The editor</h4>
@@ -46,6 +46,44 @@
 <p>This basic tutorial should be enough for getting your OTP applications to run. I have not covered the use of cowboy framework here intentionally. It is quite a lenghty topic and in subsequent posts I will cover it in more detail as I get to know it better.  </p>
 <br><br></div>
     </div>
-   
+
+    <div id="disqus_thread"></div>
+    <hr>
+    <span>
+        <a href="/about">about</a>
+        <a href="/staticshin">staticshin</a>
+    </span>
+    <noscript>
+      Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+</div>
+<div>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function ()
+  {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37138783-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function ()
+  {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
   </body>
+
 </html>

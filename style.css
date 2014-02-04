@@ -33,3 +33,9 @@ code{
 blockquote{
     font-style:italic;
 }
+
+.postHeading,.postHeading>a{
+    color:black;
+    font-size:110%;
+    text-decoration:none;
+}

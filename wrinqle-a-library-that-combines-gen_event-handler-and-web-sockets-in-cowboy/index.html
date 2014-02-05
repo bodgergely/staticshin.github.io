@@ -8,6 +8,7 @@
   <body>
     <h1><a href="/">staticshin</a></h1>
     <div id="post">
+      <h1>Wrinqle a library that combines gen_events and web sockets in cowboy</h1>
       <span>Akshat Jiwan Sharma,  Sat Nov 23 2013</span>
       <div class="postBody"><p>A few days back I wrote a <a href="http://www.staticshin.com/node-js-websocket-blues">post</a> in which I outlined a problem that I encountered while using web sockets in node js. Long story short I had trouble managing socket connections in node js. For instance there was no standard way to send a data to a particular socket. The only way was to store the active socket connections in an object and then query the object to get the socket that you want to communicate to.</p>
 <p>While this solution worked it had problems. First of all it was not a very elegant way to do things. My code grew a lot and it was difficult to handle all the edge cases (especially keeping track of socket's life). Another problem was that due to the nature of the work what I wrote was essentially blocking code. There was no way out of looping over objects and performing cpu intensive tasks on it and this scared me. </p>

@@ -3,6 +3,9 @@ body{
     font-family:monospace;
     line-height:2;
 }
+a{
+    text-decoration:none;
+}
 img{
     width:100%;
 }

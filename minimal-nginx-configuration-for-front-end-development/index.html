@@ -11,15 +11,15 @@
       <h1>Minimal nginx configuration for front end development</h1>
       <span>Akshat Jiwan Sharma,  Fri Mar 21 2014</span>
       <div class="postBody"><p><img src="http://farm4.staticflickr.com/3760/13286637965_eb25c7083d_o.png" alt="nginx.conf"></p>
-<p>Recently I worked with my friend who is a web designer and I noticed that he didn't use any kind of web server while creating static html files. I understand the need for keeping things simple and I absolutely love minimal development setups.  But I think that not having a static file server during the developmental phase can cause many problems : </p>
+<p>Recently I worked with my friend who is a web designer and I noticed that he served static html files directly from the file system. He did not make use any web server. I understand the need for keeping things simple and I absolutely love minimal development setups.  But I think that not having a static file server during the developmental phase can cause many problems : </p>
 <ol>
-<li>You have to specify fully qualified links to anchor tags, css  and javascript files etc. Files relative to your directory won't work. </li>
+<li>You have to specify fully formed links to anchor tags, css  and javascript files etc. Links relative to your directory won't work. </li>
 <li>File system can't determine mime type of the file it has served. I have on many occasions seen chrome throw up a warning like "resource interpreted as script but transferred with a mime type of text/Plain".</li>
 <li>Some of the new html 5 features like webRTC are unavailable if you serve your files from the file system. </li>
 <li>You will be unable to run plugins like  <a href="https://chrome.google.com/webstore/detail/pagespeed-insights-by-goo/gplegfbjlmmehdoakndmohflojccocli?hl=en">page speed insight</a> or similar tools to benchmark your html page. Now this might not be that big of a deal for some but I like to test my page once I have designed it to see if I can make some performance related optimizations.   </li>
 </ol>
 <p>Sure it may take some effort to to set it up the first time but once you have configured it to your liking it will result in an overall faster development process. So I suggest that you serve your files using a fast static server like nginx ( pronounced as engine-x
-). You might be asking your self why use nginx instead of dozens of static file servers available. Great question. I will try to sell nginx to you.</p>
+). You might be asking your self why use nginx instead of dozens of static file servers available? Great question.  Though I believe that any static file server is better than no server I will try to sell nginx to you.</p>
 <ol>
 <li>Nginx is fast and light on system. It uses a single threaded event driven model to serve up static files. </li>
 <li>Nginx is easy to set up. It makes use of simple, easy to understand configurations that can even be split into multiple files for easy maintenance. </li>

@@ -11,7 +11,7 @@
       <h1>Minimal nginx configuration for front end development</h1>
       <span>Akshat Jiwan Sharma,  Fri Mar 21 2014</span>
       <div class="postBody"><p><img src="http://farm4.staticflickr.com/3760/13286637965_eb25c7083d_o.png" alt="nginx.conf"></p>
-<p>Recently I worked with my friend who is a web designer and I noticed that he served static html files directly from the file system. He did not make use any web server. I understand the need for keeping things simple and I absolutely love minimal development setups.  But I think that not having a static file server during the developmental phase can cause many problems : </p>
+<p>Recently I worked with my friend who is a web designer and I noticed that he served static html files directly from the file system. He did not make use of any web server. I understand the need for keeping things simple and I absolutely love minimal development setups.  But I think that not having a static file server during the developmental phase can cause many problems : </p>
 <ol>
 <li>You have to specify fully formed links to anchor tags, css  and javascript files etc. Links relative to your directory won't work. </li>
 <li>File system can't determine mime type of the file it has served. I have on many occasions seen chrome throw up a warning like "resource interpreted as script but transferred with a mime type of text/Plain".</li>
@@ -99,7 +99,7 @@ root  /home/user/Desktop/Repo/Project
   }
 
 }</code></pre>
-<p>The configuration defined above creates a server block that listens for connection on "<a href="http://localhost:9090">http://localhost:9090</a>". A location directive marks the root directory of the server as " /home/user/Desktop/Repo/Project" which means that it will serve files from this directory. A request like " <a href="http://localhost:9090/about.html">http://localhost:9090/about.html</a>"  will make nginx look up about.html file in "/home/user/Desktop/Repo/Project" directory. If it finds  the file it will be served otherwise a 404 message will be returned.  </p>
+<p>The configuration defined above creates a server block that listens for connection on "localhost:9090". A location directive marks the root directory of the server as " /home/user/Desktop/Repo/Project" which means that it will serve files from this directory. A request like " localhost:9090/about.html"  will make nginx look up about.html file in "/home/user/Desktop/Repo/Project" directory. If it finds  the file it will be served otherwise a 404 message will be returned.  </p>
 <p>You can have as many server blocks as you wish. You can move server blocks into a different file and include it with the include directive like we discussed above. Remember to reload nginx with <code>nginx -s reload</code> after you have edited the config file to make the changes available to nginx. Reload does not restart the ningx server so you can change the configurations even in a prodction environment without worrying about any downtime. </p>
 <p>The location blocks besides pointing to a specific file can also direct requests to a server running on a different port using a proxy_pass directive. Like so</p>
 <pre><code>location /create{

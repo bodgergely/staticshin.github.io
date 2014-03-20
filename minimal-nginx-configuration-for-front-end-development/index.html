@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Minimal nginx configuration for front end development</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <h1><a href="/">staticshin</a></h1>
+    <div id="post">
+      <h1>Minimal nginx configuration for front end development</h1>
+      <span>Akshat Jiwan Sharma,  Fri Mar 21 2014</span>
+      <div class="postBody"><p><img src="http://farm4.staticflickr.com/3760/13286637965_eb25c7083d_o.png" alt="nginx.conf"></p>
+<p>Recently I worked with my friend who is a web designer and I noticed that he didn't use any kind of web server while creating static html files. I understand the need for keeping things simple and I absolutely love minimal development setups.  But I think that not having a static file server during the developmental phase can cause many problems : </p>
+<ol>
+<li>You have to specify fully qualified links to anchor tags, css  and javascript files etc. Files relative to your directory won't work. </li>
+<li>File system can't determine mime type of the file it has served. I have on many occasions seen chrome throw up a warning like "resource interpreted as script but transferred with a mime type of text/Plain".</li>
+<li>Some of the new html 5 features like webRTC are unavailable if you serve your files from the file system. </li>
+<li>You will be unable to run plugins like  <a href="https://chrome.google.com/webstore/detail/pagespeed-insights-by-goo/gplegfbjlmmehdoakndmohflojccocli?hl=en">page speed insight</a> or similar tools to benchmark your html page. Now this might not be that big of a deal for some but I like to test my page once I have designed it to see if I can make some performance related optimizations.   </li>
+</ol>
+<p>Sure it may take some effort to to set it up the first time but once you have configured it to your liking it will result in an overall faster development process. So I suggest that you serve your files using a fast static server like nginx ( pronounced as engine-x
+). You might be asking your self why use nginx instead of dozens of static file servers available. Great question. I will try to sell nginx to you.</p>
+<ol>
+<li>Nginx is fast and light on system. It uses a single threaded event driven model to serve up static files. </li>
+<li>Nginx is easy to set up. It makes use of simple, easy to understand configurations that can even be split into multiple files for easy maintenance. </li>
+<li>It is much more than just a static file server and can be used to load balance requests to your application.</li>
+<li>A single nginx server can act as a gateway to multiple servers. So you can have requests to your apache, iis or node js server all through nginx.  This can be very handy as it allows for complex deployments in a very easy manner.</li>
+<li>It is good practice to have a static file server in front of your application server as it takes pressure away from it.  Although serving static files sounds relatively simple there is a lot going under the hood : reading files, detecting their mime types, compressing them, sending the response, maintaining cache and checking the validity of etags etc. So in general you should always delegate the task of serving static files to a server that is designed for this specific purpose. </li>
+<li>Perhaps the most important advantage, at least for me, is that nginx allows you to change urls of the resources without having to change the routes of your of your application. You might encounter a situation where you may have to change the url scheme of your a application. Rather than killing the old urls you can use nginx to permanently redirect them to the new scheme.  </li>
+<li>Top notch documentation. You can learn everything there is to know about nginx by reading the official docs. </li>
+</ol>
+<p>So while nginx has many uses we don't need to go in depth before making use of it in our simple scenario. So enough talk let us see how nginx can help us. </p>
+<p>Nginx configuration files are located in the directory in which you installed nginx. Go to the directory and look for nginx.conf. We start with a simple nginx configuration :</p>
+<pre><code>#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#pid   /run/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+      include /etc/nginx/mime.types;
+      gzip  on;
+      gzip_http_version 1.1;
+      gzip_comp_level 2;
+      gzip_types text/plain text/html text/css
+                      application/x-javascript text/xml
+                      application/xml application/xml+rss
+                      text/javascript;
+
+server {
+                listen       80;
+                server_name  localhost;
+                access_log  logs/localhost.access.log  main;
+                location / {
+                    root   html;
+                    index  index.html index.htm;
+                }
+        include /etc/nginx/sites-enabled/*;
+        }
+}</code></pre>
+<p>Too big? Let us break it down and understand the blocks step by step. </p>
+<ul>
+<li>First of all nginx interprets anything after # as a comment. </li>
+<li>White spaces are not interpreted</li>
+<li>statements end with a  ';'</li>
+</ul>
+<p><strong>http block</strong></p>
+<p>The http block contains a set of "global" directives for nginx. Let us take a look at a sample http block</p>
+<pre><code>http {
+
+     include /etc/nginx/mime.types;
+
+     gzip on;
+     gzip_http_version 1.1;
+     gzip_comp_level 2;
+     gzip_types  text/plain text/html text/css
+                      application/x-javascript text/xml
+                      application/xml application/xml+rss
+                      text/javascript;
+
+include /etc/nginx/sites-enabled/*;</code></pre>
+<p>The the include directive tells nginx to load the contents of the specified path. This is useful when you find that you have added lots of <em>server blocks</em> or configuration settings and want to take them out of the main file to keep it uncluttered.  For instance the the first include directive tells nginx to look for the file 'mime.types' in the '/etc/nginx' directory.  And sure enough if you open mime.types file in your editor you will see a list of supported mime types by nginx. </p>
+<p>The second include directive '/etc/nginx/sites-enabled/<em>' tells nginx to include all the files in the '/etc/nginx/sites-enabled' directory. Notice the the special symbol "</em>" which is a shorthand for all. The command is interpreted by nginx as "everything within sites-enabled". </p>
+<p>The http block includes a lot of other useful directives. For instance the gzip directive is used to instruct nginx to compress the files before sending it to the client.  And you can probably guess that gzip_types specifies the types of files to be compressed and gzip_comp_level sets the level of compression for the file. Greater the level more resources will be required to compress it. A list of directives can be seen in the <a href="http://nginx.org/en/docs/">offical documentation</a>. </p>
+<p>An important point to note is that every directive specified in parent block will be applied to the children blocks unless it is explicitly overridden in that block.</p>
+<p>The most interesting part of the http block is the server variable. This server configuration lets you create one or more virtual servers . The basic configuration follows the same structure as that of http block</p>
+<pre><code>server {
+//configuration of the server
+}</code></pre>
+<p>There are a lot of directives that you can set within the server block.  The server_name allows you to map your domain name to the server block. The location  directive creates "routes" for your application etc. Consider an example</p>
+<pre><code>server{
+listen localhost:9090;
+location / {
+root  /home/user/Desktop/Repo/Project
+  }
+
+}</code></pre>
+<p>The configuration defined above creates a server block that listens for connection on "<a href="http://localhost:9090">http://localhost:9090</a>". A location directive marks the root directory of the server as " /home/user/Desktop/Repo/Project" which means that it will serve files from this directory. A request like " <a href="http://localhost:9090/about.html">http://localhost:9090/about.html</a>"  will make nginx look up about.html file in "/home/user/Desktop/Repo/Project" directory. If it finds  the file it will be served otherwise a 404 message will be returned.  </p>
+<p>You can have as many server blocks as you wish. You can move server blocks into a different file and include it with the include directive like we discussed above. Remember to reload nginx with <code>nginx -s reload</code> after you have edited the config file to make the changes available to nginx. Reload does not restart the ningx server so you can change the configurations even in a prodction environment without worrying about any downtime. </p>
+<p>The location blocks besides pointing to a specific file can also direct requests to a server running on a different port using a proxy_pass directive. Like so</p>
+<pre><code>location /create{
+proxy_pass http://localhost:3000/createUser
+}</code></pre>
+<p>Now we have acquired the all knowledge necessary to create a minimal configuration for serving up static files. I like to keep all my projects under a single folder and then create sub folders within it for different projects. For me the following server configuration is enough</p>
+<pre><code>server{
+
+listen localhost:9090;
+
+location / {
+root  /home/user/Desktop/Repo/Projects
+  }
+
+}</code></pre>
+<p>Now I can access my static websites by pointing browser to 'localhost:9090/project1', 'localhost:9090/project2/about.html' and so on.  And with this I have a simple fast static file server. Easy no?</p>
+</div>
+    </div>
+
+    <div id="disqus_thread"></div>
+    <hr>
+    <span>
+        <a href="/about.html">about</a>
+        <a href="/archives.html">archives</a>
+    </span>
+    <noscript>
+      Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+</div>
+<div>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function ()
+  {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37138783-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function ()
+  {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </body>
+
+</html>

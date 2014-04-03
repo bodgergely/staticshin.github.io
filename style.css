@@ -1,6 +1,7 @@
 body{
-    background-color:#F5F5F5;
+    background-color:#f5f5dc;
     font-family:monospace;
+    font-size: 150%;
     line-height:2;
 }
 /* body>h1:first-child{ */

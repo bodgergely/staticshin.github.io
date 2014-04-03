@@ -3,9 +3,9 @@ body{
     font-family:monospace;
     line-height:2;
 }
-body>h1:first-child{
-    text-align:center;
-}
+/* body>h1:first-child{ */
+/*     text-align:center; */
+/* } */
 a{
     text-decoration:none;
 }
@@ -13,25 +13,25 @@ img{
     width:100%;
 }
 
-@media screen and (min-width:600px){
-    .post,#post{    
-    font-size:120%;
-}
+/* @media screen and (min-width:600px){ */
+/*     .post,#post{     */
+/*     font-size:120%; */
+/* } */
 
-}
-@media screen and (min-width:1000px){
-    .post,#post{
+/* } */
+/* @media screen and (min-width:1000px){ */
+/*     .post,#post{ */
 
-	margin : 1% 20% 0% 25%;
-	font-size:110%;
-    }
-}
+/* 	margin : 1% 20% 0% 25%; */
+/* 	font-size:110%; */
+/*     } */
+/* } */
 
-@media screen and (max-width:500px){
-    .post,#post{
-	font-size:110%;
-    }
-}
+/* @media screen and (max-width:500px){ */
+/*     .post,#post{ */
+/* 	font-size:110%; */
+/*     } */
+/* } */
 
 code{
     color:#08c;

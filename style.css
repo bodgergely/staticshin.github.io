@@ -1,22 +1,33 @@
 @font-face {
-  font-family: 'Josefin Slab';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Josefin Slab'), local('JosefinSlab'), url(http://themes.googleusercontent.com/static/fonts/josefinslab/v4/46aYWdgz-1oFX11flmyEfXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+    font-family: 'Josefin Slab';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Josefin Slab'), local('JosefinSlab'), url(http://themes.googleusercontent.com/static/fonts/josefinslab/v4/46aYWdgz-1oFX11flmyEfXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
 }
 body{
     background-color:#f5f5dc;
     font-family:'Josefin Slab',sans-serif;
     font-size: 150%;
     line-height:2;
-   
+    margin-top:0px;
+    
 }
 body>h1:first-child{
-font-size:20px;
-margin-left:5%;
+    font-size: 20px;
+    margin-left: 5%;
+    background-color: black;
+    margin-right: 50%;
+    text-align: center;
+    margin-top: 0px;
+    padding-bottom: 4%;
+    font-family: monospace;
+    padding-top: 4%;
+}
+body>h1:first-child>a{
+    color:white
 }
 .post,#post{
- margin:0% 5% 5% 5%;x
+    margin:0% 5% 5% 5%;x
 }
 
 a{

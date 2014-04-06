@@ -11,11 +11,12 @@ body{
     line-height:2;
     margin-top:0px;
     margin-left:0px;
+    margin-right:0px;
 }
 body>h1:first-child{
     font-size: 20px;
     background-color: black;
-    margin-right: 50%;
+    margin-left: 50%;
     text-align: center;
     margin-top: 0px;
     padding-bottom: 4%;

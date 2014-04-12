@@ -160,12 +160,27 @@ body {
 header{
    
     margin-top:0px;
-    background-color:white;
+    background-color:#C54B33;
     opacity: .8;
     position:fixed;
     top:0px;
     width:100%;
     
+}
+header,header a{
+color:white;
+}
+header ul {
+list-style-type:none;
+margin:0px;
+padding: 0px;
+cursor:pointer;
+text-align:right;
+
+}
+header li {
+display:inline;
+margin-right:2%;
 }
 body{
     background-color:#f5f5dc;
@@ -226,11 +241,9 @@ blockquote{
 .sub-menu{
     
     cursor:pointer;
-    text-align:left;
-    margin-left:1%;
+   
 }
 
 .main-menu{
-    text-align:right;
-    margin-right:1%;
+   
 }

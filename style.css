@@ -156,6 +156,9 @@ body {
     font-weight: 400;
     src: local('Josefin Slab'), local('JosefinSlab'), url(http://themes.googleusercontent.com/static/fonts/josefinslab/v4/46aYWdgz-1oFX11flmyEfXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
 }
+footer{
+text-align:center;
+}
 header>nav{
     
     margin-top:0px;

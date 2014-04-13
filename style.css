@@ -129,7 +129,6 @@ body {
 /*Blog css*/
 @media handheld, only screen and (max-width: 767px) {
 
-    
     .grid {
 	width: 100%;
 	min-width: 0;
@@ -158,7 +157,7 @@ body {
     src: local('Josefin Slab'), local('JosefinSlab'), url(http://themes.googleusercontent.com/static/fonts/josefinslab/v4/46aYWdgz-1oFX11flmyEfXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
 }
 header>nav{
-   
+    
     margin-top:0px;
     background-color:#C54B33;
     opacity: .8;
@@ -169,13 +168,21 @@ header>nav{
 }
 .nav-grid{
 
-max-width:100%;
-background-color:white;
-color:black;
-position:fixed;
-width:100%;
-top:45px;
+    font-size:12px;
+    font-family:monospace;
+    max-width:100%;
+    color:black;
+    position:fixed; 
+    width:100%;
+    top:45px;
+max-height:100%;
+overflow-y:auto;
+background-color:#fafafa;
+padding-bottom:10%;
+
 }
+
+
 header>nav,header>nav a{
 color:white;
 }

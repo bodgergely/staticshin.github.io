@@ -170,14 +170,16 @@ header>nav{
 .nav-grid{
 
 max-width:100%;
-margin-top:40px;
 background-color:white;
 color:black;
+position:fixed;
+width:100%;
+top:45px;
 }
 header>nav,header>nav a{
 color:white;
 }
-header ul {
+header>nav ul {
 list-style-type:none;
 margin:0px;
 padding: 0px;
@@ -185,7 +187,7 @@ cursor:pointer;
 text-align:right;
 
 }
-header li {
+header>nav li {
 display:inline;
 margin-right:2%;
 }

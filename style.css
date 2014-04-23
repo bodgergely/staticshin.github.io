@@ -157,14 +157,14 @@ body {
     src: local('Josefin Slab'), local('JosefinSlab'), url(http://themes.googleusercontent.com/static/fonts/josefinslab/v4/46aYWdgz-1oFX11flmyEfXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
 }
 footer{
-text-align:center;
+    text-align:center;
 }
 header>nav{
     
     margin-top:0px;
     background-color:#C54B33;
     opacity: .8;
-    position:fixed;
+    position:absolute;
     top:0px;
     width:100%;
     
@@ -175,31 +175,31 @@ header>nav{
     font-family:monospace;
     max-width:100%;
     color:black;
-    position:fixed; 
+    position:absolute; 
     width:100%;
     top:45px;
-max-height:100%;
-overflow-y:auto;
-background-color:#fafafa;
-padding-bottom:10%;
+    max-height:100%;
+    overflow-y:auto;
+    background-color:#fafafa;
+    padding-bottom:10%;
 
 }
 
 
 header>nav,header>nav a{
-color:white;
+    color:white;
 }
 header>nav ul {
-list-style-type:none;
-margin:0px;
-padding: 0px;
-cursor:pointer;
-text-align:right;
+    list-style-type:none;
+    margin:0px;
+    padding: 0px;
+    cursor:pointer;
+    text-align:right;
 
 }
 header>nav li {
-display:inline;
-margin-right:2%;
+    display:inline;
+    margin-right:2%;
 }
 body{
     background-color:#f5f5dc;
@@ -260,9 +260,9 @@ blockquote{
 .sub-menu{
     
     cursor:pointer;
-   
+    
 }
 
 .main-menu{
-   
+    
 }

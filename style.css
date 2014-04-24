@@ -159,6 +159,9 @@ body {
 footer{
     text-align:center;
 }
+header{
+margin-bottom:15%;
+}
 header>nav{
     
     margin-top:0px;

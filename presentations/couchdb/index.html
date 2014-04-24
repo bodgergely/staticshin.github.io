@@ -151,12 +151,23 @@
     "title":"cocudhdb presentation",
     "venue":"srijan"
 }}
-]}</code>
+    ]}</code>
 </pre>
 	  </section>
 	</section>
 	<section>
-          <h2>Replication</h2>
+          <p>/_replicate</p>
+	  <pre>
+	    <code>curl -X POST http://localhost:5984/_replicate -d</code>
+	  </pre>
+	  <pre>
+	    <code>{
+   "source" : "source_database (could be remote or local)",
+   "target" : "target database (could be remote or local)",
+   "create_target" : true,
+   "continuous" : true
+}</code>
+	  </pre>
 	</section>
 
 	<section>

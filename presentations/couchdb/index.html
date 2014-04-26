@@ -172,11 +172,25 @@
 
 	<section>
           <h2>couchdb-lucene</h2>
+	  <p><small>*you know for search</small></p>
+          <p>Index</p>
+	  <pre>
+	    <code>function(doc) {
+  var result = new Document();
+  result.add(doc.venue);
+  
+}</code>
+	  </pre>
+          <p>query</p>
+	  <pre>
+	    <code>http://localhost:5984/_fti/local/database/_design/foo/by_subject?q=srijan</code>
+	  </pre>
+	  <p><small>*supports entire lucene syntax</small></p>
 	</section>
 
-	<section>
-          <h2>NPM</h2>
-	</section>
+	<!-- <section data-background="#8c4738"> -->
+        <!--   <h2>NPM</h2> -->
+	<!-- </section> -->
 
 	
       </div>

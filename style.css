@@ -128,7 +128,7 @@ body {
 
 /*Blog css*/
 @media handheld, only screen and (max-width: 767px) {
-
+    
     .grid {
 	width: 100%;
 	min-width: 0;
@@ -137,7 +137,7 @@ body {
 	padding-left: 0px;
 	padding-right: 0px;
     }
-    
+
     [class*='col-'] {
 	width: auto;
 	float: none;
@@ -160,7 +160,7 @@ footer{
     text-align:center;
 }
 header{
-margin-bottom:15%;
+    margin-bottom:15%;
 }
 header>nav{
     
@@ -174,7 +174,7 @@ header>nav{
 }
 .nav-grid{
 
-    font-size:12px;
+    font-size:16px;
     font-family:monospace;
     max-width:100%;
     color:black;
@@ -182,9 +182,7 @@ header>nav{
     width:100%;
     top:45px;
     max-height:100%;
-    overflow-y:auto;
     background-color:#fafafa;
-    padding-bottom:10%;
 
 }
 
@@ -266,6 +264,14 @@ blockquote{
     
 }
 
-.main-menu{
-    
+hr{
+    border-color:#fdfdfd;
+    width:20%;
+
+}
+
+@media (max-width:767px){
+    hr{
+	width:100%;
+    }
 }

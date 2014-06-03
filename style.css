@@ -275,3 +275,17 @@ hr{
 	width:100%;
     }
 }
+
+@media (min-width:1000px){
+    .post{
+        margin-left:20%;
+           width:60%;
+    }
+    .post img{
+        margin-left:0px;
+       display:block;
+         height:auto;
+        min-width:100%;
+       max-width:100%;
+    }
+}

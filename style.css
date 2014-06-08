@@ -204,9 +204,10 @@ header>nav li {
 }
 body{
     background-color:#f5f5dc;
-    font-family:'Josefin Slab',sans-serif;
+    font-family:monospace;
     font-size: 130%;
-    line-height:2;
+    line-height:2em;
+    color:#073642
     margin-top:0px;
     margin-left:0px;
     margin-right:0px;

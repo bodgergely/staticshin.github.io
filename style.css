@@ -193,7 +193,6 @@ header>nav ul {
 header>nav li {
     display:inline;
     margin-right:2%;
-    font-size:120%;
     cursor:pointer;
 }
 body{
@@ -269,6 +268,13 @@ hr{
 @media (max-width:767px){
     hr{
 	width:100%;
+    }
+    header>nav li  {
+	font-size:130%;
+
+    }
+    .post,#post{
+	margin-top:10%;
     }
 }
 

@@ -207,11 +207,6 @@ body{
 }
 body>h1:first-child{
     font-size: 20px;
-    margin-left: 50%;
-    margin-top: 0px;
-    padding-bottom: 4%;
-    font-family: monospace;
-    padding-top: 4%;
     line-height:2em;
 }
 h1,h2,h3,h4,h5,h6{
@@ -234,8 +229,7 @@ code{
     font-size:130%;
 }
 blockquote{
-    font-style:italic;
-   
+    font-style:italic;   
 }
 
 .postHeading,.postHeading>a{
@@ -252,10 +246,8 @@ blockquote{
 .main-menu{
     
 }
-.sub-menu{
-    
-    cursor:pointer;
-    
+.sub-menu{    
+    cursor:pointer;    
 }
 
 hr{

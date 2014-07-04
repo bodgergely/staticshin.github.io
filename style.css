@@ -200,7 +200,7 @@ body{
     font-family:monospace;
     font-size: 130%;
     line-height:2em;
-    color:#073642;
+    color:black;
     margin-top:0px;
     margin-left:0px;
     margin-right:0px;
@@ -216,8 +216,8 @@ body>h1:first-child{
     padding-top: 4%;
     line-height:2em;
 }
-body>h1:first-child>a{
-    color:white
+h1,h2,h3,h4,h5,h6{
+color:#073642;
 }
 .post,#post{
     margin:6% 5% 5% 5%;
@@ -237,6 +237,7 @@ code{
 }
 blockquote{
     font-style:italic;
+   
 }
 
 .postHeading,.postHeading>a{

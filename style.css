@@ -200,16 +200,14 @@ body{
     font-family:monospace;
     font-size: 130%;
     line-height:2em;
-    color:black;
+    color:#073642;
     margin-top:0px;
     margin-left:0px;
     margin-right:0px;
 }
 body>h1:first-child{
     font-size: 20px;
-    background-color: black;
     margin-left: 50%;
-    text-align: center;
     margin-top: 0px;
     padding-bottom: 4%;
     font-family: monospace;

@@ -107,8 +107,8 @@
 	  without us having to move our fingers much. </p>
 	<p>Step 2 : Add couchdb users</p>
 	<p>Now that we have an administrator 
-	  we will add a few users. All the users in couchdb is stored by default in <code>_users</code> database. To store
-	  a user you just have to make a PUT request to the <code>_user</code> database.
+	  we will add a few users. All the users in couchdb are stored by default in <code>_users</code> database. To store
+	  a user you just have to issue a PUT request to the <code>_user</code> database.
 	  Here's how you do it.</p>
 	<pre><code>curl -X PUT http://ABBA:dancing-queen@localhost:5984/_users/org.couchdb.user:fernando \
 	    -H "Accept: application/json" \
@@ -138,9 +138,9 @@
 	<p>Ah once more we see that passwords are not stored in plain text. This makes us :-) no?</p>
 	<p><strong>End of basics tutorial</strong></p>
 	<hr>
-	<p>We are almost done! we still have to see how to manage sessions though
+	<p>We are almost done! we still have to see how to manage sessions though.
 	  But first let me run quickly and get a refill of the custard while everyone
-	  is still sleeping. They will be in for a surprise when they have the breakfast tomorrow.</p>
+	  is still sleeping.</p>
 	<h3>How to manage sessions? It is as easy as eating custard.</h3>
 	<p>You know how easy it is to eat custard right? Dip in a spoon inside the bowl,
 	  bring the spoon filled with custard to the brim  right up to your lips. Part your lips
@@ -247,8 +247,8 @@
 	  can cache authenticated users in memory to reduce disk lookups. This makes session management
 	  very fast.</p>
 	<p>The configuration parameter is <code>auth_cache_size</code>. By default it is configured to hold 50 documents.
-	  The actual size of the auth cache would depend upon the maximum number of peak logged in users that
-	  your application experiences. For this you will have to run tests. But I am going to be reckless here
+	  The actual size of the auth cache would depend upon the maximum number of  logged in users that
+	  your application experiences at peak time. For this you will have to run tests. But I am going to be reckless here
 	  and store all of my 100K users in the cache. For that  we will need to override the default configuration.</p>
 	<pre><code>
 	    curl -X PUT http://ABBA:dancing-queen@localhost:5984/_config/couch_httpd_auth/auth_cache_size -d '100000'</code></pre>

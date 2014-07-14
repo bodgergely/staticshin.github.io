@@ -149,7 +149,7 @@
 	  about the tip your tongue. At this point your sweet receptors should sense the angelic taste of
 	  custard which will melt in your mouth as you slowly try to chew it but discover that you can't and
 	  regretfully gulp it in hoping the next serve would last longer. Life is a tease. But there it is.</p>
-	<p>How to manage sessions? Right ho! all you got to do is make a post request to
+	<p>How to manage sessions? Right ho! all you got to do is issue a post request to
 	  <code>_session</code> endpoint</p>
 	<pre><code>curl -X POST http://localhost:5984/_session -d 'name=fernando&amp;password=apple'
 
@@ -252,7 +252,7 @@
 	  and store all of my 100K users in the cache. For that  we will need to override the default configuration.</p>
 	<pre><code>
 	    curl -X PUT http://ABBA:dancing-queen@localhost:5984/_config/couch_httpd_auth/auth_cache_size -d '100000'</code></pre>
-	<p>Now I will have to make authentication requests to the <code>_session</code> 
+	<p>Now I will have to issue authentication requests to the <code>_session</code> 
 	  (just like we did earlier) handler to actually 
 	  put them in a cache. 
 	  Please <a href="http://www.staticshin.com/stranger-than-paradise/">read this totally relevant other article</a> while I do that.</p>
@@ -265,7 +265,7 @@
 	  <li>First kill couchdb.</li>
 	  <li>Start couchdb with an interactive shell. Use <code>sudo couchdb -i</code></li>
 	  <li>Authenticate the user <code>fernando</code> like we did before in the tutorial.</li>
-	  <li>Make a request to couchdb <code>_stats</code> handler</li>
+	  <li>Issue a request to couchdb <code>_stats</code> handler</li>
 	</ol>
 	<pre><code>curl http://localhost:5984/_stats
 

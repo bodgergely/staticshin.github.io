@@ -210,7 +210,7 @@ body>h1:first-child{
     line-height:2em;
 }
 h1,h2,h3,h4,h5,h6{
-color:#073642;
+    color:#073642;
 }
 .post,#post{
     margin:6% 5% 5% 5%;
@@ -266,6 +266,9 @@ hr{
     }
     .post,#post{
 	margin-top:10%;
+    }
+    ol,ul{
+	padding:0px;
     }
 }
 

@@ -231,7 +231,7 @@ ngx.say(res.body)
 <p><strong>For logout</strong></p>
 <ol>
 <li>Parse the request headers and extract the cookie field.</li>
-<li>Do a GET request to the couchdb <code>_session</code> api with the cookie we 
+<li>Do a DELETE request to the couchdb <code>_session</code> api with the cookie we 
 extracted in the first step. Make sure to set the <code>Host</code> to where your couchdb is running.</li>
 <li>Send the <code>Set-Cookie</code>(which will be null) to the client.</li>
 </ol>

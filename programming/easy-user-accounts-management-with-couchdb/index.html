@@ -118,7 +118,7 @@ Here's how you do it.</p>
 {"ok":true,"id":"org.couchdb.user:fernando","rev":"1-e0ebfb84005b920488fc7a8cc5470cc0"}</code></pre>
 <p>And that adds our friend fernando as a user. </p>
 <p>At a  minimum user document <strong>must</strong> contain name, password, roles and type field. The type will
-always be <code>user</code>. The <code>_id</code> field must be prefixed with <code>org.couchdb.com</code>
+always be <code>user</code>. The <code>_id</code> field must be prefixed with <code>org.couchdb.user</code>
 (we don't have to include <code>_id</code> in the json body we can simply add append it after the <code>_users</code> in the url).<code>roles</code> is an array that can contain anything and name and password are self
 explanatory. Besides these fields you are free to add any arbitrary number of fields to the user document.</p>
 <p>Let's fetch this document and see how couchdb saves it internally.</p>

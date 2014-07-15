@@ -119,7 +119,8 @@ Here's how you do it.</p>
 <p>And that adds our friend fernando as a user. </p>
 <p>At a  minimum user document <strong>must</strong> contain name, password, roles and type field. The type will
 always be <code>user</code>. The <code>_id</code> field must be prefixed with <code>org.couchdb.user</code>
-(we don't have to include <code>_id</code> in the json body we can simply add append it after the <code>_users</code> in the url).<code>roles</code> is an array that can contain anything and name and password are self
+(we don't have to include <code>_id</code> in the json body we can simply add append it after the <code>_users</code> in the url).
+<code>roles</code> is an array that can contain anything and name and password are self
 explanatory. Besides these fields you are free to add any arbitrary number of fields to the user document.</p>
 <p>Let's fetch this document and see how couchdb saves it internally.</p>
 <pre><code>curl -X GET http://ABBA:dancing-queen@localhost:5984/_users/org.couchdb.user:fernando/
@@ -220,7 +221,7 @@ ngx.say(res.body)
 ';
 
 }</code></pre>
-<p>The code above defines two handlers :- login and logout. The approach is simillar for both of them</p>
+<p>The code above defines two handlers :- login and logout. The approach is similar for both of them</p>
 <p><strong>For login</strong></p>
 <ol>
 <li>Do a POST request to the couchdb <code>_session</code> api with the credentials. Make sure to set the <code>Host</code> to where your couchdb is running.</li>
@@ -264,7 +265,6 @@ a 100k users handy. No problem. One will do.</p>
 <ol>
 <li>First kill couchdb.</li>
 <li>Start couchdb with an interactive shell. Use <code>sudo couchdb -i</code></li>
-<li>Authenticate the user <code>fernando</code> like we did before in the tutorial.</li>
 <li>Make a request to couchdb <code>_stats</code> handler</li>
 </ol>
 <pre><code>curl http://localhost:5984/_stats
@@ -295,12 +295,30 @@ max: 3
 }</code></pre>
 <p>Couch db will respond with some statistics that it diligently collects.
 But at this moment we only care about two of them. <code>auth_cache_misses</code> and <code>auth_cache_hits</code>.
-My auth cache misses were <code>current: 100000</code> that is none of the users were in cache by default.
-This number should be 1 for you since you just tried authenticating a single user.</p>
-<p>Now we will test if the user is actually in the cache. I don't
-know about you but I am getting mighty tired of keeping track of cookies from my shell.
-We will just use the couchdb shell to trick it into authenticating our user without the cookie. 
-It is painless. Simply do</p>
+My auth cache misses were <code>sum: 100000</code> that is none of the users were in cache by default.
+This number should be 0 for you as we have not tried getting session for a user at the moment. Disregard
+the <code>auth_cache_hits</code> for now.</p>
+<p>Now we will test if the user is actually in the cache.</p>
+<p><strong>First the old way</strong></p>
+<hr>
+<ol>
+<li>Get session for fernando like we did before-: by issuing a post request to the session handler</li>
+<li>Now issue a get request to the <code>_session</code> handler passing 
+in the cookie returned in the first step just like we did before</li>
+<li>query the <code>_stats</code> handler. You should see non zero numbers in both cache hits and misses.</li>
+</ol>
+<p><strong>Explanation</strong></p>
+<p>At first fernando is not in the cache list since we restarted couchdb. 
+Then after we make a request to <code>_session</code> couchdb creates a session for fernando
+and puts him in the cache and increments the cache miss counter.
+Finally when we request the credentials of fernando using the 
+supplied cookie couchdb looks up in the cache and returns the results and increments the
+cache hit counter. </p>
+<hr>
+<p><strong>Using couchdb shell</strong></p>
+<p>I don't know about you but I am getting mighty tired of keeping track of cookies from my terminal. 
+Therefore we will just use the couchdb shell to trick it 
+into authenticating our user without the cookie. Simply do</p>
 <pre><code>couch_auth_cache:get_user_creds("frenando").</code></pre>
 <p>and press enter. You should see something like this</p>
 <pre><code>[{&lt;&lt;"_id"&gt;&gt;,&lt;&lt;"org.couchdb.user:fernando"&gt;&gt;},
@@ -323,23 +341,29 @@ stddev: 0.045,
 min: 0,
 max: 3
 }</code></pre>
-<p>a number greater than 0 for <code>current</code>. I loved authenticating from shell so much that I did it
+<p>a number greater than 0 for <code>current</code> and <code>sum</code> for <code>auth_cache_hits</code>
+while there will be no  change at all for the <code>auth_cache_miss</code>.
+I loved authenticating from shell so much that I did it
 8 times which is why you see the number 8 in my results. Anyway it's time to dig a little bit
 deeper.</p>
-<p>|</p>
-<p>|</p>
-<p>|</p>
-<p>(80 feet below)</p>
-<p>|</p>
-<p>|</p>
-<p>(140 feet below)</p>
+<p style="text-align:center">|</p>
+<p style="text-align:center">|</p>
+<p style="text-align:center">|</p>
+<p style="text-align:center">|</p>
+<p style="text-align:center">(80 feet below)</p>
+<p style="text-align:center">|</p>
+<p style="text-align:center">|</p>
+<p style="text-align:center">(140 feet below)</p>
+
+
+
 <p><strong>How does couchdb cache the users?</strong></p>
-<p>Internally couchdb uses ETS (erlang term storage) to cache the users. ETS
+<p>Internally couchdb uses ETS (erlang term storage) to hold the users in a cache. ETS
 is like a mini redis built into erlang. Let's check it out.</p>
 <ol>
-<li>Go into the couchdb shell and type <code>ets:info</code>. This will give you a list of all the ETS tables
-that couchdb uses.</li>
-<li>We are only interested in the ones owned by <code>couch_auth_cache</code> and especially the table
+<li>Go into the couchdb shell and type <code>ets:i().</code>. This will give you a list of all the ETS tables
+that couchdb uses. The list will be divided into 5 coloumns: id,name,type,size,mem and owner. </li>
+<li>We are only interested in the tables that are owned by <code>couch_auth_cache</code> and especially the table
 <code>auth_by_user_ets</code>.</li>
 <li>Now type the command <code>ets:lookup(auth_by_user_ets,&lt;&lt;"fernando"&gt;&gt;)</code>. You should see</li>
 </ol>
@@ -356,8 +380,15 @@ that couchdb uses.</li>
 &lt;&lt;"1864805738e4515cb677b4b55e99beaa844c0998"&gt;&gt;},
 {&lt;&lt;"salt"&gt;&gt;,&lt;&lt;"bba686808c217c316604c84f15f666b5"&gt;&gt;}],
 {1405,341019,516682}}}]</code></pre>
-<p>in the result. Sweet isn't it? Everything nicely stored in memory for quick retrieval.
-How much space the tables use largely depends upon the amount of data that is stored
+<p>in the result. Sweet isn't it? Everything nicely stored in memory for quick retrieval.</p>
+<p>There is just one more small test that we need to do. That is
+we need to check if the ets table is actually holding the correct result. This is simple
+we ask the table to lookup for a user that is not there.</p>
+<pre><code>ets:lookup(auth_by_user_ets,&lt;&lt;"some-unknown-user"&gt;&gt;).
+
+[]</code></pre>
+<p>We get an empty list just like we expected. </p>
+<p>How much space the tables use largely depends upon the amount of data that is stored
 within them. For me with a 100k users the  <code>auth_by_user_ets</code> table took 103 MB.
 The memory usage of couchdb bumped up to 160 MB. This means that I can do authentication
 for 100k users right from the memory in under 200 MB of space. I'll take that deal.</p>

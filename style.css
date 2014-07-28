@@ -201,7 +201,8 @@ header>nav li {
 }
 body{
     background-color:#f5f5dc;
-    font-size: 130%;
+    font-family:DejaVu Sans Mono;
+    font-size: 110%;
     line-height:2em;
     color:#073642;
     margin-top:0px;

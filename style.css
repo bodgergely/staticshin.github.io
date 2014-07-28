@@ -173,7 +173,6 @@ header>nav{
 }
 .nav-grid{
 
-    font-family:inherit;
     max-width:100%;
     color:black;
     position:absolute; 
@@ -202,7 +201,6 @@ header>nav li {
 }
 body{
     background-color:#f5f5dc;
-    font-family:inherit;
     font-size: 130%;
     line-height:2em;
     color:#073642;

@@ -150,10 +150,10 @@ body {
     }
 }
 
-@font-face {
-    font-family:"DejaVu Sans Mono";
-    src: url("./dejavu-sans-mono/DejaVuSansMono.ttf") /* TTF file for CSS3 browsers */
-}
+/* @font-face { */
+/*     font-family:"DejaVu Sans Mono"; */
+/*     src: url("./dejavu-sans-mono/DejaVuSansMono.ttf") /\* TTF file for CSS3 browsers *\/ */
+/* } */
 
 footer{
     text-align:center;
@@ -201,7 +201,8 @@ header>nav li {
 }
 body{
     background-color:#f5f5dc;
-    font-family:DejaVu Sans Mono;
+    font-family:Arial;
+    letter-spacing:1px;
     line-height:2em;
     color:#073642;
     margin-top:0px;

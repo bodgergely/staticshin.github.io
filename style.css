@@ -228,8 +228,8 @@ img{
 }
 
 
-code{
-    color:#08c;
+pre>code{
+    color:#d33682;
     font-size:100%;
 }
 blockquote{
@@ -237,14 +237,14 @@ blockquote{
 }
 
 .postHeading,.postHeading>a{
-    color:#08c;
-    font-size:110%;
+    color:#073642;
+    font-size:120%;
     text-decoration:none;
 }
 
 .postMeta{
     font-style:italic;
-    font-size:85%;
+    font-size:95%;
 }
 
 .main-menu{

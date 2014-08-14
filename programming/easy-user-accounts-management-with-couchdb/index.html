@@ -87,8 +87,7 @@ majestic terminal and let couchdb take care of the REST. </p>
 <p><code>""</code></p>
 <p>in the response. I guess couchdb was too stunned by your magnificence to make a reply, whatever.
 Any way lets check our config file to see if we have an admin named ABBA.</p>
-<pre><code>
-curl -X GET http://localhost:5984/_config
+<pre><code>curl -X GET http://localhost:5984/_config
 
 {"error":"unauthorized","reason":"You are not a server admin."}</code></pre>
 <p>All right we will login as the administrator and see if that helps.</p>
@@ -116,12 +115,11 @@ Here's how you do it.</p>
 -H "Content-Type: application/json" \
 -d '{"name": "fernando", "password": "apple", "roles": [], "type": "user"}'
 
-
 {"ok":true,"id":"org.couchdb.user:fernando","rev":"1-e0ebfb84005b920488fc7a8cc5470cc0"}</code></pre>
 <p>And that adds our friend fernando as a user. </p>
 <p>At a  minimum user document <strong>must</strong> contain name, password, roles and type field. The type will
 always be <code>user</code>. The <code>_id</code> field must be prefixed with <code>org.couchdb.user</code>
-(we don't have to include <code>_id</code> in the json body we can simply add append it after the <code>_users</code> in the url).
+(we don't have to include <code>_id</code> in the json body we can simply  append it after the <code>_users</code> in the url).
 <code>roles</code> is an array that can contain anything and name and password are self
 explanatory. Besides these fields you are free to add any arbitrary number of fields to the user document.</p>
 <p>Let's fetch this document and see how couchdb saves it internally.</p>
@@ -187,12 +185,10 @@ But there are still some adjustments that we need to do.</p>
 of couchdb. So we must find a way to extract this cookie header from couchdb response
 and send it to the browser to save it. Thankfully it's not too tough.  Let us take a look at the example
 using nginx and lua (open resty)</p>
-<pre><code>
-location /couch_session{
+<pre><code>location /couch_session{
 
 proxy_pass http://localhost:5984/_session;
 }
-
 
 location /login {
 content_by_lua
@@ -253,8 +249,7 @@ very fast.</p>
 The actual size of the auth cache would depend upon the maximum number of  logged in users that
 your application experiences at peak time. For this you will have to run tests. But I am going to be reckless here
 and store all of my 100K users in the cache. For that  we will need to override the default configuration.</p>
-<pre><code>
-curl -X PUT http://ABBA:dancing-queen@localhost:5984/_config/couch_httpd_auth/auth_cache_size -d '100000'</code></pre>
+<pre><code>curl -X PUT http://ABBA:dancing-queen@localhost:5984/_config/couch_httpd_auth/auth_cache_size -d '100000'</code></pre>
 <p>Now I will have to make authentication requests to the <code>_session</code> 
 (just like we did earlier) handler to actually 
 put them in a cache. 
@@ -348,17 +343,14 @@ while there will be no  change at all for the <code>auth_cache_miss</code>.
 I loved authenticating from shell so much that I did it
 8 times which is why you see the number 8 in my results. Anyway it's time to dig a little bit
 deeper.</p>
-<p style="text-align:center">|</p>
-<p style="text-align:center">|</p>
-<p style="text-align:center">|</p>
-<p style="text-align:center">|</p>
-<p style="text-align:center">(80 feet below)</p>
-<p style="text-align:center">|</p>
-<p style="text-align:center">|</p>
-<p style="text-align:center">(140 feet below)</p>
-
-
-
+<p>|</p>
+<p>|</p>
+<p>|</p>
+<p>|</p>
+<p>(80 feet below)</p>
+<p>|</p>
+<p>|</p>
+<p>(140 feet below)</p>
 <p><strong>How does couchdb cache the users?</strong></p>
 <p>Internally couchdb uses ETS (erlang term storage) to hold the users in a cache. ETS
 is like a mini redis built into erlang. Let's check it out.</p>

@@ -42,25 +42,25 @@
     <div id="post">
       <h1>Testing couchapps with couchdb</h1>
       <span>Akshat Jiwan Sharma,  Wed Sep 17 2014</span>
-      <div class="postBody"><p>Are you using <a href="https://github.com/couchapp/couchapp">couchapp</a><br>or <a href="http://github.com/benoitc/erica">erica</a> for managing couchdb design documents? 
+      <div class="postBody"><p>Are you using <a href="https://github.com/couchapp/couchapp">couchapp</a> or <a href="http://github.com/benoitc/erica">erica</a> for managing couchdb design documents? 
 Do you feel a bit dirty every time you <code>push</code> a new <code>design document</code> to couchdb 
 without testing it first? And are you tired of being dirty all the time? Well then this 
 article will teach you to clean your couchdb design docs in fragrant soap water before 
-pushing it to your production server so you can be sure all your production code is clean<br>and shiny. </p>
+pushing it to your production server so you can be sure all your production code is clean<br>and shiny or something along those lines....</p>
 <h3>What are we doing?</h3>
 <p>We will write simple tests using couchdb show and list functions to test<br>parts of couchdb design docs. We will run these functions on our local couchdb 
 instance before pushing it to the production server and then we will lay out a formal 
 plan for designing CABS. No not those cabs silly!  <strong>C</strong>ouchapp <strong>A</strong>utomated <strong>B</strong>uild <strong>S</strong>ystems.</p>
 <h3>Show and list?</h3>
-<p>Yes sir. Show and lists functions is a terribly underrated feature of couchdb. The purpose of show 
+<p>Yes sir. Show and lists functions are a terribly underrated feature of couchdb. The purpose of show 
 function is to transform a document into a format that is consumable by the client like suppose 
 transforming a json document into an html page so that it could render nicely on a web browser. </p>
 <p>Similarly a list function was designed to transform the output of views into a format that is 
 consumable by the client. </p>
 <p>But here is the thing. Show and list functions can be used to execute arbitrary server side code. 
-Well almost... there are only a few built in functions that show and list are allowed to execute 
-but even it's limited power it gives tremendous flexibility to us and as we are going to see 
-we will exploit it to run server side tests for us. </p>
+Well almost... there are only a few built in functions that show and list are allowed to use
+but even  it's limited power  gives us tremendous flexibility. We are going to exploit them
+to run server side tests for us. </p>
 <h3>It's time for some action</h3>
 <p>We are going to start by testing a view function. Consider this view </p>
 <pre><code>function(doc){
@@ -69,7 +69,7 @@ we will exploit it to run server side tests for us. </p>
     }
 }</code></pre>
 <p>The view is pretty straight forward. It only sorts the documents based 
-on the created_at field. So how can we test this view. Consider this list function </p>
+on the <code>created_at</code> field. So how can we test this view? Consider this list function </p>
 <pre><code>function(head,req){
     var row = getRow();
     var test_results = [];
@@ -84,7 +84,7 @@ on the created_at field. So how can we test this view. Consider this list functi
     return toJSON({"passed":"view tests passed:"+test_results.length.toString()}); 
 
 }</code></pre>
-<p>What this list function does is check that the documents emitted by the 
+<p>What this list function does is it checks that the documents emitted by the 
 the view contain a key that is a valid date. If the date is valid the test pass
 and if it is invalid the test fails. Some points to note here</p>
 <p>In line #3</p>
@@ -98,12 +98,11 @@ against a different view. </p>
 <p><code>if(!pass_condition) return toJSON({failed:"unexpected result"});</code></p>
 <p>We fail the test if even one document does not pass. This might sound stringent 
 but it is not really. A view should index a document only if it passes the map function. 
-Our map function indexs the document only if the contain a date. If the indexed document 
+Our map function indexes the document only if it contains a date. If the indexed document 
 has no date then it should not be indexed at all. Hence the result must fail. We can probably 
 do better by outputting the docs for which the test fails. </p>
-<p>Other wise we out put a test passed message along with the count of docs the test was run against. </p>
-<p>To run this test we just <a href="http://wiki.apache.org/couchdb/Formatting_with_Show_and_List#Listing_Views_with_CouchDB_0.10_and_later">call this list function</a>. To limit the number of documents passed to the
-view we can use the <code>limit=number</code> query parameter. </p>
+<p>Otherwise we output a test passed message along with the count of docs the test was run against. </p>
+<p>To run this test we just <a href="http://wiki.apache.org/couchdb/Formatting_with_Show_and_List#Listing_Views_with_CouchDB_0.10_and_later">call this list function</a>. To limit the number of documents passed to the view we can use the <code>limit=number</code> query parameter. </p>
 <p>Let us take an example of slightly more complex view:- </p>
 <pre><code>function(doc){
     if(doc.tname){
@@ -147,12 +146,12 @@ testing for the type of emitted keys. A careful observer might have noticed line
 <p>array_equals is the function that takes in two arrays and check if they are 
 equal or not. </p>
 <pre><code>array_equals([1,2,3],[1,2,3]) //true
-array_equals([1,2,3],[3,2,3]) //false
+array_equals([1,2,3],[3,2,1]) //false
 array_equals([1,2,3],[1,2,3,4]) //false
 array_equals([1,2,3],[a,b,c]) //false</code></pre>
 <p>with this in mind I created a </p>
 <p><code>var doc_keys = ["_id","_rev","created_at","tname","tcurrency","rent","temail"];</code></p>
-<p>doc_keys variable and tested in each row the keys array is exactly equal to the previously
+<p>doc_keys variable and tested that in each row the doc object properties is exactly equal to the previously
 defined <code>doc_keys</code> array. </p>
 <p>One main difference though is in how we run this test. Along with a <code>limit=number</code> we also 
 pass in a <code>include_docs=true</code> parameter. </p>
@@ -167,19 +166,18 @@ the right keys.  </p>
 <p>It should be noted that this is not a general solution. This works for me because I have 
 only one view that indexes one type of document. It is not uncommon to have multiple views
 that index the same document in different ways. But the strategy remains the same. You 
-have to test the results returned by your view. Whether you test if the type of key is as 
-expected of if the document contains valid properties or if the order of keys is as expected it does 
-not matter. </p>
+have to test the results returned by your view. Whether you test if the type of key or if the document contains valid properties,
+ or if the order of keys is as expected it does not matter. </p>
 <h3>"Is there any point to testing the views? "</h3>
 <p>Good question once more. Yes and no. Having a test for views is during development<br>absolutely invaluable as it quickly allows you to make changes to your functions 
 without while being confident that correct results are being returned. Yes it will need 
 more maintenance on your part as you will have to update the tests as well as the views 
-but I think that the effort is minimal as compared to the satisfaction it brings.  </p>
+but I think that the effort is minimal as compared to the peace of mind it brings.  </p>
 <p>For instance I am thinking of changing my </p>
 <p><code>emit(doc.created_at,null)</code></p>
 <p>view to </p>
 <p><code>emit([year,month,day],null)</code></p>
-<p>This mean that I will have to change my test list function to re-assemble this 
+<p>This means that I will have to change my test list function to re-assemble this 
 array into a valid date. It is pretty simple. I can  use the built in date functions 
 to convert this array into the time stamp and then compare the value with the doc.created_at 
 that I get from the include_docs parameter. </p>
@@ -191,11 +189,11 @@ too often which means that you are doing something wrong. </p>
 So besides views you can test any common js modules. You can even export your show and list functions 
 and test them in other show and list functions! </p>
 <p>But probably the best reason to test with couchdb is that you don't need a mock environment. You 
-test against the data that is real and the one which you already developing your application against. 
+test against the data that is real and the one against which you are already developing the application. 
 That is a pretty big win if you ask me.</p>
 <h3>Automation as promised</h3>
 <p>Once we have test cases written it is pretty easy to automate it mainly because couchdb already 
-provides a nice http api to execute the tests. Here is what we want to do:- </p>
+provides a nice http api to execute the tests (or call the list functions). Here is what we want to do:- </p>
 <ol>
 <li>Push the design doc locally</li>
 <li>Run all the tests. </li>
@@ -207,7 +205,7 @@ where you define the local and prod databases. This makes our job a lot easier. 
 <li>Pick any automation tool you like. Grunt? buildify? shell script? </li>
 <li>After changing your design docs run an os command <code>couchapp push</code> (or <code>erica push</code>)  from the script. </li>
 <li>Once the doc has been push to couchdb make a series of http requests to list or show functions. You 
-can easily store the urls to make request to in an array.  </li>
+can easily store the urls in an array. </li>
 <li>If all the calls result in <code>pass</code> Run another os command <code>couchapp push prod</code> (<code>erica push prod</code>) to 
 push your design doc to the production database.</li>
 <li>If a call results in <code>failed</code> stop the tests and print out a message on the console. </li>
@@ -216,12 +214,12 @@ push your design doc to the production database.</li>
 <h3>Closing</h3>
 <p>Good tests are hard to write. The intention of this article was not to show you how 
 to write good tests. To be honest I don't know how to write good tests as well. But I know 
-that some test is better than no test. And just like your code your testing strategy can be improved 
+that some tests are better than no test. And just like your code your testing strategy can be improved 
 over time as you understand your own application better. Couchdb gives you some pretty powerful tools to 
 test your application. Exploit them! </p>
 <p>You will also like the <a href="http://blog.couchdb.org/">official couchdb blog</a> and this other article 
-that talks about <a href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb/">how to use couchdb for user accounts management</a></p>
-<p><strong>See you space cowboy</strong></p>
+that talks about <a href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb/">using couchdb for user accounts management</a></p>
+<p><em>See you space cowboy</em></p>
 </div>
     </div>
 

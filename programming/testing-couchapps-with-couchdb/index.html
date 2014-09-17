@@ -87,9 +87,9 @@ on the created_at field. So how can we test this view. Consider this list functi
 <p>What this list function does is check that the documents emitted by the 
 the view contain a key that is a valid date. If the date is valid the test pass
 and if it is invalid the test fails. Some points to note here</p>
-<p> In line #3</p>
+<p>In line #3</p>
 <p><code>if(!is_correct_view){ return toJSON({"failed":"test performed against the wrong view"});}</code></p>
-<p> we check if the list is being executed against the correct view. Remember 
+<p>we check if the list is being executed against the correct view. Remember 
 that list functions can be executed against any view in the same or different design document. 
 While this is certainly a handy feature we only want our test cases to execute against the views 
 for which they were written. Consequently the test will fail if it is attempted to be executed 
@@ -112,8 +112,7 @@ view we can use the <code>limit=number</code> query parameter. </p>
     }
 }</code></pre>
 <p>And the corresponding test list function </p>
-<pre><code>
-function(head,req){
+<pre><code>function(head,req){
     var row = getRow();
     var array_equals = require("modules/array_equals").array_equals;
     var doc_keys = ["_id","_rev","created_at","tname","tcurrency","rent","temail"];   
@@ -121,7 +120,6 @@ function(head,req){
     var is_correct_view = req.path.indexOf("tenant_details")!==-1; 
 
     if(!is_correct_view){ return toJSON({"failed":"test performed against the wrong view"});}
-
 
     while(row){
     var keys = Object.keys(row.doc);
@@ -145,7 +143,7 @@ designed. In this case the "tenant_details" view. And as before<br>all the docum
 <p>"So what's changed then?"</p>
 <p>Good question. This time we are testing for the ordering of emitted keys instead of the 
 testing for the type of emitted keys. A careful observer might have noticed line #2</p>
-<p> <code>var array_equals = require("modules/array_equals").array_equals;</code></p>
+<p><code>var array_equals = require("modules/array_equals").array_equals;</code></p>
 <p>array_equals is the function that takes in two arrays and check if they are 
 equal or not. </p>
 <pre><code>array_equals([1,2,3],[1,2,3]) //true
@@ -162,7 +160,7 @@ pass in a <code>include_docs=true</code> parameter. </p>
 <p>That is because in couchdb the keys in the result set are emitted as values. For instance if you do : </p>
 <p><code>emit(doc.created_at,null)</code></p>
 <p>in the result set you will get</p>
-<p><code>1410953047410</code> </p>
+<p><code>1410953047410</code></p>
 <p>That is the actual value of the emitted key: you don't know what property of the doc is being emitted. 
 So as a workaround to this we fetch in the original document and simply compare if they contain 
 the right keys.  </p>
@@ -180,10 +178,10 @@ but I think that the effort is minimal as compared to the satisfaction it brings
 <p>For instance I am thinking of changing my </p>
 <p><code>emit(doc.created_at,null)</code></p>
 <p>view to </p>
-<p><code>emit([year,month,day],null)</code> </p>
+<p><code>emit([year,month,day],null)</code></p>
 <p>This mean that I will have to change my test list function to re-assemble this 
 array into a valid date. It is pretty simple. I can  use the built in date functions 
-to convert this array into the time stamp and then compare the value with the doc._created_at 
+to convert this array into the time stamp and then compare the value with the doc.created_at 
 that I get from the include_docs parameter. </p>
 <p>But to be honest testing views is pretty much useless in production. Why? Because production 
 views should be static. If you are running tests on production views it means that they are changing 
@@ -222,7 +220,7 @@ that some test is better than no test. And just like your code your testing stra
 over time as you understand your own application better. Couchdb gives you some pretty powerful tools to 
 test your application. Exploit them! </p>
 <p>You will also like the <a href="http://blog.couchdb.org/">official couchdb blog</a> and this other article 
-that talks about <a href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb/">how to use couchdb for user accounts management</a> </p>
+that talks about <a href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb/">how to use couchdb for user accounts management</a></p>
 <p><strong>See you space cowboy</strong></p>
 </div>
     </div>

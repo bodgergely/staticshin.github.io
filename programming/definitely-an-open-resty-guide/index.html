@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Definitely an open resty guide</title>
+    <link href="../../style.css" rel="stylesheet"/>
+
+  </head>
+  <body>
+<div id="post">
+    <h1 id="hello_world">Hello world</h1>
+
+<p>Openresty is just an enhancement of nginx. 
+If you are familiar with nginx you will feel right at home with openresty. 
+This is a hello_world example to illustrate how to write openresty scripts. 
+The first thing to understand here is the file structure. Here is a high level overview </p>
+<pre><code>root
+ -logs
+ -conf
+</code></pre><p>All the nginx configuration files go within the <code>conf</code> folder and all the logging goes in the <code>logs</code> folder. 
+Easy right? This structure will not only do for our 
+simple demonstration here but will also  hold well for complex examples 
+that we will work on later.  Let us examine the configuration file for the hello_world example </p>
+<pre><code>worker_processes  1;
+error_log logs/error.log;
+events {
+    worker_connections 1024;
+}
+http {
+    server {
+        listen 8080;
+        location / {
+            default_type text/html;
+            content_by_lua &#39;
+                ngx.say(&quot;&lt;p&gt;hello, world&lt;/p&gt;&quot;)
+            &#39;;
+        }
+    }
+}
+</code></pre><p>This will look very familiar to you if you have used nginx. 
+The only thing that is new in this file is the <code>content_by_lua</code> statement. 
+This statement executes the lua code that within the <code>&#39;&#39;</code> string. 
+The nginx api is provided to lua in the form of a standard package <code>ngx</code>. 
+Well there are in fact two packages <code>ngx</code> and <code>ndk</code> but we will focus on <code>ngx</code> 
+for now as we can get far with just that. What <code>ngx.say()</code> does is 
+that it sends the concatenated arguments to the client as an http response. 
+But enough talk for now. Let us run this example:- </p>
+<p><code>nginx -p `pwd` -c conf/nginx.conf</code></p>
+<p>and then </p>
+<p><code>curl http://localhost:8080/</code></p>
+<p>you should see a response </p>
+<p><code>&lt;p&gt;hello world&lt;/p&gt;</code></p>
+<p>And congratulations you have written you first openresty script. 
+Now I don&#39;t know about you but wrapping code scripts 
+around string code does not look pretty to me. 
+Wouldn&#39;t it be nice if we could create a sperate file for 
+lua scripts and include it in the nginx configuration files? 
+<code>content_by_lua_file</code> allows us to do just that. Let us create a seperate directory <code>lua</code>  </p>
+<p><code>mkdir lua</code></p>
+<p>And now create a lua file called <code>hello_world.lua</code> containing just one line of code </p>
+<p><code>ngx.say(&quot;&lt;p&gt;Hello world from a lua file&lt;/p&gt;&quot;);</code></p>
+<p>Now we will create another location block in the <code>nginx.conf</code> 
+file that will use <code>content_by_lua_file</code> istead of <code>content_by_lua</code>. 
+Here is what the final configuration looks like </p>
+<pre><code>worker_processes  1;
+error_log logs/error.log;
+events {
+    worker_connections 1024;
+}
+http {
+    server {
+        listen 8080;
+        location / {
+            default_type text/html;
+            content_by_lua &#39;
+                ngx.say(&quot;&lt;p&gt;hello, world&lt;/p&gt;&quot;)
+            &#39;;
+        }
+
+    location /by_file {
+        default_type text/html;
+        content_by_lua_file ./lua/hello_world.lua;
+        }
+
+    }
+}
+</code></pre><p>Before we curl for the <code>/by_file</code> location we must reload nginx  </p>
+<p><code>``nginx -p</code>pwd` -s reload ````</p>
+<p>now <code>curl http://localhost:8080/by_file</code> should return</p>
+<p><code>&lt;p&gt;hello world from lua&lt;/p&gt;</code></p>
+<hr>
+<h1 id="directives">Directives</h1>
+
+<p>Nginx comes with it&#39;s own mini programming language in which directives form the basic constructs. 
+These directives are either block level or simple. Simple directives are 
+structured as the name of the directive and the name of the parameters. 
+The directive name and the parameters are separated by a space and the end of the 
+directive is marked by a <code>;</code>. The block level directives were similar with
+the only difference being  it was marked by <code>{</code> and
+<code>}</code> brackets. Within a block level directive there could be one or more 
+simple directives.These directives made up the configuration files.</p>
+<pre><code>#location is a block level directive
+
+location /{
+#proxy_pass is a simple directive
+proxy_pass http://localhost:5984/; 
+
+}
+</code></pre><p><code>nginx_lua</code> keeps the same structuring of the configuration files. 
+As we saw in the last chapter there is little difference between
+a vanilla nginx configuration and an nginx_lua configuration. In fact almost
+all of the nginx directives can be used as usual in an <code>nginx_lua</code> configuration
+file. However nginx_lua adds several new directives that enhances the configurability
+of nginx. We already looked at <code>content_by_lua</code> and <code>content_by_lua_file</code> directives in the last
+chapter. Here we will take a look at a few more intersting ones</p>
+<h4 id="lua_code_cache">lua_code_cache</h4>
+<p>This directive turns the caching of lua modules on or off. By default the<br>the caching is turned on so that the lua modules are loaded once and then 
+just reused. This is a desirable effect and we would not want to reload 
+modules on every request. So when would you want to turn the caching off? 
+During the developmental phase. It can be a pain 
+to edit the configuration file, save it and then do an <code>nginx -s reload</code>
+over and over agin. 
+When caching is turned off  the module is reloaded 
+on every request so you can just edit, save your file and then 
+&quot;refresh&quot; to see the changes. Just be sure to turn the <code>lua_code_cache</code> 
+off in production. </p>
+<p>Let us test this by turning <code>lua_code_cache</code> off in our hello world example.
+After the changes our configuration file should look something like this. </p>
+<pre><code>worker_processes  1;
+error_log /dev/stderr;
+events {
+    worker_connections 1024;
+}
+http {
+    server {
+        listen 8080;
+
+    location /by_file {
+        default_type text/html;
+        lua_code_cache off; #only for development
+        content_by_lua_file ./lua/hello_world.lua; #update it with path to your lua file
+        }
+
+    }
+}
+</code></pre><p>Now lets run this by </p>
+<p><code>nginx -p &#39;pwd&#39; -c conf/nginx.conf</code></p>
+<p>You should see an alert message displayed on your console</p>
+<blockquote>
+<p>lua_code_cache is off; this will hurt performance in ./directives/conf/nginx.conf</p>
+</blockquote>
+<p>Disregard the message for now. But keep in mind to turn on the code cache 
+in production.</p>
+<p>Then <code>curl http://localhost:8080/</code></p>
+<p>you should see</p>
+<blockquote>
+<p><p> hello world </p> in response</p>
+</blockquote>
+<p>Now edit the hello_world.lua to</p>
+<p><code>ngx.say(&quot;&lt;b&gt;hello world&lt;/b&gt;&quot;);</code> </p>
+<p>and on <code>curl http://localhost:808/</code> you should see the response</p>
+<blockquote>
+<p><b>hello world</b></p>
+</blockquote>
+<p>This makes our workflow of developing  ngx_lua applications much smoother.</p>
+<p><strong>Note</strong> as you might have already guessed <code>lua_code_cache</code> works only for
+<code>*by_lua_file</code>  directives. It will have no effect upon <code>by_lua*</code> directives.</p>
+<p>nginx block level rules apply to the <code>lua_code_cache</code> directive. Which
+means if you set <code>lua_code_cache</code> off in a top level directive all the other
+lower lever directives will pick up on this configuration. Simillary you can achieve
+isolation for particular directives by turning the caching off only
+for those directives. </p>
+<p>Also  any changes you make to the nginx.conf file itself 
+won&#39;t be detected automatically by nginx. And you will have to 
+reload the server manually. This automatic reload works only for lua files.</p>
+<h4 id="init_by_lua">init_by_lua</h4>
+<p>init_by lua directive runs the lua code
+specified by the parameter string on a global level.<br>This is most useful when you want to register 
+lua global variables or start lua modules during 
+the nginx server start up. </p>
+<p>Before we take a look at the example of <code>init_by_lua</code> a friendly warning.</p>
+<p>Refrain from using lua global variables. For most variables you should use a <code>local</code> 
+keyword to declare lua variables local to it&#39;s scope. And remember any variable declared
+without a <code>local</code> keyword is global in lua.</p>
+<pre><code>local cat = &quot;meow&quot; -- use this form most of the time
+dog = &quot;woof&quot; -- avoid this form except for when it makes sense
+</code></pre><p>When does it make sense to use global varialbes?</p>
+<p>Suppose you want to use a module that parses JSON which will be used<br>in many handlers, or a database client that will be used in many handlers 
+or any other module that will be used across many handlers then it makes sense 
+to declare the variable global and even then init_by_lua should be the only place 
+where you do it.</p>
+<p><code>init_by_lua</code> has a variant in <code>init_by_lua_file</code> where you can supply a file 
+containing the lua code that will be run in a global context. 
+Everything that we talked about in <code>init_by_lua</code> 
+also applies to <code>init_by_lua_file</code>. </p>
+<pre><code>   location /json{
+       content_by_lua &#39;
+        ngx.say(cjson.encode({message=&quot;hello world&quot;,another_message=&quot;goodbye world&quot;}));
+            &#39;;
+   }
+</code></pre><p>In the location block above we are using <code>cjson</code> global
+variable that was declared in an <code>init_by_lua_file</code> to encode
+lua tables in json. <code>cjson</code> was a good contender for the global
+varibale declaration because we are going to be using it in many
+location blocks. </p>
+<h4 id="set_by_lua">set_by_lua</h4>
+<p><code>set_by_lua</code> directive is equivalent to nginx&#39;s 
+set commands.<br>Quite predictably set is used in nginx to &#39;set&#39; the value for a variable.<br>Simillarly <code>set_by_lua</code> allows you to set a variable by evaluating a lua code string. </p>
+<p>Once more <code>set_by_lua</code> has a _file alternative in <code>set_by_lua_file</code> 
+that allows you to set a variable 
+by executing the code in lua file. </p>
+<p><strong>Note</strong> <code>set_by_lua blocks</code> the nginx&#39;s event loop during 
+it&#39;s execution therefore long time consuming 
+code sequences are best avoided here.
+So while a few arithmetic computations are fine loops should be 
+avoided. </p>
+<p><code>set_by_lua</code> works well with nginx&#39;s <code>set</code>
+command so the two can be used interchangeably. 
+The directives will run in the order in which they appear in the code.
+Works with set in HttpRewriteModule,  HttpSetMiscModule, and HttpArrayVarModule.</p>
+<pre><code>
+ location /set_by_lua{
+        set $nvar 20;
+        set_by_lua $lvar &#39;return ngx.var.nvar+1&#39;;
+        echo &quot;$nvar,$lvar&quot;;
+    }
+</code></pre><h4 id="content_by_lua">content_by_lua</h4>
+<p>We already discussed this directive in the hello_ world chapter. 
+But now that we have more understanding of 
+how the directives work we can see content_by_lua in a different light.  </p>
+<p>Unlike the set_by_lua command that blocks the nginx&#39;s event loop content_by_lua directive
+runs in it&#39;s own spawned coroutine. Which means that it does not block the nginx&#39;s event loop
+and runs in a seperate environment. content_by_lua directive belongs to a special class of
+directives called the content handler 
+( they are not actually called that but you will see what I mean in a minute) directives. 
+They execute only in the context of <code>location</code> 
+directive (which if you recall our discussion at the beginning 
+of this chapter is a block level directive).</p>
+<p>Anyway, the location directive captures the request for a matching url and
+then leaves it to the content handler to service the request. For instance</p>
+<pre><code>location /me
+{
+root /data/me;
+}
+</code></pre><p>if a request is made to <code>/me</code> handle the content in <code>/data/me</code> would be served.
+A location block should have only one content handler. Do not mix nginx&#39;s
+default content handlers like proxy_pass or directory mappers with ngx_lua&#39;s content_by_lua.</p>
+<p>And yeah there is a <code>content_by_lua_file</code> :)</p>
+<h4 id="rewirte_by_lua">rewirte_by_lua</h4>
+<p>ngnx_lua equivalent of nginx&#39;s 
+<a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html">HttpRewriteModule</a>. 
+Like the <code>content_by_lua</code> directive <code>rewrite_by_lua</code> runs in a spawned coroutine.
+The important thing to keep in mind here is that the directive always runs after the
+standard <code>http_rewrite_module</code>. So if you are using both keep that in mind.</p>
+<p>Remember how the <code>set_by_lua</code> directive was blocking?</p>
+<p>Well you can mitigate that to some extent now 
+If you are using <code>set_by_lua</code> for the <code>set</code> in <code>http_rewrite_module</code> 
+then you can safely replace it using <code>rewrite_by_lua</code>. It is non blocking. </p>
+<p><code>rewrite_by_lua</code> can make api calls 
+(we will see how to make api calls in the next chapter). 
+So you can issue dynamic rewrites
+based on the response returned from your database etc. </p>
+<p>About <code>rewrite_by_lua_file</code> : .....</p>
+<p>It&#39;s same as <code>rewrite_by_lua</code> except that it 
+executes lua code from a file. </p>
+<h4 id="access_by_lua">access_by_lua</h4>
+<p>ngx_lua equivalent of
+<a href="http://nginx.org/en/docs/http/ngx_http_access_module.html">HttpAccessModule</a></p>
+<p>Two points to not here</p>
+<ol>
+<li><p>It runs in a seperate coroutine.</p>
+</li>
+<li><p>It runs after the standard nginx  <code>http_access module</code> so if you are mixing the two
+keep that in mind.</p>
+</li>
+</ol>
+<p>Like <code>rewrite_by_lua</code> it can make api calls. </p>
+<p>And there is a <code>access_by_lua_file</code></p>
+<p>By now you have probably understood what lua directives are and how 
+they work. There are a few more directives: some of them are utilities 
+and some for tweaking the ngx_lua behaviour.</p>
+<p>The ones I have covered though are  ones that you will
+be using most of the time. So instead of going on and on about the directives
+I will leave a <a href="http://wiki.nginx.org/HttpLuaModule#Directives">link to the reference</a>
+and you can study them at your convenience.  </p>
+<p>For now we move on to the meatier stuff. The ngx_lua API.</p>
+<hr>
+<h1 id="the_ngx_api">The ngx api</h1>
+
+<p>Ah the nginx API. This is where the magic happens. 
+Remember all those <code>by_lua</code> directives that we talk about in the last chapter? 
+They are all just there to execute lua api for nginx. In the words of the
+author of ngx_lua </p>
+<blockquote>
+<p>The various <em>_by_lua and </em>_by_lua_file configuration directives 
+serve as gateways to the Lua API within the nginx.conf file</p>
+</blockquote>
+<p>The nginx api is available in the form of two packages 
+<code>ngx</code> and <code>ndk</code>. These packages are in the global scope by default 
+and are always available to the lua directives. Which clears up a few
+things for us. Remember how in <code>*_by_lua_file</code> directives we
+could simply call the methods on <code>ngx</code> package even without requiring it?
+As you can probably infer, the reason for it was that the <code>ngx</code> package
+was already availaible to the directive globally. So there
+was no need for us to <code>require</code> it.</p>
+<h4 id="ngx-arg">ngx.arg</h4>
+<p>Context : <code>set_by_lua</code> and <code>body_filter_by_lua</code></p>
+<p>We have already seen what <code>set_by_lua</code> does in the last chapter.
+In the context of <code>set_by_lua</code> ngx.arg provides a set of read only 
+argumets to the directive.</p>
+<pre><code>
+
+</code></pre><p><code>ngx.arg</code> indices start from 1 instead of 0. So keep that
+in mind when you are accessing arguments form it.</p>
+<p><code>body_filter_by_lua</code> can be used to filter the response
+body and modify what response goes out. <code>ngx.arg</code> supplies
+the arguments to <code>body_filter_by_lua</code>.</p>
+<p><code>ngx.arg[1]</code> : contains the acutal data chunk</p>
+<p><code>ngx.arg[2]</code>: contains the boolean <code>eof</code>. If true it indicates the end of body.   </p>
+<pre><code>
+
+</code></pre><p>The important distinction here is that unlike the args in <code>set-by_lua</code>
+the args in <code>body_filter_by_lua</code> can be modified directly by the lua code.
+In fact in the example that we saw above we have modified the response body
+to a different value.</p>
+<h4 id="constants">constants</h4>
+<p>ngx_lua provides easy to remember &quot;named&quot; constants as an alternative to 
+using &quot;numbered&quot; status. For instance instead of sending a 301 redirect 
+you can use <code>ngx.HTTP_MOVED_PERMANENTLY (301)</code>. Don&#39;t worry if you don&#39;t understand 
+what these contants do. We will learn how to use these constants in later sections. </p>
+<p><strong>core</strong></p>
+<pre><code>ngx.OK (0)
+ngx.ERROR (-1)
+ngx.AGAIN (-2)
+ngx.DONE (-4)
+ngx.DECLINED (-5)
+</code></pre><p><strong>HTTP methods</strong></p>
+<pre><code>ngx.HTTP_GET
+ngx.HTTP_HEAD
+ngx.HTTP_PUT
+ngx.HTTP_POST
+ngx.HTTP_DELETE
+ngx.HTTP_OPTIONS   
+ngx.HTTP_MKCOL     
+ngx.HTTP_COPY      
+ngx.HTTP_MOVE      
+ngx.HTTP_PROPFIND  
+ngx.HTTP_PROPPATCH 
+ngx.HTTP_LOCK      
+ngx.HTTP_UNLOCK    
+ngx.HTTP_PATCH     
+ngx.HTTP_TRACE
+</code></pre><p><strong>HTTP STATUS CONSTANTS</strong></p>
+<pre><code>
+ngx.HTTP_OK (200)
+ngx.HTTP_CREATED (201)
+ngx.HTTP_SPECIAL_RESPONSE (300)
+ngx.HTTP_MOVED_PERMANENTLY (301)
+ngx.HTTP_MOVED_TEMPORARILY (302)
+ngx.HTTP_SEE_OTHER (303)
+ngx.HTTP_NOT_MODIFIED (304)
+ngx.HTTP_BAD_REQUEST (400)
+ngx.HTTP_UNAUTHORIZED (401)
+ngx.HTTP_FORBIDDEN (403)
+ngx.HTTP_NOT_FOUND (404)
+ngx.HTTP_NOT_ALLOWED (405)
+ngx.HTTP_GONE (410)
+ngx.HTTP_INTERNAL_SERVER_ERROR (500)
+ngx.HTTP_METHOD_NOT_IMPLEMENTED (501)
+ngx.HTTP_SERVICE_UNAVAILABLE (503)
+ngx.HTTP_GATEWAY_TIMEOUT (504)
+</code></pre><p><strong>Log level constants</strong></p>
+<pre><code>ngx.STDERR
+ngx.EMERG
+ngx.ALERT
+ngx.CRIT
+ngx.ERR
+ngx.WARN
+ngx.NOTICE
+ngx.INFO
+ngx.DEBUG
+</code></pre><h4 id="ngx-location-capture">ngx.location.capture</h4>
+
+  </body>
+</div>
+</html>

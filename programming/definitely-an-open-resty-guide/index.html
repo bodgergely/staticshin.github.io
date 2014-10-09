@@ -380,6 +380,78 @@ ngx.NOTICE
 ngx.INFO
 ngx.DEBUG
 </code></pre><h4 id="ngx-location-capture">ngx.location.capture</h4>
+<p>Context: rewrite_by_lua, access_by_lua, content_by_lua</p>
+<p><code>ngx.location.capture</code> is one of the most powerful methods in the lua ngx api. It allows you
+to make subrequests to a uri(location).</p>
+<p>What makes it so powerful you ask?</p>
+<p>Remember the nginx <code>location</code> directive?</p>
+<p>What <code>location</code> does is: It defines endpoints for clients to make requests to. For instance
+a <code>location /hello</code> tells the client that if you make a request to <code>/hello</code> I will give you
+back the results of code excuted inside the <code>location</code> directive. And important point
+to note here is that any request made by the client to this <code>location</code> endpoint is
+an <code>http/tcp</code> request. </p>
+<p>What <code>ngx.location.capture</code> does is that it issues an interal non blocking, syncrhonous request
+to a <code>locaiton</code>. Unlike the clients request which has to be http the location capture requests involve
+no http overhead. It is just a fast and light internal <code>c</code> level call while mimicking
+the familliar http interface. Time for an example</p>
+<pre><code>
+
+</code></pre><p>See how simple it is. Issue a request to the <code>uri</code> already defined somewhere in a
+<code>location</code> directive and capture it&#39;s response.</p>
+<p>Now one area where many people are confused (I admit I was too when I was
+first learnt about it) is that the uri <strong>must be internal</strong>. If you try to do</p>
+<pre><code>local res = ngx.location.capture(&quot;http://www.google.com/&quot;)
+</code></pre><p>it won&#39;t work. Because the uri is external. However if you do</p>
+<pre><code>local res = ngx.location.capture(&quot;/google_proxy&quot;)
+</code></pre><p>where <code>/google_proxy is in the conf as</code></p>
+<pre><code>location /google_proxy{
+proxy_pass http://www.google.com/;
+}
+</code></pre><p>then the request will work. It is important to understand that <code>ngx.location.capture</code> works
+only on internal requests (or on locations that are defined in the configuration files)
+but that location can make an external http request.</p>
+<p>So now back to the topic. The <code>res</code> returned by <code>ngx.location.capture</code> contians ..
+well the response of the subrequest. Let us examine it.</p>
+<ol>
+<li>res.status:- the status code of the completed request.</li>
+<li>res.header-: the headers returned by the response.</li>
+<li>res.body:- the body in the response which may be ...</li>
+<li>res.truncated-: boolean that incaded if the body is truncated or not.</li>
+</ol>
+<p>res.status, res.body and res.truncated are pretty straightforwad. res.header require more examination.</p>
+<p>The response headers are simply a lua table. Here is what it might look like</p>
+<pre><code>{
+Vary=&quot;Accept&quot;,
+Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
+}
+</code></pre><p>So you access the header the same way in which you access a key from any lua table. For instance to access
+the vary header we do <code>res.header[&quot;Vary&quot;]</code>.</p>
+<p>Thus far we have seen how to make only simple requests
+the internal uri using the <code>ngx.location.capture</code> but the api
+is far more flexible. You can pass query strings directly in
+the url or by uisng the args option. For instance:-</p>
+<pre><code class="lang-`">local res= ngx.location.capture(&quot;/hello?a=1&amp;b=2&quot;)
+</code></pre>
+<p>and</p>
+<pre><code>local res = ngx.location.caputre(&quot;/hello&quot;,{args={a=1,b=2}})
+</code></pre><p>are equivalent. In both the cases a subrequest will be made to <code>/hello?a=1&amp;b=2</code></p>
+<p>Infact the opitonal table can hold a lot more keys than just an <code>args</code>.</p>
+<pre><code>   local account_page = ngx.location.capture(&quot;/get_account&quot;,
+                         {method=ngx.HTTP_POST,body=
+                         json_body,args={user_name=name}
+                         })
+</code></pre><p>The above sample illustrates the point. Here the <code>ngx.location.capture</code> passes in</p>
+<ol>
+<li>method: You can use the ngx constants that we discussed earlier</li>
+<li>body: the body to send to the subrequest. Here it is json encoded.</li>
+<li>args: the query strings that we just discussed.</li>
+</ol>
+<p>While method,body and args are th ones that you will find yourself using more frequently just for the
+sake of completeness a complete list of all the optional keys that can be passed to the table can be found
+in the official docs.</p>
+<h3 id="ngx-location-capture-multi">ngx.location.capture.multi</h3>
+<p>Oh yes :) Take the <code>ngx.location.capture</code> and level it up by giving it lua&#39;s superpowers.
+One of the unique thigs about lua is that a function can return multiple results.</p>
 
   </body>
 </div>

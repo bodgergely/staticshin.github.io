@@ -450,9 +450,145 @@ the url or by uisng the args option. For instance:-</p>
 sake of completeness a complete list of all the optional keys that can be passed to the table can be found
 in the official docs.</p>
 <h3 id="ngx-location-capture-multi">ngx.location.capture.multi</h3>
-<p>Oh yes :) Take the <code>ngx.location.capture</code> and level it up by giving it lua&#39;s superpowers.
-One of the unique thigs about lua is that a function can return multiple results.</p>
+<p>context: rewrite_by_lua<em>, access_by_lua</em>, content_by_lua* </p>
+<p>Oh yes :) Take the <code>ngx.location.capture</code> and level it up by lua&#39;s superpowers.
+One of the unique thigs about lua is that a function can have multiple return values. If this is your
+first time wokrig with lua then it might be a bit hard to to figure out when to use this feature. But
+luckily ngx lua makes the application of this unique concept quite obvious. Check this out:-</p>
+<pre><code>local home,about,contact = ngx.location.capture.multi{{&quot;/home&quot;},{&quot;/about&quot;},{&quot;/contact&quot;}}
+</code></pre><p>The above snipped of code is just like <code>ngx.location.capture</code> that we talked about before. The
+only difference here is that instead of making a subrequest to a single uri you can make
+subrequests to multiple uris with a single line of code. Two important things to note here is that</p>
+<p>1) These multiple subrequests run in parallel.
+2) The results are returned when all the subrequests are completed.</p>
+<p>So if you were thinking about piping the result of one subrequest into another then you are out of luck.
+But multi req are still pretty cool. Why?</p>
+<p>Consider this scenario:- It would not be an exxageration to say that all applications today use
+some third party apis to as supports for thier main application. Say you have an application where you
+aggregate the results of interesting conversations across the internt. You pull in data from various sources like
+twitter, facebook and linkedin. In this scenario you have to make atleast three seperate http requests to aggregate
+the data. </p>
+<p>So what do you do? Just this:-</p>
+<pre><code>local statuses,tweets,posts = ngx.location.capture.multi{{&quot;/facebook_graph&quot;},{&quot;/tweets&quot;},{&quot;/lnkedin&quot;}}
+</code></pre><p>and it all simply works. Now the application is not limited to external third party data aggregation.
+It is quite probable that internally you use many applications that work on secondary tasks and maybe you
+want to generate a report  by querying them for updates. All you got to do is issue an <code>ngx.location.capture.multi</code> and
+you are set.</p>
+<p><strong>Can one use an options table like in the nginx.location.capture?</strong></p>
+<p>Of course you can. Here is how:-</p>
+<pre><code>local res1,res2 = ngx.location.capture.multi{
+    {&quot;/req1&quot;,{method=ngx.HTTP_POST}},
+    {&quot;req2&quot;,{args={a=1,b=2}}}
+}
+</code></pre><p>Every request in multi is contained within it&#39;s own table which can perform all of things that
+we saw in a simple <code>ngx.location.capture</code>. Cool isn&#39;t it?</p>
+<h3 id="req">req</h3>
+<p>ngx api exposes a req object that allows us to configure explicitly our req parameters before sending it to
+the server. This means that you can easily add/remove http headers and body, configure the method of the
+req.</p>
+<p>On the other hand the ngx api also provides ability to read an incoming req from the client. Which means
+that you can read the http headers and the body check the method of the req and then send the response back.</p>
+<p>Quite naturally the req table forms a very important part of ngx api. Let us take a deeper look at it 
+then:-</p>
+<p><strong>The headers of the request</strong></p>
+<p><code>ngx.req.get_headers()</code> gives you back a table of headers which you can then query as usual. For example</p>
+<pre><code>local headers = ngx.req.get_headers()
 
+local cookie = headers[&quot;Cookie&quot;]
+
+local etag = headers[&quot;Etag&quot;]
+
+local host = headers[&quot;Host&quot;]
+</code></pre><p>Simillarly it&#39;s conter-part <code>ngx.req.set_header</code> is used to set a req header for outgoing requests</p>
+<pre><code>local host = ngx.req.set_header(&quot;www.google.com&quot;)
+</code></pre><p>If for some reason you want the actual headers sent by the client instead of the ones that have been parsed
+into a table you can use <code>ngx.req.raw_header</code></p>
+<p>To clear a header you can use <code>ngx.req.clear_header</code>. Can be very useful when making
+a proxy req from the client to the server.</p>
+<p><strong>The body of the request</strong></p>
+<p>ngx provides <code>ngx.req.read_body()</code> to read all of the body data. Once the body has been read a convinence method 
+is provided in <code>ngx.req.get_body_data</code> and <code>ngx.req.get_post_args</code> which return a string/lua table.</p>
+<pre><code>ngx.req.read_body()
+
+local args = ngx.req.get_post_args()
+
+-- just like the headers args is a lua table.
+</code></pre><p>To set the body data you can use <code>ngx.set_body_data</code></p>
+<p><strong>The method of the request</strong></p>
+<p><code>ngx.req.get_method</code> is used to get the method of an incoming request. <code>ngx.req.set_method</code> is used to set
+the method for an outgoing request. </p>
+<pre><code>local method = ngx.req.get_method
+
+ngx.req.set_method(ngx.HTTP_POST)
+</code></pre><p><strong>The uri of the request</strong></p>
+<p>ngx lua also allows to to change the uri to which the req is initiated by the client.</p>
+<pre><code>ngx.req.set_uri(&quot;/foo&quot;)
+</code></pre><p>Additionally the set_uri takes in a optional boolean
+parameter that tells nginx to keep searching for newly set uri location</p>
+<pre><code>ngx.req.set_uri(&quot;/foo&quot;,true)
+</code></pre><p>The context of execution  becomes important in this case since it mimicks the behaviour of nginx rewrite directive.
+The only allowed location where the optional bool parameter can be used as true is the rewrite_by_lua/rewrite_by_lua_file</p>
+<p><strong>The url arguments</strong></p>
+<p>You can also modify the query string parameters of the req. Here&#39;s how:</p>
+<pre><code>ngx.req.set_uri_args(&quot;a=3&amp;b=hello%20world&quot;)
+
+ngx.req.set_uri_args({ a = 3, b = {5, 6} })
+
+-- this will be translated as &quot;a=3&amp;b=5&amp;b=6&quot;
+</code></pre><p>ngx lua allows setting the uri paramters as query strings and as lua tables.</p>
+<h3 id="the-response">The Response</h3>
+<p>Just like the req the ngx api allows you to modify the response that goes back to client. But
+if you have read the <code>ngx.location.capture</code> section you should already be familliar with many
+of the functions that of a response. Nevertheless we will take a better look here: -</p>
+<p><strong>The headers of the response</strong></p>
+<p>ngx api gives us to ways to deal with the headers that will be sent out in the response. The
+<code>ngx.header</code> contains a list of headers that will be sent out as the response to the current req.
+Using <code>ngx.header</code> you can update an existing header or add new headers. You read from <code>ngx.header</code> in 
+exactly the same way  as you would read from any other lua table.</p>
+<pre><code>local content_type = ngx.header.content_type -- reads &quot;Content-Type header&quot;
+
+-- any &#39;-&#39; in a header is replaced by a &#39;_&#39;. You can still read the header in the orignal form like so
+
+local content_type_orig = ngx.header[&quot;Content-type&quot;]
+
+ngx.header.content_type = &quot;application/json&quot; -- sets the content type header
+</code></pre><p>In case you want to set multiple values to a header you just have to pass a list of values:-</p>
+<pre><code>ngx.header[&quot;My-Multi-Value-Header&quot;] = {&quot;1&quot;,&quot;2&quot;}
+</code></pre><p>Simillarly if you read a multivalued header a list will be returned as a response.</p>
+<pre><code>local multi_val_read  = ngx.header[&quot;My-Multi-Value-Header&quot;]
+
+-- multi_val_read = {&quot;1&quot;,&quot;2&quot;}
+</code></pre><p>One important thing
+to note here is that if you try to set multiple values to a header that can only contain a single value
+the last item from the list will be chosen.</p>
+<p><code>ngx.header.content_type = {&#39;a&#39;, &#39;b&#39;}</code> would result in</p>
+<p><code>ngx.header.content_type = &#39;b&#39;</code></p>
+<p>The ngx.header does not return an iteratable lua table. For that purpose use:-</p>
+<p><code>ngx.resp.get_headers()</code> which is quite simillar to <code>ngx.req.get_headers()</code>.
+It simply returns a list of response headers that will be sent to the client. The value returned is a lua
+table which can be iterated upon.</p>
+<pre><code>local resp_headers = ngx.resp.get_headers()
+</code></pre><p>Finally if you use the response from  <code>ngx.location.capture</code> the headers are found in <code>res.header</code>. The result
+returned is a proper lua header and can be iterated upon. </p>
+<p><strong>The body of the response</strong></p>
+<p>The body of the response can only be accessed from the response that you get by issuing a request/subrequeest.
+Unlike response headers there is no way to access the response headers that are going to be sent without
+having access to the response object first.</p>
+<pre><code>
+local res = ngx.location.capture(&quot;/res_path&quot;)
+local body = res.body -- read the data
+res.body = &quot;Some arbitrary body data&quot; -- set the data to an aribrary value
+res.body = cjson.encode({a=1,b=2}) -- sending json with the body
+</code></pre><p>The above snippet shows how you can set the body data of the response. The important thing to note here is that
+every time you set the data to a new value the  previous data is over written. So the first res.body statement will
+over write the orignial body returned from the response where as the second res.body statement will over write the
+first statement. </p>
+<p><strong>The status of the response</strong></p>
+<p>The response status can be read and updated using the <code>ngx.status</code></p>
+<pre><code>local status = ngx.status -- read the status of the response being sent
+
+ngx.status = ngx.HTTP_NOT_MODIFIED -- set the status code to 304. Using ngx constant here, but you may supply numerical values
+</code></pre>
   </body>
 </div>
 </html>

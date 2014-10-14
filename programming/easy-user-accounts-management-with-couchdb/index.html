@@ -213,8 +213,8 @@ local cookie = ngx.req.get_headers()["Cookie"]
 ngx.req.set_header("Cookie",cookie)
 ngx.req.set_header("Host","localhost:5984")
 local res = ngx.location.capture("/couch_session",{method=ngx.HTTP_DELETE});
-local cookie = res.header["Set-Cookie"]
-ngx.header["Set-Cookie"] = cookie 
+ngx.header["Set-Cookie"] =  res.header["Set-Cookie"]
+
 ngx.say(res.body)
 
 ';

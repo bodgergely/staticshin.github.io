@@ -119,8 +119,7 @@ the map/reduce part of the design document changes". <a href="http://wiki.apache
     waiting_clients: 0
   }
 }</code></pre>
-<p>As you can see the view signature for the updated design document is exactly the same as the signature before. Now lets check the database directory and the view files that are stored in it. My database dir is at <code>/usr/local/var/lib/couchdb</code> and the views are stored in <code>/usr/local/var/lib/couchdb/.test_d_doc_design/mrview/</code> and sure enough there is a view file
-<code>9e0e76f6b262896317b8a7c3d1c533bd.view</code></p>
+<p>As you can see the view signature for the updated design document is exactly the same as the signature before. Now lets check the database directory and the view files that are stored in it. My database dir is at <code>/usr/local/var/lib/couchdb</code> and the view which we are testing is stored in <code>/usr/local/var/lib/couchdb/.test_d_doc_design/mrview/</code> and sure enough there is a view file named 9e0e76f6b262896317b8a7c3d1c533bd.view</p>
 <p>Now let us update the view function and check out the view signature. Here is what our design document looks now</p>
 <pre><code>{
   _id: "_design/test",
@@ -157,7 +156,7 @@ the map/reduce part of the design document changes". <a href="http://wiki.apache
     waiting_clients: 0
   }
 }</code></pre>
-<p>Aha! the signature has changed. Now lets checkout the view files.. and yes  we have ef12fccd479fa831d87abb63b023844b.view in the database directory.</p>
+<p>Aha! the signature has changed. Now lets checkout the view files..... and yes  we have ef12fccd479fa831d87abb63b023844b.view in the database directory.</p>
 <h3>Conclusion</h3>
 <p>The map reduce views are stored in the a file which is named after the <code>md5</code> hash of the <strong>content of all the views</strong> in the design document. An index rebuild occurs only if the content of the view changes. A change in the content of design document has no effect on the view rebuilding.</p>
 <p>So hopefully this will clear some confusion about couchdb views and design documents. If you liked this article you will also like <a href="http://www.staticshin.com/programming/caching-in-couchdb/">caching in couchdb</a>, <a href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb/">easy user accounts management in couchdb</a> and the <a href="http://blog.couchdb.org">official couchdb blog</a></p>

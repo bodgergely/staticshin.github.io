@@ -48,11 +48,11 @@ the map/reduce part of the design document changes". <a href="http://wiki.apache
 <blockquote>
 <p>To change a view or multiple view just alter the design document (see HttpDocumentApi) they are stored in and save it as a new revision. This causes all the views in that design document to be rebuilt on the next access in case the view code has been changed.</p>
 </blockquote>
-<p>But we will test just to make sure. Couchdb provides us with <code>/{db}/_design/{ddoc}/_info</code> api that</p>
+<p>But we will test just to make sure. Couchdb provides us with <a href="http://couchdb.readthedocs.org/en/latest/api/ddoc/common.html#get--db-_design-ddoc-_info">/{db}/_design/{ddoc}/_info</a> api that</p>
 <blockquote>
 <p>"Obtains information about the specified design document, including the index, index size and current status of the design document and associated index information."</p>
 </blockquote>
-<p>It should be fairly easy to test the two claims regarding views and design document updation. So here is what our design document looks like:-</p>
+<p>It should be fairly easy to test the two claims regarding views and design document updation. We will use this as our test design document:-</p>
 <pre><code>{
    "_id": "_design/test",
    "_rev": "1-d294ec6c760dbfb53a2cac08ac7e43c1",
@@ -81,7 +81,7 @@ the map/reduce part of the design document changes". <a href="http://wiki.apache
     waiting_clients: 0
   }
 }</code></pre>
-<p>Make a note of the signature field. Now let us update a design document by say adding a show function? Our new design document looks like:-</p>
+<p>Make a note of the signature field that we will be using for comparison. First let us update a design document by say adding a show function? Our new design document looks like:-</p>
 <pre><code>{
   _id: "_design/test",
   _rev: "2-2bb1be47ebed5d6f43699f0c83b79d91",
@@ -101,7 +101,7 @@ the map/reduce part of the design document changes". <a href="http://wiki.apache
     ]
   }
 }</code></pre>
-<p>Now let us check for the view signature again</p>
+<p>Now let us check if there is any change in the signature of the the view index</p>
 <pre><code>curl http://localhost:5984/test_d_doc/_design/test/_info
 
 {
@@ -119,8 +119,8 @@ the map/reduce part of the design document changes". <a href="http://wiki.apache
     waiting_clients: 0
   }
 }</code></pre>
-<p>As you can see the view signature for the updated design document is exactly the same as the signature before. Now lets check the database directory and the view files that are stored in it. My database dir is at <code>/usr/local/var/lib/couchdb</code> and the view which we are testing is stored in <code>/usr/local/var/lib/couchdb/.test_d_doc_design/mrview/</code> and sure enough there is a view file named 9e0e76f6b262896317b8a7c3d1c533bd.view</p>
-<p>Now let us update the view function and check out the view signature. Here is what our design document looks now</p>
+<p>Nope. As you can see the view signature for the updated design document is exactly the same as the signature before. Let's also  check the database directory and the view files that are stored in it. My database dir is at <code>/usr/local/var/lib/couchdb</code> and the view which we are testing is stored in <code>/usr/local/var/lib/couchdb/.test_d_doc_design/mrview/</code> and sure enough there is a view file named 9e0e76f6b262896317b8a7c3d1c533bd.view</p>
+<p>Okay let's see what happens when we change the view function. Here is what our design document looks now</p>
 <pre><code>{
   _id: "_design/test",
   _rev: "3-e50012d5a2ad7ff96fc4da950175b292",
@@ -140,6 +140,7 @@ the map/reduce part of the design document changes". <a href="http://wiki.apache
     ]
   }
 }</code></pre>
+<p><em>Notice the change in the view function. Now we are emitting a <code>doc</code> instead of emitting a null field like we were before</em></p>
 <p>and the info:-</p>
 <pre><code>{
   name: "test",
@@ -156,10 +157,17 @@ the map/reduce part of the design document changes". <a href="http://wiki.apache
     waiting_clients: 0
   }
 }</code></pre>
-<p>Aha! the signature has changed. Now lets checkout the view files..... and yes  we have ef12fccd479fa831d87abb63b023844b.view in the database directory.</p>
+<p>Aha! the signature has changed. Now lets checkout the view files in the directory..... and voila! as expected we have have a ef12fccd479fa831d87abb63b023844b.view in the database directory. </p>
 <h3>Conclusion</h3>
 <p>The map reduce views are stored in the a file which is named after the <code>md5</code> hash of the <strong>content of all the views</strong> in the design document. An index rebuild occurs only if the content of the view changes. A change in the content of design document has no effect on the view rebuilding.</p>
-<p>So hopefully this will clear some confusion about couchdb views and design documents. If you liked this article you will also like <a href="http://www.staticshin.com/programming/caching-in-couchdb/">caching in couchdb</a>, <a href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb/">easy user accounts management in couchdb</a> and the <a href="http://blog.couchdb.org">official couchdb blog</a></p>
+<h3>But wait! what happens if there are multiple views in  a couchdb design document?</h3>
+<p>There are two important things to understand here:- </p>
+<ol>
+<li>The map reduce views of a design document (it does not matter if there is only one or many) is stored in a file that is named after the md5 hash of content of the views.  </li>
+<li>If the content of any one of the views in the design document changes the md5 hash will change and couchdb will have to create a new index file. </li>
+</ol>
+<p>Based on the observations that we made above it is easy to conclude that if there are multiple views in couchdb and any one of them changes couchdb will recalculate the index again. <strong>Because all the views of a design document are stored in a single file and that file is named after the hash of it's contents</strong>. Consequently if content changes the name of the file changes and recalculation is triggered.  </p>
+<p>So hopefully this will clear some confusion regarding couchdb views and design documents. If you liked this article you will also like <a href="http://www.staticshin.com/programming/caching-in-couchdb/">caching in couchdb</a>, <a href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb/">easy user accounts management in couchdb</a> and the <a href="http://blog.couchdb.org">official couchdb blog</a></p>
 <p>Until next time :)</p>
 </div>
     </div>

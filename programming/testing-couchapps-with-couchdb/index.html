@@ -44,32 +44,31 @@
       <span>Akshat Jiwan Sharma,  Wed Sep 17 2014</span>
       <div class="postBody"><p>Are you using <a href="https://github.com/couchapp/couchapp">couchapp</a> or <a href="http://github.com/benoitc/erica">erica</a> for managing couchdb design documents? 
 Do you feel a bit dirty every time you <code>push</code> a new <code>design document</code> to couchdb 
-without testing it first? And are you tired of being dirty all the time? Well then this 
-article will teach you to clean your couchdb design docs in fragrant soap water before 
-pushing it to your production server so you can be sure all your production code is clean<br>and shiny or something along those lines....</p>
+without testing it first? And are you tired of feeling dirty all the time? Well then this 
+article will teach you how to clean your couchdb design docs in a fragrant test solution before 
+pushing it to your production server so you can be sure that all your production code is clean<br>and shiny or something along those lines....</p>
 <h3>What are we doing?</h3>
 <p>We will write simple tests using couchdb show and list functions to test<br>parts of couchdb design docs. We will run these functions on our local couchdb 
-instance before pushing it to the production server and then we will lay out a formal 
+instance before pushing it to the production server. Then we will lay out a formal 
 plan for designing CABS. No not those cabs silly!  <strong>C</strong>ouchapp <strong>A</strong>utomated <strong>B</strong>uild <strong>S</strong>ystems.</p>
 <h3>Show and list?</h3>
 <p>Yes sir. Show and lists functions are a terribly underrated feature of couchdb. The purpose of show 
-function is to transform a document into a format that is consumable by the client like suppose 
+function is to transform a document into a format that is consumable by the client. Like suppose 
 transforming a json document into an html page so that it could render nicely on a web browser. </p>
 <p>Similarly a list function was designed to transform the output of views into a format that is 
-consumable by the client. </p>
-<p>But here is the thing. Show and list functions can be used to execute arbitrary server side code. 
+consumable by a client. </p>
+<p>But here is the thing. <strong>Show and list functions can be used to execute arbitrary server side code</strong>. 
 Well almost... there are only a few built in functions that show and list are allowed to use
-but even  it's limited power  gives us tremendous flexibility. We are going to exploit them
-to run server side tests for us. </p>
+but even  it's limited power  gives us tremendous flexibility. We are going to make use of this 
+to run server side tests. </p>
 <h3>It's time for some action</h3>
-<p>We are going to start by testing a view function. Consider this view </p>
+<p>Okay Enough talk now  we are going to start by testing a view function. Consider this view </p>
 <pre><code>function(doc){
     if(doc.created_at){
     emit(doc.created_at,null);
     }
 }</code></pre>
-<p>The view is pretty straight forward. It only sorts the documents based 
-on the <code>created_at</code> field. So how can we test this view? Consider this list function </p>
+<p>It is pretty straight forward. It just sorts the documents by the <code>created_at</code> field. Let's write a list function to test this.</p>
 <pre><code>function(head,req){
     var row = getRow();
     var test_results = [];
@@ -84,8 +83,8 @@ on the <code>created_at</code> field. So how can we test this view? Consider thi
     return toJSON({"passed":"view tests passed:"+test_results.length.toString()}); 
 
 }</code></pre>
-<p>What this list function does is it checks that the documents emitted by the 
-the view contain a key that is a valid date. If the date is valid the test pass
+<p>What this list function does is:- it checks that the documents emitted by the 
+the view contain a key that is a valid date. If the date is valid the test passes
 and if it is invalid the test fails. Some points to note here</p>
 <p>In line #3</p>
 <p><code>if(!is_correct_view){ return toJSON({"failed":"test performed against the wrong view"});}</code></p>
@@ -99,18 +98,19 @@ against a different view. </p>
 <p>We fail the test if even one document does not pass. This might sound stringent 
 but it is not really. A view should index a document only if it passes the map function. 
 Our map function indexes the document only if it contains a date. If the indexed document 
-has no date then it should not be indexed at all. Hence the result must fail. We can probably 
-do better by outputting the docs for which the test fails. </p>
-<p>Otherwise we output a test passed message along with the count of docs the test was run against. </p>
-<p>To run this test we just <a href="http://wiki.apache.org/couchdb/Formatting_with_Show_and_List#Listing_Views_with_CouchDB_0.10_and_later">call this list function</a>. To limit the number of documents passed to the view we can use the <code>limit=number</code> query parameter. </p>
-<p>Let us take an example of slightly more complex view:- </p>
+has no date then it should not have been indexed at all. Hence the result must fail. We can probably 
+do better by outputting the docs for which the test fails. But you get the idea. </p>
+<p>Otherwise we output a test passed message along with the number of documents the test was run against. </p>
+<p>To run this test we simply <a href="http://wiki.apache.org/couchdb/Formatting_with_Show_and_List#Listing_Views_with_CouchDB_0.10_and_later">call this list function</a>. In case you have a large number of documents in your couchdb database you may wish to test only a subset of those. Couchdb allows you to limit the number of results that is emitted by the view. To limit the number of documents as an input to the test function just use the <code>limit=number</code> query parameter. </p>
+<p>Now that we have seen how to write tests for a view let us take an example of slightly more complex view:- </p>
 <pre><code>function(doc){
     if(doc.tname){
     var rent = parseInt(doc.rent);
     emit([doc.tcurrency,doc.temail,doc.tname,doc.created_at],rent);
     }
 }</code></pre>
-<p>And the corresponding test list function </p>
+<p>Instead of emitting a single key this view emits an array of keys and a single integer value "rent".</p>
+<p>Let us write a test case for this view:-  </p>
 <pre><code>function(head,req){
     var row = getRow();
     var array_equals = require("modules/array_equals").array_equals;
@@ -137,8 +137,8 @@ do better by outputting the docs for which the test fails. </p>
     return toJSON({"failed":"by default"});
 }</code></pre>
 <p>As you can probably tell our test function has become a bit more complicated. But it still has 
-the original ideas ingrained into it. The list is only run against the view for which it was 
-designed. In this case the "tenant_details" view. And as before<br>all the documents must pass this test.  </p>
+the original ideas ingrained into it. First of all the list is only run against the view for which it was 
+designed. In this case the "tenant_details" view. And as before<br>all the documents must pass this test for it be considered successful.  </p>
 <p>"So what's changed then?"</p>
 <p>Good question. This time we are testing for the ordering of emitted keys instead of the 
 testing for the type of emitted keys. A careful observer might have noticed line #2</p>
@@ -151,17 +151,17 @@ array_equals([1,2,3],[1,2,3,4]) //false
 array_equals([1,2,3],[a,b,c]) //false</code></pre>
 <p>with this in mind I created a </p>
 <p><code>var doc_keys = ["_id","_rev","created_at","tname","tcurrency","rent","temail"];</code></p>
-<p>doc_keys variable and tested that in each row the doc object properties is exactly equal to the previously
+<p>doc_keys variable and tested that: In each row the document contains object properties equal to the previously
 defined <code>doc_keys</code> array. </p>
 <p>One main difference though is in how we run this test. Along with a <code>limit=number</code> we also 
 pass in a <code>include_docs=true</code> parameter. </p>
 <p>"Why is that?"</p>
-<p>That is because in couchdb the keys in the result set are emitted as values. For instance if you do : </p>
+<p>That is because in couchdb the keys in the result set are emitted as values. For instance if you have a view that : </p>
 <p><code>emit(doc.created_at,null)</code></p>
 <p>in the result set you will get</p>
 <p><code>1410953047410</code></p>
-<p>That is the actual value of the emitted key: you don't know what property of the doc is being emitted. 
-So as a workaround to this we fetch in the original document and simply compare if they contain 
+<p>That is the actual value of the emitted key: you don't know <strong>what property</strong> of the doc is being emitted. 
+So as a workaround to this we fetch in the original document,extract the properties out of it and simply compare if it contains 
 the right keys.  </p>
 <p>It should be noted that this is not a general solution. This works for me because I have 
 only one view that indexes one type of document. It is not uncommon to have multiple views
@@ -183,9 +183,9 @@ to convert this array into the time stamp and then compare the value with the do
 that I get from the include_docs parameter. </p>
 <p>But to be honest testing views is pretty much useless in production. Why? Because production 
 views should be static. If you are running tests on production views it means that they are changing 
-too often which means that you are doing something wrong. </p>
+too often which means that you are doing something wrong. That does not mean that testing is useless because:- </p>
 <h3>It is not just the views that you can test.</h3>
-<p>Remember that show and list functions can execute arbitrary javascript on server side. 
+<p>Remember that show and list functions can execute arbitrary server side code. 
 So besides views you can test any common js modules. You can even export your show and list functions 
 and test them in other show and list functions! </p>
 <p>But probably the best reason to test with couchdb is that you don't need a mock environment. You 

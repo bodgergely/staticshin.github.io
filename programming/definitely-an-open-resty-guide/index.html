@@ -8,11 +8,78 @@
   </head>
   <body>
 <div id="post">
-    <h1 id="hello_world">Hello world</h1>
+  <h1 id="contents">Contents</h1>
 
-<p>Openresty is just an enhancement of nginx. 
-If you are familiar with nginx you will feel right at home with openresty. 
-This is a hello_world example to illustrate how to write openresty scripts. 
+<ol>
+<li><a href="#why_openresty">Why openresty</a></li>
+<li><a href="#hello_world">Our first openresty script</a></li>
+<li><a href="#directives">The directives</a></li>
+<li><a href="#the_ngx_api">The ngx api</a></li>
+</ol>
+<h1 id="why_openresty">Why openresty?</h1>
+
+<p><small><a href="#contents">Back to the contents</a></small></p>
+<p>Before we answer the why let us first deal with the what.</p>
+<p>&quot;<strong>What is openresty?</strong>&quot;</p>
+<p>Openresty is a packaging of nginx together with various useful libraries that can be used
+to <em>write</em> application servers. Notice the  emphasis on write. Now you will not be limited to just
+configuring your server but you can program it. At it&#39;s core it&#39;s still the nginx that you know. All your configuration
+files that work with vanilla nginx will work with openresty. When you install openresty you loose
+nothing. But you gain:-</p>
+<ol>
+<li>An ability to script nginx with an easy to use language, lua.</li>
+<li>Do things that were impossible or not straightforward with nginx configuration files before.</li>
+</ol>
+<p>With that out of the way.. why would you want to learn about open resty? Or
+are there not enough web frameworks already? Do you need to learn yet another one?</p>
+<p>Fair questions. Nginx does web applications really really well. It is light, it is fast and it is
+very well documented. People have often reported that just by  configuring nginx
+to serve their applications they have gained performance boost. That nginx makes your applications fast is a
+well accepted fact. What openresty does is that it takes all the goodness of nginx : it&#39;s fast response time and
+it&#39;s low memory usage and removes the barriers to developing applications with it.</p>
+<p>&quot;<strong>And what are these barriers?</strong>&quot;</p>
+<p>The configuration files themselves. While they are quite flexible all they do is they limit the power of nginx to the set
+that is configurable. Sure you can do a lot but not anything beyond what is allowed. Here is a simple example for instance</p>
+<p>Suppose before forwarding the data <code>POSTed</code> to your application you want to do certain checks on it so that you can be sure that your application get&#39;s only the clean refined data to operate upon. Is there any easy way to validate the data posted to nginx before it is forwarded to your application server? If there is I could not find it. But in open resty this is as simple as</p>
+<pre><code>content_by_lua &#39;
+
+-- read the request of the body
+ngx.req.read_body()
+
+-- give back the body as an easily query-able table data structure
+local post_args = ngx.req.get_post_args() 
+
+-- validate the data 
+local clean_body_data = require(&quot;lib/validate&quot;).validate_body(post_args)
+
+&#39;
+</code></pre><p>This has the effect of simplifying your architecture by guaranteeing that any data that is posted by the proxy is valid. So your application layer can focus on operating upon it without worrying about cleansing it first. Once you learn open resty you will be able to identify many such functions that can be better delegated to a proxy. It will simplify your application and use nginx and all it&#39;s low resource, fast performance goodness to the fullest. Win win.</p>
+<p>&quot;<strong>But my application is working. I don&#39;t want to change any thing</strong>&quot;</p>
+<p>I am not asking you to change. Remember that openresty is still nginx. Everything that was working will continue to
+work. Openresty just gives you an opprotunity to make use of nginx in ways that you might not have considerd before. You have nothing to loose and much to gain. </p>
+<p><strong>What do you need to start learning open resty?</strong></p>
+<p>You need to know lua. BUT BEFORE YOU CLOSE THIS TAB know that you don&#39;t need to have a mastery of
+the language to start developing openresty applications. All you need is <a href="http://tylerneylon.com/a/learn-lua/">15 minutes worth of lua</a> and you are all set to go. More specifically you need to have a solid understanding of lua tables,
+lua modules, how to write loops and conditional statements and the variable scope in lua. If you have
+programmed before you can learn all of this before you finish your first cup of coffee :)</p>
+<p><strong>But wait I don&#39;t know any nginx</strong></p>
+<p>Not a problem. Nginx applications are written in what are known as configuration files. You can get
+most of it by just reading but if you encounter any problem the <a href="http://nginx.org/">nginx has a very detailed documentation</a> and tonnes of community support so you should be able to google your way out of any trouble.
+The entire guide is written with the assumption that</p>
+<ol>
+<li>You have no knowledge of nginx</li>
+<li>You can work with the command line: copy paste the code, run programs etc</li>
+<li>Read the manual in case you need more detailed information.</li>
+</ol>
+<p>All you need therefore to follow this guide is willingness to learn. </p>
+<h1 id="hello_world">Hello world</h1>
+
+<p><small><a href="#contents">Back to the contents</a></small></p>
+<p>In case you skipped the introduction and jumped to the hello world then first of all good for you! and second a summary of what I said above:-</p>
+<blockquote>
+<p>Openresty is just an enhancement of nginx. So all you knowledge carries over.</p>
+</blockquote>
+<p>This is a hello_world example to illustrate how to write openresty scripts. 
 The first thing to understand here is the file structure. Here is a high level overview </p>
 <pre><code>root
  -logs
@@ -45,7 +112,8 @@ Well there are in fact two packages <code>ngx</code> and <code>ndk</code> but we
 for now as we can get far with just that. What <code>ngx.say()</code> does is 
 that it sends the concatenated arguments to the client as an http response. 
 But enough talk for now. Let us run this example:- </p>
-<p><code>nginx -p `pwd` -c conf/nginx.conf</code></p>
+<pre><code>nginx -p `pwd` -c conf/nginx.conf
+</code></pre><p>Here pwd is the path with directory of your configuration file</p>
 <p>and then </p>
 <p><code>curl http://localhost:8080/</code></p>
 <p>you should see a response </p>
@@ -91,6 +159,7 @@ http {
 <hr>
 <h1 id="directives">Directives</h1>
 
+<p><small><a href="#contents">Back to the contents</a></small></p>
 <p>Nginx comes with it&#39;s own mini programming language in which directives form the basic constructs. 
 These directives are either block level or simple. Simple directives are 
 structured as the name of the directive and the name of the parameters. 
@@ -287,6 +356,7 @@ and you can study them at your convenience.  </p>
 <hr>
 <h1 id="the_ngx_api">The ngx api</h1>
 
+<p><small><a href="#contents">Back to the contents</a></small></p>
 <p>Ah the nginx API. This is where the magic happens. 
 Remember all those <code>by_lua</code> directives that we talk about in the last chapter? 
 They are all just there to execute lua api for nginx. In the words of the
@@ -500,7 +570,7 @@ local etag = headers[&quot;Etag&quot;]
 
 local host = headers[&quot;Host&quot;]
 </code></pre><p>Simillarly it&#39;s conter-part <code>ngx.req.set_header</code> is used to set a req header for outgoing requests</p>
-<pre><code>local host = ngx.req.set_header(&quot;www.google.com&quot;)
+<pre><code>ngx.req.set_header(&quot;Content-type&quot;,&quot;application/json&quot;)
 </code></pre><p>If for some reason you want the actual headers sent by the client instead of the ones that have been parsed
 into a table you can use <code>ngx.req.raw_header</code></p>
 <p>To clear a header you can use <code>ngx.req.clear_header</code>. Can be very useful when making
@@ -589,6 +659,34 @@ first statement. </p>
 
 ngx.status = ngx.HTTP_NOT_MODIFIED -- set the status code to 304. Using ngx constant here, but you may supply numerical values
 </code></pre>
+  <div>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function ()
+  {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37138783-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function ()
+  {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
   </body>
 </div>
 </html>

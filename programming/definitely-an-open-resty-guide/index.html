@@ -18,12 +18,13 @@
 <li><a href="#why_openresty">Why openresty</a></li>
 <li><a href="#hello_world">Our first openresty script</a></li>
 <li><a href="#directives">The directives</a><ul>
-<li><a href="#introduction_directives">Introduction to directives</a></li>
 <li><a href="#openresty_directives">Openresty&#39;s directives</a></li>
 </ul>
 </li>
-<li><a href="#the_ngx_api">The ngx api</a><pre><code>*
-</code></pre></li>
+<li><a href="#the_ngx_api">The ngx api</a><ul>
+<li><a href="#loc_cap_faq">location capture faqs</a></li>
+</ul>
+</li>
 </ol>
 <hr>
 <h1 id="why_openresty">Why openresty?</h1>
@@ -38,13 +39,13 @@ files that work with vanilla nginx will work with openresty. When you install op
 nothing. But you gain:-</p>
 <ol>
 <li>An ability to script nginx with an easy to use language, lua.</li>
-<li>Do things that were impossible or not straightforward with nginx configuration files before.</li>
+<li>Do things that were impossible or difficult with nginx configuration files before.</li>
 </ol>
 <p>With that out of the way.. why would you want to learn about open resty at all? Aren&#39;t there
 enough web frameworks already? Do you need to learn yet another one?</p>
 <p>Fair questions. Nginx does web applications really really well. It is light, it is fast and it is
 very well documented. People have often reported that just by  configuring nginx
-to serve their applications they have gained performance boost. That nginx makes your applications fast is a
+to serve their applications they have gained a boost in performance. That nginx makes your applications fast is a
 well accepted fact. What openresty does is that it takes all the goodness of nginx : it&#39;s fast response time and
 it&#39;s low memory usage and removes the barriers to developing applications with it.</p>
 <p>&quot;<strong>And what are these barriers?</strong>&quot;</p>
@@ -63,7 +64,7 @@ local post_args = ngx.req.get_post_args()
 local clean_body_data = require(&quot;lib/validate&quot;).validate_body(post_args)
 
 &#39;
-</code></pre><p>This has the effect of simplifying your architecture by guaranteeing that any data that is posted by the proxy is valid. So your application layer can focus on operating upon it without worrying about cleansing it first. Once you learn open resty you will be able to identify many such functions that can be better delegated to a proxy. It will simplify your application and use nginx and all it&#39;s low resource, fast performance goodness to the fullest. Win win.</p>
+</code></pre><p>This has the effect of simplifying your architecture by guaranteeing that any data that is posted to the proxy is valid. So your application layer can focus on operating upon it without worrying about cleansing it first. Once you learn open resty you will be able to identify many such functions that can be better delegated to a proxy. It will simplify your application and use nginx and all it&#39;s low resource, fast performance goodness to the fullest. Win win.</p>
 <p>&quot;<strong>But my application is working. I don&#39;t want to change any thing</strong>&quot;</p>
 <p>I am not asking you to change. Remember that openresty is still nginx. Everything that was working will continue to
 work. Openresty just gives you an opprotunity to make use of nginx in ways that you might not have considerd before. You have nothing to loose and much to gain. </p>
@@ -88,10 +89,11 @@ The entire guide is written with the assumption that</p>
 <p><small><a href="#contents">Back to the contents</a></small></p>
 <p>In case you skipped the introduction and jumped to the hello world then first of all good for you! and second a summary of what I said above:-</p>
 <blockquote>
-<p>Openresty is just an enhancement of nginx. So all you knowledge carries over.</p>
+<p>Openresty is just an enhancement of nginx. So all your previous knowledge of nginx carries over.</p>
 </blockquote>
 <p>This is a hello_world example to illustrate how to write openresty scripts. 
-The first thing to understand here is the file structure. Here is a high level overview </p>
+The first thing that we will do is we will create a file structure for our config files and scripts.
+Here is a high level overview </p>
 <pre><code>root
  -logs
  -conf
@@ -131,7 +133,7 @@ But enough talk for now. Let us run this example:- </p>
 <p><code>&lt;p&gt;hello world&lt;/p&gt;</code></p>
 <p>And congratulations you have written you first openresty script. 
 Now I don&#39;t know about you but wrapping code scripts 
-around string code does not look pretty to me. 
+around strings does not look pretty to me. 
 Wouldn&#39;t it be nice if we could create a sperate file for 
 lua scripts and include it in the nginx configuration files? 
 <code>content_by_lua_file</code> allows us to do just that. Let us create a seperate directory <code>lua</code>  </p>
@@ -164,7 +166,7 @@ http {
     }
 }
 </code></pre><p>Before we curl for the <code>/by_file</code> location we must reload nginx  </p>
-<p><code>``nginx -p</code>pwd` -s reload ````</p>
+<p><code>nginx -p  pwd -s reload</code></p>
 <p>now <code>curl http://localhost:8080/by_file</code> should return</p>
 <p><code>&lt;p&gt;hello world from lua&lt;/p&gt;</code></p>
 <hr>
@@ -186,14 +188,17 @@ location /{
 proxy_pass http://localhost:5984/; 
 
 }
-</code></pre><p><code>nginx_lua</code> keeps the same structuring of the configuration files. 
-As we saw in the last chapter there is little difference between
+</code></pre><p><code>nginx_lua</code> keeps the same structuring of the configuration files. </p>
+<hr>
+<h4 id="openresty_directives">Openresty&#39;s directives</h4>
+
+<p><small><a href="#contents">Back to the top</a></small></p>
+<p>As we saw in the last chapter there is little difference between
 a vanilla nginx configuration and an nginx_lua configuration. In fact almost
 all of the nginx directives can be used as usual in an <code>nginx_lua</code> configuration
 file. However nginx_lua adds several new directives that enhances the configurability
 of nginx. We already looked at <code>content_by_lua</code> and <code>content_by_lua_file</code> directives in the last
 chapter. Here we will take a look at a few more intersting ones</p>
-<hr>
 <h4 id="lua_code_cache">lua_code_cache</h4>
 <p>This directive turns the caching of lua modules on or off. By default the<br>the caching is turned on so that the lua modules are loaded once and then 
 just reused. This is a desirable effect and we would not want to reload 
@@ -235,8 +240,10 @@ in production.</p>
 <p>Then <code>curl http://localhost:8080/</code></p>
 <p>you should see</p>
 <blockquote>
-<p><p> hello world </p> in response</p>
+<p> hello world </p>
+
 </blockquote>
+<p>in response</p>
 <p>Now edit the hello_world.lua to</p>
 <p><code>ngx.say(&quot;&lt;b&gt;hello world&lt;/b&gt;&quot;);</code> </p>
 <p>and on <code>curl http://localhost:808/</code> you should see the response</p>
@@ -245,7 +252,7 @@ in production.</p>
 </blockquote>
 <p>This makes our workflow of developing  ngx_lua applications much smoother.</p>
 <p><strong>Note</strong> as you might have already guessed <code>lua_code_cache</code> works only for
-<code>*by_lua_file</code>  directives. It will have no effect upon <code>by_lua*</code> directives.</p>
+<code>*by_lua_file</code>  directives. It will have no effect upon <code>*by_lua</code> directives.</p>
 <p>nginx block level rules apply to the <code>lua_code_cache</code> directive. Which
 means if you set <code>lua_code_cache</code> off in a top level directive all the other
 lower lever directives will pick up on this configuration. Simillary you can achieve
@@ -520,9 +527,8 @@ the vary header we do <code>res.header[&quot;Vary&quot;]</code>.</p>
 the internal uri using the <code>ngx.location.capture</code> but the api
 is far more flexible. You can pass query strings directly in
 the url or by uisng the args option. For instance:-</p>
-<pre><code class="lang-`">local res= ngx.location.capture(&quot;/hello?a=1&amp;b=2&quot;)
-</code></pre>
-<p>and</p>
+<pre><code>local res= ngx.location.capture(&quot;/hello?a=1&amp;b=2&quot;)
+</code></pre><p>and</p>
 <pre><code>local res = ngx.location.caputre(&quot;/hello&quot;,{args={a=1,b=2}})
 </code></pre><p>are equivalent. In both the cases a subrequest will be made to <code>/hello?a=1&amp;b=2</code></p>
 <p>Infact the opitonal table can hold a lot more keys than just an <code>args</code>.</p>
@@ -573,7 +579,10 @@ you are set.</p>
 }
 </code></pre><p>Every request in multi is contained within it&#39;s own table which can perform all of things that
 we saw in a simple <code>ngx.location.capture</code>. Cool isn&#39;t it?</p>
-<h4 id="location-capture-faqs">location capture FAQS</h4>
+<hr>
+<h4 id="loc_cap_faq">location capture FAQS</h4>
+
+<p><small><a href="#contents">Back to the top</a></small></p>
 <p><strong>Q</strong>:Is location.caputure/capture_multi synchronous?</p>
 <p><strong>A</strong>: Yes. location capture is synchronous but non blocking. Synchronous but non blocking? Well yes.
 You see the location capture provides a lua interface over what are known as <a href="http://openresty.org/download/agentzh-nginx-tutorials-en.html#nginx-variables-a-detour-to-subrequests">subrequests</a> in nginx world. Quoting from the article linked above:-</p>
@@ -581,8 +590,9 @@ You see the location capture provides a lua interface over what are known as <a 
 <p>Subrequests may look very much like an HTTP request in appearance, their implementation, however, has nothing to do with neither the HTTP protocol nor any kind of socket communication. A subrequest is an abstract invocation for decomposing the task of the main request into smaller &quot;internal requests&quot; that can be served independently by multiple different location blocks, either in series or in parallel.</p>
 <p>when the Nginx core processes a subrequest, it just calls a few C functions behind the scene, without doing any kind of network or UNIX domain socket communication. For this reason, subrequests are extremely efficient.</p>
 </blockquote>
-<p>A single location capture like</p>
+<p>ALl right we will now try to translate what a trivial location capture migt look like if written using nginx configurations. For this we will be making use of the <a href="http://wiki.nginx.org/HttpEchoModule#echo_location_async">echo module</a>. Consider a single location capture like</p>
 <pre><code>local res = ngx.location.capture(&quot;url&quot;)
+ngx.say(res.body)
 </code></pre><p>intiates a subrequest at nginx&#39;s level and it&#39;s equivalent to:-</p>
 <pre><code>location /main {
     echo_location /url;   
@@ -593,10 +603,11 @@ echo hello_url;
 }
 </code></pre><p>Where as location.capture_multi sends out a series of parallel subrequests to location blocks. For example</p>
 <pre><code>local res1,res2 = ngx.location.capture_multi{{&quot;/url1&quot;},{&quot;url2&quot;}}
+ngx.say(res1.body..res2.body)
 </code></pre><p>The above lua code initates multiple paralell subrequests to locations <code>url1</code>  and <code>url2</code>. The results are returned after all the requests have been completed. The equivalent nginx code would be</p>
 <pre><code>location /main{
-echo_location /url1;
-echo_location /url2;
+echo_location_async /url1;
+echo_location_async /url2;
 }
 
 
@@ -608,10 +619,21 @@ echo hello_url1;
 location /url2{
 echo hello_url2;
 }
-</code></pre><p>So by synchronous yet non blocking we mean that location capture waits for the requests to be completed before returning the results. But the requests themselves are executed independantly in their own location blocks.</p>
-<p><strong>Q</strong>: Can I make external http requests with location capture?</p>
-<p><strong>A</strong>: You sure can! yes the subrequests are internal. Yes there is no http involved while calling the subrequests. But they are executed independantly. This means that even though the caller is not dealing with http the location block themselves can make any kind of request that they want. </p>
+</code></pre><p>So by &quot;synchronous yet non blocking&quot; we mean that the subrequests are executed independently and concurrenly. Yet the location.capture does not return untill all the subrequests have been completed. In case you have multiple subrequests using location.capture_multi the time taken to serve all the requests will be equal the time taken by the longest request.</p>
+<p>The location.capture() can also be interpreted as location.capture_multi{} with a single subrequest.</p>
+<p>Of course these were just simplistic translations and as we have already seen location capture can go beyond making simple &quot;GET&quot; requests to location blocks. But hopefully the working of location.capture/capture_multi is a bit more clearer.</p>
 <hr>
+<p><strong>Q</strong>: Can I make external http requests with location capture?</p>
+<p><strong>A</strong>: You sure can! Yes the subrequests are internal. Yes there is no http involved while calling the subrequests. But the subrequests are executed independantly. This means that even though the subrequest is not dealing with http the location block themselves can make any kind of request that they want. Like we saw in the examples above the following will absolutely work:-</p>
+<pre><code>
+location /google{
+resolver 8.8.8.8;
+proxy_pass http://www.google.com/;
+}
+</code></pre><pre><code>local res = ngx.location.capture(&quot;/google&quot;)
+
+-- the res.body should contain the html source of google.com
+</code></pre><hr>
 <h3 id="the-req">The req</h3>
 <p>ngx api exposes a req object that allows us to configure explicitly our req parameters before sending it to
 the server. This means that you can easily add/remove http headers and body, configure the method of the

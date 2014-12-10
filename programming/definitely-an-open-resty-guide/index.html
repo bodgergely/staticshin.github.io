@@ -5,7 +5,7 @@
     <title>Definitely an open resty guide</title>
     <link href="../../style.css" rel="stylesheet"/>
     <style>
-      li{
+      ul>li{
       list-style:none;
       }
     </style>
@@ -19,6 +19,10 @@
 <li><a href="#hello_world">Our first openresty script</a></li>
 <li><a href="#directives">The directives</a><ul>
 <li><a href="#openresty_directives">Openresty&#39;s directives</a></li>
+<li><a href="#init_by_lua">init_by_lua</a></li>
+<li><a href="#content_by_lua">content_by_lua</a></li>
+<li><a href="#rewrite_by_lua">rewrite_by_lua</a></li>
+<li><a href="#access_by_lua">access_by_lua</a>   </li>
 </ul>
 </li>
 <li><a href="#the_ngx_api">The ngx api</a><ul>
@@ -176,13 +180,11 @@ http {
 <p><code>&lt;p&gt;hello world from lua&lt;/p&gt;</code></p>
 <p><strong>Some notes</strong></p>
 <ol>
-<li><p>The directory structure that we used in this example is just a suggestion. It has no bearing whatsoever
+<li>The directory structure that we used in this example is just a suggestion. It has no bearing whatsoever
 on writing lua scripts. If you have a pretty bug lua application it is likely that your code will be divided
 into specific scripts that execute as directive handlers (like the content_by_lua script that we wrote above) and
-generic modules that will be used across many handlers (like say an authentication module that will be run across multiple content_by_lua handlers)</p>
-</li>
-<li><p>Openresty follows lua convention of modules. So you can easily package a repeatable unit of code in a file and <code>require()</code> the file and use it&#39;s functions. We discuss more on this in the <a href="#organization">organizing your lua code section</a></p>
-</li>
+generic modules that will be used across many handlers (like say an authentication module that will be run across multiple content_by_lua handlers)</li>
+<li>Openresty follows lua convention of modules. So you can easily package a repeatable unit of code in a file and <code>require()</code> the file and use it&#39;s functions. We discuss more on this in the <a href="#organization">organizing your lua code section</a></li>
 </ol>
 <hr>
 <h1 id="directives">Directives</h1>
@@ -213,7 +215,7 @@ entry point to the lua code.</p>
 
 <p><small><a href="#contents">Back to the top</a></small></p>
 <blockquote>
-<p>Openresty&#39;s directives serve as the entry point of execution for lua code.</p>
+<p>Openresty&#39;s directives serve as the entry point for execution of lua code.</p>
 </blockquote>
 <p>As we saw in the last chapter there is little difference between
 a vanilla nginx configuration and an nginx_lua configuration. In fact almost
@@ -285,7 +287,7 @@ reload the server manually. This automatic reload works only for lua files.</p>
 <h4 id="init_by_lua">init_by_lua</h4>
 <p>init_by_lua directive runs the lua code
 specified by the parameter string on a global level.
-As the name probably suggests the init_by_lua runs the lua
+As the name probably suggests the init_by_lua runs the lua code
 as nginx is initializing (loading the configuration files). As a result
 we can declare parameters here that will be used by directives in the configuration files after they are loaded. 
 Thus init_by_lua is useful when you want to register 
@@ -297,36 +299,41 @@ keyword to declare lua variables local to it&#39;s scope. And remember any varia
 without a <code>local</code> keyword is global in lua.</p>
 <pre><code>local cat = &quot;meow&quot; -- use this form most of the time
 dog = &quot;woof&quot; -- avoid this form except for when it makes sense
-</code></pre><p>Why refrain from using global variables?</p>
+</code></pre><p><strong>Why refrain from using global variables?</strong></p>
 <p>Openresty is based on the principle of request isolation. Any request that goes to a location
 block say <code>location /one{}</code> is independant from the request that goes to the <code>location /two{}</code>. Every
 request handler has it&#39;s own set of global variables that are deleted at the end of the request cycle. </p>
-<p>When does it make sense to use global varialbes?</p>
+<p><strong>When does it make sense to use global varialbes?</strong></p>
 <p>Suppose you want to use a module that parses JSON which will be used<br>in many handlers, or a database client that will be used in many handlers 
 or any other module that will be used across many handlers then it makes sense 
 to declare the variable global and even then init_by_lua should be the only place 
 where you do it.</p>
 <p><strong>An example to illustrate the difference b/w local and global variables</strong></p>
+<h3 id="init_by_lua">init_by_lua</h3>
+
 <pre><code>init_by_lua &#39;
-
 cjson = require(&quot;cjson&quot;) -- cjson is a global variable
-
 &#39;
-
-location /one {
+</code></pre><pre><code>location /one {
+content_by_lua &#39;
 local validate = require(&quot;lua/validate&quot;) -- validate is a local variable
 decoded_one = cjson.decode({hello=&quot;world&quot;}) --decoded_one is a global variable
+&#39;
 }
 
 location /two{
+content_by_lua &#39;
 ngx.say(cjson.encode(decoded_one))
+&#39;
 }
 </code></pre><p>In the example above we have two global variables. The first one <code>cjson</code> in the init_by_lua is
-a true global variable. One that can be accesed across the request handleer. The second global variable
+a true global variable. One that can be accesed across request handlers. The second global variable
 that we declare in the <code>location /one</code> block is global only in the context of <code>/one</code> if we try to access
-this in the <code>/two</code> block we get a nil value. Besides having unexpected effects global varibles have performance
-penalties of being looked up from a global table. Conclusion: global variables are to be used sparingly for things
-we want to be truly global.</p>
+this in the <code>/two</code> block we get a nil value. Besides having unexpected effects,that are hard to debug,
+global varibles have performance
+penalties of being looked up from a global table.
+Conclusion: global variables are to be used sparingly for things
+we want to be truly global. init_by_lua should be the only place to declare them. </p>
 <p><code>init_by_lua</code> has a variant in <code>init_by_lua_file</code> where you can supply a file 
 containing the lua code that will be run in a global context. 
 Everything that we talked about in <code>init_by_lua</code> 
@@ -342,21 +349,21 @@ lua tables in json. <code>cjson</code> was a good contender for the global
 varibale declaration because we are going to be using it in many
 location blocks. </p>
 <hr>
-<h4 id="set_by_lua">set_by_lua</h4>
+<h3 id="set_by_lua">set_by_lua</h3> 
+
 <p><code>set_by_lua</code> directive is equivalent to nginx&#39;s 
-set commands.<br>Quite predictably set is used in nginx to &#39;set&#39; the value for a variable.<br>Simillarly <code>set_by_lua</code> allows you to set a variable by evaluating a lua code string. </p>
+set commands.<br>Quite predictably set is used in nginx to &#39;set&#39; the value for a variable.<br>Simillarly <code>set_by_lua</code> allows you to set a variable by evaluating a lua code string.</p>
 <p>Once more <code>set_by_lua</code> has a _file alternative in <code>set_by_lua_file</code> 
 that allows you to set a variable 
 by executing the code in lua file. </p>
 <p><strong>Note</strong> <code>set_by_lua blocks</code> the nginx&#39;s event loop during 
 it&#39;s execution therefore long time consuming 
-code sequences are best avoided here.
-So while a few arithmetic computations are fine loops should be 
+code sequences are best avoided here.</p>
+<p>So while a few arithmetic computations are fine loops should be 
 avoided. </p>
 <p><code>set_by_lua</code> works well with nginx&#39;s <code>set</code>
 command so the two can be used interchangeably. 
-The directives will run in the order in which they appear in the code.
-Works with set in HttpRewriteModule,  HttpSetMiscModule, and HttpArrayVarModule.</p>
+The directives will run in the order in which they appear in the code.</p>
 <pre><code>
  location /set_by_lua{
         set $nvar 20;
@@ -364,15 +371,14 @@ Works with set in HttpRewriteModule,  HttpSetMiscModule, and HttpArrayVarModule.
         echo &quot;$nvar,$lvar&quot;;
     }
 </code></pre><hr>
-<h4 id="content_by_lua">content_by_lua</h4>
+<h3 id="content_by_lua">content_by_lua</h3>
+
 <p>We already discussed this directive in the hello_ world chapter. 
 But now that we have more understanding of 
 how the directives work we can see content_by_lua in a different light.  </p>
 <p>Unlike the set_by_lua command that blocks the nginx&#39;s event loop content_by_lua directive
 runs in it&#39;s own spawned coroutine. Which means that it does not block the nginx&#39;s event loop
 and runs in a seperate environment. content_by_lua directive belongs to a special class of
-directives called the content handler 
-( they are not actually called that but you will see what I mean in a minute) directives. 
 They execute only in the context of <code>location</code> 
 directive (which if you recall our discussion at the beginning 
 of this chapter is a block level directive).</p>
@@ -387,16 +393,17 @@ A location block should have only one content handler. Do not mix nginx&#39;s
 default content handlers like proxy_pass or directory mappers with ngx_lua&#39;s content_by_lua.</p>
 <p>And yeah there is a <code>content_by_lua_file</code> :)</p>
 <hr>
-<h4 id="rewirte_by_lua">rewirte_by_lua</h4>
+<h3 id="rewrite_by_lua">rewrite_by_lua</h3>
+
 <p>ngnx_lua equivalent of nginx&#39;s 
 <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html">HttpRewriteModule</a>. 
 Like the <code>content_by_lua</code> directive <code>rewrite_by_lua</code> runs in a spawned coroutine.
 The important thing to keep in mind here is that the directive always runs after the
-standard <code>http_rewrite_module</code>. So if you are using both keep that in mind.</p>
-<p>Remember how the <code>set_by_lua</code> directive was blocking?</p>
-<p>Well you can mitigate that to some extent now 
-If you are using <code>set_by_lua</code> for the <code>set</code> in <code>http_rewrite_module</code> 
-then you can safely replace it using <code>rewrite_by_lua</code>. It is non blocking. </p>
+standard <code>http_rewrite_module</code>. So if you are using both keep that in mind. </p>
+<p>The purpose of rewrite_by_lua is to lua-fy the nginx rewrite phase which rewrites is basically used to:-</p>
+<blockquote>
+<p>change request URI using regular expressions, return redirects, and conditionally select configurations. </p>
+</blockquote>
 <p><code>rewrite_by_lua</code> can make api calls 
 (we will see how to make api calls in the next chapter). 
 So you can issue dynamic rewrites
@@ -405,10 +412,11 @@ based on the response returned from your database etc. </p>
 <p>It&#39;s same as <code>rewrite_by_lua</code> except that it 
 executes lua code from a file. </p>
 <hr>
-<h4 id="access_by_lua">access_by_lua</h4>
+<h3 id="access_by_lua">access_by_lua</h3>
+
 <p>ngx_lua equivalent of
 <a href="http://nginx.org/en/docs/http/ngx_http_access_module.html">HttpAccessModule</a></p>
-<p>Two points to not here</p>
+<p>Two points to note here</p>
 <ol>
 <li><p>It runs in a seperate coroutine.</p>
 </li>
@@ -416,15 +424,21 @@ executes lua code from a file. </p>
 keep that in mind.</p>
 </li>
 </ol>
-<p>Like <code>rewrite_by_lua</code> it can make api calls. </p>
-<p>And there is a <code>access_by_lua_file</code></p>
+<p>Like <code>rewrite_by_lua</code> it can make api calls. 
+And yes there is a <code>access_by_lua_file</code></p>
 <p>By now you have probably understood what lua directives are and how 
-they work. There are a few more directives: some of them are utilities 
-and some for tweaking the ngx_lua behaviour.</p>
+they work. There are a few more directives.Some of them are utilities 
+and some for tweaking the ngx_lua behaviour. The important point to take away from this chapters are</p>
+<ol>
+<li>The *by_lua modules that tweak the nginx behaviour (for ex the rewrite_by_lua that is the lua
+equivalent of nginx http rewrite) module are always run after the standard nginx modules.</li>
+<li>The choice of *by_lua module to use largely depends upon the problem that you are trying to solve. For example
+the init_by_lua module is used for initilization operations where as access_by_lua may be used to implement access policies for a location block. Personally among the various directives I find most use for content_by_lua. </li>
+</ol>
 <p>The ones I have covered though are  ones that you will
 be using most of the time. So instead of going on and on about the directives
 I will leave a <a href="http://wiki.nginx.org/HttpLuaModule#Directives">link to the reference</a>
-and you can study them at your convenience.  </p>
+and you can study them at your convenience.   </p>
 <p>For now we move on to the meatier stuff. The ngx_lua API.</p>
 <hr>
 <h1 id="the_ngx_api">The ngx api</h1>
@@ -432,8 +446,9 @@ and you can study them at your convenience.  </p>
 <p><small><a href="#contents">Back to the contents</a></small></p>
 <p>Ah the nginx API. This is where the magic happens. 
 Remember all those <code>by_lua</code> directives that we talk about in the last chapter? 
-They are all just there to execute lua api for nginx. In the words of the
-author of ngx_lua </p>
+They are all just there to execute lua code. The stuff that makes the lua code exciting however are the pa
+ckages provided within openresty that allow you to script and manipulate the behaviour of nginx.
+In the words of the author of openresty:- </p>
 <blockquote>
 <p>The various <em>_by_lua and </em>_by_lua_file configuration directives 
 serve as gateways to the Lua API within the nginx.conf file</p>
@@ -443,105 +458,27 @@ serve as gateways to the Lua API within the nginx.conf file</p>
 and are always available to the lua directives. Which clears up a few
 things for us. Remember how in <code>*_by_lua_file</code> directives we
 could simply call the methods on <code>ngx</code> package even without requiring it?
-As you can probably infer, the reason for it was that the <code>ngx</code> package
+As you can probably guess, the reason for it was that the <code>ngx</code> package
 was already availaible to the directive globally. So there
 was no need for us to <code>require</code> it.</p>
 <hr>
-<h4 id="ngx-arg">ngx.arg</h4>
-<p>Context : <code>set_by_lua</code> and <code>body_filter_by_lua</code></p>
-<p>We have already seen what <code>set_by_lua</code> does in the last chapter.
-In the context of <code>set_by_lua</code> ngx.arg provides a set of read only 
-argumets to the directive.</p>
-<pre><code>
+<h3 id="loc_cap">ngx.location.capture</h3>
 
-</code></pre><p><code>ngx.arg</code> indices start from 1 instead of 0. So keep that
-in mind when you are accessing arguments form it.</p>
-<p><code>body_filter_by_lua</code> can be used to filter the response
-body and modify what response goes out. <code>ngx.arg</code> supplies
-the arguments to <code>body_filter_by_lua</code>.</p>
-<p><code>ngx.arg[1]</code> : contains the acutal data chunk</p>
-<p><code>ngx.arg[2]</code>: contains the boolean <code>eof</code>. If true it indicates the end of body.   </p>
-<pre><code>
-
-</code></pre><p>The important distinction here is that unlike the args in <code>set-by_lua</code>
-the args in <code>body_filter_by_lua</code> can be modified directly by the lua code.
-In fact in the example that we saw above we have modified the response body
-to a different value.</p>
-<hr>
-<h4 id="constants">constants</h4>
-<p>ngx_lua provides easy to remember &quot;named&quot; constants as an alternative to 
-using &quot;numbered&quot; status. For instance instead of sending a 301 redirect 
-you can use <code>ngx.HTTP_MOVED_PERMANENTLY (301)</code>. Don&#39;t worry if you don&#39;t understand 
-what these contants do. We will learn how to use these constants in later sections. </p>
-<p><strong>core</strong></p>
-<pre><code>ngx.OK (0)
-ngx.ERROR (-1)
-ngx.AGAIN (-2)
-ngx.DONE (-4)
-ngx.DECLINED (-5)
-</code></pre><p><strong>HTTP methods</strong></p>
-<pre><code>ngx.HTTP_GET
-ngx.HTTP_HEAD
-ngx.HTTP_PUT
-ngx.HTTP_POST
-ngx.HTTP_DELETE
-ngx.HTTP_OPTIONS   
-ngx.HTTP_MKCOL     
-ngx.HTTP_COPY      
-ngx.HTTP_MOVE      
-ngx.HTTP_PROPFIND  
-ngx.HTTP_PROPPATCH 
-ngx.HTTP_LOCK      
-ngx.HTTP_UNLOCK    
-ngx.HTTP_PATCH     
-ngx.HTTP_TRACE
-</code></pre><p><strong>HTTP STATUS CONSTANTS</strong></p>
-<pre><code>
-ngx.HTTP_OK (200)
-ngx.HTTP_CREATED (201)
-ngx.HTTP_SPECIAL_RESPONSE (300)
-ngx.HTTP_MOVED_PERMANENTLY (301)
-ngx.HTTP_MOVED_TEMPORARILY (302)
-ngx.HTTP_SEE_OTHER (303)
-ngx.HTTP_NOT_MODIFIED (304)
-ngx.HTTP_BAD_REQUEST (400)
-ngx.HTTP_UNAUTHORIZED (401)
-ngx.HTTP_FORBIDDEN (403)
-ngx.HTTP_NOT_FOUND (404)
-ngx.HTTP_NOT_ALLOWED (405)
-ngx.HTTP_GONE (410)
-ngx.HTTP_INTERNAL_SERVER_ERROR (500)
-ngx.HTTP_METHOD_NOT_IMPLEMENTED (501)
-ngx.HTTP_SERVICE_UNAVAILABLE (503)
-ngx.HTTP_GATEWAY_TIMEOUT (504)
-</code></pre><p><strong>Log level constants</strong></p>
-<pre><code>ngx.STDERR
-ngx.EMERG
-ngx.ALERT
-ngx.CRIT
-ngx.ERR
-ngx.WARN
-ngx.NOTICE
-ngx.INFO
-ngx.DEBUG
-</code></pre><hr>
-<h4 id="ngx-location-capture">ngx.location.capture</h4>
 <p>Context: rewrite_by_lua, access_by_lua, content_by_lua</p>
 <p><code>ngx.location.capture</code> is one of the most powerful functions in the lua ngx api. It allows you
 to make subrequests to a uri(location).</p>
 <p>What makes it so powerful you ask?</p>
 <p>Remember the nginx <code>location</code> directive?</p>
-<p>What <code>location</code> does is: It defines endpoints for clients to make requests to. For instance
+<p>No? A quick recap:- It defines endpoints for clients to make requests to. For instance
 a <code>location /hello</code> tells the client that if you make a request to <code>/hello</code> I will give you
 back the results of code excuted inside the <code>location</code> directive. And important point
 to note here is that any request made by the client to this <code>location</code> endpoint is
 an <code>http/tcp</code> request. </p>
-<p>What <code>ngx.location.capture</code> does is that it issues an interal non blocking, syncrhonous request
+<p> <code>ngx.location.capture</code> issues an interal non blocking, syncrhonous request
 to a <code>locaiton</code>. Unlike the clients request which has to be http the location capture requests involve
 no http overhead. It is just a fast and light internal <code>c</code> level call while mimicking
 the familliar http interface. Time for an example:-</p>
-<pre><code>
-
+<pre><code>local res = ngx.location.capture(&quot;/go-go-go&quot;)
 </code></pre><p>See how simple it is. Issue a request to the <code>uri</code> already defined somewhere in a
 <code>location</code> directive and capture it&#39;s response.</p>
 <p>Now one area where many people are confused (I admit I was too when I was
@@ -639,21 +576,23 @@ You see the location capture provides a lua interface over what are known as <a 
 <p>Subrequests may look very much like an HTTP request in appearance, their implementation, however, has nothing to do with neither the HTTP protocol nor any kind of socket communication. A subrequest is an abstract invocation for decomposing the task of the main request into smaller &quot;internal requests&quot; that can be served independently by multiple different location blocks, either in series or in parallel.</p>
 <p>when the Nginx core processes a subrequest, it just calls a few C functions behind the scene, without doing any kind of network or UNIX domain socket communication. For this reason, subrequests are extremely efficient.</p>
 </blockquote>
-<p>ALl right we will now try to translate what a trivial location capture migt look like if written using nginx configurations. For this we will be making use of the <a href="http://wiki.nginx.org/HttpEchoModule#echo_location_async">echo module</a>. Consider a single location capture like</p>
-<pre><code>local res = ngx.location.capture(&quot;url&quot;)
+<p>All right we will now try to translate what a trivial location capture might look like if written using nginx configurations. For this we will be making use of the <a href="http://wiki.nginx.org/HttpEchoModule#echo_location_async">echo module</a>. Consider a single location capture like</p>
+<pre><code>local res = ngx.location.capture(&quot;/url&quot;)
 ngx.say(res.body)
 </code></pre><p>intiates a subrequest at nginx&#39;s level and it&#39;s equivalent to:-</p>
 <pre><code>location /main {
     echo_location /url;   
 }
 
+
 location /url{
 echo hello_url;
 }
-</code></pre><p>Where as location.capture_multi sends out a series of parallel subrequests to location blocks. For example</p>
+</code></pre><p><code>curl http://localhost:8080/main</code> would return &quot;hello_url&quot; as the response.</p>
+<p>Where as location.capture_multi sends out a series of parallel subrequests to location blocks. For example:-</p>
 <pre><code>local res1,res2 = ngx.location.capture_multi{{&quot;/url1&quot;},{&quot;url2&quot;}}
 ngx.say(res1.body..res2.body)
-</code></pre><p>The above lua code initates multiple paralell subrequests to locations <code>url1</code>  and <code>url2</code>. The results are returned after all the requests have been completed. The equivalent nginx code would be</p>
+</code></pre><p>the above lua code initates multiple paralell subrequests to locations <code>url1</code>  and <code>url2</code>. The results are returned after all the requests have been completed. The equivalent nginx code would be</p>
 <pre><code>location /main{
 echo_location_async /url1;
 echo_location_async /url2;
@@ -668,9 +607,9 @@ echo hello_url1;
 location /url2{
 echo hello_url2;
 }
-</code></pre><p>So by &quot;synchronous yet non blocking&quot; we mean that the subrequests are executed independently and concurrenly. Yet the location.capture does not return untill all the subrequests have been completed. In case you have multiple subrequests using location.capture_multi the time taken to serve all the requests will be equal the time taken by the longest request.</p>
-<p>The location.capture() can also be interpreted as location.capture_multi{} with a single subrequest.</p>
-<p>Of course these were just simplistic translations and as we have already seen location capture can go beyond making simple &quot;GET&quot; requests to location blocks. But hopefully the working of location.capture/capture_multi is a bit more clearer.</p>
+</code></pre><p>So by &quot;synchronous yet non blocking&quot; we mean that the subrequests are executed independently and concurrently. Yet the location.capture does not return untill all the subrequests have been completed. In case you have multiple subrequests using location.capture_multi the time taken to serve all the requests will be equal the time taken by the longest request.</p>
+<p>The ngx.location.capture() can also be interpreted as location.capture_multi{} with a single subrequest.</p>
+<p>Of course the code above is just a simplistic translation and as we have already seen location capture can go beyond making simple &quot;GET&quot; requests to location blocks. But hopefully the working of location.capture/capture_multi is a bit more clearer.</p>
 <hr>
 <p><strong>Q</strong>: Can I make external http requests with location capture?</p>
 <p><strong>A</strong>: You sure can! Yes the subrequests are internal. Yes there is no http involved while calling the subrequests. But the subrequests are executed independantly. This means that even though the subrequest is not dealing with http the location block themselves can make any kind of request that they want. Like we saw in the examples above the following will absolutely work:-</p>
@@ -683,16 +622,19 @@ proxy_pass http://www.google.com/;
 
 -- the res.body should contain the html source of google.com
 </code></pre><hr>
-<h3 id="the-req">The req</h3>
-<p>ngx api exposes a req object that allows us to configure explicitly our req parameters before sending it to
-the server. This means that you can easily add/remove http headers and body, configure the method of the
-req.</p>
+<h3 id="the_req">The req</h3>
+
+<p><small><a href="#contents">Back to the contents</a></small></p>
+<p>ngx api exposes a req object that allows us to configure explicitly our req parameters before making a request to
+the server. This means that you can easily add/remove http headers, body, configure the method of the
+req etc</p>
 <p>On the other hand the ngx api also provides ability to read an incoming req from the client. Which means
-that you can read the http headers and the body check the method of the req and then send the response back.</p>
+that you can read the http headers and the body check the method of the req and then create an appropriate response.</p>
 <p>Quite naturally the req table forms a very important part of ngx api. Let us take a deeper look at it 
 then:-</p>
 <p><strong>The headers of the request</strong></p>
-<p><code>ngx.req.get_headers()</code> gives you back a table of headers which you can then query as usual. For example</p>
+<p><code>ngx.req.get_headers()</code> gives you back a table of headers for an incoming request
+which you can then query as usual. For example</p>
 <pre><code>local headers = ngx.req.get_headers()
 
 local cookie = headers[&quot;Cookie&quot;]
@@ -700,7 +642,7 @@ local cookie = headers[&quot;Cookie&quot;]
 local etag = headers[&quot;Etag&quot;]
 
 local host = headers[&quot;Host&quot;]
-</code></pre><p>Simillarly it&#39;s conter-part <code>ngx.req.set_header</code> is used to set a req header for outgoing requests</p>
+</code></pre><p>Simillarly it&#39;s counter-part <code>ngx.req.set_header</code> is used to set a req header for outgoing requests</p>
 <pre><code>ngx.req.set_header(&quot;Content-type&quot;,&quot;application/json&quot;)
 </code></pre><p>If for some reason you want the actual headers sent by the client instead of the ones that have been parsed
 into a table you can use <code>ngx.req.raw_header</code></p>
@@ -713,7 +655,7 @@ is provided in <code>ngx.req.get_body_data</code> and <code>ngx.req.get_post_arg
 
 local args = ngx.req.get_post_args()
 
--- just like the headers args is a lua table.
+-- just like the headers, args is a lua table.
 </code></pre><p>To set the body data you can use <code>ngx.set_body_data</code></p>
 <p><strong>The method of the request</strong></p>
 <p><code>ngx.req.get_method</code> is used to get the method of an incoming request. <code>ngx.req.set_method</code> is used to set
@@ -722,13 +664,13 @@ the method for an outgoing request. </p>
 
 ngx.req.set_method(ngx.HTTP_POST)
 </code></pre><p><strong>The uri of the request</strong></p>
-<p>ngx lua also allows to to change the uri to which the req is initiated by the client.</p>
+<p>ngx lua also allows you to change the uri from which the req was initiated by the client.</p>
 <pre><code>ngx.req.set_uri(&quot;/foo&quot;)
 </code></pre><p>Additionally the set_uri takes in a optional boolean
 parameter that tells nginx to keep searching for newly set uri location</p>
 <pre><code>ngx.req.set_uri(&quot;/foo&quot;,true)
 </code></pre><p>The context of execution  becomes important in this case since it mimicks the behaviour of nginx rewrite directive.
-The only allowed location where the optional bool parameter can be used as true is the rewrite_by_lua/rewrite_by_lua_file</p>
+Thus the only allowed context where the optional bool parameter can be used as true is the rewrite_by_lua/rewrite_by_lua_file</p>
 <p><strong>The url arguments</strong></p>
 <p>You can also modify the query string parameters of the req. Here&#39;s how:</p>
 <pre><code>ngx.req.set_uri_args(&quot;a=3&amp;b=hello%20world&quot;)
@@ -740,7 +682,7 @@ ngx.req.set_uri_args({ a = 3, b = {5, 6} })
 <hr>
 <h4 id="the_res">The res</h4>
 
-
+<p><small><a href="#contents">Back to the contents</a></small></p>
 <p>Just like the req the ngx api allows you to modify the response that goes back to client. If
  you have read the <code>ngx.location.capture</code> section you should already be familliar with many
 of the functions that allow you to modify the response. Nevertheless we will take a better look here: -</p>

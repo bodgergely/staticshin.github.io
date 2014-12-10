@@ -29,6 +29,7 @@
 </ul>
 </li>
 <li><a href="#debug_openresty">Debugging openresty scripts</a></li>
+<li><a href="#organization">Organizing your lua code</a></li>
 </ol>
 <hr>
 <h1 id="why_openresty">Why openresty?</h1>
@@ -55,7 +56,7 @@ it&#39;s low memory usage and removes the barriers to developing applications wi
 <p>&quot;<strong>And what are these barriers?</strong>&quot;</p>
 <p>The configuration files themselves. While they are quite flexible all they do is they limit the power of nginx to the set
 that is configurable. Sure you can do a lot but not anything beyond what is allowed. Here is a simple example for instance</p>
-<p>Suppose before forwarding the data <code>POSTed</code> to your application you want to do certain checks on it so that you can be sure that your application get&#39;s only the clean refined data to operate upon. Is there any easy way to validate the data posted to nginx before it is forwarded to your application server? If there is I could not find it. But in open resty this is as simple as</p>
+<p>Suppose before forwarding the data <code>POSTed</code> to your application you want to do certain checks on the data so that you can be sure that your application recieves only the clean refined data to operate upon. Is there any easy way to validate the data posted to nginx before it is forwarded to your application server? If there is I could not find it. But in open resty this is as simple as</p>
 <pre><code>content_by_lua &#39;
 
 -- read the request of the body
@@ -68,7 +69,7 @@ local post_args = ngx.req.get_post_args()
 local clean_body_data = require(&quot;lib/validate&quot;).validate_body(post_args)
 
 &#39;
-</code></pre><p>This has the effect of simplifying your architecture by guaranteeing that any data that is posted to the proxy is valid. So your application layer can focus on operating upon it without worrying about cleansing it first. Once you learn open resty you will be able to identify many such functions that can be better delegated to a proxy. It will simplify your application and use nginx and all it&#39;s low resource, fast performance goodness to the fullest. Win win.</p>
+</code></pre><p>This has the effect of simplifying your architecture by guaranteeing that any data that is posted by the proxy is valid. So your application layer can focus on working upon it without worrying about cleansing it first. Once you learn open resty you will be able to identify many such functions that can be better delegated to a proxy. It will simplify your application and allow you to use nginx and all it&#39;s low resource, fast performance goodness to the fullest. Win win.</p>
 <p>&quot;<strong>But my application is working. I don&#39;t want to change any thing</strong>&quot;</p>
 <p>I am not asking you to change. Remember that openresty is still nginx. Everything that was working will continue to
 work. Openresty just gives you an opprotunity to make use of nginx in ways that you might not have considerd before. You have nothing to loose and much to gain. </p>
@@ -79,7 +80,7 @@ lua modules, how to write loops and conditional statements and the variable scop
 programmed before you can learn all of this before you finish your first cup of coffee :)</p>
 <p><strong>But wait I don&#39;t know any nginx</strong></p>
 <p>Not a problem. Nginx applications are written in what are known as configuration files. You can get
-most of it by just reading but if you encounter any problem the <a href="http://nginx.org/">nginx has a very detailed documentation</a> and tonnes of community support so you should be able to google your way out of any trouble.
+most of it by just reading but if you encounter any problem the <a href="http://nginx.org/">nginx website has a very detailed documentation</a> and tonnes of community support so you should be able to google your way out of any trouble.
 The entire guide is written with the assumption that</p>
 <ol>
 <li>You have no knowledge of nginx</li>
@@ -173,6 +174,16 @@ http {
 <p><code>nginx -p  pwd -s reload</code></p>
 <p>now <code>curl http://localhost:8080/by_file</code> should return</p>
 <p><code>&lt;p&gt;hello world from lua&lt;/p&gt;</code></p>
+<p><strong>Some notes</strong></p>
+<ol>
+<li><p>The directory structure that we used in this example is just a suggestion. It has no bearing whatsoever
+on writing lua scripts. If you have a pretty bug lua application it is likely that your code will be divided
+into specific scripts that execute as directive handlers (like the content_by_lua script that we wrote above) and
+generic modules that will be used across many handlers (like say an authentication module that will be run across multiple content_by_lua handlers)</p>
+</li>
+<li><p>Openresty follows lua convention of modules. So you can easily package a repeatable unit of code in a file and <code>require()</code> the file and use it&#39;s functions. We discuss more on this in the <a href="#organization">organizing your lua code section</a></p>
+</li>
+</ol>
 <hr>
 <h1 id="directives">Directives</h1>
 
@@ -181,38 +192,45 @@ http {
 These directives are either block level or simple. Simple directives are 
 structured as the name of the directive and the name of the parameters. 
 The directive name and the parameters are separated by a space and the end of the 
-directive is marked by a <code>;</code>. The block level directives were similar with
-the only difference being  it was marked by <code>{</code> and
+directive is marked by a <code>;</code>. The block level directives are similar in with
+the only difference being  it is marked by <code>{</code> and
 <code>}</code> brackets. Within a block level directive there could be one or more 
-simple directives.These directives made up the configuration files.</p>
+simple directives. These directives make up the configuration files. Time for an example:- </p>
 <pre><code>#location is a block level directive
 
 location /{
+
 #proxy_pass is a simple directive
 proxy_pass http://localhost:5984/; 
 
 }
-</code></pre><p><code>nginx_lua</code> keeps the same structuring of the configuration files. </p>
+</code></pre><p>Openresty keeps the same structuring of the configuration files. You still create configuration files with
+simple and block level directives. Any nginx directive works with openresty in the same way as it would in a
+vanilla nginx application. However a new set of directives are introduced by openresty that serve as the
+entry point to the lua code.</p>
 <hr>
 <h4 id="openresty_directives">Openresty&#39;s directives</h4>
 
 <p><small><a href="#contents">Back to the top</a></small></p>
+<blockquote>
+<p>Openresty&#39;s directives serve as the entry point of execution for lua code.</p>
+</blockquote>
 <p>As we saw in the last chapter there is little difference between
 a vanilla nginx configuration and an nginx_lua configuration. In fact almost
 all of the nginx directives can be used as usual in an <code>nginx_lua</code> configuration
-file. However nginx_lua adds several new directives that enhances the configurability
-of nginx. We already looked at <code>content_by_lua</code> and <code>content_by_lua_file</code> directives in the last
-chapter. Here we will take a look at a few more intersting ones</p>
+file. However openresty adds several new directives that enhances the configurability
+of nginx. We already looked at <code>content_by_lua</code> and <code>content_by_lua_file</code>.
+Here we will take a look at a few more intersting ones</p>
 <h4 id="lua_code_cache">lua_code_cache</h4>
 <p>This directive turns the caching of lua modules on or off. By default the<br>the caching is turned on so that the lua modules are loaded once and then 
-just reused. This is a desirable effect and we would not want to reload 
+just reused. This is a desirable effect as we would not want to reload 
 modules on every request. So when would you want to turn the caching off? 
-During the developmental phase. It can be a pain 
+During the development phase. It can be a pain 
 to edit the configuration file, save it and then do an <code>nginx -s reload</code>
 over and over agin. 
 When caching is turned off  the module is reloaded 
 on every request so you can just edit, save your file and then 
-&quot;refresh&quot; to see the changes. Just be sure to turn the <code>lua_code_cache</code> 
+&quot;refresh&quot; the browser to see the changes. Just be sure to turn the <code>lua_code_cache</code> 
 off in production. </p>
 <p>Let us test this by turning <code>lua_code_cache</code> off in our hello world example.
 After the changes our configuration file should look something like this. </p>
@@ -250,10 +268,8 @@ in production.</p>
 <p>in response</p>
 <p>Now edit the hello_world.lua to</p>
 <p><code>ngx.say(&quot;&lt;b&gt;hello world&lt;/b&gt;&quot;);</code> </p>
-<p>and on <code>curl http://localhost:808/</code> you should see the response</p>
-<blockquote>
-<p><b>hello world</b></p>
-</blockquote>
+<p>and on <code>curl http://localhost:8080/</code> you should see the response</p>
+<p><code>&lt;b&gt;hello world&lt;/b&gt;</code></p>
 <p>This makes our workflow of developing  ngx_lua applications much smoother.</p>
 <p><strong>Note</strong> as you might have already guessed <code>lua_code_cache</code> works only for
 <code>*by_lua_file</code>  directives. It will have no effect upon <code>*by_lua</code> directives.</p>
@@ -267,21 +283,50 @@ won&#39;t be detected automatically by nginx. And you will have to
 reload the server manually. This automatic reload works only for lua files.</p>
 <hr>
 <h4 id="init_by_lua">init_by_lua</h4>
-<p>init_by lua directive runs the lua code
-specified by the parameter string on a global level.<br>This is most useful when you want to register 
+<p>init_by_lua directive runs the lua code
+specified by the parameter string on a global level.
+As the name probably suggests the init_by_lua runs the lua
+as nginx is initializing (loading the configuration files). As a result
+we can declare parameters here that will be used by directives in the configuration files after they are loaded. 
+Thus init_by_lua is useful when you want to register 
 lua global variables or start lua modules during 
 the nginx server start up. </p>
 <p>Before we take a look at the example of <code>init_by_lua</code> a friendly warning.</p>
-<p>Refrain from using lua global variables. For most variables you should use a <code>local</code> 
+<p>As a general principle refrain from using lua global variables. For most variables you should use a <code>local</code> 
 keyword to declare lua variables local to it&#39;s scope. And remember any variable declared
 without a <code>local</code> keyword is global in lua.</p>
 <pre><code>local cat = &quot;meow&quot; -- use this form most of the time
 dog = &quot;woof&quot; -- avoid this form except for when it makes sense
-</code></pre><p>When does it make sense to use global varialbes?</p>
+</code></pre><p>Why refrain from using global variables?</p>
+<p>Openresty is based on the principle of request isolation. Any request that goes to a location
+block say <code>location /one{}</code> is independant from the request that goes to the <code>location /two{}</code>. Every
+request handler has it&#39;s own set of global variables that are deleted at the end of the request cycle. </p>
+<p>When does it make sense to use global varialbes?</p>
 <p>Suppose you want to use a module that parses JSON which will be used<br>in many handlers, or a database client that will be used in many handlers 
 or any other module that will be used across many handlers then it makes sense 
 to declare the variable global and even then init_by_lua should be the only place 
 where you do it.</p>
+<p><strong>An example to illustrate the difference b/w local and global variables</strong></p>
+<pre><code>init_by_lua &#39;
+
+cjson = require(&quot;cjson&quot;) -- cjson is a global variable
+
+&#39;
+
+location /one {
+local validate = require(&quot;lua/validate&quot;) -- validate is a local variable
+decoded_one = cjson.decode({hello=&quot;world&quot;}) --decoded_one is a global variable
+}
+
+location /two{
+ngx.say(cjson.encode(decoded_one))
+}
+</code></pre><p>In the example above we have two global variables. The first one <code>cjson</code> in the init_by_lua is
+a true global variable. One that can be accesed across the request handleer. The second global variable
+that we declare in the <code>location /one</code> block is global only in the context of <code>/one</code> if we try to access
+this in the <code>/two</code> block we get a nil value. Besides having unexpected effects global varibles have performance
+penalties of being looked up from a global table. Conclusion: global variables are to be used sparingly for things
+we want to be truly global.</p>
 <p><code>init_by_lua</code> has a variant in <code>init_by_lua_file</code> where you can supply a file 
 containing the lua code that will be run in a global context. 
 Everything that we talked about in <code>init_by_lua</code> 
@@ -751,7 +796,10 @@ ngx.say(cjson.encode({a=1,b=2})) -- you can also send json in the repsonse body
 <p>But error logs are only effective when an error occurs in our program. What if we want to say quyickly see the value of a variable? For these cases we can use a combination of <code>ngx.log()</code> and the nginx&#39;s logging constants to write to the error log. For instance we can do this:-</p>
 <pre><code>local body = res.body
 ngx.log(ngx.ERR,body)
-</code></pre><p>and it will append the body data to the error log. One of the areas where I feel that openresty is lagging in the code inspection part. Unlike it&#39;s name  <code>ngx.print()</code> does not print to the console but instead outputs the data to the client. Although using a combination of displaying the error log on the console and openresty&#39;s log functions we can display results on our terminal but still it is not as good as other say <code>console.log()</code> in node js. Maybe the tooling for debugging openresty scripts will improve in the future. But it&#39;s just a minor impedence and does not bother much once you get used to it.</p>
+</code></pre><p>and it will append the body data to the error log. One of the areas where I feel that openresty is lagging in the code inspection part. Unlike it&#39;s name  <code>ngx.print()</code> does not print to the console but instead outputs the data to the client. Although using a combination of displaying the error log on the console and openresty&#39;s log functions we can display results on our terminal but still it is not as good as say <code>console.log()</code> in node js. Maybe the tooling for debugging openresty scripts will improve in the future. But it&#39;s a minor impedence that does not bother much once you get used to it.</p>
+<h1 id="organization"></h1>
+
+<p><small><a href="#contents">Back to the contents</a></small></p>
 
       <h1>Thank you for reading</h1>
     </div>

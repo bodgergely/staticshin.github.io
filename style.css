@@ -277,6 +277,9 @@ hr{
     }
 }
 
+.brand{
+    letter-spacing:4px;
+}
 @media (min-width:1000px){
     .post,#post{
         margin-left:20%;

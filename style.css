@@ -160,6 +160,7 @@ footer{
 }
 header{
     margin-bottom:15%;
+    font-family:courier;
 }
 header>nav{
     
@@ -215,7 +216,7 @@ body>h1:first-child{
 }
 h1,h2,h3,h4,h5,h6{
     color:#073642;
-    font-style:courier;
+    font-family:courier;
 }
 .post,#post{
     margin:6% 5% 5% 5%;

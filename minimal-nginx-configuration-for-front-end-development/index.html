@@ -58,11 +58,11 @@
 <li>It is much more than just a static file server and can be used to load balance requests to your application.</li>
 <li>A single nginx server can act as a gateway to multiple servers. So you can have requests to your apache, iis or node js server all through nginx.  This can be very handy as it allows for complex deployments in a very easy manner.</li>
 <li>It is good practice to have a static file server in front of your application server as it takes pressure away from it.  Although serving static files sounds relatively simple there is a lot going under the hood : reading files, detecting their mime types, compressing them, sending the response, maintaining cache and checking the validity of etags etc. So in general you should always delegate the task of serving static files to a server that is designed for this specific purpose. </li>
-<li>Perhaps the most important advantage, at least for me, is that nginx allows you to change urls of the resources without having to change the routes of your of your application. You might encounter a situation where you may have to change the url scheme of your a application. Rather than killing the old urls you can use nginx to permanently redirect them to the new scheme.  </li>
-<li>Top notch documentation. You can learn everything there is to know about nginx by reading the official docs. </li>
+<li>Perhaps the most important advantage, at least for me, is that nginx allows you to change urls of the resources without having to change the routes of your application. It is not uncommon to find yourself in a situation where you may have to change the url scheme of your  application. Rather than killing the old urls you can use nginx to permanently redirect them to the new scheme.  </li>
+<li>Top notch documentation. You can learn everything there is to know about nginx by <a href="http://nginx.org/en/docs/">reading the official docs</a>. </li>
 </ol>
-<p>So while nginx has many uses we don't need to go in depth before making use of it in our simple scenario. So enough talk let us see how nginx can help us. </p>
-<p>Nginx configuration files are located in the directory in which you installed nginx. Go to the directory and look for nginx.conf. We start with a simple nginx configuration :</p>
+<p>So while nginx has many uses we don't need to go in depth before making use of it in our simple scenario. Let us see how nginx can help us. </p>
+<p>By default nginx configuration files are located in the directory in which you installed nginx. Go to the directory where you have installed nginx and look for nginx.conf(should be present in a folder called conf). Here's what a simple nginx configuration looks like :</p>
 <pre><code>#user  nobody;
 worker_processes  1;
 
@@ -94,12 +94,17 @@ server {
         include /etc/nginx/sites-enabled/*;
         }
 }</code></pre>
-<p>Too big? Let us break it down and understand the blocks step by step. </p>
+<p>Too big? Let us break it down and understand the blocks step by step. But before that a few things to note:-</p>
 <ul>
 <li>First of all nginx interprets anything after # as a comment. </li>
 <li>White spaces are not interpreted</li>
 <li>statements end with a  ';'</li>
 </ul>
+<p>The configuration files are organized as a series of blocks. These blocks are interpreted top-down. That is the 
+configuration parameters that are applied to the top level block affect the blocks that come after it unless 
+they are overridden in the lower level block. For example if an http block contains a directive such as  </p>
+<p><code>gzip on;</code></p>
+<p>that instructs nginx to turn gzip on. Then this instruction will be applied to all the blocks that are contained within http block. Okay so let's start now with the http block:- </p>
 <p><strong>http block</strong></p>
 <p>The http block contains a set of "global" directives for nginx. Let us take a look at a sample http block</p>
 <pre><code>http {
@@ -115,11 +120,11 @@ server {
                       text/javascript;
 
 include /etc/nginx/sites-enabled/*;</code></pre>
-<p>The the include directive tells nginx to load the contents of the specified path. This is useful when you find that you have added lots of <em>server blocks</em> or configuration settings and want to take them out of the main file to keep it uncluttered.  For instance the the first include directive tells nginx to look for the file 'mime.types' in the '/etc/nginx' directory.  And sure enough if you open mime.types file in your editor you will see a list of supported mime types by nginx. </p>
-<p>The second include directive '/etc/nginx/sites-enabled/<em>' tells nginx to include all the files in the '/etc/nginx/sites-enabled' directory. Notice the the special symbol "</em>" which is a shorthand for all. The command is interpreted by nginx as "everything within sites-enabled". </p>
-<p>The http block includes a lot of other useful directives. For instance the gzip directive is used to instruct nginx to compress the files before sending it to the client.  And you can probably guess that gzip_types specifies the types of files to be compressed and gzip_comp_level sets the level of compression for the file. Greater the level more resources will be required to compress it. A list of directives can be seen in the <a href="http://nginx.org/en/docs/">offical documentation</a>. </p>
-<p>An important point to note is that every directive specified in parent block will be applied to the children blocks unless it is explicitly overridden in that block.</p>
-<p>The most interesting part of the http block is the server variable. This server configuration lets you create one or more virtual servers . The basic configuration follows the same structure as that of http block</p>
+<p>The the include directive tells nginx to load the contents of the specified path. This is useful when you find that you have added say lots of <em>server blocks</em> or configuration settings and want to take them out of the main file to keep it uncluttered.  For instance the the first include directive in our example configuration above tells nginx to look for the file called 'mime.types' in the '/etc/nginx' directory.  And sure enough if you open mime.types file in your editor you will see a list of supported mime types by nginx. </p>
+<p>The second include directive '/etc/nginx/sites-enabled/_' tells nginx to include all the files in the '/etc/nginx/sites-enabled' directory. Notice the the special symbol <code>*</code> which is a shorthand for all. The command is interpreted by nginx as "everything within sites-enabled". </p>
+<p>The http block also contains other useful directives. For instance the gzip directive we talked about before is used to instruct nginx to compress the files before sending it to the client.  And you can probably guess that gzip_types specifies the types of files to be compressed and gzip_comp_level sets the level of compression for the file. Greater the level more resources will be required to compress it. A list of directives can be seen in the <a href="http://nginx.org/en/docs/">official documentation</a>. </p>
+<p>It is worth repeating here that every directive specified in parent block will be applied to the children blocks unless it is explicitly overridden in that block.</p>
+<p>The most interesting part of the http block is the server block that contains configuration directives for a server. The basic configuration follows the same structure as that of http block</p>
 <pre><code>server {
 //configuration of the server
 }</code></pre>
@@ -131,13 +136,13 @@ root  /home/user/Desktop/Repo/Project
   }
 
 }</code></pre>
-<p>The configuration defined above creates a server block that listens for connection on "localhost:9090". A location directive marks the root directory of the server as " /home/user/Desktop/Repo/Project" which means that it will serve files from this directory. A request like " localhost:9090/about.html"  will make nginx look up about.html file in "/home/user/Desktop/Repo/Project" directory. If it finds  the file it will be served otherwise a 404 message will be returned.  </p>
-<p>You can have as many server blocks as you wish. You can move server blocks into a different file and include it with the include directive like we discussed above. Remember to reload nginx with <code>nginx -s reload</code> after you have edited the config file to make the changes available to nginx. Reload does not restart the ningx server so you can change the configurations even in a prodction environment without worrying about any downtime. </p>
+<p>The configuration defined above creates a server block that listens for connection on "localhost:9090". A location block marks the root directory of the server as " /home/user/Desktop/Repo/Project" which means that it will serve files from this directory. A request like " localhost:9090/about.html"  will make nginx look up about.html file in "/home/user/Desktop/Repo/Project" directory. If it finds  the file it will be served otherwise a 404 message will be returned.  </p>
+<p>You can have as many server blocks as you wish. You can move server blocks into a different file and include it with the include directive like we discussed above. Remember to reload nginx with <code>nginx -s reload</code> after you have edited the config file to make the changes available to nginx. Reload does not restart the ningx server (it just reloads the nginx configuration) so you can change the configurations even in a prodction environment without worrying about any downtime. </p>
 <p>The location blocks besides pointing to a specific file can also direct requests to a server running on a different port using a proxy_pass directive. Like so</p>
 <pre><code>location /create{
 proxy_pass http://localhost:3000/createUser
 }</code></pre>
-<p>Now we have acquired the all knowledge necessary to create a minimal configuration for serving up static files. I like to keep all my projects under a single folder and then create sub folders within it for different projects. For me the following server configuration is enough</p>
+<p>Now we have acquired the all knowledge necessary to create a minimal configuration for serving up static files let us see hwo we can use this information to our advantage. I like to keep all my projects under a single folder and then create sub folders within it for different projects. For me the following server configuration is enough</p>
 <pre><code>server{
 
 listen localhost:9090;
@@ -148,6 +153,27 @@ root  /home/user/Desktop/Repo/Projects
 
 }</code></pre>
 <p>Now I can access my static websites by pointing browser to 'localhost:9090/project1', 'localhost:9090/project2/about.html' and so on.  And with this I have a simple fast static file server. Easy no?</p>
+<h3>ADDENDUM</h3>
+<p><strong> Keeping the configuration files separate</strong></p>
+<p>Up until this point we have been editing the nginx configuration files that come with the installation. Now if your use of nginx is small and you only need it to serve up your static files (which was the goal of this post) then it's fine to directly edit those files. However if you are a heavy user and need more flexibility  then it's probably better to create config files on a project by project basis and then start nginx with a location to that file. </p>
+<p>Suppose you have a config file called "test.config" in the /home/akshat/Desktop directory. So how do you tell nginx to load this configuration file? It's pretty simple. Create a folder called logs where in the directory where your configuration file is present and then type the command:-</p>
+<p><code>nginx  -p /home/akshat/Desktop  -c ./test.config</code></p>
+<p>The nginx command line utility comes with two switches </p>
+<p>-p which tells it to look for the directory in which the configuration file is present and </p>
+<p>-c which tells it the name of the configuration file to load. </p>
+<p>Now you can even have a separate configuration file for each of your projects. You might be surprised by all the folders that suddenly appear in your directory but let them be nginx creates them automatically. </p>
+<p><strong>Do more with modules</strong></p>
+<p>nginx community has created a tonne of modules that extend nginx's behaviour. <a href="http://nginx.org/en/docs/">The docs</a> contain a list of them under the heading "module reference". Which module you plan to use depends upon your use case. </p>
+<p>But I will give you a small example of how I use it. Among the modules you will find one called <a href="http://nginx.org/en/docs/http/ngx_http_autoindex_module.html">autoindex</a>. If there is no index file present in the directory then this module serves up all the files that are present in the directory. I've set up a location Pictures</p>
+<pre><code>    location /Pictures{
+    root /home/akshat/;
+    autoindex on;
+    }</code></pre>
+<p>which serves up a list of all the photos in my pictures directory. When I feel like browsing I open up my terminal and start nginx and there they all are waiting to be clicked ---A lazy man's photo gallery. There are lots of other useful modules like this which you can use to further enhance what your nginx does.</p>
+<p><strong>Learn how to script nginx</strong></p>
+<p>Love nginx? Want to do more with it that modules and configuration files allow? Would you like 
+to script it with an easy to use language? Then learn <a href="http://openresty.org/">openresty</a>. I've got a 
+little guide that can <a href="http://www.staticshin.com/programming/definitely-an-open-resty-guide/">definitely help you learn it quickly</a></p>
 </div>
     </div>
 

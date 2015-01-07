@@ -156,12 +156,12 @@ root  /home/user/Desktop/Repo/Projects
 <h3>ADDENDUM</h3>
 <p><strong> Keeping the configuration files separate</strong></p>
 <p>Up until this point we have been editing the nginx configuration files that come with the installation. Now if your use of nginx is small and you only need it to serve up your static files (which was the goal of this post) then it's fine to directly edit those files. However if you are a heavy user and need more flexibility  then it's probably better to create config files on a project by project basis and then start nginx with a location to that file. </p>
-<p>Suppose you have a config file called "test.config" in the /home/akshat/Desktop directory. So how do you tell nginx to load this configuration file? It's pretty simple. Create a folder called logs where in the directory where your configuration file is present and then type the command:-</p>
+<p>Suppose you have a config file called "test.config" in the "/home/akshat/Desktop" directory. So how do you tell nginx to load this configuration file? It's pretty simple. Create a folder called logs where in the directory where your configuration file is present and then type the command:-</p>
 <p><code>nginx  -p /home/akshat/Desktop  -c ./test.config</code></p>
 <p>The nginx command line utility comes with two switches </p>
 <p>-p which tells it to look for the directory in which the configuration file is present and </p>
 <p>-c which tells it the name of the configuration file to load. </p>
-<p>Now you can even have a separate configuration file for each of your projects. You might be surprised by all the folders that suddenly appear in your directory but let them be nginx creates them automatically. </p>
+<p>Now you can even have a separate configuration file for each of your projects. You might be surprised by all the folders that suddenly appear in your directory--- but let them be nginx creates them automatically. </p>
 <p><strong>Do more with modules</strong></p>
 <p>nginx community has created a tonne of modules that extend nginx's behaviour. <a href="http://nginx.org/en/docs/">The docs</a> contain a list of them under the heading "module reference". Which module you plan to use depends upon your use case. </p>
 <p>But I will give you a small example of how I use it. Among the modules you will find one called <a href="http://nginx.org/en/docs/http/ngx_http_autoindex_module.html">autoindex</a>. If there is no index file present in the directory then this module serves up all the files that are present in the directory. I've set up a location Pictures</p>
@@ -171,9 +171,9 @@ root  /home/user/Desktop/Repo/Projects
     }</code></pre>
 <p>which serves up a list of all the photos in my pictures directory. When I feel like browsing I open up my terminal and start nginx and there they all are waiting to be clicked ---A lazy man's photo gallery. There are lots of other useful modules like this which you can use to further enhance what your nginx does.</p>
 <p><strong>Learn how to script nginx</strong></p>
-<p>Love nginx? Want to do more with it that modules and configuration files allow? Would you like 
-to script it with an easy to use language? Then learn <a href="http://openresty.org/">openresty</a>. I've got a 
-little guide that can <a href="http://www.staticshin.com/programming/definitely-an-open-resty-guide/">definitely help you learn it quickly</a></p>
+<p>Love nginx? Want to do more with it than modules and configuration files allow? Would you like 
+to script it with an easy to use language,lua? Then learn <a href="http://openresty.org/">openresty</a>. I've also got a 
+little guide that can <a href="http://www.staticshin.com/programming/definitely-an-open-resty-guide/">definitely help you learn it quickly</a>.</p>
 </div>
     </div>
 

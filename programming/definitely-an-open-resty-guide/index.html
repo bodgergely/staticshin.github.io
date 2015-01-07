@@ -33,7 +33,7 @@
 </ul>
 </li>
 <li><a href="#debug_openresty">Debugging openresty scripts</a></li>
-<li><a href="#organization">Organizing your lua code</a></li>
+<li><a href="#openresty_global_var">Openresty global variable</a></li>
 </ol>
 <hr>
 <h1 id="why_openresty">Why openresty?</h1>
@@ -739,9 +739,37 @@ ngx.say(cjson.encode({a=1,b=2})) -- you can also send json in the repsonse body
 <pre><code>local body = res.body
 ngx.log(ngx.ERR,body)
 </code></pre><p>and it will append the body data to the error log. One of the areas where I feel that openresty is lagging in the code inspection part. Unlike it&#39;s name  <code>ngx.print()</code> does not print to the console but instead outputs the data to the client. Although using a combination of displaying the error log on the console and openresty&#39;s log functions we can display results on our terminal but still it is not as good as say <code>console.log()</code> in node js. Maybe the tooling for debugging openresty scripts will improve in the future. But it&#39;s a minor impedence that does not bother much once you get used to it.</p>
-<h1 id="organization"></h1>
+<h1 id="openresty_global_var"></h1>
 
 <p><small><a href="#contents">Back to the contents</a></small></p>
+<p>In the previous sections we stressed on using local variables by default and
+refrain from using global variables in ngx_lua. I will try to expand a bit on the reason
+for the emphasis.</p>
+<p>ngx_lua is designed with the principle of request isolation in mind. According to this principle every
+request handler is run in it&#39;s own co routine with it&#39;s own environment. Two requests handlers do not
+share data between them and are executed independently of one another. It follows therefore that
+the global variables that are defined in the context of one request handler will not be accessible
+from another request handler. And if you try to access what you think is a global variable it
+will only result in nil errors.</p>
+<p><strong>But what about modules?</strong></p>
+<p>Openresty allows you to use your own modules as well as the modules that come with it. A statement
+like <code>local module = require(&quot;/dir/packer&quot;)</code></p>
+<p>will load the package &quot;packer&quot; in the local variable &quot;module&quot;. But what if we require this module again in another
+handler would lua reload the package again? No it wouldn&#39;t. That is because after package is loaded it is
+cached inside a <code>package.loaded</code> table in lua. Any subsequent requests for that module will
+simply read from the package.loaded table. So there will no performance penalties. Remember though that when you set <code>lua_code_cache</code> to off the packages are not cached and are reloaded on every request. </p>
+<p>True global variables in ngx_lua can be declared in the init_by_lua directive. Any global variable that
+you declare here will be accessible from all the nginx&#39;s request handlers.</p>
+<p>So we can combine the facts that lua caches it&#39;s modules in a <code>package.loaded</code> table and
+that global variables can be declared in the init_by_lua directive and derive a very useful
+conclusion out of it. That any module you load in the init_by_lua will be accessible from
+all the request handler without any need of requiring it. So all those modules that
+you need across many different request handlers can be declared here. I find that
+the <code>cjson</code> module that come prepackaged with lua to be a good contender for global declaration since
+almost all my request handlers use it.</p>
+<p>In fact global variables themselves are loaded into the _ENV table. Thus any global variable
+that you access is a table look up which can be expensive as compared to accessing a local variable.
+If you want to know why check out <a href="http://stackoverflow.com/questions/9132288/why-are-local-variables-accessed-faster-than-global-variables-in-lua">this question on stackoverflow</a>.</p>
 
       <h1>Thank you for reading</h1>
     </div>

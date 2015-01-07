@@ -775,8 +775,8 @@ If you want to know why check out <a href="http://stackoverflow.com/questions/91
 <h3 id="structuring_openresty_apps">Organizing openresty code</h3>
 
 <p><small><a href="#contents">Back to the contents</a></small></p>
-<p>When you are building openresty application there are usually working with the nginx
-configuration files and the lua code for various *by_lua_directives. Therefore structuring
+<p>When you are building openresty applications you are usually working either with the nginx
+configuration files or with the lua code in various *by_lua_directives. Therefore structuring
 openresty applications involves organizing the nginx&#39;s configuration files and organizing
 the lua code. I have not come upon any guideline that lays down the principle for doing this
 so I am just going to write on how I structure my code for openresty applications. Maybe that will
@@ -818,19 +818,19 @@ location /paypal_adaptive_api{
 configuration for location blocks from global configuration. Global configuration has hardly changed 
 since I first committed it but I regularly update the &quot;routes.conf&quot; file. The benefit of splitting on 
 location is that in one quick glance of your main file  you can tell how many servers you are using, 
-what their addresses are, what configuration they are working on. And this is very useful to me since in 
+what their addresses are, what configuration they are working with. And this is very useful to me since in 
 one configuration I usually define multiple server blocks depending upon the requirements. The main configuration 
-file the serves as a &quot;Table of contents&quot; for my application. </p>
+file thus serves as a &quot;table of contents&quot; for my application. </p>
 <p><strong>The lua code</strong></p>
-<p>The organization of lua code is largely similar to what you would do in any lua application. 
-You create lua files. For repeat behaviour extract out the functions into modules. Use those modules 
+<p>The organization of lua code is mostly similar to what you would do in any lua application. 
+You create lua files. For repeat behaviour you extract out the functions into modules. Use those modules 
 in your files by requiring them. Basic stuff. </p>
 <p>Openresty however allows you to add lua scripts as strings. Do not do this. It makes things 
-impossibly hard to debug, Plus writing code becomes a chore as the text editor refuses to analyze 
-the code and provide code completion etc. Lots of inconvenience that can be avoided by using 
-*by_lua_file directives.  </p>
+impossibly hard to debug. Plus writing code becomes a chore as the text editor refuses to analyze 
+the code does not provide any code completion etc. Lots of inconvenience that can be avoided simply 
+ by using *by_lua_file directives.  </p>
 <p>As to the directory structure. I like to use the one that I defined in the beginning of the book. </p>
-<p>logs folder- for the lua logs</p>
+<p>logs folder- for the nginx&#39;s logs</p>
 <p>lua folder - for the lua code</p>
 <p>and all the configuration files in the parent directory. Simple and straightforward.</p>
 <p>But if you have a preferred way of organizing your code feel free to do it that way. All that 

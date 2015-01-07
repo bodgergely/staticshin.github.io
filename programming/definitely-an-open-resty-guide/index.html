@@ -12,7 +12,8 @@
   </head>
   <body>
     <div id="post">
-      <h1 id="contents">Contents</h1>
+      <h1 id="definitely-an-openresty-guide">Definitely an openresty guide</h1>
+<h1 id="contents">Contents</h1>
 
 <ol>
 <li><a href="#why_openresty">Why openresty</a></li>
@@ -34,6 +35,7 @@
 </li>
 <li><a href="#debug_openresty">Debugging openresty scripts</a></li>
 <li><a href="#openresty_global_var">Openresty global variable</a></li>
+<li><a href="#structuring_openresty_apps">Organizing code in openresty</a></li>
 </ol>
 <hr>
 <h1 id="why_openresty">Why openresty?</h1>
@@ -739,7 +741,7 @@ ngx.say(cjson.encode({a=1,b=2})) -- you can also send json in the repsonse body
 <pre><code>local body = res.body
 ngx.log(ngx.ERR,body)
 </code></pre><p>and it will append the body data to the error log. One of the areas where I feel that openresty is lagging in the code inspection part. Unlike it&#39;s name  <code>ngx.print()</code> does not print to the console but instead outputs the data to the client. Although using a combination of displaying the error log on the console and openresty&#39;s log functions we can display results on our terminal but still it is not as good as say <code>console.log()</code> in node js. Maybe the tooling for debugging openresty scripts will improve in the future. But it&#39;s a minor impedence that does not bother much once you get used to it.</p>
-<h1 id="openresty_global_var"></h1>
+<h1 id="openresty_global_var">Global variables in openresty</h1>
 
 <p><small><a href="#contents">Back to the contents</a></small></p>
 <p>In the previous sections we stressed on using local variables by default and
@@ -770,6 +772,70 @@ almost all my request handlers use it.</p>
 <p>In fact global variables themselves are loaded into the _ENV table. Thus any global variable
 that you access is a table look up which can be expensive as compared to accessing a local variable.
 If you want to know why check out <a href="http://stackoverflow.com/questions/9132288/why-are-local-variables-accessed-faster-than-global-variables-in-lua">this question on stackoverflow</a>.</p>
+<h3 id="structuring_openresty_apps">Organizing openresty code</h3>
+
+<p><small><a href="#contents">Back to the contents</a></small></p>
+<p>When you are building openresty application there are usually working with the nginx
+configuration files and the lua code for various *by_lua_directives. Therefore structuring
+openresty applications involves organizing the nginx&#39;s configuration files and organizing
+the lua code. I have not come upon any guideline that lays down the principle for doing this
+so I am just going to write on how I structure my code for openresty applications. Maybe that will
+help you....</p>
+<p><strong>nginx configuration files</strong></p>
+<p>I always split my nginx configuration files on the server block. One portion of the file contains a set
+of global directives that will be used by all the blocks. This is the main file. The other file then contains
+location blocks for different server blocks and they are all included in the main configuration by
+the include directive. For example here is what my main configuration file looks like&quot;- </p>
+<pre><code>
+worker_processes  1;
+error_log /dev/stderr;
+#nginx  -p ./  -c ./wrinq.ngx.conf
+events {
+    worker_connections 1024;
+}
+http {
+    lua_code_cache off; #only during development
+    init_by_lua &#39;cjson = require(&quot;cjson&quot;)&#39;;
+    include       mime.types;
+    root ./;
+    server {
+        server_name localhost;
+        listen 3125;
+        include ./routes.conf;
+
+    }
+}
+</code></pre><p>Here is a portion of &quot;routes.conf&quot; </p>
+<pre><code>location /couchdb{
+    proxy_pass http://127.0.0.1:5984/$arg_endpoint?$args;
+}
+
+location /paypal_adaptive_api{
+    resolver  8.8.8.8;
+    proxy_pass https://svcs.sandbox.paypal.com/AdaptivePayments/Pay;
+}
+</code></pre><p>To nginx it makes no difference (for it it&#39;s all one big config file) but it helps me focus when I separate out the 
+configuration for location blocks from global configuration. Global configuration has hardly changed 
+since I first committed it but I regularly update the &quot;routes.conf&quot; file. The benefit of splitting on 
+location is that in one quick glance of your main file  you can tell how many servers you are using, 
+what their addresses are, what configuration they are working on. And this is very useful to me since in 
+one configuration I usually define multiple server blocks depending upon the requirements. The main configuration 
+file the serves as a &quot;Table of contents&quot; for my application. </p>
+<p><strong>The lua code</strong></p>
+<p>The organization of lua code is largely similar to what you would do in any lua application. 
+You create lua files. For repeat behaviour extract out the functions into modules. Use those modules 
+in your files by requiring them. Basic stuff. </p>
+<p>Openresty however allows you to add lua scripts as strings. Do not do this. It makes things 
+impossibly hard to debug, Plus writing code becomes a chore as the text editor refuses to analyze 
+the code and provide code completion etc. Lots of inconvenience that can be avoided by using 
+*by_lua_file directives.  </p>
+<p>As to the directory structure. I like to use the one that I defined in the beginning of the book. </p>
+<p>logs folder- for the lua logs</p>
+<p>lua folder - for the lua code</p>
+<p>and all the configuration files in the parent directory. Simple and straightforward.</p>
+<p>But if you have a preferred way of organizing your code feel free to do it that way. All that 
+matters is that when you read your code it should be easy for you to understand it. Otherwise use whatever 
+that suits you. </p>
 
       <h1>Thank you for reading</h1>
     </div>

@@ -65,29 +65,29 @@ _security. The _security document is unique to every database. Let's see what it
     }
 }</code></pre>
 <h3>The construction of _security document</h3>
-<p>Every _security document consists of two mandatory fields called <code>admins</code> and <code>members</code>. Both admins and 
+<p>Every _security document[1] consists of two mandatory fields called <code>admins</code> and <code>members</code>. Both admins and 
 members are json objects that in turn are made up of 
-arrays called <code>names</code> and <code>roles</code>. The name in an admin or a member property must be the name  of 
+arrays called <code>names</code> and <code>roles</code>. The name in an admin or a member property must[2] be the name  of 
 the user stored in _users database. When couchdb 
 <a href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb/">authenticates a user</a> 
 from the _users database it 
-can run checks against the _security document of each database to determine whether the authenticated 
+can run checks[3] against the _security document of each database to determine whether the authenticated 
 user is an admin or a member. </p>
-<p>The roles property on the other hand is free form--- meaning you can supply any value in the roles array. 
+<p>The roles property on the other hand is free form--- meaning you can supply any value in the roles[4] array. 
 What roles you choose would depend upon your application. If for example you are making an online library 
 with couchdb you could use "librarian" and "reader" as roles. The significance of roles is that you can 
 add role based checks in <a href="http://wiki.apache.org/couchdb/Document_Update_Validation">document validate functions</a> 
 and choose who updates what documents. </p>
 <h3>Difference between an admin and a member</h3>
-<p>An admin is authorized to perform CRUD on _design and _security documents. </p>
-<p>A member can only read or write normal documents--- all documents except _design and the _security documents. </p>
+<p>An admin is authorized to perform CRUD on _design and _security documents.[5] </p>
+<p>A member can only read or write normal documents--- all documents except _design and the _security documents.[6] </p>
 <h3>Effect of adding a _security document</h3>
 <p>Once you add a _security to the database then the database can only be accessed by the person who 
-is a part of the _security document. Any un-authorized person would be forbidden from accessing the database. </p>
+is a part of the _security document. Any un-authorized person would be forbidden from accessing the database. [7]</p>
 <h3>So what does the _security secure?</h3>
 <p>The conclusion is pretty easy to draw. couchdb offers <em>minimal</em> read level security on the normal documents (that is all documents except the special _design and _security documents). Minimal because once you set either an admin or a member in the _security document then only the person that has been added to _security object can read from the database. But you 
 can't set conditional reading. Any member or any admin will be able to read all normal documents. 
-That is there is no validate_on read function (In <a href="https://github.com/rcouch/rcouch/wiki/Validate-documents-on-read">rcouch</a> there is a validate_doc_read function). </p>
+That is there is no validate_on read function (In <a href="https://github.com/rcouch/rcouch/wiki/Validate-documents-on-read">rcouch</a> there is a validate_doc_read function). [8]</p>
 <p>On the other hand couchdb offers full write level security. 
 You can add conditional checks on who creates, updates or deletes a 
 document using document update functions. </p>
@@ -98,6 +98,33 @@ document using document update functions. </p>
 <p>admins have the ability to write, read and update special documents of the database (_design and _security) 
 where as the the members only have permission to read and write the normal documents (that is all documents except _design and _security). </p>
 <p>Finally the write level protection can be enhanced by the use of document validate functions. [9]</p>
+<hr>
+<p>Notes from <a href="https://github.com/kxepal">Alexander</a></p>
+<ol>
+<li>They aren't mandatory at all, just the ones which CouchDB handles in
+special way and requires them to have special structure.</li>
+<li>The "must" is too strong requirement. The name must be string, but it
+should point on some user name, which even may not be existed at all.
+However, this is a security leak in this case.</li>
+<li>When user requests database or any it subresource, CouchDB check his
+context (userCtx - a user name and list of their roles) against
+database _security.</li>
+<li>Any string value. In 1.3.0 we'd dropped support of non-string roles.
+That was bad hack.</li>
+<li>And run any IO-related tasks on database they admins, like compaction,
+running temporary views and views indexes cleanup.</li>
+<li>Members can read design documents, but no modify the. Same about _security one.</li>
+<li>Once you specify database members it becomes only accessible to those
+users or users with specified roles in additional to admin. Those who
+specified in admins grants a power to run IO operations upon database,
+manage _security and design documents.</li>
+<li>Same is above. _security members controls global database read bit;
+_security admins controls exec bit for service operations and write
+bit for design docs and security.</li>
+<li>Correction: using validate document update functions. The update
+functions is a little bit <a href="http://docs.couchdb.org/en/latest/couchapp/ddocs.html#update-functions">different thing</a>.</li>
+</ol>
+<p>Thank you for proofreading this Alex :)</p>
 <p><small>Two guys go to a bar...</small></p>
 </div>
     </div>

@@ -22,6 +22,33 @@
     }
 }
 
+@media (max-width:767px){
+    hr{
+	width:100%;
+    }
+    header>nav li  {
+	font-size:100%;
+
+    }
+    .post,#post{
+	margin-top:10%;
+    }
+    ol,ul{
+	margin-left:2%;
+
+    }
+}
+
+
+@media (min-width:1000px){
+    .post,#post{
+        margin-left:20%;
+        width:60%;
+    }
+    
+}
+
+
 /* @font-face { */
 /*     font-family:"DejaVu Sans Mono"; */
 /*     src: url("./dejavu-sans-mono/DejaVuSansMono.ttf") /\* TTF file for CSS3 browsers *\/ */
@@ -137,32 +164,9 @@ hr{
 
 }
 
-@media (max-width:767px){
-    hr{
-	width:100%;
-    }
-    header>nav li  {
-	font-size:100%;
-
-    }
-    .post,#post{
-	margin-top:10%;
-    }
-    ol,ul{
-	margin-left:2%;
-
-    }
-}
 
 .brand{
     letter-spacing:4px;
-}
-@media (min-width:1000px){
-    .post,#post{
-        margin-left:20%;
-        width:60%;
-    }
-    
 }
 
 pre {

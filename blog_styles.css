@@ -1,0 +1,171 @@
+/*Blog css*/
+@media handheld, only screen and (max-width: 767px) {
+    
+    .grid {
+	width: 100%;
+	min-width: 0;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+    }
+
+    [class*='col-'] {
+	width: auto;
+	float: none;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+    }
+}
+
+/* @font-face { */
+/*     font-family:"DejaVu Sans Mono"; */
+/*     src: url("./dejavu-sans-mono/DejaVuSansMono.ttf") /\* TTF file for CSS3 browsers *\/ */
+/* } */
+
+footer{
+    text-align:center;
+}
+header{
+    margin-bottom:15%;
+    font-family:courier;
+}
+header>nav{
+    
+    margin-top:0px;
+    background-color:#C54B33;
+    opacity: .8;
+    position:absolute;
+    top:0px;
+    width:100%;
+    
+}
+.nav-grid{
+
+    max-width:100%;
+    color:black;
+    position:absolute; 
+    width:100%;
+    top:33px;
+    max-height:100%;
+    background-color:#fafafa;
+
+}
+
+
+header>nav,header>nav a{
+    color:white;
+}
+header>nav ul {
+    list-style-type:none;
+    margin:0px;
+    padding: 0px;
+    text-align:center;
+
+}
+header>nav li {
+    display:inline;
+    margin-right:2%;
+    cursor:pointer;
+}
+body{
+    background-color:#f5f5dc;
+    font-family:Verdana;
+    letter-spacing:1px;
+    line-height:2em;
+    color:#073642;
+    margin-top:0px;
+    margin-left:0px;
+    margin-right:0px;
+}
+body>h1:first-child{
+    font-size: 20px;
+    line-height:2em;
+}
+h1,h2,h3,h4,h5,h6{
+    color:#073642;
+    font-family:courier;
+}
+.post,#post{
+    margin:6% 5% 5% 5%;
+}
+
+a{
+    text-decoration:none;
+}
+img{
+    max-width:100%;
+}
+
+
+pre>code{
+    color:#d33682;
+    font-size:120%;
+}
+blockquote{
+    font-style:italic;   
+}
+
+.postHeading,.postHeading>a{
+    color:#073642;
+    font-size:120%;
+    text-decoration:none;
+}
+
+.postMeta{
+    font-style:italic;
+    font-size:95%;
+}
+
+.main-menu{
+    
+}
+.sub-menu{    
+    cursor:pointer;    
+}
+
+hr{
+    border-color:#fdfdfd;
+    width:20%;
+
+}
+
+@media (max-width:767px){
+    hr{
+	width:100%;
+    }
+    header>nav li  {
+	font-size:100%;
+
+    }
+    .post,#post{
+	margin-top:10%;
+    }
+    ol,ul{
+	margin-left:2%;
+
+    }
+}
+
+.brand{
+    letter-spacing:4px;
+}
+@media (min-width:1000px){
+    .post,#post{
+        margin-left:20%;
+        width:60%;
+    }
+    
+}
+
+pre {
+    white-space: pre-wrap;       /* CSS 3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}

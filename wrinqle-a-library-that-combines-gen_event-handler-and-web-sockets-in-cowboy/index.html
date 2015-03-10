@@ -38,11 +38,12 @@
       </div>
     </div>
 </header>
-    
-    <div id="post">
-      <h1>Wrinqle a library that combines gen_events and web sockets in cowboy</h1>
-      <span>Akshat Jiwan Sharma,  Sat Nov 23 2013</span>
-      <div class="postBody"><p>A few days back I wrote a <a href="http://www.staticshin.com/node-js-websocket-blues">post</a> in which I outlined a problem that I encountered while using web sockets in node js. Long story short I had trouble managing socket connections in node js. For instance there was no standard way to send a data to a particular socket. The only way was to store the active socket connections in an object and then query the object to get the socket that you want to communicate to.</p>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<h1>Wrinqle a library that combines gen_events and web sockets in cowboy</h1>
+	<span>Akshat Jiwan Sharma,  Sat Nov 23 2013</span>
+	<div class="postBody"><p>A few days back I wrote a <a href="http://www.staticshin.com/node-js-websocket-blues">post</a> in which I outlined a problem that I encountered while using web sockets in node js. Long story short I had trouble managing socket connections in node js. For instance there was no standard way to send a data to a particular socket. The only way was to store the active socket connections in an object and then query the object to get the socket that you want to communicate to.</p>
 <p>While this solution worked it had problems. First of all it was not a very elegant way to do things. My code grew a lot and it was difficult to handle all the edge cases (especially keeping track of socket's life). Another problem was that due to the nature of the work what I wrote was essentially blocking code. There was no way out of looping over objects and performing cpu intensive tasks on it and this scared me. </p>
 <p>I am not implying that my app would have required millions of simultaneous connections but it is usually a good idea to design with some foresight in case the unexpected rise does happen. It is better than rewriting the whole application again to be honest.  My third and final problem was making the code run on several different machines. The only way I know node can work on different machines is by copying the application on the machine and balancing it using a load balancer like nginx or something.  Which gave rise to yet another problem how do I get the nodes to communicate with each other. That is how do I know if a websocket has been registered on an individual node or not?</p>
 <p>I investigated some other solutions like using a messaging queue but I found the integration difficult with web sockets. Yes I could send messages but I would still need to save every socket connection if I wanted to send a message to it individually. Socket.io 's "rooms" concept was the only thing that made sense to me. But socket io project has been failing builds and I don't want most of the features that it offers like support for older browsers. </p>
@@ -65,8 +66,8 @@
 <p>A channel is an <em>active</em> socket that is open for communication. With the above handlers you can send messages to a single channel, to multiple channels and to subscribers of a channel. They all have their own pros and cons which I shall explain in another post. The best part of all this is that my code is tiny, &lt;  500 lines in total. Erlang enabled me to handle a complex problem in an elegant way. I have released my code as a library named <a href="https://github.com/brickcap/wrinqle">wrinqle</a> on github under the MIT licence. The documentation is non existent right now but I am working on a web page that will describe the api in detail.</p>
 <p>Wrinqle will form the basis of my pet project of which I will be talking about a lot about in the coming days. </p>
 </div>
+      </div>
     </div>
-
     <div id="disqus_thread"></div>
     <hr/>
     <footer>
@@ -75,7 +76,6 @@
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
-</div>
 <div>
   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>

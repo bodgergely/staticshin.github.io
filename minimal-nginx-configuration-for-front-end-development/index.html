@@ -38,11 +38,12 @@
       </div>
     </div>
 </header>
-    
-    <div id="post">
-      <h1>Minimal nginx configuration for front end development</h1>
-      <span>Akshat Jiwan Sharma,  Fri Mar 21 2014</span>
-      <div class="postBody"><p><img src="http://farm4.staticflickr.com/3760/13286637965_eb25c7083d_o.png" alt="nginx.conf"></p>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<h1>Minimal nginx configuration for front end development</h1>
+	<span>Akshat Jiwan Sharma,  Fri Mar 21 2014</span>
+	<div class="postBody"><p><img src="http://farm4.staticflickr.com/3760/13286637965_eb25c7083d_o.png" alt="nginx.conf"></p>
 <p>Recently I worked with my friend who is a web designer and I noticed that he served static html files directly from the file system. He did not make use of any web server. I understand the need for keeping things simple and I absolutely love minimal development setups.  But I think that not having a static file server during the developmental phase can cause many problems : </p>
 <ol>
 <li>You have to specify fully formed links to anchor tags, css  and javascript files etc. Links relative to your directory won't work. </li>
@@ -175,8 +176,8 @@ root  /home/user/Desktop/Repo/Projects
 to script it with an easy to use language,lua? Then learn <a href="http://openresty.org/">openresty</a>. I've also got a 
 little guide that can <a href="http://www.staticshin.com/programming/definitely-an-open-resty-guide/">definitely help you learn it quickly</a>.</p>
 </div>
+      </div>
     </div>
-
     <div id="disqus_thread"></div>
     <hr/>
     <footer>
@@ -185,7 +186,6 @@ little guide that can <a href="http://www.staticshin.com/programming/definitely-
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
-</div>
 <div>
   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>

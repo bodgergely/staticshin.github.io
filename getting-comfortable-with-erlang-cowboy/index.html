@@ -38,11 +38,12 @@
       </div>
     </div>
 </header>
-    
-    <div id="post">
-      <h1>Getting comfortable with erlang, cowboy?</h1>
-      <span>Akshat Jiwan Sharma,  Wed Nov 06 2013</span>
-      <div class="postBody"><p>I have been able to grasp the fundamentals of erlang programming quickly. Pattern matching, message passing and other basics of the language felt natural to me even though I had never programmed in a functional language before. So with bubbling enthusiasm I decided to <a href="http://www.staticshin.com/node-js-websocket-blues">write my web socket application</a> in erlang. Well the use case was pretty good. I needed message passing and concurrency and erlang gives those two for free but I underestimated the effort that it would take to learn OTP.</p>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<h1>Getting comfortable with erlang, cowboy?</h1>
+	<span>Akshat Jiwan Sharma,  Wed Nov 06 2013</span>
+	<div class="postBody"><p>I have been able to grasp the fundamentals of erlang programming quickly. Pattern matching, message passing and other basics of the language felt natural to me even though I had never programmed in a functional language before. So with bubbling enthusiasm I decided to <a href="http://www.staticshin.com/node-js-websocket-blues">write my web socket application</a> in erlang. Well the use case was pretty good. I needed message passing and concurrency and erlang gives those two for free but I underestimated the effort that it would take to learn OTP.</p>
 <p>My previous experience with frameworks has been quite good. I did not have much trouble learning Asp.net MVC or express after getting a hang of c# and javascript. OTP however was quite a challenge and even now I don't feel fluent in it. The main problem was that I was trying to learn too much at the same time. I switched my editor to emacs, fiddled around with rebar for dependency management and building, tired to learn relex for creating releases while I still hadn't written a hello world in cowboy. Any one who is new to web development in erlang will probably use these tools for their application and this post might help flatten learning curve a little. </p>
 <h4>The editor</h4>
 <p>You can use any text editor to program in erlang but emacs is the recommended one.  After <a href="http://www.gnu.org/software/emacs/manual/html_node/efaq/Installing-Emacs.html">installing</a> emacs on your machine open up the terminal and type <code>emacs .emacs</code></p>
@@ -78,8 +79,8 @@
 <p><code>console</code> command simply allows all the status messages from app to be printed on the terminal.</p>
 <p>This basic tutorial should be enough for getting your OTP applications to run. I have not covered the use of cowboy framework here intentionally. It is quite a lenghty topic and in subsequent posts I will cover it in more detail as I get to know it better.  </p>
 <br><br></div>
+      </div>
     </div>
-
     <div id="disqus_thread"></div>
     <hr/>
     <footer>
@@ -88,7 +89,6 @@
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
-</div>
 <div>
   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>

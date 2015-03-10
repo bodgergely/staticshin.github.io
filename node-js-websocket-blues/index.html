@@ -38,11 +38,12 @@
       </div>
     </div>
 </header>
-    
-    <div id="post">
-      <h1>Node js websocket blues</h1>
-      <span>Akshat Jiwan Sharma,  Mon Oct 14 2013</span>
-      <div class="postBody"><p>I am new to this whole web socket thing. Up until now I have't really felt the need for them. I knew the theory behind it but I was't sure how I could use them in the applications that I was building. That coupled with the fact that the support of websockets with free PAAS providers like heroku and appfog is limited discouraged me from looking into them deeply. But I am working on this new side project that uses web rtc and web sockets seemed like a very natural choice to use in a signalling server. So I decided to learn it. </p>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<h1>Node js websocket blues</h1>
+	<span>Akshat Jiwan Sharma,  Mon Oct 14 2013</span>
+	<div class="postBody"><p>I am new to this whole web socket thing. Up until now I have't really felt the need for them. I knew the theory behind it but I was't sure how I could use them in the applications that I was building. That coupled with the fact that the support of websockets with free PAAS providers like heroku and appfog is limited discouraged me from looking into them deeply. But I am working on this new side project that uses web rtc and web sockets seemed like a very natural choice to use in a signalling server. So I decided to learn it. </p>
 <p>The client side api of web sockets is simple. Here is a sample code that connects to <a href="http://www.websocket.org/echo.html">echo websocket server</a>.  </p>
 <pre><code>var socket = new WebSocket("ws://echo.websocket.org/");
 
@@ -135,8 +136,8 @@ if(session){
 <p>However I won't be abandoning node js completely. Here is what I am thinking. I would use 2 sockets on the client. I would authenticate the socket using node js. The in the call back of the first one I will make a request with the second that would actually deal with presence notification part. So my application will be divided into two parts. A node js server that handles the authentication. Erlang web socket server that handles signalling. But before that I want to lock down some other stuff like making web rtc calls between two online users before re-writing my signalling server.</p>
 <p>The days ahead are going to be exciting. I will keep you guys posted. </p>
 </div>
+      </div>
     </div>
-
     <div id="disqus_thread"></div>
     <hr/>
     <footer>
@@ -145,7 +146,6 @@ if(session){
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
-</div>
 <div>
   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>

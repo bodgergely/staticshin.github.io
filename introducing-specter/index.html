@@ -38,11 +38,12 @@
       </div>
     </div>
 </header>
-    
-    <div id="post">
-      <h1>Introducing specter</h1>
-      <span>Akshat Jiwan Sharma,  Fri Jun 21 2013</span>
-      <div class="postBody"><p>A lot of bloggers implement google search into their blogs to allow discovery of old archives. While it works well the search results from google are hard to theme according to your blog design and worse google basically forces you to display advertisements on search results. Not cool. There should be an easy way to allow users to search though their content and on their terms. But searching through thousands on lines of text is not that easy. Usually this is achieved with the help of a full text search engine that indexes the contents of the database  to allow search operations on it .For simple blogs however this is an overkill. I mean in the days of static site generators, which I myself <a href="http://www.staticshin.com/blogging-is-fun-again">enjoyed</a> for quite a while by the way, this contrived way of implementing search is not acceptable. </p>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<h1>Introducing specter</h1>
+	<span>Akshat Jiwan Sharma,  Fri Jun 21 2013</span>
+	<div class="postBody"><p>A lot of bloggers implement google search into their blogs to allow discovery of old archives. While it works well the search results from google are hard to theme according to your blog design and worse google basically forces you to display advertisements on search results. Not cool. There should be an easy way to allow users to search though their content and on their terms. But searching through thousands on lines of text is not that easy. Usually this is achieved with the help of a full text search engine that indexes the contents of the database  to allow search operations on it .For simple blogs however this is an overkill. I mean in the days of static site generators, which I myself <a href="http://www.staticshin.com/blogging-is-fun-again">enjoyed</a> for quite a while by the way, this contrived way of implementing search is not acceptable. </p>
 <p>Racking my brain trying to find a solution for the problem I had this wacky idea to build a blogging platform on top of elasticsearch. People have been <a href="http://karussell.wordpress.com/2011/07/13/jetslide-uses-elasticsearch-as-database/">using</a> it as a primary data store so it could work. So I decided to give it a try. After three weeks of hard work I am pleased to announce <a href="https://github.com/brislink/specter">specter</a>, a simple blogging platform that is highly configurable, easily deploy able and supports full text search by default. Woot!</p>
 <h2>Specter for bloggers</h2>
 <p>All right so you are a regular blogger and you wonder why would you want to change from your blogging framework to specter. While building specter I have put in a lot of work in building a system that is <strong>easy to use</strong>. Here are some of it's features</p>
@@ -84,8 +85,8 @@
 </ul>
 <p>So give it a try. Let me know what you think. Raise issues if you find any and most of all have fun while blogging. </p>
 </div>
+      </div>
     </div>
-
     <div id="disqus_thread"></div>
     <hr/>
     <footer>
@@ -94,7 +95,6 @@
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
-</div>
 <div>
   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>

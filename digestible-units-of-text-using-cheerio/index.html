@@ -38,11 +38,12 @@
       </div>
     </div>
 </header>
-    
-    <div id="post">
-      <h1>Digestible units of text using cheerio</h1>
-      <span>Akshat Jiwan Sharma,  Thu Jun 27 2013</span>
-      <div class="postBody"><p>There are basically three kinds of index pages in a blog</p>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<h1>Digestible units of text using cheerio</h1>
+	<span>Akshat Jiwan Sharma,  Thu Jun 27 2013</span>
+	<div class="postBody"><p>There are basically three kinds of index pages in a blog</p>
 
 <ol><li><p>Those that contain only the title of the post like <a href="/">my blog</a></p></li><li><p>Those that contain a title of the post and a short summary like <a href="http://alistapart.com/">this one</a>.</p></li><li><p>Those that contain the entire post in the index itself <a href="http://www.codinghorror.com">like this for example</a></p></li></ol>
 
@@ -68,8 +69,8 @@ var elements = $("*").slice(0,2);</code></pre>
 <pre><code>$('&lt;div /&gt;').append($("*").slice(0,2).clone()).html()</code></pre>
 
 <p>That's it small digestible chunks of text for use on the index page. I hope this helps someone who faces a similar problem</p></div>
+      </div>
     </div>
-
     <div id="disqus_thread"></div>
     <hr/>
     <footer>
@@ -78,7 +79,6 @@ var elements = $("*").slice(0,2);</code></pre>
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
-</div>
 <div>
   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>

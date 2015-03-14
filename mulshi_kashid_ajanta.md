@@ -39,12 +39,16 @@ Next morning my friend looked flused out. I prescribed coconut water which, I wa
 ### Aurangabad
 A week after kashid beach we decided to go to the caves of Ajanta and Ellora. There was no direct route and we had to lay our tents in *Aurangabad*. The city of Aurangabad has history dating back to the 16th century. The initial years of the city were tumultous it was passed from one ruler to another.  It was founded by *Malik Amber*, succeded by his son and captured by the *Mughals*. Aurangzeb, the last great Mughal ruler, made it his capital and the city came to be known as Aurangabad after him. Later on it was ruled by the *Marthas*, and the *Nizam of Hyderabad*.
 
-Aurangabad is home to various historical sites like the *Bibi ka Makbara*, a replica of taj mahal, built by aurangzeb in the momory of his first wife. There are also various *Darwazas* or gates , a few museums and the lonar lake.
+Aurangabad is home to various historical sites like the *Bibi ka Makbara*, a replica of taj mahal, built by aurangzeb in the momory of his first wife. There are also various *Darwazas* or gates , a few museums and the lonar lake (the lake formed by a meteorite some 50 thousand years ago).
 
-I am writing all this down only to remind myself all that I missed. You see the day we reached aurangabad it was raining. And it washed away all the plans we had mad. Instead we just went to our rooms and slept, quite dispirited by the rain god's poor conduct.
+I am writing all this down only to remind myself all that I missed. You see the day we reached Aurangabad it was raining. And it washed away all the plans we had made for weekend. Instead we just went to our rooms and slept, quite dispirited by the rain God's poor conduct.
 
-It was still raining when we woke up next morning. Our options were limited now. We would have to choose where we wanted to go. We narrowed it down to Ajanta and ellora caves. But the two were quite far away from each other (70km) and it would not be possible for us to see them both. We finally decided to go to Ajanta. Mainly because it was older of the two and it was built during the "golden age" of Indian history, just after the maurayan empire. During that period Budhism was still quite popular in India and the caves of Ajanta are genreally regarded as the finest example of religious art. So Ajanta it was then.
+It was still raining when we woke up next morning. Our options were limited now. We would have to carefully pant  out next move. We narrowed our options to the Ajanta and Ellora caves. But the two were quite far away from each other (70km) and it would not be possible for us to see them both. We finally decided to go to Ajanta. Mainly because it was older of the two and it was built during the "golden age" of Indian history, just after the Maurayan empire. During that period, thanks to the patronage of *Asoka*, Budhism was still quite popular in India and the caves of Ajanta are genreally regarded as the finest example of budhist religious art. So Ajanta it was then.
 
 ### Ajanta
 
-The road to *Ajanta* village was once again quite scenic. The route was covered with hills. We reached the our destination at 1 P.M.
+The road to *Ajanta* village was once again quite scenic. The route was covered with green hills. We reached the our destination at 1 P.M. From there we took the government buses that took us to the site. The caves of Ajanta are built inside a semicircular cliff on the banks of , what seemed, to be a seasonal river. It was dry during this time of the year (March) but I am quite sure that during the monsoons it  flowed with abundance. From the entereance of the cave a large portion of the valley was visible. In the distance we could see a couple of waterfalls. All in all the setting of ajanta caves was quite picturesque.
+
+There are 30 caves in total. Almost all of them have a large imposing statue of Buddha in the centere. The halls are open and on the either side there were rooms that were perhaps used by the budhist monks for living. These rooms were very small and devoid of any decoration.
+
+On the walls and the celieings of the caves however 

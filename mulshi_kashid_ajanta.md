@@ -17,7 +17,7 @@ We were headed to *kashid* beach. It was some 100 kms from the lake. The road am
 
 Along the way we found a couple selling watermelons so we stopped to get some. Talking to them we found out that these watermelons were quite special. "Not like those vapid things they sell in the cities". These were called "sugar babies" and were grown on the farm behind the stall. The couple said that people from far off places came to them to buy these sugar babies once they acquired a taste for them. They had also petted an abandoned ox who helped them keep the premises clean by gulping down the leftovers. They were quite good I must admit. The kashid beach was near know. 9 km's only. I could almost smell the sand.
 
-### Kashid
+### Kashid beach
 
 We reached kashid at around 2 P.M. So we had plenty of time before it was sunset. Anirudh told me all about the mangroves and how they are used in fish farming on the way. Mangroves can grow in saline water. It has roots above the surface of the water so it can provide the fishes a good spot to lay their eggs. It is also said that mangroves help preventing coastal soil erosion and act as first barriers to tidal waves and tsunamis. We saw some of these mangrove trees up close. Quite fascinating they were.
 
@@ -33,8 +33,18 @@ It would soon be dark so we dcided that it would be best if we found a place to 
 
 My friend attended to several of nature's calls. In fact they talked quite loudly all through the night. I inquired if it was due to the "fresh lake water" that he drank in the morning to which he did not deem it necessary to reply. I further enquired if perhaps got too close to the nature. He make a few irrated remarks but I could see that his voice had lost much of the conviction it had in the morning. 
 
-Next morning my friend looked flused out. I prescribed coconut water which, I was rather pleased to notice, had an instant restorative effect. We head back to our place. We come back to nigri by 6 in the evening. I go to my bed instantaneously 
+Next morning my friend looked flused out. I prescribed coconut water which, I was rather pleased to notice, had an instant restorative effect. We head back to our place. Going back everything seemed duller. The mangroves tress were not as interesting. The sugar babies were not so sweet. The scenery was not as pretty. And the music was not as uplifting. reach our place by 6 in the evening. I go to my bed instantaneously. 
 
 
 ### Aurangabad
-### Ajanta 
+A week after kashid beach we decided to go to the caves of Ajanta and Ellora. There was no direct route and we had to lay our tents in *Aurangabad*. The city of Aurangabad has history dating back to the 16th century. The initial years of the city were tumultous it was passed from one ruler to another.  It was founded by *Malik Amber*, succeded by his son and captured by the *Mughals*. Aurangzeb, the last great Mughal ruler, made it his capital and the city came to be known as Aurangabad after him. Later on it was ruled by the *Marthas*, and the *Nizam of Hyderabad*.
+
+Aurangabad is home to various historical sites like the *Bibi ka Makbara*, a replica of taj mahal, built by aurangzeb in the momory of his first wife. There are also various *Darwazas* or gates , a few museums and the lonar lake.
+
+I am writing all this down only to remind myself all that I missed. You see the day we reached aurangabad it was raining. And it washed away all the plans we had mad. Instead we just went to our rooms and slept, quite dispirited by the rain god's poor conduct.
+
+It was still raining when we woke up next morning. Our options were limited now. We would have to choose where we wanted to go. We narrowed it down to Ajanta and ellora caves. But the two were quite far away from each other (70km) and it would not be possible for us to see them both. We finally decided to go to Ajanta. Mainly because it was older of the two and it was built during the "golden age" of Indian history, just after the maurayan empire. During that period Budhism was still quite popular in India and the caves of Ajanta are genreally regarded as the finest example of religious art. So Ajanta it was then.
+
+### Ajanta
+
+The road to *Ajanta* village was once again quite scenic. The route was covered with hills. We reached the our destination at 1 P.M.

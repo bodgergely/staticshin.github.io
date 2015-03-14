@@ -73,11 +73,11 @@ The road to *Ajanta* village was once again quite scenic. The route was covered 
 
 There were 30 caves in total. Almost all of them had a large imposing statue of Buddha in the centre. The halls are open and on the either side there were rooms that were perhaps used by the Buddhist monks for living. These rooms were very small and devoid of any decoration.
 
-![buddha in the middle](https://lh4.googleusercontent.com/-rkUiAXpjpcw/VPQzdqBetaI/AAAAAAAAEko/U-8XOCmpGVM/w729-h547-no/IMG_20150301_120159.jpg)
+![another buddha in the middle](https://lh4.googleusercontent.com/-rkUiAXpjpcw/VPQzdqBetaI/AAAAAAAAEko/U-8XOCmpGVM/w729-h547-no/IMG_20150301_120159.jpg)
 
 The ceilings and walls of the caves were decorated with very colorful and detailed paintings. Though after 2000 years most of them were faded there was some effort of restoring them to their original glory. We heard the tour guides explaining that some of those paintings were about the *Jatak kathayein* which I had the opportunity to read during my childhood. I felt quite excited, though I could hardly make out anything from what I saw.
 
-![they told a story](https://lh5.googleusercontent.com/-fzu-3SNp-os/VPQ1c-hIurI/AAAAAAAAEzk/cFDjsHku9lY/w729-h547-no/IMG_20150301_132112.jpg)
+![they told a story](https://lh6.googleusercontent.com/-3V_BaYBMW_0/VPQ1mMOGNdI/AAAAAAAAE0g/_BJ9qhw6bPI/w729-h547-no/IMG_20150301_132631.jpg)
 
 The caves were not built in one continuous effort but were constructed little by little over the course of about 500 years. Artists from different periods, often centuries apart, contributed to these caves. The political and religious atmosphere of the country also affected their development. There was a brief period of time when Buddhism lost it's popularity in the  country and the work on the caves stopped only to be later resumed under the patronage of some other ruling power. It is also said that not all the art in the caves is "pure". Donations were sought from affluent members of the society in exchange for an inscription on the cave.
 
@@ -91,17 +91,16 @@ One of the things that I noticed was that all the caves were made facing the wes
 
 ![the entrance](https://lh6.googleusercontent.com/-XO9f1BfokUI/VPQ0inciKAI/AAAAAAAAEs8/Ripem36TS3c/w729-h547-no/IMG_20150301_124420.jpg)
 
-![a detailed buddha](https://lh4.googleusercontent.com/-VJswce2m4Qo/VPQ0KpYcx1I/AAAAAAAAEqU/FKpd4ga41Ao/w729-h547-no/IMG_20150301_123541.jpg)
+![a detailed buddha](https://lh5.googleusercontent.com/T2HuXRYgSOwnotPQpHuHo5XeiekcT2eo2MCMSN8zLfc=w729-h547-no)
 
-![some mysterious pattern](https://lh5.googleusercontent.com/-fzu-3SNp-os/VPQ1c-hIurI/AAAAAAAAEzk/cFDjsHku9lY/w729-h547-no/IMG_20150301_132112.jpg)
 
-![the last sleep](https://lh5.googleusercontent.com/-fzu-3SNp-os/VPQ1c-hIurI/AAAAAAAAEzk/cFDjsHku9lY/w729-h547-no/IMG_20150301_132112.jpg)
+![the last sleep](https://lh5.googleusercontent.com/-UHTdbglYDwM/VPQ1ziaNZ9I/AAAAAAAAE2E/NbRaFV98eKQ/w729-h547-no/IMG_20150301_133704.jpg)
 
 Like the paintings the stonework was exquisite. The  pillars, the stupas, the windows and the entrances  are carved out with great attention to detail. Unlike the paintings however the masonry  survived the test of time. Apart from a few broken corners I think they looked the same as they must have when they were made some 2000 years ago.
 
 ![the collection](https://lh4.googleusercontent.com/-NjgvUOXyTSo/VPQ1Oqhk1CI/AAAAAAAAEyA/MLQAqmCXsLI/w729-h547-no/IMG_20150301_131552.jpg)
 
-![entrance from another angle](https://lh3.googleusercontent.com/-yTrJMfLDJM4/VPQ1ICg_cfI/AAAAAAAAExQ/Uqv0YiKXgEk/w729-h547-no/IMG_20150301_130826.jpg)
+![entrance from another angle](https://lh3.googleusercontent.com/-kUiAKukW9oI/VPQ1Q08u5gI/AAAAAAAAEyM/f_ZEF1MYGp8/w729-h547-no/IMG_20150301_131600.jpg)
 
 People were allowed to take photographs inside the caves but the use of flash was prohibited. Maybe because a large scale restoration was going on and the light of the flash caused a reaction in the paint? Within the caves the authorities provided their own lighting. It was a mixture of red, green and yellowish lights which I felt created a very theater like effect. The tourists were allowed to to bring their torch (yellow light) to study the paintings on the walls and ceilings in case it was too dark. Anirudh had been prudent enough to bring one with him so we inspected every nook and cranny with Indiana Jones like enthusiasm but could not find anything valuable. Well except for centuries old art that is.
 

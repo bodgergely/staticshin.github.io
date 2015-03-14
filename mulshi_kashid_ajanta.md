@@ -27,13 +27,14 @@ Group 1-- the people in these group are quite content in staying as far away fro
 
 Group -2: The people in this group live by the rule "He who must search for pearls must dive below". You can usually spot the group 2 brethern deep into the sea father than anyone else. They don't really care for the red flag that marks the boundary of the "safe zone". They go in deeper and deeper. In a sense they are the leaders of human race, reponsible for all of it's glory. Their courage inspires lesser men to walk the treachrous road. They are the "troublesome tribe" the lifeguards talk about on their lunch break.
 
+For a while we studied these groups and then bored we went into the water. It was warm. The waves were not too strong. IT was soon time for sunset. Th arabian see being on the west coast on India gave us the opportunity to see the sun slowly slowly submerging into the distant horizon making it look as if it was being gulped by the sea.
 
+It would soon be dark so we dcided that it would be best if we found a place to stay. I suggested that we should have something to eat first having had nothing expcept for "sugar babies" since the morning. My friend said he had to attend to natures call so it would be best if we found a room first.
 
-Nature calls my firend. Several times. I ask wheter he got too close to her in the day. He blurbs out some incrompehesible reply.
+My friend attended to several of nature's calls. In fact they talked quite loudly all through the night. I inquired if it was due to the "fresh lake water" that he drank in the morning to which he did not deem it necessary to reply. I further enquired if perhaps got too close to the nature. He make a few irrated remarks but I could see that his voice had lost much of the conviction it had in the morning. 
 
-### Back to nigri
+Next morning my friend looked flused out. I prescribed coconut water which, I was rather pleased to notice, had an instant restorative effect. We head back to our place. We come back to nigri by 6 in the evening. I go to my bed instantaneously 
 
-We head back t nigri. We lay low for a week. We are ready again to travel. In a bus without google maps to ancient India. 
 
 ### Aurangabad
 ### Ajanta 

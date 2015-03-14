@@ -1,10 +1,14 @@
 ###The road to mulshi dam(the western ghats)
 
+![the hill](https://lh4.googleusercontent.com/-G1J9K0Q5KyA/VOiAIwKXBEI/AAAAAAAAEUM/cu19y0oa5PA/w729-h547-no/IMG_20150220_115354.jpg)
+
 Once you leave the main city (nigri,Pune) the road to *mulshi* runs in one uninterrupted stretch through the western ghats. The *mulshi* lake towards which we were headed is an artificial lake  created by the run off water from the *Mulshi* dam. We had little trouble reaching our destination when we decided to take directions from the locals instead of relying on google maps, much to the annoyance of my friend (Anirudh). He is a true believer of goolge maps and wanted to follow along the suggested path but he conceded after 45 mins of driving in circles which brought us, in a roundabout way, to the same road that the locals had advised us to take in the first place.
 
 As I said the road runs through the western ghats and it makes for a very delightful scenery. To our left we had we had the hills some tall, some short, but all them very imposing. I remarked to my friend that these hills looked like helmets of some giant soldiers guarding the sacred lake, but that might have been the effect of lord of the ring's soundtrack in my ears .To our right we had a valley in which we could see the lake in the distance. We were looking for a good spot to get as close to it as we could. We found one near a solar power plant. So we decided to head in.
 
  Carefully navigating across the boulders we found ourselves at the edge. It spread far. The water was still but it looked quite fresh and blue. I remarked to Anirudh how serene it looked but he begged me to stop talking and let him be "in the moment".
+
+![the lake](https://lh6.googleusercontent.com/-HJ-DmZfzndU/VOh_7bjDJNI/AAAAAAAAESg/Phcvuonsmnk/w729-h547-no/IMG_20150220_101842.jpg)
 
 Well he was in the moment all right. One second he was taking in deep breaths of the fresh air and in the other he jumped out of his clothes and into the lake. I considered this to be a bit reckless. I reminded him of the episodes of "River Monsters" where the Jeremy Wade finds quite dangerous animals in calm unsuspecting waters. My,I thought quite genuine, concern was dismissed with a wave of hand and he proceed to give me a lecture on how we have lost touch with nature and how important it is for us to reconnect. 
 
@@ -24,15 +28,23 @@ We reached kashid at around 2 P.M. So we had plenty of time before it was sunset
 
 Kashid beach was glorious. The spot we found had very few rocks. Only the soft sand, with a few quite sharp shells embedded in it, separated us from the water. People on the beach, as I have had the opportunity to observe a couple of times before, can be divided into two groups:-
 
+![group 1](https://lh3.googleusercontent.com/-Oy2xGPl0BSk/VOiAX1QqZhI/AAAAAAAAEVs/BvtabZqy_Ns/w729-h547-no/IMG_20150220_155444.jpg)
+
 Group 1-- the people in these group are quite content in staying as far away from the water possible. On the beach they lay their roots in a sunny spot. Once they do that it is impossible to make them move. You have some hope however if you manage to catch one while they are still tilling the soil, so to speak. Quite naturally these walking walnuts are reluctant to go in and have to be in some cases dragged and in other carried, against their wishes, to even get the tip of their body wet. It is quite a sight to observe a member of this group from up close. They will scream, run, twist and turn in short to anything in their power to keep themselves dry. Once wet however these people loosen up and at least feign to enjoy water. A clear tell of a member of this tribe is that they have their clothes on even in the water.
 
 Group -2: The people in this group live by the rule "He who must search for pearls must dive below". You can usually spot the group 2 brethren deep into the sea father than anyone else. They don't really care for the red flag that marks the boundary of the "safe zone". They go in deeper and deeper. In a sense they are the leaders of human race, responsible for all of it's glory. Their courage inspires lesser men to walk the treacherous road. They are the "troublesome tribe" the lifeguards talk about during their lunch break.
 
+![this was a rare find](https://lh5.googleusercontent.com/-PERL-_WsEkw/VOiAhxQSf0I/AAAAAAAAEXE/BWOXRQhk98c/w729-h547-no/IMG_20150220_165940.jpg)
+
 For a while we studied these groups and then bored we went into the water. It was warm. The waves were not too strong. It was soon time for sunset. Th Arabian see being on the west coast of India gave us the opportunity to see the sun slowly slowly submerging into the distant horizon making it look as if it was being swallowed by the sea.
+
+![what are you doing to the sun sea?](https://lh4.googleusercontent.com/-39WkpxB9rI4/VOiAt7dDGpI/AAAAAAAAEYo/Jr51zqhecBA/w729-h547-no/IMG_20150220_183223.jpg)
 
 It would soon be dark so we decided that it would be best if we found a place to stay. I suggested that we should have something to eat first having had nothing except for "sugar babies" since the morning. My friend said he had to attend to natures call so it would be best if we found a room first.
 
 My friend attended to several of nature's calls. In fact they talked quite loudly all through the night. I inquired if it was due to the "fresh lake water" that he drank in the morning to which he did not deem it necessary to reply. I further inquired if perhaps he got too close to the nature. He made a few irritated remarks but I could see that his voice had lost much of the conviction it had in the morning. 
+
+![the morning after](https://lh6.googleusercontent.com/-gpnW7y8sJ30/VOiA_n94ASI/AAAAAAAAEak/ObOuTp9bpZQ/w729-h547-no/IMG_20150221_075617.jpg)
 
 Next morning my friend looked flushed out. I prescribed coconut water which, I was rather pleased to notice, had an instant restorative effect. We head back to our place. Going back everything seemed duller. The mangroves tress were not as interesting. The sugar babies were not so sweet. The scenery was not as pretty. And the music was not as uplifting. We reach our place by 6 in the evening. I go to my bed instantaneously. 
 
@@ -45,28 +57,65 @@ Aurangabad is home to various historical sites like the *Bibi ka Makbara*, a rep
 
 I am writing all this down only to remind myself all that I missed. You see the day we reached Aurangabad it was raining. And it washed away all the plans we had made for weekend. Instead we just went to our rooms and slept, quite dispirited by the rain God's poor conduct.
 
+![rain could not stop us](https://lh3.googleusercontent.com/mp8CxAXSc3q-RvmSHR0WC-x88TpBbqFY3a7oGtAFMyc=w729-h547-no)
+
 It was still raining when we woke up next morning. Our options were limited now. We would have to carefully plan our next move. We narrowed our options to the Ajanta and Ellora caves. But the two were quite far away from each other (70km) and it would not be possible for us to see them both. We finally decided to go to Ajanta. Mainly because it was older of the two and it was built during the "golden age" of Indian history, just after the Mauryan empire. During that period, thanks to the patronage of *Asoka*, Buddhism was still quite popular in India and the caves of Ajanta are generally regarded as the finest example of Buddhist religious art. So Ajanta it was then.
 
 ### Ajanta
 
+![the curved caves](https://lh4.googleusercontent.com/-6iZB6N4VxzI/VPQ0-mTU-hI/AAAAAAAAEv8/L5VxgU6-NnM/w729-h547-no/IMG_20150301_125749.jpg)
+
+![looks quite good](https://lh5.googleusercontent.com/-fzu-3SNp-os/VPQ1c-hIurI/AAAAAAAAEzk/cFDjsHku9lY/w729-h547-no/IMG_20150301_132112.jpg)
+
 The road to *Ajanta* village was once again quite scenic. The route was covered with green hills. We reached the our destination at 1 P.M. From there we took the government buses that took us to the site. The caves of Ajanta are built inside a semicircular cliff on the banks of , what seemed, to be a seasonal river. It was dry during this time of the year (March) but I was quite sure that during the monsoons it  flowed with abundance. From the entrance of the cave a large portion of the valley was visible. In the distance we could see a couple of waterfalls. All in all the setting of ajanta caves was quite picturesque.
+
+![buddha in the middle](https://lh4.googleusercontent.com/-ta7u0cwYYYo/VPQ0ePmAIUI/AAAAAAAAEsk/04Zn_uzEYIc/w729-h547-no/IMG_20150301_124300.jpg)
 
 There were 30 caves in total. Almost all of them had a large imposing statue of Buddha in the centre. The halls are open and on the either side there were rooms that were perhaps used by the Buddhist monks for living. These rooms were very small and devoid of any decoration.
 
+![buddha in the middle](https://lh4.googleusercontent.com/-rkUiAXpjpcw/VPQzdqBetaI/AAAAAAAAEko/U-8XOCmpGVM/w729-h547-no/IMG_20150301_120159.jpg)
+
 The ceilings and walls of the caves were decorated with very colorful and detailed paintings. Though after 2000 years most of them were faded there was some effort of restoring them to their original glory. We heard the tour guides explaining that some of those paintings were about the *Jatak kathayein* which I had the opportunity to read during my childhood. I felt quite excited, though I could hardly make out anything from what I saw.
+
+![they told a story](https://lh5.googleusercontent.com/-fzu-3SNp-os/VPQ1c-hIurI/AAAAAAAAEzk/cFDjsHku9lY/w729-h547-no/IMG_20150301_132112.jpg)
 
 The caves were not built in one continuous effort but were constructed little by little over the course of about 500 years. Artists from different periods, often centuries apart, contributed to these caves. The political and religious atmosphere of the country also affected their development. There was a brief period of time when Buddhism lost it's popularity in the  country and the work on the caves stopped only to be later resumed under the patronage of some other ruling power. It is also said that not all the art in the caves is "pure". Donations were sought from affluent members of the society in exchange for an inscription on the cave.
 
+![no sunlight](https://lh4.googleusercontent.com/-Ry8nGmdRpY0/VPQzcbirowI/AAAAAAAAEkc/1UQesq5EoVA/w729-h547-no/IMG_20150301_120032.jpg)
+
 One of the things that I noticed was that all the caves were made facing the west. Which meant that for a larger part of the day they received no sunlight at all. And since the caves were in a valley even when the sun was facing to the west the sunlight that came into the caves must have been very limited. Was that done on purpose? How did the monks inside the caves spend their days? And  how did the artists manage to paint such exquisite paintings in very limited natural light?
+
+![elephant on the wall](https://lh4.googleusercontent.com/-5hHYpZ1fTOc/VPQ08tMYiaI/AAAAAAAAEvw/BQ_5oDXomTU/w729-h547-no/IMG_20150301_125635.jpg)
+
+![the stone work](https://lh3.googleusercontent.com/-0BLu5HscyQo/VPQznfmhyBI/AAAAAAAAEl8/fpekBnM58zI/w410-h547-no/IMG_20150301_121725.jpg)
+
+![the entrance](https://lh6.googleusercontent.com/-XO9f1BfokUI/VPQ0inciKAI/AAAAAAAAEs8/Ripem36TS3c/w729-h547-no/IMG_20150301_124420.jpg)
+
+![a detailed buddha](https://lh4.googleusercontent.com/-VJswce2m4Qo/VPQ0KpYcx1I/AAAAAAAAEqU/FKpd4ga41Ao/w729-h547-no/IMG_20150301_123541.jpg)
+
+![some mysterious pattern](https://lh5.googleusercontent.com/-fzu-3SNp-os/VPQ1c-hIurI/AAAAAAAAEzk/cFDjsHku9lY/w729-h547-no/IMG_20150301_132112.jpg)
+
+![the last sleep](https://lh5.googleusercontent.com/-fzu-3SNp-os/VPQ1c-hIurI/AAAAAAAAEzk/cFDjsHku9lY/w729-h547-no/IMG_20150301_132112.jpg)
 
 Like the paintings the stonework was exquisite. The  pillars, the stupas, the windows and the entrances  are carved out with great attention to detail. Unlike the paintings however the masonry  survived the test of time. Apart from a few broken corners I think they looked the same as they must have when they were made some 2000 years ago.
 
+![the collection](https://lh4.googleusercontent.com/-NjgvUOXyTSo/VPQ1Oqhk1CI/AAAAAAAAEyA/MLQAqmCXsLI/w729-h547-no/IMG_20150301_131552.jpg)
+
+![entrance from another angle](https://lh3.googleusercontent.com/-yTrJMfLDJM4/VPQ1ICg_cfI/AAAAAAAAExQ/Uqv0YiKXgEk/w729-h547-no/IMG_20150301_130826.jpg)
 
 People were allowed to take photographs inside the caves but the use of flash was prohibited. Maybe because a large scale restoration was going on and the light of the flash caused a reaction in the paint? Within the caves the authorities provided their own lighting. It was a mixture of red, green and yellowish lights which I felt created a very theater like effect. The tourists were allowed to to bring their torch (yellow light) to study the paintings on the walls and ceilings in case it was too dark. Anirudh had been prudent enough to bring one with him so we inspected every nook and cranny with Indiana Jones like enthusiasm but could not find anything valuable. Well except for centuries old art that is.
 
-The ambience of the caves had different effect on different tourists. One lady,as we observed, was quite "in the moment". She escaped into one of the chambers of the monks and sat on the ground. Legs crossed, back straight and assumed a meditative stance. It looked like that she would stay there for a while when one of the guards approached her. We thought he would perhaps offer a few tips to help with the concentration but to our and to the lady's surprise he asked the her to refrain from meditating in the room. Oh I suppose it is too much to ask to sit on the floor and feel a moment or two of connection with the wise old monks.  
+![theater like](https://lh3.googleusercontent.com/-yTrJMfLDJM4/VPQ1ICg_cfI/AAAAAAAAExQ/Uqv0YiKXgEk/w729-h547-no/IMG_20150301_130826.jpg)
+
+![the paintings](https://lh5.googleusercontent.com/-mHGA8eC4HZI/VPQzWtLHHHI/AAAAAAAAEjs/fuPJtn3tQYQ/w729-h547-no/IMG_20150301_115754.jpg)
+
+The ambience of the caves had different effect on different tourists. One lady,as we observed, was quite "in the moment". She escaped into one of the chambers of the monks and sat on the ground. Legs crossed, back straight and assumed a meditative stance. It looked like that she would stay there for a while when one of the guards approached her. We thought he would perhaps offer a few tips to help with the concentration but to our and to the lady's surprise he asked the her to refrain from meditating in the room. Oh I suppose it is too much to ask to sit on the floor and feel a moment or two of connection with the wise old monks.
+
+![the hilltop](https://lh4.googleusercontent.com/-VJswce2m4Qo/VPQ0KpYcx1I/AAAAAAAAEqU/FKpd4ga41Ao/w729-h547-no/IMG_20150301_123541.jpg)
 
 There was a hilltop opposite to the caves which we decided to climb. It was still raining so we were extra careful around the steps. On reaching the top we rested for a bit under the large umbrella seating. The scenery was delightful. From across the caves we could only see a portion of the valley. But from a higher ground it looked so stunning. The hills were strange. They were like an inverted cup. Descending steeply into the valley but on the top the surface was plane and wide. We saw a waterfall in the distance but the water pouring down from it was stale. Green with the algal growth we thought. From the top I could plainly see how rain water during the monsoon  could form an abundant stream in the valley. I wondered how this place would look like during the rainy season.
+
+![in style](https://lh5.googleusercontent.com/-fzu-3SNp-os/VPQ1c-hIurI/AAAAAAAAEzk/cFDjsHku9lY/w729-h547-no/IMG_20150301_132112.jpg)
 
 We came back down. Had our lunch in the restaurant below and took the bus back to home. On my way back I thought about the incredible things we had seen during the day. I discussed with my friend the history of ancient India. We talked about the "Golden age" of the *Mauryan empire*. How it's founder *Chandragupta* conquered lands far and wide,defeating the generals of *Alexander the great* and spreading his empire up to the modern day Iran. How he embraced Jainism during his later days. How he was succeeded by his son *Bindusara* who was the first to unite the "land between the seas". And how *King Asoka* our childhood hero and in our humble opinion, the greatest Indian ruler and one of the greatest ruler of the ancient world, played a crucial role in spreading Buddhism far and wide. What it would have been like to study in *Nalanda* in those days  .We wondered why there was not even single painting of *Asoka*. Was he even real? Would have been nice to see what he looked like. We wondered what it would have been like to live in those days.  
 

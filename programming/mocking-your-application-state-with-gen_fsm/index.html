@@ -74,8 +74,8 @@ notify_due_rent&lt;--- start_event
 pay_rent&lt;--- start_event
 |
 end_contract</code></pre>
-<p>This diagram is not much different from other state diagrams that we discussed before. For our machine we have only one event-- the start_event. Whenever start_event is called on a state it moves the machinery forward by transforming the existing state to next one. For example when start_event is called on prepare_database state the resultant state would be add_tenant. When the event is called on add_tenant the resultant state would be approve_landlord and so on. Think of this state machine to the pedaling motion of the bicycle. When stationary the pedals put the bicycle in motion. When in motion the pedals move the bicycle forward. </p>
-<p>Now this is just an abstraction. The "real" states are exposed in the form of http endpoints. For example the <code>add_tenant</code> state is reachable in our application from <code>\add_ten</code> url. What we will do is to call the endpoints of each of these states one by one and run some tests against our database to see if our records in the database reflect the state of our application given by the url.</p>
+<p>This diagram is not much different from other state diagrams that we discussed before. For our machine we have only one event-- the start_event. Whenever start_event is called on a state it moves the machinery forward by transforming the existing state to next one. For example when start_event is called on prepare_database state the resultant state would be add_tenant. When the event is called on add_tenant the resultant state would be approve_landlord and so on. Compare this state machine to the pedalling motion of the bicycle. When stationary the pedals put the bicycle in motion. When in motion the pedals move the bicycle forward. </p>
+<p>Now this is just an abstraction. The "real" states are exposed in the form of http endpoints. For example the <code>add_tenant</code> state is reachable in our application from <code>/add_ten</code> url. What we will do is to call the endpoints of each of these states one by one and run some tests against our database to see if our records in the database reflect the state of our application given by the url.</p>
 <p>So let's get right to it.  <a href="https://gist.github.com/brickcap/c28027ea448ea2968ea7">The entire code is available online</a> so if you can open it in a new tab it will be a lot easier to follow along. Though I will be quoting the relevant parts of the code while discussing them.First we will discuss the code and then see how it is executed.</p>
 <pre><code>-module(wrinq_state_machine).
 -behaviour(gen_fsm).
@@ -99,10 +99,8 @@ code_change/4]).</code></pre>
 <p>The other export definition exports the functions that are mandatory in every gen_fsm behaviour.</p>
 <p>"What is the difference between the two?"</p>
 <p>Well only that you must export mandatory functions of a gen_fsm where as you have a choice to not export the functions that are specific to your application. Moving on</p>
-<pre><code>
-start_link() -&gt;
+<pre><code>start_link() -&gt;
 gen_fsm:start_link({local, ?MODULE}, ?MODULE, [],[]).
-
 
 init(_Args) -&gt;
 erlang:display("Initialized the state machine"),
@@ -216,12 +214,11 @@ terminate(_Reason, _StateName, _State) -&gt;
 </blockquote>
 <p>Right now our application is like pre Captain Haddock Speech Tintin. Smallest of failures sends it right down from where it refuses to get up. This attitude is of no use to us. We must do something about it. Our application needs some one like Capetian Haddock to cheer it up when the chips are down. To lift the defeated spirit. To... you get the idea I suppose.</p>
 <p>What we are looking for are supervisors. Supervisors are another type of erlang behaviour which are responsible for starting, stopping and monitoring it's child behaviour. What we are looking for is this.</p>
-<p>When are gen_fsm terminates either naturally or unnaturally we want to restart it from it's in ital state ready to run the tests again. For example after <code>end_contract</code> which terminates the execution we want our gen_fsm to be restored to prepare database so it can run the tests again.</p>
+<p>When are gen_fsm terminates either naturally or unnaturally we want to restart it from it's in initial state ready to run the tests again. For example after <code>end_contract</code> which terminates the execution we want our gen_fsm to be restored to prepare database so it can run the tests again.</p>
 <p>"What is the benefit of this behaviour?"</p>
 <p>Well it is very handy during the development phase. When you are working on your application it is quite natural that the tests will fail. So instead of manually running the same steps over and over we circle within a predefined set of states. In terms of our application we always remain between the prepare_database and end_contract states. So we don't have to worry about restarting our fsm when our tests fail. </p>
 <p>So here is what our supervisor looks like</p>
-<pre><code>
--module(wrinq_state_sup).
+<pre><code>-module(wrinq_state_sup).
 -behaviour(supervisor).
 
 -export([start_link/0,start_in_shell/0]).
@@ -244,7 +241,7 @@ init(_Args) -&gt;
 <p>There is hardly anything that we have done here. Writing a supervisor is more like choosing a restart strategy and then configuring the "keywords" to implement that strategy.</p>
 <p>Any way with this supervisor in place whenever our machine halts it is restarted with initial state. </p>
 <p>"Are you happy now captain?"</p>
-<p><em>Ten thousand thundering typhoons</em> </p>
+<p><em>Ten thousand thundering typhoons</em></p>
 <p>"What?"</p>
 <p>"Yes that means I am happy."</p>
 <p><strong>So how is this machine executed?</strong></p>
@@ -252,7 +249,6 @@ init(_Args) -&gt;
 <pre><code>-module(wrinq_start_app).
 -export([start/0,test_states/0]).
 -include("wrinq_headers.hrl").
-
 
 start()-&gt;
     inets:start(),

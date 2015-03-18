@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title></title>
+    <id>http://www.staticshin.com/</id>
+    <updated>2015-03-18T17:41:30Z</updated>
+    <author>
+        <name>Akshat Jiwan Sharma</name>
+        <email>akshatjiwan@gmail.com</email>
+        <uri>http://www.staticshin.com/</uri>
+    </author>
+    <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[Mocking your application state with gen_fsm]]></title>
+        <id>http://www.staticshin.com/programming/mocking-your-application-state-with-gen_fsm</id>
+        <link href="http://www.staticshin.com/programming/mocking-your-application-state-with-gen_fsm">
+        </link>
+        <updated>2015-03-16T14:23:01Z</updated>
+        <summary type="html"><![CDATA[<p>gen_fsm is a generic finite state machine behaviour in erlang. And as the name suggests gen_fsm allows us to model state machines.</p><p>"What is a finite state machine?"</p>]]></summary>
+        <author>
+            <name>Akshat Jiwan Sharma</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[What does _security secure in couchdb?]]></title>
+        <id>http://www.staticshin.com/programming/what-does-_security-secure-in-couchdb</id>
+        <link href="http://www.staticshin.com/programming/what-does-_security-secure-in-couchdb">
+        </link>
+        <updated>2015-01-13T04:01:15Z</updated>
+        <summary type="html"><![CDATA[<p>The database level security is controlled in couchdb by a special document called _security. The _security document is unique to every database. Let's see what it looks like.</p><p>Taking an example from <a href="http://docs.couchdb.org/en/latest/api/database/security.html">couchdb docs</a>:-</p>]]></summary>
+        <author>
+            <name>Akshat Jiwan Sharma</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Does updating a design document in couchdb cause rebuilding of views?]]></title>
+        <id>http://www.staticshin.com/programming/does-updating-a-design-document-in-couchdb-cause-rebuilding-of-views</id>
+        <link href="http://www.staticshin.com/programming/does-updating-a-design-document-in-couchdb-cause-rebuilding-of-views">
+        </link>
+        <updated>2014-10-18T05:13:10Z</updated>
+        <summary type="html"><![CDATA[<p>The opinions are a bit divided on this question. Some people say "yes every timeyou update a design document couchdb rebuilds the views" while others claim "no views are rebuild only whenthe map/reduce part of the design document changes". <a href="http://wiki.apache.org/couchdb/HTTP_view_API#Altering.2FChanging_Views">Couchdb's wiki</a> seems to support the first claim</p><blockquote><p>To change a view or multiple view just alter the design document (see HttpDocumentApi) they are stored in and save it as a new revision. This causes all the views in that design document to be rebuilt on the next access in case the view code has been changed.</p></blockquote>]]></summary>
+        <author>
+            <name>Akshat Jiwan Sharma</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Caching in couchdb ]]></title>
+        <id>http://www.staticshin.com/programming/caching-in-couchdb</id>
+        <link href="http://www.staticshin.com/programming/caching-in-couchdb">
+        </link>
+        <updated>2014-10-06T18:05:04Z</updated>
+        <summary type="html"><![CDATA[<p>I remember reading a quote a while ago by someone somewhere that said something like </p><blockquote><p>There are only two hard things in Computer Science: compilers and cache invalidation.</p></blockquote>]]></summary>
+        <author>
+            <name>Akshat Jiwan Sharma</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Testing couchapps with couchdb]]></title>
+        <id>http://www.staticshin.com/programming/testing-couchapps-with-couchdb</id>
+        <link href="http://www.staticshin.com/programming/testing-couchapps-with-couchdb">
+        </link>
+        <updated>2014-09-17T12:51:06Z</updated>
+        <summary type="html"><![CDATA[<p>Are you using <a href="https://github.com/couchapp/couchapp">couchapp</a> or <a href="http://github.com/benoitc/erica">erica</a> for managing couchdb design documents? Do you feel a bit dirty every time you <code>push</code> a new <code>design document</code> to couchdb without testing it first? And are you tired of feeling dirty all the time? Well then this article will teach you how to clean your couchdb design docs in a fragrant test solution before pushing it to your production server so you can be sure that all your production code is clean<br>and shiny or something along those lines....</p><h3>What are we doing?</h3>]]></summary>
+        <author>
+            <name>Akshat Jiwan Sharma</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Easy user accounts management with couchdb]]></title>
+        <id>http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb</id>
+        <link href="http://www.staticshin.com/programming/easy-user-accounts-management-with-couchdb">
+        </link>
+        <updated>2014-08-10T17:03:45Z</updated>
+        <summary type="html"><![CDATA[<p>User authentication gets real boring real fast. It is funthe first couple of times you do it. I remember the exhilaration thatI felt when I wrote the authentication for  my first ever web application.But after doing this for 108 times I don't particularly enjoy writing forregister-login-logout scenario anymore. In fact I think it is one of the slowest most boring parts of the web application design.</p><p>It is a thankless job. Do it right and no one pats on your back and says"Well done joe! you wrote beautiful authentication code. Boy I just love signing in and outof this website" But if, God forbid, you get it wrong you end up on hacker news where this"piece of news" stays on the front page for some 23 days giving the entire programming communityample time to revel in your woe and making sure that your reputation as a programmeris completely destroyed. Life is sad, a bitter cookie if you ask me. But there it is. </p>]]></summary>
+        <author>
+            <name>Akshat Jiwan Sharma</name>
+        </author>
+    </entry>
+</feed>

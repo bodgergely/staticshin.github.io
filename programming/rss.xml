@@ -5,10 +5,10 @@
         <description></description>
         <link>http://www.staticshin.com/</link>
         <author>akshatjiwan@gmail.com (Akshat Jiwan Sharma)</author>
-        <lastBuildDate>Wed, 18 Mar 2015 17:52:44 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 18 Mar 2015 18:30:21 GMT</lastBuildDate>
         <generator>Feed for Node.js</generator>
         <item>
-            <title><![CDATA[Mocking your application state with gen_fsm]]></title>
+            <title><![CDATA[Mocking your application's state with gen_fsm]]></title>
             <link>http://www.staticshin.com/programming/mocking-your-application-state-with-gen_fsm</link>
             <pubDate>Mon, 16 Mar 2015 14:23:01 GMT</pubDate>
             <description><![CDATA[<p>gen_fsm is a generic finite state machine behaviour in erlang. And as the name suggests gen_fsm allows us to model state machines.</p><p>"What is a finite state machine?"</p>]]></description>

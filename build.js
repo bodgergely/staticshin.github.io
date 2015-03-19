@@ -14,3 +14,13 @@ buildify.task({
     }
 
 });
+
+buildify.task({
+    name:"js-min",
+    task:function(){
+	console.log("starting js compression....");
+	buildify().load( "./staticshin_main.js").uglify().save("./staticshin.js");
+	console.log("Completed js completion");
+    }
+
+});

@@ -78,7 +78,9 @@ pre>code{
     font-size:120%;
 }
 blockquote{
-    font-style:italic;   
+    font-style:italic;
+    margin-left:5%;
+    margin-right:5%;
 }
 
 .postHeading,.postHeading>a{
@@ -105,9 +107,6 @@ hr{
 
 }
 
-
-
-
 .brand{
     letter-spacing:4px;
 }
@@ -118,4 +117,14 @@ pre {
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+#ad_div img{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+#ad_div p{
+    margin-left:15%;
+    margin-right:15%;
+    font-size:14px;
 }

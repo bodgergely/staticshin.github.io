@@ -188,7 +188,7 @@ http {
 <p><strong>Some notes</strong></p>
 <ol>
 <li>The directory structure that we used in this example is just a suggestion. It has no bearing whatsoever
-on writing lua scripts. If you have a pretty bug lua application it is likely that your code will be divided
+on writing lua scripts. If you have a pretty big lua application it is likely that your code will be divided
 into specific scripts that execute as directive handlers (like the content_by_lua script that we wrote above) and
 generic modules that will be used across many handlers (like say an authentication module that will be run across multiple content_by_lua handlers)</li>
 <li>Openresty follows lua convention of modules. So you can easily package a repeatable unit of code in a file and <code>require()</code> the file and use it&#39;s functions. We discuss more on this in the <a href="#organization">organizing your lua code section</a></li>

@@ -1,11 +1,14 @@
 (function(){
     var moreMenu = document.getElementById("more-menu");
     var menuGrid = document.getElementsByClassName("nav-grid")[0];
-    var ads = ["come_out.html","chaos_for_tenancy.html","tired_of_maintaining_books.html"];
+    var ads = ["come_out.html",
+	       "chaos_for_tenancy.html",
+	       "tired_of_maintaining_books.html",
+	       "for-tenants-overseas.html"];
     var random_ad =   function (min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
     };
-    var ad = ads[random_ad(0,2)];
+    var ad = ads[random_ad(0,3)];
    $("#more-menu").click(function(){
 	menuGrid.style.display ==='none' ?
 	    menuGrid.style.display =  '': menuGrid.style.display = "none";  

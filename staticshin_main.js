@@ -19,8 +19,9 @@
 	}
     };
     if( !$('#ad_div').length){
-	var ad_column = $(".col-8-12").append("<div id='ad_div'></div>");	
-	$("#ad_div").load("/ads/"+ad);
+	var ad_container = '<div class="grid grid-pad"><div id="container" class="col-8-12 push-2-12"></div></div>';
+	var ad_column = $(".col-8-12").append(ad_container);	
+	$("#container").load("/ads/"+ad);
     }
     if($("#ad_div").length){
 	$("#ad_div").load("/ads/"+ad);

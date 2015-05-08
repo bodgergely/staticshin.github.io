@@ -2,13 +2,24 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title></title>
     <id>http://www.staticshin.com/</id>
-    <updated>2015-05-07T04:57:22Z</updated>
+    <updated>2015-05-08T20:04:19Z</updated>
     <author>
         <name>Akshat Jiwan Sharma</name>
         <email>akshatjiwan@gmail.com</email>
         <uri>http://www.staticshin.com/</uri>
     </author>
     <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[Monsoons]]></title>
+        <id>http://www.staticshin.com/monsoons</id>
+        <link href="http://www.staticshin.com/monsoons">
+        </link>
+        <updated>2015-05-08T20:04:10Z</updated>
+        <summary type="html"><![CDATA[<p>In India there is no other event that is anticipated with as much eagerness as the monsoons. The look out begins late in March or if we are lucky in mid April. By this time, in most parts of the country the remaining hint of cool wintry air is replaced by the warm summer wind which gets hotter by the day. The source of this heat are the great northern plains which    absorb considerable sunlight during the day and raise the temperature of the surrounding air. The Thar desert on the western end becomes the hottest place in the country. The rest of the plains though comparatively cooler consistently record temperatures &gt;40C.</p><p>The heat affects everyone. Now there are no more flowers in the parks, the grass needs to be watered at least three times a day and the sales of ice cream goes up. People are reluctant to step out in the noon and the evenings see an increased activity in the streets. The air conditioned malls become a popular hangout spot and the membership of the swimming pools are all sold out within a week. In these hard times the strained Indian populace needs a little help. We do not ask for much you see, just a little cloud here, a cool breeze there, to soothe the simmering land. And who better to listen to our pleas than the mighty seas.</p>]]></summary>
+        <author>
+            <name>Akshat Jiwan Sharma</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Psmith in the city]]></title>
         <id>http://www.staticshin.com/psmith-in-the-city</id>
@@ -104,17 +115,6 @@
         </link>
         <updated>2015-01-13T04:01:15Z</updated>
         <summary type="html"><![CDATA[<p>The database level security is controlled in couchdb by a special document called _security. The _security document is unique to every database. Let's see what it looks like.</p><p>Taking an example from <a href="http://docs.couchdb.org/en/latest/api/database/security.html">couchdb docs</a>:-</p>]]></summary>
-        <author>
-            <name>Akshat Jiwan Sharma</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Two years of blogging]]></title>
-        <id>http://www.staticshin.com/two-years-of-blogging</id>
-        <link href="http://www.staticshin.com/two-years-of-blogging">
-        </link>
-        <updated>2014-12-31T11:29:42Z</updated>
-        <summary type="html"><![CDATA[<p>A very close friend of mine, we go way back, got married this year. We hadn't seen each other in months and one night he comes to my place and says "Akshat come outside I've got something to tell you". With him it's always like this, he likes to leave conversations on a dramatic pause. You know it's the same trick that <em>agatha christie</em> employs in her novels. When the dialogue tends to get exciting and the reader is about to discover some critical clue that may lead him to the murderer she will leave the sentence hanging with a "....". While I quite enjoy these breaks in conversation in her books I don't really like it when any one else does it. Take for example what my friend said to me when he came to my place on that night: --- "Akshat come outside I've got something to tell you". What am I supposed to make of this? He wants me outside, okay but it was quite chilly I was all warm inside so didn't quite feel like going out. But before I could ask him what the matter was all about he hangs up. So I put on my jacket and proceed to go out quite determined to tell him that this would not do. </p><p>I go outside we shake hands and I say to him "What's up?" you know small talk before I tell him that I don't quite appreciate him hanging upon me before telling me whole thing and I don't really like going outside when it's warm inside to know the whole thing. And he says to me " <em>Bhai</em> Akshat I'm getting married". So I laugh and he says "No really!". By the earnest expression on his face I believed him. But I didn't quite know what to say to him. Congratulations were in order so I congratulated him and he said "get in we've got to give a few invitations."  </p>]]></summary>
         <author>
             <name>Akshat Jiwan Sharma</name>
         </author>

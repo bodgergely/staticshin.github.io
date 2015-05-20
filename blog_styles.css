@@ -123,7 +123,7 @@ pre {
     margin-left:auto;
     margin-right:auto;
 }
-#ad_div p{
+#ad_div p,#container p{
     font-size:12px;
     line-height:1.3em;
 }

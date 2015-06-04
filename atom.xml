@@ -2,13 +2,24 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title></title>
     <id>http://www.staticshin.com/</id>
-    <updated>2015-05-08T20:04:19Z</updated>
+    <updated>2015-06-04T08:41:30Z</updated>
     <author>
         <name>Akshat Jiwan Sharma</name>
         <email>akshatjiwan@gmail.com</email>
         <uri>http://www.staticshin.com/</uri>
     </author>
     <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[The legendary silliness of rayman ]]></title>
+        <id>http://www.staticshin.com/the-legendary-silliness-of-rayman</id>
+        <link href="http://www.staticshin.com/the-legendary-silliness-of-rayman">
+        </link>
+        <updated>2015-06-04T08:41:20Z</updated>
+        <summary type="html"><![CDATA[<p>After their previous victory against the forces of dark Rayman and his friends grew complacent. They lowered their defences and  succumbed to sloth, sleeping for about a 100 years. And  the creator who spent his early days meditating was now reduced to a frail old man smoking his pipe listlessly all day long. It was a sad state of affairs. No wonder then the evil magician  who returned from defeat stronger than ever, had little trouble conquering the <em>glade of dreams</em>.  The 10 princesses were kidnapped, dragons were unleashed and the teensies were imprisoned. And all this was done while Rayman and his friends were blissfully asleep. Any one would be indignant at the conduct of these "guardians".</p><p>I was very disappointed in Rayman to say the least. I mean it is one thing to be defeated after a hard fought battle and quite another to surrender, nay loll around while the enemy is plundering your land. I would not think it unreasonable to assume that being awake on a battlefield came as a part of the job. Nor would it be  improper then if, under these circumstances, some proud citizen of the glade were to walk up to these bums and register tight slap on their faces to rouse them from their eternal slumber. No no no. The malady was identified. The remedy was prescribed. The dose was administered by a wise fly ,which looked like a toad, and went by the name of Murphy. A right hand on their cheeks and they were up and ready to serve. Reporting for duty: Rayman and co. Their mission? To rescue the princesses, to free the teensies and to defeat the evil magicians. </p>]]></summary>
+        <author>
+            <name>Akshat Jiwan Sharma</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Monsoons]]></title>
         <id>http://www.staticshin.com/monsoons</id>
@@ -104,17 +115,6 @@
         </link>
         <updated>2015-01-14T15:07:48Z</updated>
         <summary type="html"><![CDATA[<p>House and Wilson on a road trip? Sounds too good to be true to me. Consider the facts. Wilson has cancer. Prognosis 5 months. House is facing the prospect of going back to jail to serve a sentence of 6 months. And he is emotionally unstable (as emotionally unstable as a man like house can be). He is trying to make one of his patients understand the importance of life by strangling him (falling well short of consummation),saving his other patient who is quite sick, trying to teach Foreman a lesson for being supportive, trapped in a fire, hallucinating and then finally coming to his senses and then desperately trying to escape and then.... an explosion.Cut to a well lit room, a big smiling picture of Gregory House and an assembly of his friends (?) remembering how a great man he was. Except Wilson, his one true friend. For him house was an ass. </p><p>But it seems like house is not dead after all. He managed to escape through the back door(?) and he cheerfully decides to spend whatever time is left with Wilson. Sounds kind of fantastic. I have two theories about the last episode of House MD.</p>]]></summary>
-        <author>
-            <name>Akshat Jiwan Sharma</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What does _security secure in couchdb?]]></title>
-        <id>http://www.staticshin.com/programming/what-does-_security-secure-in-couchdb</id>
-        <link href="http://www.staticshin.com/programming/what-does-_security-secure-in-couchdb">
-        </link>
-        <updated>2015-01-13T04:01:15Z</updated>
-        <summary type="html"><![CDATA[<p>The database level security is controlled in couchdb by a special document called _security. The _security document is unique to every database. Let's see what it looks like.</p><p>Taking an example from <a href="http://docs.couchdb.org/en/latest/api/database/security.html">couchdb docs</a>:-</p>]]></summary>
         <author>
             <name>Akshat Jiwan Sharma</name>
         </author>

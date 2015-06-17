@@ -87,11 +87,12 @@ blockquote{
     color:#073642;
     font-size:120%;
     text-decoration:none;
+    text-align:center;
 }
 
 .postMeta{
-    font-style:italic;
-    font-size:95%;
+    font-size:14px;
+    text-align:center;
 }
 
 .main-menu{

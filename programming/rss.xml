@@ -5,8 +5,17 @@
         <description></description>
         <link>http://www.staticshin.com/</link>
         <author>akshatjiwan@gmail.com (Akshat Jiwan Sharma)</author>
-        <lastBuildDate>Thu, 04 Jun 2015 08:41:30 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 19 Jun 2015 20:42:46 GMT</lastBuildDate>
         <generator>Feed for Node.js</generator>
+        <item>
+            <title><![CDATA[Explaining erlang processes]]></title>
+            <link>http://www.staticshin.com/programming/explaining-erlang-processes</link>
+            <pubDate>Fri, 19 Jun 2015 20:42:15 GMT</pubDate>
+            <description><![CDATA[<p>Since definitions can get very complicated to the point it confuses the concepts more than it explains we will start with a very basic overview of a process that may not be entirely accurate but it will help us understand what makes erlang processes different and why they are an important feature in the language. </p><p>An erlang process is a completely independent unit of execution. When you say "I've spawned processes" in erlang you mean that  you've created "threads of execution share no data with each other". If you spawn two processes A and B they will run in complete isolation. Process A and B will have their own set of resources.</p>]]></description>
+            <author>
+                <name>Akshat Jiwan Sharma</name>
+            </author>
+        </item>
         <item>
             <title><![CDATA[Mocking your application's state with gen_fsm]]></title>
             <link>http://www.staticshin.com/programming/mocking-your-application-state-with-gen_fsm</link>

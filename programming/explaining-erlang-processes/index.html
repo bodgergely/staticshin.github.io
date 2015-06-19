@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
+    <title>Explaining erlang processes</title>
+    <link href="../../style.css" rel="stylesheet"/>
+
+    
+  </head>
+  <body>
+    <header> 
+  
+  <nav>
+    <ul>       
+      <li><a href="/">staticshin</a></li>
+      <li><a href="/about.html">about</a></li>
+      <li><a href="/archives.html">archives</a></li>
+      <li title="more" id="more-menu">[...]</li>
+    </ul>
+  </nav>
+  <div class="grid grid-pad nav-grid" style="display:none">
+      <div class="col-1-3">
+	<h3>Popular Posts</h3>
+        <ol>
+          <li><a href="/knife-in-the-water">Knife in the water</a></li>
+          <li><a href="/understanding-punctuation-in-erlang">Understanding punctuation in erlang</a></li>
+          <li><a href="/absurdity-keeler-webwork-and-nis">Absurdity, Keeler, webwork and NIS </a></li>
+          <li><a href="/rayman-origins-is-a-silly-little-game">Rayman origins is a silly little game</a></li>
+          <li><a href="/dead-man">Dead man</a></li>
+        </ol>
+      </div>
+      <div class="col-1-3">
+	<h3>Also on staticshin</h3>
+        <a href="/programming">Thoughts on programming</a>
+	<p> <strong>Feeds</strong></p>
+	  <p><a href ="/rss.xml">rss</a>|
+          <a href="/atom.xml">atom</a>
+	</p>
+      </div>
+      <div class="col-1-3">
+        
+      </div>
+    </div>
+</header>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<h1>Explaining erlang processes</h1>
+	<span>Akshat Jiwan Sharma,  Sat Jun 20 2015</span>
+	<div class="postBody"><p>Since definitions can get very complicated to the point it confuses the concepts more than it explains we will start with a very basic overview of a process that may not be entirely accurate but it will help us understand what makes erlang processes different and why they are an important feature in the language. </p>
+<p>An erlang process is a completely independent unit of execution. When you say "I've spawned processes" in erlang you mean that  you've created "threads of execution share no data with each other". If you spawn two processes A and B they will run in complete isolation. Process A and B will have their own set of resources.</p>
+<p>"So how do you create a process in erlang?"</p>
+<p>It's simple really. Suppose you have a function. </p>
+<pre><code>
+A = fun()-&gt;erlang:display("I am a function")end.</code></pre>
+<p>Now you just "invoke" it with <code>spawn(A)</code></p>
+<pre><code>spawn(A).
+"I am a function"
+&lt;0.35.0&gt;
+
+spawn(A).
+"I am a function"
+&lt;0.37.0&gt;
+
+ spawn(A).
+"I am a function"
+&lt;0.39.0&gt;</code></pre>
+<p>"That simple?"</p>
+<p>Yes. But did you notice numbers in angular brackets. I'm talking about "&lt;0.35.0&gt;,&lt;0.37.0&gt;,&lt;0.39.0&gt;"?</p>
+<p>"What are they?"</p>
+<p>These are called process identifiers or pids. We'll see their use soon. Just remember that when you create a process with spawn it immediately executes the function that is passed as an argument and gives you back an identifier.</p>
+<p>The definition of spawn above was not complete though. Here is what a complete spawn function looks like:</p>
+<p><code>spawn(Module,Function,Argument)</code></p>
+<p>Very straightforward and simple. When you spawn a process you can specify the module name where the function is defined (1'st argument), the name of the function(2nd argument) and any additional arguments to the function that is to be spawned(3rd argument). </p>
+<p>I hope everything makes sense up to this point?</p>
+<p>"It does"</p>
+<p>So let me ask you a question. What do you do with spawned processes?</p>
+<p>"I eat them"</p>
+<p>...</p>
+<p>"Sorry :) I don't know"</p>
+<p>No worries. Wasn't really a good question anyway.</p>
+<p>To answer though, what you do with a process is up to you. You can spawn to execute an arbitrary piece of code like we did in the example above. You can also spawn to create "communication endpoints" in your program.</p>
+<p>"Explain"</p>
+<p>Gladly. Communication between processes is one of the fundamental concepts in erlang. Creating isolated execution points is not really useful if you can't talk to them 'cause you can't really tell what is going on in your program. Excessive isolation breeds an antisocial behaviour. </p>
+<p>"You  mean to say communication is the basis of any healthy relationship?"</p>
+<p>Yes exactly! You are catching on really well. But let's take another example here:</p>
+<pre><code>-module(otp_erl).
+
+-export([good_worker/0,bad_worker/0,spawn_worker/0]).
+
+
+bad_worker()-&gt;
+    receive
+    {add,V1,V2}-&gt;
+       erlang:display(V1+V2);
+    {sub,V1,V2} -&gt;
+        erlang:display(V1-V2);
+    {mul,V1,V2} -&gt;
+        erlang:display(V1*V2);
+    {square,V1}-&gt;
+        erlang:display(V1*V1);
+    something_stupid-&gt;erlang:display("I can't work on this!")
+    end.
+
+good_worker()-&gt;
+    receive
+    {add,V1,V2}-&gt;
+        erlang:display(V1+V2),
+        good_worker();
+    {sub,V1,V2} -&gt;
+        erlang:display(V1-V2),
+        good_worker();
+    {mul,V1,V2} -&gt;
+        erlang:display(V1*V2),
+    good_worker();            
+    {square,V1}-&gt;
+        erlang:display(V1*V1),
+        good_worker();
+    something_stupid-&gt;
+        erlang:display("I can't work on this but I will wait for something else!"),
+        good_worker()
+    end.
+
+spawn_worker()-&gt;
+    P_Bad = spawn(otp_erl,bad_worker,[]),
+    P_Good = spawn(otp_erl,good_worker,[]),
+    P_Bad! {add,2,3},
+    P_Bad ! {sub,3,2},
+    P_Good ! {add,3,2},
+    P_Good! {sub,3,2},
+    P_Good ! {mul,3,2},
+    P_Good ! something_stupid,
+    P_Good ! {square,4}.</code></pre>
+<p>So this program introduces some very important concepts namely: sending messages,receiving messages and looping.</p>
+<p>Sending messages is really simple all you've got to do is <code>Pid ! some_message_to_send</code>. Where Pid is the process id of the spawned process. Receiving of messages requires a bit more though. To receive messages you need to make use of a receive clause. Here is what it looks like:</p>
+<pre><code>receive
+
+    pattern1-&gt;Action1;
+    pattern2 - &gt; Action2;
+    |
+    |
+    |
+    patternN - &gt;ActionN
+end.</code></pre>
+<p>"Explain"</p>
+<p>Gladly. The working of receive is quite simple. When a receive statement is encountered in a process one of the two things happen:-</p>
+<ol>
+<li><p>If there are any messages in the message queue of your process then it matches them against the patterns and performs
+the action for a matched pattern. </p>
+</li>
+<li><p>If there are no messages then the process suspends and starts waiting for new messages. Receive only ends after a successful match (or timeout but we won't discuss timeouts)</p>
+</li>
+</ol>
+<p>Which brings us to the life cycle of a process. We know that a process runs independently.</p>
+<p>"Right"</p>
+<p>So a question to ask here is when does a process terminate?</p>
+<p>Well a process terminates when there is nothing more left to execute.</p>
+<p>"Ah I see"</p>
+<p>Now I think we have everything needed to explain the output of the above program. </p>
+<p><strong>An explanation for the output of the above program</strong></p>
+<p>The entry point for the program is spawn_worker. Inside it we spawn two functions. The good_worker function. And the bad_worker function.  Both these function are similar in their structure with just one difference. The bad_worker receives a message and then completes it's execution. Where as the good_worker receives a message and then listens for new ones.</p>
+<p>The implementation of a "receive loop" is pretty simple. You simply call the function recursively after a success pattern match for it to keep listening to new messages. Remember that the life of a process is as long as the code inside it is executing. And a receive block lives as long as at least one successful match. Every time we loop inside a receive we keep to function hooked to listen to the messages. Let's see what is happening inside the good_worker</p>
+<pre><code>    receive
+    {add,V1,V2}-&gt;
+        erlang:display(V1+V2),
+        good_worker();
+    {sub,V1,V2} -&gt;
+        erlang:display(V1-V2),
+        good_worker();</code></pre>
+<p>after an {add,V1,V2} message is received the process loops by calling good_worker() and once the execution reaches the receive block it waits for more messages. Where as in the bad_worker:-</p>
+<pre><code>    receive
+    {add,V1,V2}-&gt;
+       erlang:display(V1+V2);
+    {sub,V1,V2} -&gt;
+        erlang:display(V1-V2);</code></pre>
+<p>Once a receive pattern is satisfied the process execution is completed and it exits. Now looking at the results of execution of the program it is quite clear that when we call P_Bad! {add,2,3} followed by   P_Bad ! {sub,3,2}, only add message works because the bad worker process exists after a successful receive match. Where as multiple messages to a good worker works because it keeps listening to new messages after every successful pattern match. </p>
+<p><strong>A quick word about linking and monitoring</strong></p>
+<p>Erlang provides two other ways for processes to communicate. Though with these methods the communication is limited to
+the "worst case scenarios" --that is when a process goes down. The first one is linking.</p>
+<p>Two process can be linked to each other by calling link(Pid_of_process_to_link) from within the process. So in our bad_worker example we can do:</p>
+<pre><code>bad_worker()-&gt;
+link(Pid_other_worker),
+%% rest of the code</code></pre>
+<p>and the bad_worker will be linked to "Pid_other_worker".</p>
+<p>"Okay but what do we do with these links?"</p>
+<p>Remember that a process terminates when there is nothing else to do?</p>
+<p>"Yeah"</p>
+<p>That is called a "normal" way of termination. Though that is not the only way a process can terminate. There may be many other reasons. When you link two processes the exit reasons other than normal get passed around between them.</p>
+<p>"Cool. But how do I listen to these signals. Is it just like the receive loop?"</p>
+<p>It's almost like the receive loop but not quite. To listen to the exit signals you need to call "process_flag(trap_exit, true)" what this does is it tells the process to transform an exit signal into a message and put it in the processes mailbox from where it can be read just like the other messages.</p>
+<p>"Explain"</p>
+<p>Gladly. So taking the example above and modifying it to handle errors we've got this:</p>
+<pre><code>-module(otp_erl).
+
+-export([good_worker/0,bad_worker/0,spawn_worker/0]).
+
+
+bad_worker()-&gt;
+    receive
+    {add,V1,V2}-&gt;
+       erlang:display(V1+V2);
+    {sub,V1,V2} -&gt;
+        erlang:display(V1-V2);
+    bad_run-&gt; _A = 2/0;
+    {mul,V1,V2} -&gt;
+        erlang:display(V1*V2);
+    {square,V1}-&gt;
+        erlang:display(V1*V1);
+    something_stupid-&gt;erlang:display("I can't work on this!")
+    end.
+
+good_worker()-&gt;
+    process_flag(trap_exit, true),
+    receive
+    {add,V1,V2}-&gt;
+        erlang:display(V1+V2),
+        good_worker();
+
+    {sub,V1,V2} -&gt;
+        erlang:display(V1-V2),
+        B =spawn_link(otp_erl,bad_worker,[]),        
+        B!bad_run,
+        good_worker();
+    {mul,V1,V2} -&gt;
+        erlang:display(V1*V2),
+        good_worker();            
+    {square,V1}-&gt;
+        erlang:display(V1*V1),
+        good_worker();
+    something_stupid-&gt;
+        erlang:display("I can't work on this but I will wait for something else!"),
+        good_worker();
+    {'EXIT',_Pid,_Reason}-&gt;
+        erlang:display("Caught it"),
+        good_worker()
+    end.
+
+spawn_worker()-&gt;
+    P_Bad = spawn(otp_erl,bad_worker,[]),
+    P_Good = spawn(otp_erl,good_worker,[]),
+    P_Bad! {add,2,3},
+    P_Bad ! {sub,3,2},
+    P_Good ! {add,3,2},
+    P_Good! {sub,3,2},
+    P_Good ! {mul,3,2},
+    P_Good ! something_stupid,
+    P_Good ! {square,4},</code></pre>
+<p>And here is the output</p>
+<pre><code>5
+5
+1
+6
+"I can't work on this but I will wait for something else!"
+16
+"Caught it"</code></pre>
+<p>There are two modifications to the program. First we've added another clause in the bad_worker that we know will throw an exception causing the process to exit abnormally. Second in the {sub,V1,V2} clause for the good worker we spawn a bad_worker process and send a "bad_run" message to it to purposefully cause the error. The since we have set trap exit to true our good worker process traps the error and we get the printed result. </p>
+<p>"But shouldn't Caught it message be printed after 1?"</p>
+<p>What a great question! I am not sure about the answer but since we are talking about different process out of order reception is expected. But this can be a bit confusing so we'll leave it here. One thing to note here is that links are bidirectional channels of communication. Abnormal exit signals pass from the exited process to the other linked process. Linking between the same processes over and over has no effect. </p>
+<p>Moving on to monitors. Monitors are like links but unidirectional. With monitors you don't really need to trap signals. It's all just messages. When a process exits a message like</p>
+<p><code>{'DOWN', Ref, process, Pid2, Reason}</code></p>
+<p>is passed to the monitoring process. But if the monitoring process itself is down no message is passed to the process that is monitored. Unidirectional. You create a monitor by calling</p>
+<p><code>elrang:monitor(process,Pid)</code></p>
+<p>Calling the function several times will create several monitors each of which will get "Down" signals independently.</p>
+<p><strong>Dictionaries</strong></p>
+<p>Every process in erlang has it's own process dictionary. And since process do not share resources you can use them to store data as per your needs. There is nothing much to explain here. There are just a few functions that add an item, remove an item, get an item and so on. Standard stuff made interesting only by erlang's ability to isolate the resource allocation to processes.</p>
+<p><strong>How to use processes</strong></p>
+<p>So we've talked a lot about process but one question still remains. How do you use them?</p>
+<p>As you like it :)</p>
+<p>Personally I like to spawn many small processes for doing tiny independent tasks. Logging is a pretty good example. 
+If I need to log something I just spawn a function passing on the data to log and the spawned process does all the work. For these type of tasks I don't really care about communication or linking or monitoring. Once you get a hang of processes you will be able to identify such places where you can run a block of code concurrently in a spawned process.</p>
+<p>Just remember that processes in erlang are fast to create,destroy and very cheap. In the range of <code>kbs</code> so you don't have to worry about running out of memory. It will be fine, I think, if you get a bit reckless with them. </p>
+<p><em>Meanwhile in Romania</em></p>
+<h2>Count Dracula to be evicted from his castle</h2>
+<blockquote>
+<p>The local authorities have finally decided to take a stern action against the count who has been known to terrorize
+the villagers for centuries. The final straw seems to have been the disappearance of a Spanish tourist who was last seen in a white tee shirt with the words "Bite me" printed in red, taking pictures near the count's castle. Count Dracula's lawyer has,as always, denied any involvement of count in the matter. But it seems that his words are falling on deaf ears as the authorities are preparing to completely demolish the castle. The cranes standing on his front door are ready for action. The count is nowhere to be seen. Is this the end of the great villain? Stay tuned to find out as the "count down" begins in 3 hours. </p>
+</blockquote>
+<p>"Explain!"</p>
+<p>I have nothing really. Sorry. </p>
+</div>
+      </div>
+    </div>
+    <div id="disqus_thread"></div>
+    <hr/>
+    <footer>
+      <h1>Thank you for reading</h1>
+    </footer>
+    <noscript>
+      Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+<div>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function ()
+  {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37138783-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function ()
+  {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<script src="/jquery-1.11.1.min.js"> </script>
+<script src="../../staticshin.js"> </script>
+
+</body>
+
+</html>

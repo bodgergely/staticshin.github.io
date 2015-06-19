@@ -5,8 +5,17 @@
         <description></description>
         <link>http://www.staticshin.com/</link>
         <author>akshatjiwan@gmail.com (Akshat Jiwan Sharma)</author>
-        <lastBuildDate>Thu, 04 Jun 2015 08:41:30 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 19 Jun 2015 20:42:46 GMT</lastBuildDate>
         <generator>Feed for Node.js</generator>
+        <item>
+            <title><![CDATA[Explaining erlang processes]]></title>
+            <link>http://www.staticshin.com/programming/explaining-erlang-processes</link>
+            <pubDate>Fri, 19 Jun 2015 20:42:15 GMT</pubDate>
+            <description><![CDATA[<p>Since definitions can get very complicated to the point it confuses the concepts more than it explains we will start with a very basic overview of a process that may not be entirely accurate but it will help us understand what makes erlang processes different and why they are an important feature in the language. </p><p>An erlang process is a completely independent unit of execution. When you say "I've spawned processes" in erlang you mean that  you've created "threads of execution share no data with each other". If you spawn two processes A and B they will run in complete isolation. Process A and B will have their own set of resources.</p>]]></description>
+            <author>
+                <name>Akshat Jiwan Sharma</name>
+            </author>
+        </item>
         <item>
             <title><![CDATA[The legendary silliness of rayman ]]></title>
             <link>http://www.staticshin.com/the-legendary-silliness-of-rayman</link>
@@ -84,15 +93,6 @@
             <link>http://www.staticshin.com/thank-you-for-smoking</link>
             <pubDate>Sat, 31 Jan 2015 07:03:23 GMT</pubDate>
             <description><![CDATA[<p><img src="https://farm9.staticflickr.com/8573/15785417804_9a9041238c_o.jpg" alt="smoke smoke smoke"></p><p>Before we begin talking about thank you for smoking lets take a minute to appreciate the courage shown by the writers,actors,directors and the rest of the crew to bring a movie  like Thank you for Smoking on the big screen. Are you having trouble finding something to appreciate? Well I don't blame you to be honest. The film deals with a very sensitive issue about nicotine lobbyists fighting to protect(?) the rights of smokers. Now the subject itself is enough to cast the movie into all kinds of controversies which would lead one to assume that the makers of the movie would want to go for a very innocuous title. Some thing like ... I don't know maybe Nick? or Puff? you know something that makes it easy to talk about. They don't pull any punches though. And there is the title of the movie in bold "Thank you for smoking!". </p>]]></description>
-            <author>
-                <name>Akshat Jiwan Sharma</name>
-            </author>
-        </item>
-        <item>
-            <title><![CDATA["Everybody dies"]]></title>
-            <link>http://www.staticshin.com/everybody-dies</link>
-            <pubDate>Wed, 14 Jan 2015 15:07:48 GMT</pubDate>
-            <description><![CDATA[<p>House and Wilson on a road trip? Sounds too good to be true to me. Consider the facts. Wilson has cancer. Prognosis 5 months. House is facing the prospect of going back to jail to serve a sentence of 6 months. And he is emotionally unstable (as emotionally unstable as a man like house can be). He is trying to make one of his patients understand the importance of life by strangling him (falling well short of consummation),saving his other patient who is quite sick, trying to teach Foreman a lesson for being supportive, trapped in a fire, hallucinating and then finally coming to his senses and then desperately trying to escape and then.... an explosion.Cut to a well lit room, a big smiling picture of Gregory House and an assembly of his friends (?) remembering how a great man he was. Except Wilson, his one true friend. For him house was an ass. </p><p>But it seems like house is not dead after all. He managed to escape through the back door(?) and he cheerfully decides to spend whatever time is left with Wilson. Sounds kind of fantastic. I have two theories about the last episode of House MD.</p>]]></description>
             <author>
                 <name>Akshat Jiwan Sharma</name>
             </author>

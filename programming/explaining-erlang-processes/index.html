@@ -52,8 +52,7 @@
 <p>An erlang process is a completely independent unit of execution. When you say "I've spawned processes" in erlang you mean that  you've created "threads of execution share no data with each other". If you spawn two processes A and B they will run in complete isolation. Process A and B will have their own set of resources.</p>
 <p>"So how do you create a process in erlang?"</p>
 <p>It's simple really. Suppose you have a function. </p>
-<pre><code>
-A = fun()-&gt;erlang:display("I am a function")end.</code></pre>
+<pre><code>A = fun()-&gt;erlang:display("I am a function")end.</code></pre>
 <p>Now you just "invoke" it with <code>spawn(A)</code></p>
 <pre><code>spawn(A).
 "I am a function"
@@ -88,7 +87,6 @@ spawn(A).
 <pre><code>-module(otp_erl).
 
 -export([good_worker/0,bad_worker/0,spawn_worker/0]).
-
 
 bad_worker()-&gt;
     receive
@@ -146,11 +144,9 @@ end.</code></pre>
 <p>"Explain"</p>
 <p>Gladly. The working of receive is quite simple. When a receive statement is encountered in a process one of the two things happen:-</p>
 <ol>
-<li><p>If there are any messages in the message queue of your process then it matches them against the patterns and performs
-the action for a matched pattern. </p>
-</li>
-<li><p>If there are no messages then the process suspends and starts waiting for new messages. Receive only ends after a successful match (or timeout but we won't discuss timeouts)</p>
-</li>
+<li>If there are any messages in the message queue of your process then it matches them against the patterns and performs
+the action for a matched pattern. </li>
+<li>If there are no messages then the process suspends and starts waiting for new messages. Receive only ends after a successful match (or timeout but we won't discuss timeouts)</li>
 </ol>
 <p>Which brings us to the life cycle of a process. We know that a process runs independently.</p>
 <p>"Right"</p>
@@ -194,7 +190,6 @@ link(Pid_other_worker),
 <pre><code>-module(otp_erl).
 
 -export([good_worker/0,bad_worker/0,spawn_worker/0]).
-
 
 bad_worker()-&gt;
     receive
@@ -254,8 +249,8 @@ spawn_worker()-&gt;
 "I can't work on this but I will wait for something else!"
 16
 "Caught it"</code></pre>
-<p>There are two modifications to the program. First we've added another clause in the bad_worker that we know will throw an exception causing the process to exit abnormally. Second in the {sub,V1,V2} clause for the good worker we spawn a bad_worker process and send a "bad_run" message to it to purposefully cause the error. The since we have set trap exit to true our good worker process traps the error and we get the printed result. </p>
-<p>"But shouldn't Caught it message be printed after 1?"</p>
+<p>There are two modifications to the program. First we've added another clause in the bad_worker that we know will throw an exception causing the process to exit abnormally. Second in the {sub,V1,V2} clause for the good worker we spawn a bad_worker process and send a "bad_run" message to it to purposefully cause the error. Then since we have set trap exit to true our good worker process traps the error and we get the printed result "Caught It"</p>
+<p>"But shouldn't 'Caught it' message be printed after 1?"</p>
 <p>What a great question! I am not sure about the answer but since we are talking about different process out of order reception is expected. But this can be a bit confusing so we'll leave it here. One thing to note here is that links are bidirectional channels of communication. Abnormal exit signals pass from the exited process to the other linked process. Linking between the same processes over and over has no effect. </p>
 <p>Moving on to monitors. Monitors are like links but unidirectional. With monitors you don't really need to trap signals. It's all just messages. When a process exits a message like</p>
 <p><code>{'DOWN', Ref, process, Pid2, Reason}</code></p>

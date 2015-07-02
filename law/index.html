@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
+    <title>All programming posts</title>
+    <link href="../style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    {{{header}}}
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+     <strong>All posts </strong>
+	<ol>
+	  {{#archives}}
+	  <li>
+	    <p>
+	      <a href="/{{tag}}/{{_id}}">{{fields.title}}</a>
+	      <small> {{fields.postedOn}}, {{fields.wordCount}} words</small>
+	    </p>            
+	  </li>
+	  {{/archives}}
+          <li>
+	    <a href="/notes-on-legal-rights-and-duties-nature-and-sources-of-law-prof-gray">
+	      Legal rights and duties
+	    </a>
+	  </li>
+	</ol>
+      </div>
+    </div>
+    <hr/>
+    <footer>
+      <h1>Thank you for reading</h1>
+    </footer>
+    <script src="/jquery-1.11.1.min.js"> </script>
+    <script src="../staticshin.js"> </script>
+  </body>
+</html>

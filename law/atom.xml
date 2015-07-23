@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title></title>
+    <id>http://www.staticshin.com/</id>
+    <updated>2015-07-23T07:40:24Z</updated>
+    <author>
+        <name>Akshat Jiwan Sharma</name>
+        <email>akshatjiwan@gmail.com</email>
+        <uri>http://www.staticshin.com/</uri>
+    </author>
+    <generator>Feed for Node.js</generator>
+</feed>

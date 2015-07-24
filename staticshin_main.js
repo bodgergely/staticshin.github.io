@@ -5,11 +5,11 @@
 	       "chaos_for_tenancy.html",
 	       "tired_of_maintaining_books.html",
 	       "for-tenants-overseas.html","easy_being_a_landlord.html",
-	      "sherlock_holmes_tenant.html"];
+	      "sherlock_holmes_tenant.html","dont-ruffle-your-feathers.html"];
     var random_ad =   function (min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
     };
-    var ad = ads[random_ad(0,5)];
+    var ad = ads[random_ad(0,6)];
    $("#more-menu").click(function(){
 	menuGrid.style.display ==='none' ?
 	    menuGrid.style.display =  '': menuGrid.style.display = "none";  

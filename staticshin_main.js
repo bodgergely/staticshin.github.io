@@ -1,15 +1,19 @@
 (function(){
     var moreMenu = document.getElementById("more-menu");
     var menuGrid = document.getElementsByClassName("nav-grid")[0];
-    var ads = ["come_out.html",
-	       "chaos_for_tenancy.html",
-	       "tired_of_maintaining_books.html",
-	       "for-tenants-overseas.html","easy_being_a_landlord.html",
-	      "sherlock_holmes_tenant.html","dont-ruffle-your-feathers.html"];
+    var ads = [
+	"come_out.html",
+	"chaos_for_tenancy.html",
+	"tired_of_maintaining_books.html",
+	"for-tenants-overseas.html"
+	,"easy_being_a_landlord.html",
+	"sherlock_holmes_tenant.html"
+	,"dont-ruffle-your-feathers.html",
+	"persuasion.html"];
     var random_ad =   function (min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
     };
-    var ad = ads[random_ad(0,6)];
+    var ad = ads[random_ad(0,7)];
    $("#more-menu").click(function(){
 	menuGrid.style.display ==='none' ?
 	    menuGrid.style.display =  '': menuGrid.style.display = "none";  

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
+    <title>Caching in couchdb </title>
+    <link href="../../style.css" rel="stylesheet"/>
+
+    
+  </head>
+  <body>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<h1 class="center">couchdb query servers</h1>
+	<div class="postBody">
+	  <p>By default couchdb uses a javscript query server to process it's design documents (ddocs) functions. The communication between couchdb and query server takes place over stdio using a predefined protocol.</p> <p>The default javascript query server runs a <code>main.js</code> file in a loop that interprets the commands sent by couchdb, executes it and then sends the result back to couchdb. Since the communication takes place over stdio the job of <code>main.js</code> file is to read the messages written to stdio and after interpreting and executing those messages write the output to stdio. That's all it does. The <code>main.js</code> is built by concatinating the follwing files:</p>
+	  <ol>
+	    <li>filter.js </li>
+	    <li>json2.js</li>
+	    <li>loop.js</li>
+	    <li>mimeparse.js</li>
+	    <li>render.js</li>
+	    <li>state.js</li>
+	    <li>util.js</li>
+	    <li>validate.js</li>
+	    <li>views.js</li>
+	  </ol>
+	  <p>The most intresting one among these is <code>loop.js</code> because it handles reading the command from the stdio and then "dispatching" it to the appropriate handler defined in the other files. For example if the loop.js recieves a command to render a show function it will send that command to the show "handler" that is defined in render.js.</p> <p>A small sidenote. Even though we are discussing the javscript view server here the princple remians the same if you use a query server in your favorite language. Whatever language you use there should be a main loop that is reading commands written on the stdio. After translating the commmand it would invoke the appropriate handler to run that command and give back the final results are given back to couchdb.</p>
+	  <p>Let us take a deeper look at the loop.js file.</p>
+	  <pre><code>var sandbox = null;
+	      var filter_sandbox = null; function init_sandbox() { try { // if possible, use evalcx (not always available) sandbox = evalcx(''); sandbox.emit = Views.emit; sandbox.sum = Views.sum; sandbox.log = log; sandbox.toJSON = Couch.toJSON; sandbox.JSON = JSON; sandbox.provides = Mime.provides; sandbox.registerType = Mime.registerType; sandbox.start = Render.start; sandbox.send = Render.send; sandbox.getRow = Render.getRow; sandbox.isArray = isArray; } catch (e) { //log(e.toSource()); } }; init_sandbox();</code></pre>
+	  <p>The code above is pretty straignforward but it gives us some insight into how couchdb view server works. We have a <code>sandbox</code> object that stores refrences to a "utility" functions. Before executing a utility function it checks whether it is defined in the sandbox obect. For an undefined function an error will be thrown. Further the <code>loop.js</code> files defines a ddoc function:-</p>
+	  <pre><code>var DDoc = (function() { var ddoc_dispatch = { "lists" : Render.list, "shows" : Render.show, "filters" : Filter.filter, "views" : Filter.filter_view, "updates" : Render.update, "validate_doc_update" : Validate.validate }; var ddocs = {}; return { ddoc : function() { var args = []; for (var i=0; i &lt; arguments.length; i++) { args.push(arguments[i]); }; var ddocId = args.shift(); if (ddocId == "new") { // get the real ddocId. ddocId = args.shift(); // store the ddoc, functions are lazily compiled. ddocs[ddocId] = args.shift(); print("true"); } else { // Couch makes sure we know this ddoc already. var ddoc = ddocs[ddocId]; if (!ddoc) throw(["fatal", "query_protocol_error", "uncached design doc: "+ddocId]); var funPath = args.shift(); var cmd = funPath[0]; // the first member of the fun path determines the type of operation var funArgs = args.shift(); if (ddoc_dispatch[cmd]) { // get the function, call the command with it var point = ddoc; for (var i=0; i &lt; funPath.length; i++) { if (i+1 == funPath.length) { var fun = point[funPath[i]]; if (!fun) { throw(["error","not_found", "missing " + funPath[0] + " function " + funPath[i] + " on design doc " + ddocId]); } if (typeof fun != "function") { fun = Couch.compileFunction(fun, ddoc, funPath.join('.')); // cache the compiled fun on the ddoc point[funPath[i]] = fun; }; } else { point = point[funPath[i]]; } }; // run the correct responder with the cmd body ddoc_dispatch[cmd].apply(null, [fun, ddoc, funArgs]); } else { // unknown command, quit and hope the restarted version is better throw(["fatal", "unknown_command", "unknown ddoc command '" + cmd + "'"]); } } } }; })();</code></pre>
+
+	  <p>Intially the code function looks a bit daunting. So lets break it down step by step.</p> <ol> <li><p>Right in the first line there is a "dispatch list" defined as <code>ddoc_dispatch</code>. The dispatch list should be familliar to you as it contains the "handlers" for common design functions that you use :- lists is just "handler" for couchdb list function and shows is simply the "handler" for couchdb show function etc. T he dispatch function plays the same role for design document that the sandbox function did for the javascript query function. It's a whitelist of the acceptable functions in a design document. Any function that is not in the white list won't be executed.</p> </li> <li><p>The returned function is where the actual work happens. It stores the design document in the ddoc variable. Then depending upon the command it executes a design doc function. The only requirement being that the ddoc function should resolve to one in the whitelist. The end result can either be either a valid response back to couchdb or an error.</p> </li> </ol> <p>Finally there is the actual loop function.</p>
+
+	  <pre><code>var Loop = function() { var line, cmd, cmdkey, dispatch = { "ddoc" : DDoc.ddoc, // "view" : Views.handler, "reset" : State.reset, "add_fun" : State.addFun, "add_lib" : State.addLib, "map_doc" : Views.mapDoc, "reduce" : Views.reduce, "rereduce" : Views.rereduce }; function handleError(e) { var type = e[0]; if (type == "fatal") { e[0] = "error"; // we tell the client it was a fatal error by dying respond(e); quit(-1); } else if (type == "error") { respond(e); } else if (e.error &amp;&amp; e.reason) { // compatibility with old error format respond(["error", e.error, e.reason]); } else if (e.name) { respond(["error", e.name, e]); } else { respond(["error","unnamed_error",e.toSource ? e.toSource() : e.stack]); } }; while (line = readline()) { cmd = JSON.parse(line); State.line_length = line.length; try { cmdkey = cmd.shift(); if (dispatch[cmdkey]) { // run the correct responder with the cmd body dispatch[cmdkey].apply(null, cmd); } else { // unknown command, quit and hope the restarted version is better throw(["fatal", "unknown_command", "unknown command '" + cmdkey + "'"]); } } catch(e) { handleError(e); } }; }; Loop();</code></pre>
+
+	  <p>The Loop function runs in a loop reading the messages printed on the stdio. For each message read it "dispatches" the appropriate command. Once again any command must be available in a dispatch list. This dispatch list forms a thrid level of whitelist which contains the internal functions for the view server. These functions are not availible to us and are utilized by the query server to perform it's tasks.</p>
+
+	  <p>A quick recap before we go any further:-</p>
+	  <ol>
+	    <li>
+	      <p>The default couchdb query server is a single main.js file which is formed by concatenating several other files. The most interesting among them is the <code>loop.js</code> file which keeps reading from the stdio and executes the appropriate command.
+	      </p>
+	    </li>
+	    <li>
+	      <p>The sandbox object contains a sandboxed list of utility functions in couchdb. These utility functions are availaible to us in the common ddoc functions like <code>toJSON</code> function which converts and object to json. No other utility function other than the one in the whitelist is allowed to be executed. There are simillar objects for design document and the private query server functions that only allow the valid functions to be executed.
+	      </p>
+	    </li>
+	  </ol>
+	  <p>One thing that you can do is add your own utility functions to couchdb query server. This makes them instantly available in all of the ddoc functions. Although couchdb has a module loading implementation using it is only cached per request (iirc). So adding utility fuctions in the query server have the advantage of being permanently cached.</p> <p>Warning: this technique should be used with caution and only n functions you trust to be safe. </p> <p><strong>Adding our own functions to the query server</strong></p>
+	  <p>The idea is we add the function to the sandbox object to make it available as a utility. Lets start with something small </p>
+	  <pre>
+	    <code>
+	      var sum = function(a,b){ return a+b; }
+	    </code>
+	  </pre>
+	  <p>This is a very simple function which simply adds the inputs given to it. Lets add it to the sandbox object and try to execute with main.js file.</p>
+	  <pre>
+	    <code>
+	      sandbox.sum_two = sum;
+	    </code>
+	  </pre>
+	  <p>Install and start spider monkey (couchdb uses this to execute the main.js file). On ubuntu the command is
+	    <code>
+	      js24
+	    </code>.
+	    Then do
+	    <code>
+	      load["path to your main.js file"]
+	    </code>.
+	    Hopefully the file should load without any errors. In the console type <code>sum(2,3)</code> you should get 5 as a result. Great it works. Now start couchdb.
+	    Type <code>http://localhost:5984/_utils</code>.</p> <p>From the futon interface crate a new database. From the dropdown create a temporary view and type:</p>
+	  <pre>
+	    <code>
+	      function(doc) { emit(sum_two(2,3), doc); }
+	    </code>
+	  </pre>
+	  <p>You should see something like this in the output</p> <p>![]</p>
+	  <p>Do you? If you do it means that you've succefully modifed the default query server to suit your needs. The example that I gave was simplistic on purpose. Just to show you how it can be done. Once you know how you'll probably want to include your own functions with the query server. I've got a very small templating library (plates.js) added to the couch query server that I can use from any where. Once more only add functions/libraries you trust because a memory leak in the query server can have a severe impact on the performance and resource utilization.</p>
+	  <p>You can also keep the vanilla and modified view server files seperate. Couchdb accepts multiple view servers for a single language so you can use a different one for each design document. Just name them differently and update the config files to make couchdb aware of them. You can have for example</p>
+	  <pre><code>javscript-template: filepath javscript-validate:filepath etc</code></pre>
+	  <p>all for the same language javascript. Just make sure to set the design doc language according to which query server you want to execute. A design doc with the language <code>javscript-validate</code> for example will run the javscript-validate view server that you've specified in the config file. </p>
+	  <p><strong>The query server execution</strong></p>
+	  
+	  <p>Behind the scenes erlang is responsible for spawning the query servers and "distributing" the load among them. You don't need to know how but it might help you gain a better understanding of your application during high load times if you do. Here is how it works:-</p>
+	  <p>If you go into the implementation details there are a couple of things to note.</p>
+	  <p>First is the data structures.</p> <p>Second is the ets tables.</p>
+	  <p>Third is the actual algorithm.</p>
+	  <p><strong>Native query server</strong></p> <p><a href="http://blog.couchdb.org/">Don't forget to read the official couchdb blog</a></p> 
+	</div>
+      </div>
+      <div id="disqus_thread"></div>
+      <hr/>
+      <footer>
+	<h1>Thank you for reading</h1>
+      </footer>
+      <noscript>
+	Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+      </noscript>
+      <div>
+	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+      <script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function ()
+	{
+	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-37138783-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function ()
+	{
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+
+      </script>
+      <script src="/jquery-1.11.1.min.js"> </script>
+      <script src="../../staticshin.js"> </script>
+
+  </body>
+
+</html>

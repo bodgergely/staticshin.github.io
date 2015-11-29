@@ -976,19 +976,20 @@
 	<p>All in all it is very difficult to write blocking code in openresty :)</p>
 
         <h3 id="resty_cli">resty cli</h3>
-        <p>The
-	  <a href="https://github.com/openresty/resty-cli">resty cli</a> allows you to run
-	  your openresty scripts from the command line like you'd run your normal lua
-	  scripts. 
+        <p>
+	  The
+	  <a href="https://github.com/openresty/resty-cli">resty cli</a>
+	  allows you to run your openresty scripts from the terminal
+	  like you'd run your normal lua scripts. 
 	</p>
-        <p>The resty cli is automatically installed whith openresty.
-	  It is present in the bin subdirectory of the openresty install path. On my machine
+        <p>The resty cli is packaged with openresty. You don't need to install it separately.
+	  It is present in the bin sub directory of the openresty install path. On my machine
 	  resty was at
           <code>/usr/local/openresty/bin</code>
 	</p>
         <p>So if you export this path
           <code>export PATH=/usr/local/openresty/bin:$PATH</code> you can invoke
-	  the resty client directly from the command line like so:-
+	  the resty client directly from the terminal like so:-
           <p>
             <code>
 	      which resty
@@ -998,8 +999,9 @@
 	</p>
         <p><em>"What can I do with resty cli?"</em></p>
 	<p>
-	  You can use resty cli as a test runner for your openresty scripts. The usage of
-	  resty cli is pretty simple and straightforward. You can either pass a lua
+	  You can use resty cli as a test runner for your openresty scripts.
+	  Or maybe build command line utilities. Personally I use it to run tests.
+	  The usage of resty cli is pretty simple and straightforward. You can either pass a lua
 	  string to be executed or the name of the lua file as an argument to the resty
 	  command. 
 	</p>
@@ -1013,13 +1015,84 @@
           <code>
 	    resty hello_world.lua
 	  </code>
-	</p>
+	</p>        
         <p><em>"How does it work"</em></p>
         <p>
-	  The resty cli is just a perl program. It works by creating a temporary directory
-	  in which mimicks the usual nginx directory structure. 
+	  The resty cli is simply a perl program.
+	  It works by creating a temporary directory
+	  in which it mimics the usual nginx directory structure. You have your configuration
+	  files, a logs directory and other sub-directories and files that are common in any nginx
+	  application. 
+	</p>
+        <p>The configuration file is more interesting. Here's a snippet:-</p>
+        <p>
+          <pre>
+            <code>
+	      error_log /dev/stderr warn;
+	      #error_log /dev/stderr debug;
+
+	      events {
+	       worker_connections $conns;
+	      }
+
+	      http {
+	       access_log off;
+	       lua_socket_log_errors off;
+	       resolver @nameservers;
+	       $lua_package_path_config
+	      init_by_lua '
+              --lua code to initlize the global lua VM
+    ';
+
+	      init_worker_by_lua '
+
+	      $loader -- perl variable for loading lua files
+	      -- rest of lua code to execute the loaded file
+	      -- in a timer.
+					       
+    ';
+}
+	    </code>
+          </pre>
+	</p>
+        <p>
+	  All the code that is passed to the
+	  resty client is run in the context of this configuration file.
+	  One thing that becomes quite apparent at first glance is that there
+	  is no server block in the config. This means that you can't have a headless
+	  nginx instance that listens to incoming connections. The error_log directive
+	  prints all the errors on the terminal instead of the error file.
+	</p>
+        <p>
+	  The init_by_lua directive prepares the resty client for the execution of the inputs that
+	  are given from the terminal. Once the initialization is complete the actual execution is handed
+	  off to init_worker_by_lua. 
 	</p>
 
+        <p>
+	  The <code>$loader</code> is just a perl variable that reads the lua code that
+	  is input either as a string or as a file. It passes on this code to an nginx timer function
+	  that executes the code in a <a href="http://www.lua.org/pil/8.html">loadstring</a> that
+	  compiles and executes lua code.
+	</p>
+	<p>Since everything is executed in the context of an ngx.timer you can only use the api
+	  that is available within
+	  <a href="https://github.com/openresty/lua-nginx-module#ngxtimerat"> ngx.timer.at</a>
+	  This means that you can't use ngx.location.capture
+	  with resty client.... :( but you've still got a good chunk of api available to play with.
+	  Look at the bright side, glass half full and all that I suppose. 
+	</p>
+	
+        <p><em>"But how come ngx.print and ngx.say work?"</em></p>
+        <p>
+	  Puzzled me too.
+	  Since ngx.print and ngx.say are not
+	  available in the context of ngx.timer.at you shouldn't be able to use it right?
+	  Right. So then what gives?
+	  Well the answer's in the source.
+	  The print and say functions are overwritten
+	  to display the output on the terminal instead of sending back a response. 
+	</p>
         <small>-Akshat Jiwan Sharma</small>
 	<h1>Thank you for reading</h1>
 	<a class="brand" href="/">staticshin</a>

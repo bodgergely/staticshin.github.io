@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
-    <title>Caching in couchdb </title>
+    <title>couchdb query servers </title>
     <link href="../../style.css" rel="stylesheet"/>
 
     
@@ -28,14 +28,154 @@
 	  </ol>
 	  <p>The most intresting one among these is <code>loop.js</code> because it handles reading the command from the stdio and then "dispatching" it to the appropriate handler defined in the other files. For example if the loop.js recieves a command to render a show function it will send that command to the show "handler" that is defined in render.js.</p> <p>A small sidenote. Even though we are discussing the javscript view server here the princple remians the same if you use a query server in your favorite language. Whatever language you use there should be a main loop that is reading commands written on the stdio. After translating the commmand it would invoke the appropriate handler to run that command and give back the final results are given back to couchdb.</p>
 	  <p>Let us take a deeper look at the loop.js file.</p>
-	  <pre><code>var sandbox = null;
-	      var filter_sandbox = null; function init_sandbox() { try { // if possible, use evalcx (not always available) sandbox = evalcx(''); sandbox.emit = Views.emit; sandbox.sum = Views.sum; sandbox.log = log; sandbox.toJSON = Couch.toJSON; sandbox.JSON = JSON; sandbox.provides = Mime.provides; sandbox.registerType = Mime.registerType; sandbox.start = Render.start; sandbox.send = Render.send; sandbox.getRow = Render.getRow; sandbox.isArray = isArray; } catch (e) { //log(e.toSource()); } }; init_sandbox();</code></pre>
+	  <pre>
+	    <code>
+var sandbox = null;
+var filter_sandbox = null;
+
+function init_sandbox() {
+  try {
+    // if possible, use evalcx (not always available)
+    sandbox = evalcx('');
+    sandbox.emit = Views.emit;
+    sandbox.sum = Views.sum;
+    sandbox.log = log;
+    sandbox.toJSON = Couch.toJSON;
+    sandbox.JSON = JSON;
+    sandbox.provides = Mime.provides;
+    sandbox.registerType = Mime.registerType;
+    sandbox.start = Render.start;
+    sandbox.send = Render.send;
+    sandbox.getRow = Render.getRow;
+    sandbox.isArray = isArray;
+  } catch (e) {
+    //log(e.toSource());
+  }
+};
+	      init_sandbox();
+	    </code>
+	  </pre>
 	  <p>The code above is pretty straignforward but it gives us some insight into how couchdb view server works. We have a <code>sandbox</code> object that stores refrences to a "utility" functions. Before executing a utility function it checks whether it is defined in the sandbox obect. For an undefined function an error will be thrown. Further the <code>loop.js</code> files defines a ddoc function:-</p>
-	  <pre><code>var DDoc = (function() { var ddoc_dispatch = { "lists" : Render.list, "shows" : Render.show, "filters" : Filter.filter, "views" : Filter.filter_view, "updates" : Render.update, "validate_doc_update" : Validate.validate }; var ddocs = {}; return { ddoc : function() { var args = []; for (var i=0; i &lt; arguments.length; i++) { args.push(arguments[i]); }; var ddocId = args.shift(); if (ddocId == "new") { // get the real ddocId. ddocId = args.shift(); // store the ddoc, functions are lazily compiled. ddocs[ddocId] = args.shift(); print("true"); } else { // Couch makes sure we know this ddoc already. var ddoc = ddocs[ddocId]; if (!ddoc) throw(["fatal", "query_protocol_error", "uncached design doc: "+ddocId]); var funPath = args.shift(); var cmd = funPath[0]; // the first member of the fun path determines the type of operation var funArgs = args.shift(); if (ddoc_dispatch[cmd]) { // get the function, call the command with it var point = ddoc; for (var i=0; i &lt; funPath.length; i++) { if (i+1 == funPath.length) { var fun = point[funPath[i]]; if (!fun) { throw(["error","not_found", "missing " + funPath[0] + " function " + funPath[i] + " on design doc " + ddocId]); } if (typeof fun != "function") { fun = Couch.compileFunction(fun, ddoc, funPath.join('.')); // cache the compiled fun on the ddoc point[funPath[i]] = fun; }; } else { point = point[funPath[i]]; } }; // run the correct responder with the cmd body ddoc_dispatch[cmd].apply(null, [fun, ddoc, funArgs]); } else { // unknown command, quit and hope the restarted version is better throw(["fatal", "unknown_command", "unknown ddoc command '" + cmd + "'"]); } } } }; })();</code></pre>
+	  <pre>
+            <code>
+	      var DDoc = (function() {
+  var ddoc_dispatch = {
+    "lists"     : Render.list,
+    "shows"    : Render.show,
+    "filters"   : Filter.filter,
+    "views"     : Filter.filter_view, 
+    "updates"  : Render.update,
+    "validate_doc_update" : Validate.validate
+  };
+  var ddocs = {};
+  return {
+    ddoc : function() {
+      var args = [];
+      for (var i=0; i < arguments.length; i++) {
+        args.push(arguments[i]);
+      };
+      var ddocId = args.shift();
+      if (ddocId == "new") {
+        // get the real ddocId.
+        ddocId = args.shift();
+        // store the ddoc, functions are lazily compiled.
+        ddocs[ddocId] = args.shift();
+        print("true");
+      } else {
+        // Couch makes sure we know this ddoc already.
+        var ddoc = ddocs[ddocId];
+        if (!ddoc) throw(["fatal", "query_protocol_error", "uncached design doc: "+ddocId]);
+        var funPath = args.shift();
+        var cmd = funPath[0];
+        // the first member of the fun path determines the type of operation
+        var funArgs = args.shift();
+        if (ddoc_dispatch[cmd]) {
+          // get the function, call the command with it
+          var point = ddoc;
+          for (var i=0; i < funPath.length; i++) {
+            if (i+1 == funPath.length) {
+              var fun = point[funPath[i]];
+              if (!fun) {
+                throw(["error","not_found",
+                       "missing " + funPath[0] + " function " + funPath[i] +
+                       " on design doc " + ddocId]);
+              }
+              if (typeof fun != "function") {
+                fun = Couch.compileFunction(fun, ddoc, funPath.join('.'));
+                // cache the compiled fun on the ddoc
+                point[funPath[i]] = fun;
+              };
+            } else {
+              point = point[funPath[i]];
+            }
+          };
+
+          // run the correct responder with the cmd body
+          ddoc_dispatch[cmd].apply(null, [fun, ddoc, funArgs]);
+        } else {
+          // unknown command, quit and hope the restarted version is better
+          throw(["fatal", "unknown_command", "unknown ddoc command '" + cmd + "'"]);
+        }
+      }
+    }
+  };
+})();
+	    </code>
+	  </pre>
 
 	  <p>Intially the code function looks a bit daunting. So lets break it down step by step.</p> <ol> <li><p>Right in the first line there is a "dispatch list" defined as <code>ddoc_dispatch</code>. The dispatch list should be familliar to you as it contains the "handlers" for common design functions that you use :- lists is just "handler" for couchdb list function and shows is simply the "handler" for couchdb show function etc. T he dispatch function plays the same role for design document that the sandbox function did for the javascript query function. It's a whitelist of the acceptable functions in a design document. Any function that is not in the white list won't be executed.</p> </li> <li><p>The returned function is where the actual work happens. It stores the design document in the ddoc variable. Then depending upon the command it executes a design doc function. The only requirement being that the ddoc function should resolve to one in the whitelist. The end result can either be either a valid response back to couchdb or an error.</p> </li> </ol> <p>Finally there is the actual loop function.</p>
 
-	  <pre><code>var Loop = function() { var line, cmd, cmdkey, dispatch = { "ddoc" : DDoc.ddoc, // "view" : Views.handler, "reset" : State.reset, "add_fun" : State.addFun, "add_lib" : State.addLib, "map_doc" : Views.mapDoc, "reduce" : Views.reduce, "rereduce" : Views.rereduce }; function handleError(e) { var type = e[0]; if (type == "fatal") { e[0] = "error"; // we tell the client it was a fatal error by dying respond(e); quit(-1); } else if (type == "error") { respond(e); } else if (e.error &amp;&amp; e.reason) { // compatibility with old error format respond(["error", e.error, e.reason]); } else if (e.name) { respond(["error", e.name, e]); } else { respond(["error","unnamed_error",e.toSource ? e.toSource() : e.stack]); } }; while (line = readline()) { cmd = JSON.parse(line); State.line_length = line.length; try { cmdkey = cmd.shift(); if (dispatch[cmdkey]) { // run the correct responder with the cmd body dispatch[cmdkey].apply(null, cmd); } else { // unknown command, quit and hope the restarted version is better throw(["fatal", "unknown_command", "unknown command '" + cmdkey + "'"]); } } catch(e) { handleError(e); } }; }; Loop();</code></pre>
+	  <pre>
+	    <code>
+	      var Loop = function() {
+  var line, cmd, cmdkey, dispatch = {
+    "ddoc"     : DDoc.ddoc,
+    // "view"    : Views.handler,
+    "reset"    : State.reset,
+    "add_fun"  : State.addFun,
+    "add_lib"  : State.addLib,
+    "map_doc"  : Views.mapDoc,
+    "reduce"   : Views.reduce,
+    "rereduce" : Views.rereduce
+  };
+  function handleError(e) {
+    var type = e[0];
+    if (type == "fatal") {
+      e[0] = "error"; // we tell the client it was a fatal error by dying
+      respond(e);
+      quit(-1);
+    } else if (type == "error") {
+      respond(e);
+    } else if (e.error && e.reason) {
+      // compatibility with old error format
+      respond(["error", e.error, e.reason]);
+    } else if (e.name) {
+      respond(["error", e.name, e]);
+    } else {
+      respond(["error","unnamed_error",e.toSource ? e.toSource() : e.stack]);
+    }
+  };
+  while (line = readline()) {
+    cmd = JSON.parse(line);
+    State.line_length = line.length;
+    try {
+      cmdkey = cmd.shift();
+      if (dispatch[cmdkey]) {
+        // run the correct responder with the cmd body
+        dispatch[cmdkey].apply(null, cmd);
+      } else {
+        // unknown command, quit and hope the restarted version is better
+        throw(["fatal", "unknown_command", "unknown command '" + cmdkey + "'"]);
+      }
+    } catch(e) {
+      handleError(e);
+    }
+  };
+};
+
+Loop();
+	    </code>
+	  </pre>
 
 	  <p>The Loop function runs in a loop reading the messages printed on the stdio. For each message read it "dispatches" the appropriate command. Once again any command must be available in a dispatch list. This dispatch list forms a thrid level of whitelist which contains the internal functions for the view server. These functions are not availible to us and are utilized by the query server to perform it's tasks.</p>
 
@@ -92,6 +232,7 @@
 	  <p><strong>Native query server</strong></p> <p><a href="http://blog.couchdb.org/">Don't forget to read the official couchdb blog</a></p> 
 	</div>
       </div>
+    </div>
       <div id="disqus_thread"></div>
       <hr/>
       <footer>

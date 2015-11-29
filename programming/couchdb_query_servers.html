@@ -218,7 +218,7 @@ Loop();
 	      function(doc) { emit(sum_two(2,3), doc); }
 	    </code>
 	  </pre>
-	  <p>You should see something like this in the output</p> <p>![]</p>
+	  <p>You should see 5 in the output keys</p> <p>![]</p>
 	  <p>Do you? If you do it means that you've succefully modifed the default query server to suit your needs. The example that I gave was simplistic on purpose. Just to show you how it can be done. Once you know how you'll probably want to include your own functions with the query server. I've got a very small templating library (plates.js) added to the couch query server that I can use from any where. Once more only add functions/libraries you trust because a memory leak in the query server can have a severe impact on the performance and resource utilization.</p>
 	  <p>You can also keep the vanilla and modified view server files seperate. Couchdb accepts multiple view servers for a single language so you can use a different one for each design document. Just name them differently and update the config files to make couchdb aware of them. You can have for example</p>
 	  <pre><code>javscript-template: filepath javscript-validate:filepath etc</code></pre>

@@ -987,7 +987,7 @@
 	  resty was at
           <code>/usr/local/openresty/bin</code>
 	</p>
-        <p>So if you export this path
+        <p>So if you export this path with
           <code>export PATH=/usr/local/openresty/bin:$PATH</code> you can invoke
 	  the resty client directly from the terminal like so:-
           <p>
@@ -1020,11 +1020,14 @@
         <p>
 	  The resty cli is simply a perl program.
 	  It works by creating a temporary directory
-	  in which it mimics the usual nginx directory structure. You have your configuration
-	  files, a logs directory and other sub-directories and files that are common in any nginx
-	  application. 
+	  which  mimics the usual nginx directory structure.
+	  Within this directory you have your configuration
+	  files, a logs directory and other sub-directories
+	  and files that are common in any nginx  application.  
 	</p>
-        <p>The configuration file is more interesting. Here's a snippet:-</p>
+        <p> 
+	  The config file contains the rules of what all is allowed to be executed by
+	  the cli and what all is not. Here's what it looks like:-</p>
         <p>
           <pre>
             <code>
@@ -1041,15 +1044,13 @@
 	       resolver @nameservers;
 	       $lua_package_path_config
 	      init_by_lua '
-              --lua code to initlize the global lua VM
-    ';
+             --lua code to initlize the global lua VM  ';
 
 	      init_worker_by_lua '
 
 	      $loader -- perl variable for loading lua files
 	      -- rest of lua code to execute the loaded file
-	      -- in a timer.
-					       
+	      -- in a timer.			       
     ';
 }
 	    </code>
@@ -1057,7 +1058,7 @@
 	</p>
         <p>
 	  All the code that is passed to the
-	  resty client is run in the context of this configuration file.
+	  resty client is run against this configuration file.
 	  One thing that becomes quite apparent at first glance is that there
 	  is no server block in the config. This means that you can't have a headless
 	  nginx instance that listens to incoming connections. The error_log directive
@@ -1070,28 +1071,37 @@
 	</p>
 
         <p>
-	  The <code>$loader</code> is just a perl variable that reads the lua code that
+	  The <code>$loader</code> is just a perl function that reads the lua code that
 	  is input either as a string or as a file. It passes on this code to an nginx timer function
-	  that executes the code in a <a href="http://www.lua.org/pil/8.html">loadstring</a> that
-	  compiles and executes lua code.
+	  where the code is compiled and executed in a <a href="http://www.lua.org/pil/8.html">loadstring</a>.
 	</p>
-	<p>Since everything is executed in the context of an ngx.timer you can only use the api
+	
+	<p>
+	  Since everything is executed in the context of an
+	  <em> ngx.timer.at</em> you can only use the api
 	  that is available within
 	  <a href="https://github.com/openresty/lua-nginx-module#ngxtimerat"> ngx.timer.at</a>
 	  This means that you can't use ngx.location.capture
-	  with resty client.... :( but you've still got a good chunk of api available to play with.
+	  with resty client, which is logical since the nginx config file is not listening to any incoming
+	  connections due to the absence of the server block but .... :(
+	  At least you've still got a good chunk of api available to play with.
 	  Look at the bright side, glass half full and all that I suppose. 
 	</p>
 	
         <p><em>"But how come ngx.print and ngx.say work?"</em></p>
+
         <p>
-	  Puzzled me too.
-	  Since ngx.print and ngx.say are not
-	  available in the context of ngx.timer.at you shouldn't be able to use it right?
+	  Puzzled me too.  <em>ngx.say()</em> and <em>ngx.print()</em>
+	  are a part of downstream api that sends back the http response to the client. 
+	  Both ngx.print and ngx.say are disabled
+	  in the context of <em>ngx.timer.at</em> which means that you shouldn't be able to use it right?
 	  Right. So then what gives?
-	  Well the answer's in the source.
-	  The print and say functions are overwritten
-	  to display the output on the terminal instead of sending back a response. 
+	</p>
+	
+	<p>
+	  Well that's because the <em>ngx.print</em> and <em>ngx.say</em>
+	  functions are overwritten to display the output on
+	  the terminal instead of sending back an http response.  
 	</p>
         <small>-Akshat Jiwan Sharma</small>
 	<h1>Thank you for reading</h1>

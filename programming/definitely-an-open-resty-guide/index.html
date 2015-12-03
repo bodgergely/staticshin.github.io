@@ -1097,6 +1097,31 @@
 	  in the context of <em>ngx.timer.at</em> which means that you shouldn't be able to use it right?
 	  Right. So then what gives?
 	</p>
+	<pre>
+	  <code>
+	    local function output(...)
+            local args = {...}
+            return stdout:write(expand_table(args, true))
+            end
+            ngx.print = output
+
+	  </code>
+	</pre>
+	
+	
+	<pre>
+	  <code>
+	    ngx.say = function (...)
+            local ok, err = output(...)
+            if ok then
+            return output("\\\\n")
+            end
+            return ok, err
+            end
+            print = ngx.say
+	  </code>
+	</pre>
+
 	
 	<p>
 	  Well that's because the <em>ngx.print</em> and <em>ngx.say</em>

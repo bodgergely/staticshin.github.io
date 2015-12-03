@@ -1075,7 +1075,32 @@
 	  is input either as a string or as a file. It passes on this code to an nginx timer function
 	  where the code is compiled and executed in a <a href="http://www.lua.org/pil/8.html">loadstring</a>.
 	</p>
-	
+	<pre>
+	  <code>
+	        local ok, err = ngx.timer.at(0, function ()
+                -- io.stderr:write("timer firing")
+                local ok, err = pcall(gen) -- the $loader function loads the compiled code in a gen variable
+                if not ok then
+                    return handle_err(err)
+                end
+                local rc = err
+                if rc and type(rc) ~= "number" then
+                    return handle_err("bad return value of type " .. type(rc))
+                end
+                return exit(rc)
+            end)
+            if not ok then
+                return handle_err(err)
+            end
+            -- print("timer created")
+        end)
+
+        if not ok then
+            return handle_err(err)
+        end
+
+	  </code>
+	</pre>
 	<p>
 	  Since everything is executed in the context of an
 	  <em> ngx.timer.at</em> you can only use the api
@@ -1097,6 +1122,7 @@
 	  in the context of <em>ngx.timer.at</em> which means that you shouldn't be able to use it right?
 	  Right. So then what gives?
 	</p>
+	
 	<pre>
 	  <code>
 	    local function output(...)
@@ -1124,9 +1150,10 @@
 
 	
 	<p>
-	  Well that's because the <em>ngx.print</em> and <em>ngx.say</em>
+	  Well it seems that <em>ngx.print</em> and <em>ngx.say</em>
 	  functions are overwritten to display the output on
-	  the terminal instead of sending back an http response.  
+	  the terminal instead of sending back an http response.
+	  Sort of an anticlimax in my opinion I expected something more exotic.
 	</p>
         <small>-Akshat Jiwan Sharma</small>
 	<h1>Thank you for reading</h1>

@@ -15,27 +15,62 @@
 	    <p><strong>It's nginx we know and love</strong></p>
 	    <p>
 	      Say you are the developer of one of those 23 millions websites [1] that
-	      use nginx and you see this shiny new thing called openresty and you say to yourself 
+	      use nginx as their webserver and you see this shiny new thing called
+	      <a href="http://openresty.org/">openresty</a> and you say to yourself 
 	    </p>
-            <p>"Bah! HUMBUG! I can't afford to break my pretty ngxinx configruations!! Humbug! bah!" </p>
+            <p>"Bah! HUMBUG! I can't afford to break my pretty nginx configruations!! Humbug! Bah!" </p> 
             <p>
-	      
+	      Ah yes. I understand the feeling pretty well.
+	      It's a dilemma faced by many programmers who hear about operesty for the first time.
+	      "Should we migrate or should we stay with nginx?" But they miss the point. Openresty is not a
+	      fork of nginx. It is nginx. Or maybe I should say it is nginx +</p>
+	    
+	    <p>
+	      Bundled together with some well tested third party modules and integrated
+	      with luajit it gives the developers the ability to <em>program</em> nginx. Yes
+	      I said program. You are not just limited to configuring the webserver (although you can still use
+	      it that way) but you can actually write code. And we are not talking about some wierd pseudo
+	      language that nginx gave you by default. We are talking about a real programming language -- lua.
+	      And that's about it. Nothing else changes.
 	    </p>
-            <p>So let me type this in strong
-              <strong>openresty is nginx</strong>. Your existing configuration
-	      will continue working with openresty. You might need to do some additional
-	      work if you've installed third party modules. Even then there is a pretty good possibility that
-	      your favorite third party nginx module comes budled with openresty. In the worst case scenario
-	      you might need to isntall those bundles again but the default stuff wroks out of the box.
+            <p>So let me type this in strong --
+              <strong>openresty is nginx</strong>-- and this in small --
+	      <small>with extra goodies packaged together in a nice little bundle</small>.
+	      Your existing configuration
+	      will continue to work with openresty.
+	      You might need to do some additional
+	      work if you've installed third party modules.
+	      Even then there is a pretty good possibility that
+	      your favorite third party nginx module comes budled with openresty.
+	      In the worst case scenario
+	      you might need to install those bundles again
+	      but the default stuff works out of the box.
 	      And that makes for a damn smooth migration.
 	      
 	    </p>
             
 	  </li>
-            <li><p><strong>ngx.location.capture--the ultimate api mashup tool</strong></p></li>
-            <li><p><strong>Fast</strong></p></li>
-            <li><p><strong>Low memory footprint</strong></p></li>
+          <li><p><strong>Fast</strong></p></li>
+          <p>I know nginx is fast.
+	    You know nginx is fast.
+	    Everybody knows nginx is fast. The question is
+	    <em>"Is it still fast with lua?"</em>
+	  </p>
+          <p>
+	    Yes it is,
+	    it
+	    <a href="http://www.techempower.com/benchmarks/#section=data-r11&hw=peak&test=json">
+	      seems
+	    </a>.
+	    openresty uses luajit to compile lua code. The code compiled with lua jit is
+	    damn <a href="http://luajit.org/performance.html">fast</a>.
+	    And you've got one lua jit vm per nginx worker process.  
+	  </p>
+          <li><p><strong>Low memory footprint</strong></p></li>
+          <li><p><strong>Lua</strong></p></li>
+	  
           <li><p><strong>*by_lua directives</strong></p></li>
+
           <p>"Lua code inside strings is ugly yuck! yuck! yuck!"</p>
           <p>Calm down old fellow. I belive that saying yuck! one time is quite
 	    enough to convey the feeling of repugnance that a programmer feels when he has to
@@ -59,11 +94,12 @@
 	    All *by_lua directives have an equivalent *by_lua_file directive as well so you are not
 	    really bound to single choice. That clears up the clouds I hope :) 
 	  </p>
-            <li><p><strong>Simplified application architechture</strong></p></li>
-            <li><p><strong>lua</strong></p></li>
-            <li><p><strong>Concurrent</strong></p></li>
-            <li><p><strong>A good mix of configurability and programability</strong></p></li>
-            <li><p><strong>unified proxy and application servers</strong></p></li>
+	  <li><p><strong>ngx.location.capture--the ultimate api mashup tool</strong></p></li>
+
+          <li><p><strong>Simplified application architechture</strong></p></li>
+          <li><p><strong>Concurrent</strong></p></li>
+          <li><p><strong>A good mix of configurability and programability</strong></p></li>
+          <li><p><strong>unified proxy and application servers</strong></p></li>
         </ol>
 	<p>[1] "You pulled that number out of your ass?" </p>
         <p>I certainly did not! I feel offended that the idea even crossed your mind.

@@ -21,7 +21,7 @@
             <p>"Bah! HUMBUG! I can't afford to break my pretty nginx configruations!! Humbug! Bah!" </p> 
             <p>
 	      Ah yes. I understand the feeling pretty well.
-	      It's a dilemma faced by many programmers who hear about operesty for the first time.
+	      It's a dilemma faced by many programmers who hear about openresty for the first time.
 	      "Should we migrate or should we stay with nginx?" But they miss the point. Openresty is not a
 	      fork of nginx. It is nginx. Or maybe I should say it is nginx +</p>
 	    
@@ -63,14 +63,82 @@
 	      seems
 	    </a>.
 	    openresty uses luajit to compile lua code. The code compiled with lua jit is
-	    damn <a href="http://luajit.org/performance.html">fast</a>.
-	    And you've got one lua jit vm per nginx worker process.  
+	    damn <a href="http://luajit.org/performance.html">fast</a> reaching alomst c levels of
+	    performance. And in openresty you've got one lua jit vm per nginx worker process.  
 	  </p>
           <li><p><strong>Low memory footprint</strong></p></li>
-          <li><p><strong>Lua</strong></p></li>
-	  
-          <li><p><strong>*by_lua directives</strong></p></li>
+          <p>I know nginx's memory footprint is small. You know that
+	    nginx's memory footprint is small. Everybody knows that nginx's memory
+	    footprint is small. The question is <em> Is it still small with lua?</em> </p>
+          <p>
+	    Yes it is. It seems. Here's an old benchmark done by the author of openresty.
 
+            <blockquote>
+	     <p> Below is the result using the command http_load -p 10 -s 5 http://localhost:8080/ on my ThinkPad T400 laptop with ngx_openresty 1.0.10.1:</p>
+
+	      <p>139620 fetches, 10 max parallel, 1.67544e+06 bytes, in 5.00001 seconds
+	      12 mean bytes/connection
+	      27923.9 fetches/sec, 335087 bytes/sec
+	      msecs/connect: 0.0531258 mean, 4.076 max, 0.014 min
+	      msecs/first-response: 0.258796 mean, 5.353 max, 0.067 min
+	      HTTP response codes:
+		code 200 -- 139620
+		</p>
+	     <p>So on my laptop, for only a single worker nginx server, we've got ~28k r/s. The memory footprint of the node process under load is 38.0m VIRT, 2.5m RES.</p>
+
+            </blockquote>
+	  <p>The same test when repeated for node js gives the following result</p>
+          <blockquote>
+            <p>And node.js v0.6.1 yields 10k r/s:</p>
+            <p>51206 fetches, 10 max parallel, 614472 bytes, in 5 seconds
+	      12 mean bytes/connection
+	      10241.2 fetches/sec, 122894 bytes/sec
+	      msecs/connect: 0.0356567 mean, 1.316 max, 0.019 min
+	      msecs/first-response: 0.916395 mean, 14.236 max, 0.077 min
+	      HTTP response codes:
+	      code 200 -- 51206</p>
+            <p>The memory footprint of the node process under load is 629m VIRT, 50m RES.</p>
+          </blockquote>
+	  </p>
+          <p>
+	    The low memory footprint of openresty is not surprising when you consider that the other thing that
+	    lua jit is famous for is it's ability to run in an embedded mode. It seems that the VM is just
+	    115 KB in size.  Compared to that when all is said and done this page is about 500 Kb in size.
+	    I am a little embarrased. 
+	  </p>
+          <li><p><strong>Lua</strong></p></li>
+          <p>I know that nignx... you know that nginx... everybody knows that nginx...
+	    wait this won't work here. Let's try something else.</p>
+          <p>
+	    Openresty uses lua as the programming language. Now lua has some pretty
+	    cool things like the ability to return multiple values from a function
+	    (which is used brilliantly in ngx.location.capture api by the library),
+	    declaring multiple variables on a single line, co routines to pause and
+	    start the execution of functions etc. It has a very familliar syntax. Decent amount of
+	    third party modules. 
+	  </p>
+          <p>But there are a couple of things that can be off putting to a person just starting
+	    out. Like for example arrays that start with 1. No ternanry operators.
+	    For some people it can be a bit too verbose with all those end statements.
+	    But these "problems", if you want to call it that, is just a matter of getting used
+	    to the language. The only serious problem that I had while I was learning lua was
+	    with the 1 based arrays. Once you get used to lua,which should be pretty quick anyways,
+	    you wouldn't mind these petty things. 	    
+	  </p>
+          <p>Lua makes sense as a language of choice for openresty because it's highly embeddable and it has
+	    luajit. Which as we all know is damn fast and damn conversvative when it comes to
+	    resrouce usage. Hot Damn!</p>
+          <li><p><strong>*by_lua directives</strong></p></li>
+          <p>
+	    You get to use all the sweet goodness of lua using the *by_lua directives of openresty.
+	    These directives do diffrent things depending upon the context they are run in. The
+	    <code>lua_code_cache</code> directive for instance turns the caching of lua code
+	    on/off. That might increase the perfomace of our program but it does not let us see
+	  </p>
+          <p>This should give you a good excuse to learn more about the
+            <a href="http://www.nginxguts.com/2011/01/phases/"> http request processing phases</a>
+	    of nginx so  you can inject lua code and hack it.
+	  </p>
           <p>"Lua code inside strings is ugly yuck! yuck! yuck!"</p>
           <p>Calm down old fellow. I belive that saying yuck! one time is quite
 	    enough to convey the feeling of repugnance that a programmer feels when he has to
@@ -83,9 +151,10 @@
           <p>
 	    But in my opnion saying yuck! yuck! yuck! three times in quick succession helps no one.
 	    I mean to say that the feeling of strong disgust has already been conveyed by saying "yuck!"
-	    two times and a third utterance of yuck! only weakens the effect. Infact I believe that
+	    two times and a third utterance of the word yuck! only weakens the effect. Infact I believe that
 	    it would be far more powerful to say "yuck" and just leave it hanging there.
-	    Don't even use an exclamation mark to close it off. Imagine <a href="">Alan Rickman</a> saying Yuck
+	    Don't even use an exclamation mark to close it off. Imagine
+	    <a href="https://en.wikipedia.org/wiki/Alan_Rickman">Alan Rickman</a> saying Yuck
 	    and try to capture that effect when you speak. 
 	  </p>
           <p>
@@ -97,9 +166,9 @@
 	  <li><p><strong>ngx.location.capture--the ultimate api mashup tool</strong></p></li>
 
           <li><p><strong>Simplified application architechture</strong></p></li>
-          <li><p><strong>Concurrent</strong></p></li>
+          <li><p><strong>Concurrency</strong></p></li>
           <li><p><strong>A good mix of configurability and programability</strong></p></li>
-          <li><p><strong>unified proxy and application servers</strong></p></li>
+          <li><p><strong>Unified proxy and Application servers</strong></p></li>
         </ol>
 	<p>[1] "You pulled that number out of your ass?" </p>
         <p>I certainly did not! I feel offended that the idea even crossed your mind.

@@ -11,17 +11,56 @@
       <div class="col-8-12 push-2-12">
         <h1 class="center">Top ten things about openresty</h1>
         <ol>
-            <li><strong>It's nginx we know and love</strong></li>
-            <li><strong>ngx.location.capture--the ultimate api mashup tool</strong></li>
-            <li><strong>Fast</strong></li>
-            <li><strong>Low memory footprint</strong></li>
-            <li><strong>by_lua* directives</strong></li>
-            <li><strong>Simplified application architechture</strong></li>
-            <li><strong>lua</strong></li>
-            <li><strong>Concurrent</strong></li>
-            <li><strong>A good mix of configurability and programability</strong></li>
-            <li><strong>unified proxy andapplication servers</strong></li>
+          <li>
+	    <p><strong>It's nginx we know and love</strong></p>
+	    <p>
+	      Say you are the developer of one of those 23 millions websites [1] that
+	      use nginx and you see this shiny new thing called openresty and you say to yourself 
+	    </p>
+            <p>"Bah! HUMBUG! I can't afford to break my pretty ngxinx configruations!! Humbug! bah!" </p>
+            <p></p>
+            
+	  </li>
+            <li><p><strong>ngx.location.capture--the ultimate api mashup tool</strong></p></li>
+            <li><p><strong>Fast</strong></p></li>
+            <li><p><strong>Low memory footprint</strong></p></li>
+          <li><p><strong>*by_lua directives</strong></p></li>
+          <p>"Lua code inside strings is ugly yuck! yuck! yuck!"</p>
+          <p>Calm down old fellow. I belive that saying yuck! one time is quite
+	    enough to convey the feeling of repugnance that a programmer feels when he has to
+	    write code embbded in strings.</p>
+
+	  <p>I will concede that emotions run high when the debugger fails to tell at exactly
+	    what line the error has occured. And in this situation it is
+	    quite okay to say yuck! yuck! to emphasize that the disgust is quite strong. 
+	  </p>
+          <p>
+	    But in my opnion saying yuck! yuck! yuck! three times in quick succession helps no one.
+	    I mean to say that the feeling of strong disgust has already been conveyed by saying "yuck!"
+	    two times and a third utterance of yuck! only weakens the effect. Infact I believe that
+	    it would be far more powerful to say "yuck" and just leave it hanging there.
+	    Don't even use an exclamation mark to close it off.  
+	  </p>
+          <p>
+	    With that out of the way... you don't need to use strings to write lua code. You can
+	    have your all your lua in a file and refrence to that file using the *by_lua_file.
+	    All *by_lua directives have an equivalent *by_lua_file directive as well so you are not
+	    really bound to single choice. That clears up the clouds I hope :) 
+	  </p>
+            <li><p><strong>Simplified application architechture</strong></p></li>
+            <li><p><strong>lua</strong></p></li>
+            <li><p><strong>Concurrent</strong></p></li>
+            <li><p><strong>A good mix of configurability and programability</strong></p></li>
+            <li><p><strong>unified proxy and application servers</strong></p></li>
         </ol>
+	<p>[1] "You pulled that number out of your ass?" </p>
+        <p>I certainly did not! I feel offended that the idea even crossed your mind.
+	  Like any responsible writer when I put a number like this on an article
+	  you can be certain of the fact that I did a google search and accepted the figure that came out of the
+	  <a href="http://trends.builtwith.com/Web-Server/nginx">first result</a>
+	  without doing any kind of cross checking or verifying the validity of the statistics. You may
+          accuse me of laziness but I'm certainly not "pulling numbers out of ass" type. 
+	</p>
       </div>
       
     </div>

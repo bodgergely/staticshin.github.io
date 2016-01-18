@@ -133,9 +133,16 @@
 	    You get to use all the sweet goodness of lua using the *by_lua directives of openresty.
 	    These directives do diffrent things depending upon the context they are run in. The
 	    <code>lua_code_cache</code> directive for instance turns the caching of lua code
-	    on/off. That might increase the perfomace of our program but it does not let us see
+	    on/off. That might increase the perfomace of our program but it does not let us taste
+	    the sweet goodness of lua in nginx. 
 	  </p>
-          <p>This should give you a good excuse to learn more about the
+          <p>
+	    All righty then. Consider <code>access_by_lua</code> that allows you to do
+	    some lua processing during the access phase of an nginx request. Or
+            <code>rewrite_by_lua</code> that allows you to inject lua into the
+	    nginx rewrite rquest phase. 
+	  </p>
+          <p>Cool right? At the very least these directives should give you a good excuse to learn more about the
             <a href="http://www.nginxguts.com/2011/01/phases/"> http request processing phases</a>
 	    of nginx so  you can inject lua code and hack it.
 	  </p>
@@ -161,11 +168,14 @@
 	    With that out of the way... you don't need to use strings to write lua code. You can
 	    have your all your lua in a file and refrence to that file using the *by_lua_file.
 	    All *by_lua directives have an equivalent *by_lua_file directive as well so you are not
-	    really bound to single choice. That clears up the clouds I hope :) 
+	    really bound to single choice. Or if you insist inlining your lua code use
+	    the *by_lua_block directives that allow you to write lua code inside "{}".
+	    That clears up the clouds I hope :) 
 	  </p>
 	  <li><p><strong>ngx.location.capture--the ultimate api mashup tool</strong></p></li>
-
+          <p>ngx.location.capture is easily my favorite thing about openresty.</p>
           <li><p><strong>Simplified application architechture</strong></p></li>
+          <p>The lua directives offer a clean speration of the request coming in to nginx. </p>
           <li><p><strong>Concurrency</strong></p></li>
           <li><p><strong>A good mix of configurability and programability</strong></p></li>
           <li><p><strong>Unified proxy and Application servers</strong></p></li>
@@ -175,7 +185,7 @@
 	  Like any responsible writer when I put a number like this on an article
 	  you can be certain of the fact that I did a google search and accepted the figure that came out of the
 	  <a href="http://trends.builtwith.com/Web-Server/nginx">first result</a>
-	  without doing any kind of cross checking or verifying the validity of the statistics. You may
+	  without doing any kind of cross checking or verifying the validity of the statistic. You may
           accuse me of laziness but I'm certainly not "pulling numbers out of ass" type. 
 	</p>
         <p><small>-- Akshat Jiwan Sharma</small></p>

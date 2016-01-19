@@ -253,7 +253,7 @@ ngx.exit(ngx.OK)
 	    cleanly breaking down each action and tying it down to a particular handler. So your
 	    authorization/authentication code will be handled by the access_directive.  
 	  </p>
-	  
+          
 	  <li><p><strong>A good mix of configurability and programability</strong></p></li>
           <p>
 	    A definitive advantage that you get with nginx is the number things
@@ -270,14 +270,17 @@ ngx.exit(ngx.OK)
 	    openresty gives you an opportunity to unify them. 
 	  </p>
           <p>
-	    On the other hand if you already have an existing application server openresty still
+	    If you already have an existing application server openresty 
 	    gives you the benefit of offloading some of the minor but resource consuming tasks
 	    to it and take some pressure off of your main machine. Offloading user authentication to
 	    openresty for example is one of the most impactful things that you can do to take the
-	    load of your main servers. in such a scenario all requests can be checked for authentication
+	    load off of your main servers. In such a scenario all requests can be checked for authentication
 	    before passing them to your main servers and in case it's unauthorized it can be rejected
-	    at the proxy level itself.
-	    In general by using openresty instead of nginx you get to have more options.
+	    at the proxy level itself. Or maybe you could have openresty validate your data
+	    before you pass them to your servers so you can be sure that whatever data that comes
+	    through the proxy is clean and ready to be used as it is. 
+	  </p>
+	   <p> In general by using openresty instead of nginx you get to have more options.
 	  </p>
           <li><p><strong>Concurrency</strong></p></li>
           <p>Saved the best for the last. Openresty is damn concurrent. Each nginx worker
@@ -287,9 +290,10 @@ ngx.exit(ngx.OK)
 	    themselves are run in independent light weight threads.
 	    So there can be multiple execution endpoints per lua jit instance
 	    This combination of multiple lua jit vms  and each vm running multiple light
-	    weight threads makes it very 
+	    weight threads makes it damn
 	    <a href="programming/definitely-an-open-resty-guide/#concurrency_in_openresty">
-	      difficult to write blocking code</a> in openresty. 
+	      hard to write blocking code</a> in openresty. Though it is still possible
+	    if you put some serious effort into it. 
 	  </p>
         </ol>
 	<p>[1] "You pulled that number out of your ass?" </p>

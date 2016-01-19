@@ -18,7 +18,7 @@
 	      use nginx as their webserver and you see this shiny new thing called
 	      <a href="http://openresty.org/">openresty</a> and you say to yourself 
 	    </p>
-            <p>"Bah! HUMBUG! I can't afford to break my pretty nginx configruations!! Humbug! Bah!" </p> 
+            <p>"Bah! HUMBUG! I can't afford to break my pretty nginx configurations!! Humbug! Bah!" </p> 
             <p>
 	      I understand the feeling pretty well,ah yes.
 	      It's a dilemma faced by many programmers who hear about openresty for the first time.
@@ -30,7 +30,7 @@
 	      with luajit it gives the developers the ability to <em>program</em> nginx. Yes
 	      I said program. You are not just limited to configuring the webserver (although you can still use
 	      it that way) but you can actually write code. And we are not talking about writing
-	      code in some some wierd pseudo
+	      code in some some weird pseudo
 	      language that nginx gives you by default.
 	      We are talking about a real programming language. We are talking about lua.
 	    </p>
@@ -64,7 +64,7 @@
 	      seems
 	    </a>.
 	    openresty uses luajit to compile lua code. The code compiled with lua jit is
-	    damn <a href="http://luajit.org/performance.html">fast</a> reaching alomst c levels of
+	    damn <a href="http://luajit.org/performance.html">fast</a> reaching almost c levels of
 	    performance.
 	  </p>
           <li><p><strong>Low memory footprint</strong></p></li>
@@ -115,11 +115,11 @@
 	    cool things like the ability to return multiple values from a function
 	    (which is used brilliantly by the way in the ngx.location.capture api),
 	    declaring multiple variables on a single line, co routines to pause and
-	    start the execution of functions etc. It has a very familliar syntax and
+	    start the execution of functions etc. It has a very familiar syntax and
 	    decent amount of third party modules. 
 	  </p>
           <p>But there are a couple of things that can be off putting to a person just starting
-	    out. Like for example arrays that start with 1. No ternanry operators.
+	    out. Like for example arrays that start with 1. No ternary operators.
 	    For some people it can be a bit too verbose with all those end statements.
 	    But these "problems", if you want to call it that, is just a matter of getting used
 	    to the language. The only serious difficulty that I had while I was learning lua was
@@ -128,21 +128,21 @@
 	    you wouldn't mind these petty things. 	    
 	  </p>
           <p>Lua makes sense as a language of choice for openresty because it's highly embeddable and it has
-	    luajit. Which as we all know is damn fast and damn conversvative when it comes to
-	    resrouce usage. Hot Damn!</p>
+	    luajit. Which as we all know is damn fast and damn conservative when it comes to
+	    resource usage. Hot Damn!</p>
           <li><p><strong>*by_lua directives</strong></p></li>
           <p>
 	    You get to use all the sweet goodness of lua in the *by_lua directives of openresty.
-	    These directives do diffrent things depending upon the context they are run in. The
+	    These directives do different things depending upon the context they are run in. The
 	    <code>lua_code_cache</code> directive for instance turns the caching of lua code
-	    on/off. That might increase the perfomace of our program but it does not let us sample
+	    on/off. That might increase the performance of our program but it does not let us sample
 	    the sweet goodness of lua in nginx. 
 	  </p>
           <p>
 	    For that consider <code>access_by_lua</code> directive which allows you to do
 	    some lua processing during the access phase of an nginx request. Or
             <code>rewrite_by_lua</code> directive that allows you to inject lua into the
-	    nginx rewrite rquest phase. 
+	    nginx rewrite request phase. 
 	  </p>
           <p>Cool right? At the very least these directives should give you a good excuse to learn more about the
             <a href="http://www.nginxguts.com/2011/01/phases/"> http request processing phases</a>
@@ -158,18 +158,18 @@
 	    </code>
           </pre>
           <p>"Code inside strings is ugly yuck! yuck! yuck!"</p>
-          <p>Calm down old fellow. I belive that saying yuck! one time is quite
+          <p>Calm down old fellow. I believe that saying yuck! one time is quite
 	    enough to convey the feeling of repugnance that a programmer feels when he has to
-	    write code embbded in strings.</p>
+	    write code embedded in strings.</p>
 
 	  <p>I will concede that emotions run high when the debugger fails to tell on exactly
-	    what line the error has occured. And in this situation it is
+	    what line the error has occurred. And in this situation it is
 	    quite okay to say yuck! yuck! to emphasize that the disgust is quite strong. 
 	  </p>
           <p>
-	    But in my opnion saying yuck! yuck! yuck! three times in quick succession helps no one.
+	    But in my opinion saying yuck! yuck! yuck! three times in quick succession helps no one.
 	    I mean to say that the feeling of strong disgust has already been conveyed by saying "yuck!"
-	    two times and a third utterance of the word yuck! only weakens the effect. Infact I believe that
+	    two times and a third utterance of the word yuck! only weakens the effect. In fact I believe that
 	    it would be far more powerful to say "yuck" and just leave it hanging there.
 	    Don't even use an exclamation mark to close it off. Imagine
 	    <a href="https://en.wikipedia.org/wiki/Alan_Rickman">Alan Rickman</a> saying Yuck
@@ -177,9 +177,9 @@
 	  </p>
           <p>
 	    With that out of the way... you don't need to use strings to write lua code. You can
-	    have your all your lua in a file and refrence the file using the *by_lua_file.
+	    have your all your lua in a file and reference the file using the *by_lua_file.
 	    All *by_lua directives have an equivalent *by_lua_file directive as well so you are not
-	    really bound to single choice. Or if you insist upon inlining your lua code  you'd find 
+	    really bound to single choice. Or if you insist upon in lining your lua code  you'd find 
 	    the *by_lua_block directives ,that allow you to write lua code inside "{}", quite useful.
 	    That clears up the clouds I hope :) 
 	  </p>
@@ -188,7 +188,7 @@
 	    ngx.location.capture.multi is easily my favorite thing about openresty. In simple
 	    terms it allows you to make
 	    <a href="/programming/definitely-an-open-resty-guide/#loc_cap_faq">synchronous yet non blocking</a>
-	    subrequests to nginx's location blocks. 
+	    sub requests to nginx's location blocks. 
 	  </p>
           <p><em>"Okay so what's so cool about it?"</em></p>
           <p>Well here's what's cool.
@@ -209,20 +209,20 @@
           <p>
 	    The good thing about proxying through locations is that you can use the
 	    same method to proxy both external and internal systems. For example say
-	    you are bulding a system that requires calling external apis of mailchimp,
+	    you are building a system that requires calling external apis of mailchimp,
 	    paypal and amazon. To make these api's available all you need to do is
-	    configure thier respective location blocks. And that's it. You can now start
+	    configure their respective location blocks. And that's it. You can now start
 	    making requests to them from your lua code. 
 	  </p>
-          <li><p><strong>Simplified application architechture</strong></p></li>
+          <li><p><strong>Simplified application architecture</strong></p></li>
           <p>
-	    The lua directives offer a clean speration of the request coming in to nginx.
+	    The lua directives offer a clean separation of the request coming in to nginx.
 	    To be precise nginx has a well defined cycle which a request must go through
 	    before a final response is sent. What openresty offers is the ability to inject lua
 	    code into into these request phases. 
 	  </p>
           <p>So for example an access_by_lua handler can allow you to inject lua while nginx processes
-	    a request in an access phase. Effectively what this does is it allows you to write aribitray code
+	    a request in an access phase. Effectively what this does is it allows you to write arbitrary code
 	    that can reject a request then and there before it moves on to other handlers. This is very useful
 	    if you want to reject unauthorized access to a location block or configure a blacklist of ip
 	    addresses or impose other restrictions on the service of a request. 
@@ -243,9 +243,9 @@ ngx.exit(ngx.OK)
 }
 	    </code>
           </pre>
-          <p><em>"But exactly how does it simplify the architechture"</em></p>
+          <p><em>"But exactly how does it simplify the architecture"</em></p>
           <p>First the practice of code reusablity is highly encouraged.
-	    Once you have written an access rule you can reuse the same code by refrencing it
+	    Once you have written an access rule you can reuse the same code by referencing it
 	    from different access_by_lua file. 
 	  </p>
           <p>
@@ -260,19 +260,19 @@ ngx.exit(ngx.OK)
 	    that you can do with the modules that are already available. Being a proxy
 	    server with one or two lines of configuration you can set block lists for ip
 	    addresses,route requests to different handlers. Configure the security headers
-	    for your applicaiton. Openresty allows you to do more or perform things that
+	    for your application. Openresty allows you to do more or perform things that
 	    were not possible or difficult to do with just configuration directives. 
 	  </p>
 	  
           <li><p><strong>Unified proxy and Application servers</strong></p></li>
           <p>
-	    Where as before you had to maintain different proxy and applicaton servers
+	    Where as before you had to maintain different proxy and application servers
 	    openresty gives you an opportunity to unify your proxy and application
 	    server needs. 
 	  </p>
           <p>
 	    On the other hand if you already have an existing application server openresty still
-	    gives you the benifit of offloading some of the minor but resource consuming tasks
+	    gives you the benefit of offloading some of the minor but resource consuming tasks
 	    to it and take some pressure off of your main machine. Offloading user authentication to
 	    openresty for example is one of the most impactful things that you can do to take the
 	    load of your main servers. in such a scenario all requests can be checked for authentication

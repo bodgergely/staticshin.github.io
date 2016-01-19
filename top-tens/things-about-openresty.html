@@ -147,6 +147,15 @@
             <a href="http://www.nginxguts.com/2011/01/phases/"> http request processing phases</a>
 	    of nginx so  you can inject lua code and hack it.
 	  </p>
+          <pre>
+            <code>
+	      location /hello_world{
+	      content_by_lua '
+	      ngx.say("Hello world")
+	      '
+	      }
+	    </code>
+          </pre>
           <p>"Lua code inside strings is ugly yuck! yuck! yuck!"</p>
           <p>Calm down old fellow. I belive that saying yuck! one time is quite
 	    enough to convey the feeling of repugnance that a programmer feels when he has to

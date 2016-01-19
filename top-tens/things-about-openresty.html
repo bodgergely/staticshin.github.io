@@ -284,7 +284,7 @@ ngx.exit(ngx.OK)
           <p>Saved the best for the last. Openresty is damn concurrent. Each nginx worker
 	    process  comes with it's own instance of lua jit to compile the lua code.
 	    The worker processes  are responsible for listening the requests
-	    and then passing on those requests to the content handlers. 
+	    and then passing on those requests to the content handlers. These content handlers 
 	    themselves are run in independent light weight threads.
 	    So there can be multiple execution endpoints per lua jit instance
 	    This combination of multiple lua jit vms  and each vm running multiple light

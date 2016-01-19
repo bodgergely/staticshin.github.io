@@ -20,7 +20,7 @@
 	    </p>
             <p>"Bah! HUMBUG! I can't afford to break my pretty nginx configruations!! Humbug! Bah!" </p> 
             <p>
-	      Ah yes. I understand the feeling pretty well.
+	      I understand the feeling pretty well,ah yes.
 	      It's a dilemma faced by many programmers who hear about openresty for the first time.
 	      "Should we migrate or should we stay with nginx?" But they miss the point. Openresty is not a
 	      fork of nginx. It is nginx. Or maybe I should say it is nginx +</p>
@@ -29,9 +29,10 @@
 	      Bundled together with some well tested third party modules and integrated
 	      with luajit it gives the developers the ability to <em>program</em> nginx. Yes
 	      I said program. You are not just limited to configuring the webserver (although you can still use
-	      it that way) but you can actually write code. And we are not talking about some wierd pseudo
-	      language that nginx gave you by default. We are talking about a real programming language -- lua.
-	      And that's about it. Nothing else changes.
+	      it that way) but you can actually write code. And we are not talking about writing
+	      code in some some wierd pseudo
+	      language that nginx gives you by default.
+	      We are talking about a real programming language. We are talking about lua.
 	    </p>
             <p>So let me type this in bold --
               <strong>openresty is nginx</strong>-- and this in small --
@@ -41,7 +42,7 @@
 	      You might need to do some additional
 	      work if you've installed third party modules.
 	      Even then there is a pretty good possibility that
-	      your favorite nginx module comes budled with openresty.
+	      your favorite module comes bundled with openresty.
 	      In the worst case scenario
 	      you might need to install those bundles again
 	      but the default stuff works out of the box.
@@ -107,7 +108,7 @@
 	    Which makes this simple html page heavier than the lua jit vm.   
 	  </p>
           <li><p><strong>Lua</strong></p></li>
-          <p>I know that nignx... you know that nginx... everybody knows that nginx...
+          <p>I know that lua... you know that lua... everybody knows that lua...
 	    wait this won't work here. Let's try something else.</p>
           <p>
 	    Openresty uses lua as the programming language. Now lua has some pretty
@@ -122,7 +123,7 @@
 	    For some people it can be a bit too verbose with all those end statements.
 	    But these "problems", if you want to call it that, is just a matter of getting used
 	    to the language. The only serious difficulty that I had while I was learning lua was
-	    getting my head around 1 based array indices.
+	    getting my head around array indices that start with 1.
 	    Once you get used to lua,which should be pretty quick anyways,
 	    you wouldn't mind these petty things. 	    
 	  </p>
@@ -131,7 +132,7 @@
 	    resrouce usage. Hot Damn!</p>
           <li><p><strong>*by_lua directives</strong></p></li>
           <p>
-	    You get to use all the sweet goodness of lua using the *by_lua directives of openresty.
+	    You get to use all the sweet goodness of lua in the *by_lua directives of openresty.
 	    These directives do diffrent things depending upon the context they are run in. The
 	    <code>lua_code_cache</code> directive for instance turns the caching of lua code
 	    on/off. That might increase the perfomace of our program but it does not let us sample
@@ -156,12 +157,12 @@
 	      }
 	    </code>
           </pre>
-          <p>"Lua code inside strings is ugly yuck! yuck! yuck!"</p>
+          <p>"Code inside strings is ugly yuck! yuck! yuck!"</p>
           <p>Calm down old fellow. I belive that saying yuck! one time is quite
 	    enough to convey the feeling of repugnance that a programmer feels when he has to
 	    write code embbded in strings.</p>
 
-	  <p>I will concede that emotions run high when the debugger fails to tell at exactly
+	  <p>I will concede that emotions run high when the debugger fails to tell on exactly
 	    what line the error has occured. And in this situation it is
 	    quite okay to say yuck! yuck! to emphasize that the disgust is quite strong. 
 	  </p>
@@ -176,7 +177,7 @@
 	  </p>
           <p>
 	    With that out of the way... you don't need to use strings to write lua code. You can
-	    have your all your lua in a file and refrence to that file using the *by_lua_file.
+	    have your all your lua in a file and refrence the file using the *by_lua_file.
 	    All *by_lua directives have an equivalent *by_lua_file directive as well so you are not
 	    really bound to single choice. Or if you insist upon inlining your lua code  you'd find 
 	    the *by_lua_block directives ,that allow you to write lua code inside "{}", quite useful.
@@ -184,7 +185,7 @@
 	  </p>
 	  <li><p><strong>ngx.location.capture.multi --the ultimate api mashup tool</strong></p></li>
           <p>
-	    ngx.location.capture is easily my favorite thing about openresty. In simple
+	    ngx.location.capture.multi is easily my favorite thing about openresty. In simple
 	    terms it allows you to make
 	    <a href="/programming/definitely-an-open-resty-guide/#loc_cap_faq">synchronous yet non blocking</a>
 	    subrequests to nginx's location blocks. 
@@ -193,9 +194,10 @@
           <p>Well here's what's cool.
 	    You know how location blocks can use
 	    <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass">proxy_pass</a>
-	    directives to pass requests to different servers right? With location capture api you can
+	    directives to pass requests to different servers, right? With location capture api you can
 	    get a response from the proxied server in your code. The implication of this is that
-	    you can have multiple services deployed in different locations and make requests from them
+	    you can have multiple services deployed in different locations and make requests to them
+	    from lua.
 	  </p>
           
           <p>
@@ -215,11 +217,11 @@
           <li><p><strong>Simplified application architechture</strong></p></li>
           <p>
 	    The lua directives offer a clean speration of the request coming in to nginx.
-	    Well to be precise nginx has a well defined cycle which a request must go through
+	    To be precise nginx has a well defined cycle which a request must go through
 	    before a final response is sent. What openresty offers is the ability to inject lua
 	    code into into these request phases. 
 	  </p>
-          <p>So for example an access_by_lua handler can allow you to inject lua while nginx process
+          <p>So for example an access_by_lua handler can allow you to inject lua while nginx processes
 	    a request in an access phase. Effectively what this does is it allows you to write aribitray code
 	    that can reject a request then and there before it moves on to other handlers. This is very useful
 	    if you want to reject unauthorized access to a location block or configure a blacklist of ip
@@ -265,22 +267,30 @@ ngx.exit(ngx.OK)
           <li><p><strong>Unified proxy and Application servers</strong></p></li>
           <p>
 	    Where as before you had to maintain different proxy and applicaton servers
-	    openresty gives you an opportunity to combine your application and proxy
-	    requirements into a single server. 
+	    openresty gives you an opportunity to unify your proxy and application
+	    server needs. 
 	  </p>
           <p>
 	    On the other hand if you already have an existing application server openresty still
 	    gives you the benifit of offloading some of the minor but resource consuming tasks
-	    to it and take some pressure off of your main servers.
-	    So by using openresty instead of nginx you get to have more options.
+	    to it and take some pressure off of your main machine. Offloading user authentication to
+	    openresty for example is one of the most impactful things that you can do to take the
+	    load of your main servers. in such a scenario all requests can be checked for authentication
+	    before passing them to your main servers and in case it's unauthorized it can be rejected
+	    at the proxy level itself.
+	    In general by using openresty instead of nginx you get to have more options.
 	  </p>
           <li><p><strong>Concurrency</strong></p></li>
-          <p>Saved the best for the last. Openresty is higly concurrent. Each nginx worker
-	    process has comes with an instance of lua jit to compile the lua code. The content handlers
-	    themselves are run in light threads. So there can be multiple execution points per lua jit instance
-	    making it very
+          <p>Saved the best for the last. Openresty is damn concurrent. Each nginx worker
+	    process  comes with it's own instance of lua jit to compile the lua code.
+	    The worker processes  are responsible for listening the requests
+	    and then passing on those requests to the content handlers. 
+	    themselves are run in independent light weight threads.
+	    So there can be multiple execution endpoints per lua jit instance
+	    This combination of multiple lua jit vms  and each vm running multiple light
+	    weight threads makes it very 
 	    <a href="programming/definitely-an-open-resty-guide/#concurrency_in_openresty">
-	      difficult to write blocking code</a> in openresty.
+	      difficult to write blocking code</a> in openresty. 
 	  </p>
         </ol>
 	<p>[1] "You pulled that number out of your ass?" </p>

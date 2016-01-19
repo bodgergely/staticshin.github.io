@@ -33,7 +33,7 @@
 	      language that nginx gave you by default. We are talking about a real programming language -- lua.
 	      And that's about it. Nothing else changes.
 	    </p>
-            <p>So let me type this in strong --
+            <p>So let me type this in bold --
               <strong>openresty is nginx</strong>-- and this in small --
 	      <small>with extra goodies packaged together in a nice little bundle</small>.
 	      Your existing configuration
@@ -41,7 +41,7 @@
 	      You might need to do some additional
 	      work if you've installed third party modules.
 	      Even then there is a pretty good possibility that
-	      your favorite third party nginx module comes budled with openresty.
+	      your favorite nginx module comes budled with openresty.
 	      In the worst case scenario
 	      you might need to install those bundles again
 	      but the default stuff works out of the box.
@@ -64,7 +64,7 @@
 	    </a>.
 	    openresty uses luajit to compile lua code. The code compiled with lua jit is
 	    damn <a href="http://luajit.org/performance.html">fast</a> reaching alomst c levels of
-	    performance. And in openresty you've got one lua jit vm per nginx worker process.  
+	    performance.
 	  </p>
           <li><p><strong>Low memory footprint</strong></p></li>
           <p>I know nginx's memory footprint is small. You know that
@@ -74,17 +74,17 @@
 	    Yes it is. It seems. Here's an old benchmark done by the author of openresty.
 
             <blockquote>
-	     <p> Below is the result using the command http_load -p 10 -s 5 http://localhost:8080/ on my ThinkPad T400 laptop with ngx_openresty 1.0.10.1:</p>
+	      <p> Below is the result using the command http_load -p 10 -s 5 http://localhost:8080/ on my ThinkPad T400 laptop with ngx_openresty 1.0.10.1:</p>
 
 	      <p>139620 fetches, 10 max parallel, 1.67544e+06 bytes, in 5.00001 seconds
-	      12 mean bytes/connection
-	      27923.9 fetches/sec, 335087 bytes/sec
-	      msecs/connect: 0.0531258 mean, 4.076 max, 0.014 min
-	      msecs/first-response: 0.258796 mean, 5.353 max, 0.067 min
-	      HTTP response codes:
+		12 mean bytes/connection
+		27923.9 fetches/sec, 335087 bytes/sec
+		msecs/connect: 0.0531258 mean, 4.076 max, 0.014 min
+		msecs/first-response: 0.258796 mean, 5.353 max, 0.067 min
+		HTTP response codes:
 		code 200 -- 139620
-		</p>
-	     <p>So on my laptop, for only a single worker nginx server, we've got ~28k r/s. The memory footprint of the node process under load is 38.0m VIRT, 2.5m RES.</p>
+	      </p>
+	      <p>So on my laptop, for only a single worker nginx server, we've got ~28k r/s. The memory footprint of the node process under load is 38.0m VIRT, 2.5m RES.</p>
 
             </blockquote>
 	  <p>The same test when repeated for node js gives the following result</p>
@@ -99,7 +99,6 @@
 	      code 200 -- 51206</p>
             <p>The memory footprint of the node process under load is 629m VIRT, 50m RES.</p>
           </blockquote>
-	  </p>
           <p>
 	    The low memory footprint of openresty is not surprising when you consider that the other thing that
 	    lua jit is famous for is it's ability to run in an embedded mode. It seems that the VM is just

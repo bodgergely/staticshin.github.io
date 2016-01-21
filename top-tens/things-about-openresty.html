@@ -219,7 +219,7 @@
 	    The lua directives offer a clean separation of the request coming in to nginx.
 	    To be precise nginx has a well defined cycle which a request must go through
 	    before a final response is sent. What openresty offers is the ability to inject lua
-	    code into into these request phases. 
+	    code into these request phases. 
 	  </p>
           <p>So for example an access_by_lua handler can allow you to inject lua while nginx processes
 	    a request in an access phase. Effectively what this does is it allows you to write arbitrary code
@@ -250,17 +250,26 @@ ngx.exit(ngx.OK)
 	  </p>
           <p>
 	    Second it allows you to think of your code in terms of request processing phase handlers
-	    cleanly breaking down each action and tying it down to a particular handler. So your
-	    authorization/authentication code will be handled by the access_directive.  
+	    cleanly breaking down each action and tying it down to a particular handler. So your 
+	    authorization/authentication, as seen in the example above
+	    code will be handled by the access_directive.  
 	  </p>
-          
+          <p>"Is access_by_lua the only directive that is available"</p>
+          <p>No no of course not.
+	    I have a bit of soft spot for access_by_lua handler so I've talked about it
+	    quite a few times. But there's is a long list of directives available that can
+	    be used to inject lua code during different phases of execution in the
+	    <a href="https://github.com/openresty/lua-nginx-module/#directives">
+	      openresty readme
+	    </a>.
+	  </p>
 	  <li><p><strong>A good mix of configurability and programability</strong></p></li>
           <p>
-	    A definitive advantage that you get with nginx is the number things
+	    A definitive advantage that you get with nginx is the number of things
 	    that you can do with the modules that are already available. Being a proxy
-	    server with one or two lines of configuration you can set block lists for ip
-	    addresses,route requests to different handlers. Configure the security headers
-	    for your application. Openresty allows you to do more or perform things that
+	    server it allows you, with one or two lines of configuration, to set block lists for ip
+	    addresses,route requests to different handlers or maybe configure the security headers
+	    for your application. Openresty lets you do more or perform things that
 	    were not possible or difficult to do with just configuration directives. 
 	  </p>
 	  

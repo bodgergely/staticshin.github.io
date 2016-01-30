@@ -105,24 +105,26 @@
 	    The low memory footprint of openresty is not surprising when you consider that the other thing that
 	    lua jit is famous for,besides it's speed,
 	    is it's ability to run in an embedded mode. It seems that the VM is just
-	    115 KB in size.  Compared to that when all is said and done this page is about 500 Kb in size.
+	    115 KB in size.  Compared to that when all is said and done this page is about 1 mb in size.
 	    Which makes this simple html page heavier than the lua jit vm.   
 	  </p>
           <li><p><strong>Lua</strong></p></li>
           <p>I know that lua... you know that lua... everybody knows that lua...
 	    wait this won't work here. Let's try something else.</p>
           <p>
-	    Openresty uses lua as the programming language. Now lua has some pretty
-	    cool things like the ability to return multiple values from a function
-	    (which is used brilliantly by the way in the ngx.location.capture api),
-	    declaring multiple variables on a single line, co routines to pause and
-	    start the execution of functions etc. It has a very familiar syntax and
+	    Openresty uses lua as the programming language. Now lua lets you do some pretty cool things
+	    like  allowing you to return multiple values from a function
+	    (which is used brilliantly, by the way, in the ngx.location.capture api),
+	    declare multiple variables on a single line, using co routines to pause and
+	    start the execution of functions etc. Furthermore it has a very familiar syntax and
 	    decent amount of third party modules. 
 	  </p>
           <p>But there are a couple of things that can be off putting to a person just starting
-	    out. Like for example arrays that start with 1. No ternary operators.
-	    For some people it can be a bit too verbose with all those end statements.
-	    But these "problems", if you want to call it that, is just a matter of getting used
+	    out. Like for example arrays that start with 1. No ternary operators.</p>
+	  
+	  <p>  For some people it can be a bit too verbose with all those end statements.</p>
+	  
+	    <p>But these "problems", if you want to call it that, is just a matter of getting used
 	    to the language. The only serious difficulty that I had while I was learning lua was
 	    getting my head around array indices that start with 1.
 	    Once you get used to lua,which should be pretty quick anyways,
@@ -212,8 +214,10 @@ location /hello_world{
 	    same method to proxy both external and internal systems. For example say
 	    you are building a system that requires calling external apis of mailchimp,
 	    paypal and amazon. To make these api's available all you need to do is
-	    configure their respective location blocks. And that's it. You can now start
-	    making requests to them from your lua code. 
+	    configure their respective location blocks in
+	    <strong>exactly</strong> the same way as you did for your internal microservices.
+	    And that's all. You can now start
+	    making requests to the apis from your lua code. 
 	  </p>
           <li><p><strong>Simplified application architecture</strong></p></li>
           <p>
@@ -317,7 +321,10 @@ ngx.exit(ngx.OK)
 	  without doing any kind of cross checking or verifying the validity of the statistic. You may
           accuse me of laziness but I'm certainly not "pulling numbers out of ass" type. 
 	</p>
-        <p><small>-- Akshat Jiwan Sharma</small></p>
+        <p>
+	  <small>-- Akshat Jiwan Sharma,<a href="/">staticshin</a></small>
+          
+	</p>
       </div>
       
     </div>

@@ -151,11 +151,11 @@
 	  </p>
           <pre>
             <code>
-	      location /hello_world{
-	      content_by_lua '
-	      ngx.say("Hello world")
-	      '
-	      }
+location /hello_world{
+ content_by_lua '
+ ngx.say("Hello world")
+ '
+}
 	    </code>
           </pre>
           <p>"Code inside strings is ugly yuck! yuck! yuck!"</p>
@@ -295,17 +295,17 @@ ngx.exit(ngx.OK)
 	  </p>
 	  <p> In general by using openresty ,instead of plain old nginx, you get to have more options.
 	  </p>
-          <li><p><strong>Concurrency</strong></p></li>
-          <p>Saved the best for the last. Openresty is damn concurrent. Each nginx worker
+          <li><p><strong>Concurrency --saved the best for the last </strong></p></li>
+          <p> Openresty is damn concurrent. Each nginx worker
 	    process  comes with it's own instance of lua jit to compile the lua code.
-	    The worker processes  are responsible for listening to the requests
-	    and then passing on those requests to the content handlers. These content handlers 
+	    The worker processes  are responsible for listening to the requests coming in 
+	    and then passing them along to the phase handlers. These phase handlers 
 	    themselves are run in independent light weight threads.
 	    So there can be multiple execution endpoints per lua jit instance
 	    This combination of multiple lua jit vms  and each vm running multiple light
-	    weight threads makes it damn
+	    weight threads makes it
 	    <a href="programming/definitely-an-open-resty-guide/#concurrency_in_openresty">
-	      hard to write blocking code</a> in openresty. Though it is still possible
+	    damn hard to write blocking code</a> in openresty. Though it is still possible
 	    if you put some serious effort into it. 
 	  </p>
         </ol>

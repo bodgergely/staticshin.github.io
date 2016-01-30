@@ -14,21 +14,22 @@
           <li>
 	    <p><strong>It's nginx we know and love</strong></p>
 	    <p>
-	      Say you are the developer of one of those 23 millions websites [1] that
+	      Say you are the maintainer of one of those 23 millions websites [1] that
 	      use nginx as their webserver and you see this shiny new thing called
 	      <a href="http://openresty.org/">openresty</a> and you say to yourself 
 	    </p>
-            <p>"Bah! HUMBUG! I can't afford to break my pretty nginx configurations!! Humbug! Bah!" </p> 
+            <p>"Bah! HUMBUG! I can't afford to break my pretty nginx configurations!! Humbug! BAH!" </p> 
             <p>
 	      I understand the feeling pretty well,ah yes.
 	      It's a dilemma faced by many programmers who hear about openresty for the first time.
 	      "Should we migrate or should we stay with nginx?" But they miss the point. Openresty is not a
-	      fork of nginx. It is nginx. Or maybe I should say it is nginx +</p>
+	      fork of nginx. Openresty won't force you to rewrite and retest your existing configurations.
+	      Openresty is nginx. Or maybe I should say it's nginx +</p>
 	    
 	    <p>
 	      Bundled together with some well tested third party modules and integrated
 	      with luajit it gives the developers the ability to <em>program</em> nginx. Yes
-	      I said program. You are not just limited to configuring the webserver (although you can still use
+	      I said program. Now you are not just limited to configuring the webserver (although you can still use
 	      it that way) but you can actually write code. And we are not talking about writing
 	      code in some some weird pseudo
 	      language that nginx gives you by default.
@@ -246,18 +247,18 @@ ngx.exit(ngx.OK)
           <p><em>"But exactly how does it simplify the architecture"</em></p>
           <p>First the practice of code reusablity is highly encouraged.
 	    Once you have written an access rule you can reuse the same code by referencing it
-	    from different access_by_lua file. 
+	    from different access_by_lua file directive. 
 	  </p>
           <p>
 	    Second it allows you to think of your code in terms of request processing phase handlers
 	    cleanly breaking down each action and tying it down to a particular handler. So your 
-	    authorization/authentication, as seen in the example above
-	    code will be handled by the access_directive.  
+	    authorization/authenticationcode, as seen in the example above,
+	    will be handled and run by the access_directive.  
 	  </p>
           <p>"Is access_by_lua the only directive that is available"</p>
           <p>No no of course not.
 	    I have a bit of soft spot for access_by_lua handler so I've talked about it
-	    quite a few times. But there's is a long list of directives available that can
+	    quite a few times. But there's  a long list of directives available that can
 	    be used to inject lua code during different phases of execution in the
 	    <a href="https://github.com/openresty/lua-nginx-module/#directives">
 	      openresty readme
@@ -267,10 +268,12 @@ ngx.exit(ngx.OK)
           <p>
 	    A definitive advantage that you get with nginx is the number of things
 	    that you can do with the modules that are already available. Being a proxy
-	    server it allows you, with one or two lines of configuration, to set block lists for ip
+	    server it allows you to, with one or two lines of configuration, set block lists for ip
 	    addresses,route requests to different handlers or maybe configure the security headers
 	    for your application. Openresty lets you do more or perform things that
-	    were not possible or difficult to do with just configuration directives. 
+	    were not possible or difficult to do with just configuration directives. So if you find
+	    that a module is not measuring up to your expectations you can always roll up
+	    your sleeves and write some lua code to do it yourself. 
 	  </p>
 	  
           <li><p><strong>Unified proxy and Application servers</strong></p></li>
@@ -285,16 +288,17 @@ ngx.exit(ngx.OK)
 	    openresty for example is one of the most impactful things that you can do to take the
 	    load off of your main servers. In such a scenario all requests can be checked for authentication
 	    before passing them to your main servers and in case it's unauthorized it can be rejected
-	    at the proxy level itself. Or maybe you could have openresty validate your data
+	    at the proxy level itself. </p>
+	  <p>Or maybe you could have openresty validate your data
 	    before you pass them to your servers so you can be sure that whatever data that comes
 	    through the proxy is clean and ready to be used as it is. 
 	  </p>
-	   <p> In general by using openresty instead of nginx you get to have more options.
+	  <p> In general by using openresty ,instead of plain old nginx, you get to have more options.
 	  </p>
           <li><p><strong>Concurrency</strong></p></li>
           <p>Saved the best for the last. Openresty is damn concurrent. Each nginx worker
 	    process  comes with it's own instance of lua jit to compile the lua code.
-	    The worker processes  are responsible for listening the requests
+	    The worker processes  are responsible for listening to the requests
 	    and then passing on those requests to the content handlers. These content handlers 
 	    themselves are run in independent light weight threads.
 	    So there can be multiple execution endpoints per lua jit instance

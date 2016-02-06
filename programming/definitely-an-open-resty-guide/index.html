@@ -771,6 +771,34 @@
 	<pre><code>local body = res.body
 	    ngx.log(ngx.ERR,body)
 	</code></pre><p>and it will append the body data to the error log. One of the areas where I feel that openresty is lagging in the code inspection part. Unlike it&#39;s name  <code>ngx.print()</code> does not print to the console but instead outputs the data to the client. Although using a combination of displaying the error log on the console and openresty&#39;s log functions we can display results on our terminal but still it is not as good as say <code>console.log()</code> in node js. Maybe the tooling for debugging openresty scripts will improve in the future. But it&#39;s a minor impedance that does not bother much once you get used to it.</p>
+        <strong id="z_brane">zerobrane studio-- If you can't print on the terminal just change your ide!</strong>
+        <p>
+	  Recently I came to know about
+	  <a href="https://studio.zerobrane.com/">zerobrane studio</a> a lightweight
+	  IDE for lua written in lua! Among other things it allows you to
+	  <a href="https://studio.zerobrane.com/doc-lua-debugging">debug</a>
+	  lua scripts. </p>
+
+	<p>
+	  Now I know it's hard to simply switch editors from
+	  one project to another but I think it's a worthwhile to try out
+	  zerobrane for you openresty project because the default debugging is
+	  is a bit hard to get your head around.
+	</p>
+	<p>
+	  What with all the changes one has to do in the config files and 
+	  all the `ngx.log()` statements one has to write in the code
+	  and the all the despair that one has to experience when one learns that `ngx.print()` statement
+	  does not actually print, one might give up just because he can't get `ngx.var.test_var`
+	  to show up on the screen! Which would be a shame. Why not try an IDE that allows you to debug
+	  your openresty scripts without setting off the annoying sound on your blood pressure monitor?
+	  It's a heavenly feeling if you thimk about it. </p>
+	<p>
+	  Also when you see the author showing off this	  
+	  <a href="http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style">
+	    live coding video</a>
+	  it's hard not to drool a little. 
+	</p>
 	<h1 id="openresty_global_var">Global variables in openresty</h1>
 
 	<p><small><a href="#contents">Back to the contents</a></small></p>

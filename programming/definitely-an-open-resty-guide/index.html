@@ -73,16 +73,12 @@
 	<p>Suppose before forwarding the data <code>POSTed</code> to your application you want to do certain checks on the data so that you can be sure that your application receives only the clean refined data to operate upon. Is there any easy way to validate the data posted to nginx before it is forwarded to your application server? If there is I could not find it. But in open resty this is as simple as</p>
 	<pre><code>
 content_by_lua &#39;
-
 -- read the request of the body
 ngx.req.read_body()
-
 -- give back the body as an easily query-able table data structure
 local post_args = ngx.req.get_post_args() 
-
 -- validate the data 
 local clean_body_data = require(&quot;lib/validate&quot;).validate_body(post_args)
-
 &#39;
 	</code></pre>
 	<p>This has the effect of simplifying your architecture by guaranteeing that any data that is posted by the proxy is valid. So your application layer can focus on working upon it without worrying about cleansing it first. Once you learn open resty you will be able to identify many such functions that can be better delegated to a proxy. It will simplify your application and allow you to use nginx and all it&#39;s low resource, fast performance goodness to the fullest. Win win.</p>

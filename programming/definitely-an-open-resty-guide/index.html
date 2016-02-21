@@ -126,22 +126,23 @@
 	  Easy right? This structure will not only do for our 
 	  simple demonstration here but will also  hold well for complex examples 
 	  that we will work on later.  Let us examine the configuration file for the hello_world example </p>
-	<pre><code>worker_processes  1;
-	    error_log logs/error.log;
-	    events {
-	    worker_connections 1024;
-	    }
-	    http {
-	    server {
-            listen 8080;
-            location / {
-            default_type text/html;
-            content_by_lua &#39;
-            ngx.say(&quot;&lt;p&gt;hello, world&lt;/p&gt;&quot;)
-            &#39;;
-            }
-	    }
-	    }
+	<pre><code>
+worker_processes  1;
+error_log logs/error.log;
+events {
+ worker_connections 1024;
+}
+http {
+ server {
+listen 8080;
+location / {
+default_type text/html;
+content_by_lua &#39;
+ngx.say(&quot;&lt;p&gt;hello, world&lt;/p&gt;&quot;)
+&#39;;
+}
+}
+}
 	</code></pre><p>This will look very familiar to you if you have used nginx. 
 	  The only thing that is new in this file is the <code>content_by_lua</code> statement. 
 	  This statement executes the lua code that within the <code>&#39;&#39;</code> string. 
@@ -168,28 +169,29 @@
 	<p>Now we will create another location block in the <code>nginx.conf</code> 
 	  file that will use <code>content_by_lua_file</code> instead of <code>content_by_lua</code>. 
 	  Here is what the final configuration looks like </p>
-	<pre><code>worker_processes  1;
-	    error_log logs/error.log;
-	    events {
-	    worker_connections 1024;
-	    }
-	    http {
-	    server {
-            listen 8080;
-            location / {
-            default_type text/html;
-            content_by_lua &#39;
-            ngx.say(&quot;&lt;p&gt;hello, world&lt;/p&gt;&quot;)
-            &#39;;
-            }
+	<pre><code>
+worker_processes  1;
+error_log logs/error.log;
+events {
+worker_connections 1024;
+}
+http {
+server {
+listen 8080;
+location / {
+default_type text/html;
+content_by_lua &#39;
+ngx.say(&quot;&lt;p&gt;hello, world&lt;/p&gt;&quot;)
+&#39;;
+}
 
-	    location /by_file {
-            default_type text/html;
-            content_by_lua_file ./lua/hello_world.lua;
-            }
+location /by_file {
+default_type text/html;
+content_by_lua_file ./lua/hello_world.lua;
+}
 
-	    }
-	    }
+}
+}	    
 	</code></pre><p>Before we curl for the <code>/by_file</code> location we must reload nginx  </p>
 	<p><code>nginx -p  pwd -s reload</code></p>
 	<p>now <code>curl http://localhost:8080/by_file</code> should return</p>
@@ -214,14 +216,15 @@
 	  the only difference being  it is marked by <code>{</code> and
 	  <code>}</code> brackets. Within a block level directive there could be one or more 
 	  simple directives. These directives make up the configuration files. Time for an example:- </p>
-	<pre><code>#location is a block level directive
+	<pre><code>
+#location is a block level directive
 
-	    location /{
+location /{
 
-	    #proxy_pass is a simple directive
-	    proxy_pass http://localhost:5984/; 
+#proxy_pass is a simple directive
+proxy_pass http://localhost:5984/; 
 
-	    }
+}
 	</code></pre><p>Openresty keeps the same structuring of the configuration files. You still create configuration files with
 	  simple and block level directives. Any nginx directive works with openresty in the same way as it would in a
 	  vanilla nginx application. However a new set of directives are introduced by openresty that serve as the
@@ -252,23 +255,24 @@
 	  off in production. </p>
 	<p>Let us test this by turning <code>lua_code_cache</code> off in our hello world example.
 	  After the changes our configuration file should look something like this. </p>
-	<pre><code>worker_processes  1;
-	    error_log /dev/stderr;
-	    events {
-	    worker_connections 1024;
-	    }
-	    http {
-	    server {
-            listen 8080;
+	<pre><code>
+worker_processes  1;
+error_log /dev/stderr;
+events {
+worker_connections 1024;
+}
+http {
+server {
+listen 8080;
 
-	    location /by_file {
-            default_type text/html;
-            lua_code_cache off; #only for development
-            content_by_lua_file ./lua/hello_world.lua; #update it with path to your lua file
-            }
+location /by_file {
+default_type text/html;
+lua_code_cache off; #only for development
+content_by_lua_file ./lua/hello_world.lua; #update it with path to your lua file
+}
 
-	    }
-	    }
+}
+}
 	</code></pre><p>Now lets run this by </p>
 	<p><code>nginx -p &#39;pwd&#39; -c conf/nginx.conf</code></p>
 	<p>You should see an alert message displayed on your console</p>
@@ -334,17 +338,17 @@
 	    cjson = require(&quot;cjson&quot;) -- cjson is a global variable
 	    &#39;
 	</code></pre><pre><code>location /one {
-	    content_by_lua &#39;
-	    local validate = require(&quot;lua/validate&quot;) -- validate is a local variable
-	    decoded_one = cjson.decode({hello=&quot;world&quot;}) --decoded_one is a global variable
-	    &#39;
-	    }
+content_by_lua &#39;
+local validate = require(&quot;lua/validate&quot;) -- validate is a local variable
+decoded_one = cjson.decode({hello=&quot;world&quot;}) --decoded_one is a global variable
+&#39;
+}
 
-	    location /two{
-	    content_by_lua &#39;
-	    ngx.say(cjson.encode(decoded_one))
-	    &#39;
-	    }
+location /two{
+content_by_lua &#39;
+ngx.say(cjson.encode(decoded_one))
+&#39;
+}
 	</code></pre><p>In the example above we have two global variables. The first one <code>cjson</code> in the init_by_lua is
 	  a true global variable. One that can be accessed across request handlers. The second global variable (decoded_one)
 	  that we declare in the <code>location /one</code> block is global only in the context of <code>/one</code> if we try to access
@@ -358,10 +362,10 @@
 	  Everything that we talked about in <code>init_by_lua</code> 
 	  also applies to <code>init_by_lua_file</code>. </p>
 	<pre><code>   location /json{
-	    content_by_lua &#39;
-            ngx.say(cjson.encode({message=&quot;hello world&quot;,another_message=&quot;goodbye world&quot;}));
-            &#39;;
-	    }
+content_by_lua &#39;
+ngx.say(cjson.encode({message=&quot;hello world&quot;,another_message=&quot;goodbye world&quot;}));
+&#39;;
+}
 	</code></pre><p>In the location block above we are using <code>cjson</code> global
 	  variable that was declared in an <code>init_by_lua_file</code> to encode
 	  lua tables in json. <code>cjson</code> was a good contender for the global
@@ -384,11 +388,11 @@
 	  command so the two can be used interchangeably. 
 	  The directives will run in the order in which they appear in the code.</p>
 	<pre><code>
-	    location /set_by_lua{
-            set $nvar 20;
-            set_by_lua $lvar &#39;return ngx.var.nvar+1&#39;;
-            echo &quot;$nvar,$lvar&quot;;
-	    }
+location /set_by_lua{
+set $nvar 20;
+set_by_lua $lvar &#39;return ngx.var.nvar+1&#39;;
+echo &quot;$nvar,$lvar&quot;;
+}
 	</code></pre><hr>
 	<h3 id="content_by_lua">content_by_lua</h3>
 
@@ -404,18 +408,19 @@
 	<p>Anyway, the location directive captures the request for a matching url and
 	  then leaves it to the content handler to service the request. For instance</p>
 	<pre><code>location /me
-	    {
-	    root /data/me;
-	    }
-	</code></pre><p>if a request is made to <code>/me</code> handle the content in <code>/data/me</code> would be served.
+{
+root /data/me;
+}
+	</code></pre>
+	<p>if a request is made to <code>/me</code> handle the content in <code>/data/me</code> would be served.
 	  A location block should have only one content handler. Do not mix nginx&#39;s
 	  default content handlers like proxy_pass or directory mappers with ngx_lua&#39;s content_by_lua.</p>
 	<p>The <code>content_by_lua</code> directive can execute lua code that is contained within it. For ex:</p>
 	<pre><code>location /test{
-	    content_by_lua &#39;
-	    local is_test = ngx.req.get_uri_args()[&quot;test&quot;]
-	    &#39;;
-	    }
+content_by_lua &#39;
+local is_test = ngx.req.get_uri_args()[&quot;test&quot;]
+&#39;;
+}
 	</code></pre><p>The above <code>content_by_lua</code> directive executes a single line of lua code which
 	  just stores the value of query string parameter called test in a local variable called is_test. </p>
 	<p>And yeah there is a <code>content_by_lua_file</code> :)</p>
@@ -505,9 +510,10 @@
 	  no http overhead. It is just a fast and light internal <code>c</code> level call while mimicking
 	  the familiar http interface. Time for an example:-</p>
 	<p>suppose you have a location:</p>
-	<pre><code>location /go-go-go{
-	    ###does something in a hurry
-	    }
+	<pre><code>
+location /go-go-go{
+###does something in a hurry
+}
 	</code></pre><p>You can make a call to this endpoint using location capture like so&quot;-</p>
 	<pre><code>local res = ngx.location.capture(&quot;/go-go-go&quot;)
 	</code></pre><p>See how simple it is. Issue a request to the <code>uri</code> already defined somewhere in a
@@ -518,10 +524,13 @@
 	</code></pre><p>it won&#39;t work. Because the uri is external. However if you do</p>
 	<pre><code>local res = ngx.location.capture(&quot;/google_proxy&quot;)
 	</code></pre><p>where <code>/google_proxy is in the conf as</code></p>
-	<pre><code>location /google_proxy{
-	    proxy_pass http://www.google.com/;
-	    }
-	</code></pre><p>then the request will work. It is important to understand that <code>ngx.location.capture</code> works
+	<pre><code>
+location /google_proxy{
+proxy_pass http://www.google.com/;
+}
+	  </code>
+	</pre>
+	<p>then the request will work. It is important to understand that <code>ngx.location.capture</code> works
 	  only on internal requests (or on locations that are defined in the configuration files)
 	  but that location can make an external http request.</p>
 	<p>So now back to the topic. The <code>res</code> returned by <code>ngx.location.capture</code> contains ..
@@ -534,11 +543,13 @@
 	</ol>
 	<p>res.status, res.body and res.truncated are pretty straightforward. res.header require more examination.</p>
 	<p>The response headers are simply a lua table. Here is what it might look like</p>
-	<pre><code>{
-	    Vary=&quot;Accept&quot;,
-	    Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
-	    }
-	</code></pre><p>So you access the header the same way in which you access a key from any lua table. For instance to access
+	<pre><code>
+{
+Vary=&quot;Accept&quot;,
+Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
+}
+	</code></pre>
+	<p>So you access the header the same way in which you access a key from any lua table. For instance to access
 	  the &quot;vary&quot; header we do <code>res.header[&quot;Vary&quot;]</code>.</p>
 	<p>Thus far we have seen how to make only simple requests
 	  the internal uri using the <code>ngx.location.capture</code> but the api

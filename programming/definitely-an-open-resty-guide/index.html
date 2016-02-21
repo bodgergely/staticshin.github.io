@@ -71,19 +71,21 @@
 	<p>The configuration files themselves. While they are quite flexible all they do is they limit the power of nginx to the set
 	  that is configurable. Sure you can do a lot but not anything beyond what is allowed. Here is a simple example for instance</p>
 	<p>Suppose before forwarding the data <code>POSTed</code> to your application you want to do certain checks on the data so that you can be sure that your application receives only the clean refined data to operate upon. Is there any easy way to validate the data posted to nginx before it is forwarded to your application server? If there is I could not find it. But in open resty this is as simple as</p>
-	<pre><code>content_by_lua &#39;
+	<pre><code>
+content_by_lua &#39;
 
-	    -- read the request of the body
-	    ngx.req.read_body()
+-- read the request of the body
+ngx.req.read_body()
 
-	    -- give back the body as an easily query-able table data structure
-	    local post_args = ngx.req.get_post_args() 
+-- give back the body as an easily query-able table data structure
+local post_args = ngx.req.get_post_args() 
 
-	    -- validate the data 
-	    local clean_body_data = require(&quot;lib/validate&quot;).validate_body(post_args)
+-- validate the data 
+local clean_body_data = require(&quot;lib/validate&quot;).validate_body(post_args)
 
-	    &#39;
-	</code></pre><p>This has the effect of simplifying your architecture by guaranteeing that any data that is posted by the proxy is valid. So your application layer can focus on working upon it without worrying about cleansing it first. Once you learn open resty you will be able to identify many such functions that can be better delegated to a proxy. It will simplify your application and allow you to use nginx and all it&#39;s low resource, fast performance goodness to the fullest. Win win.</p>
+&#39;
+	</code></pre>
+	<p>This has the effect of simplifying your architecture by guaranteeing that any data that is posted by the proxy is valid. So your application layer can focus on working upon it without worrying about cleansing it first. Once you learn open resty you will be able to identify many such functions that can be better delegated to a proxy. It will simplify your application and allow you to use nginx and all it&#39;s low resource, fast performance goodness to the fullest. Win win.</p>
 	<p>&quot;<strong>But my application is working. I don&#39;t want to change any thing</strong>&quot;</p>
 	<p>I am not asking you to change. Remember that openresty is still nginx. Everything that was working will continue to
 	  work. Openresty just gives you an opportunity to make use of nginx in ways that you might not have considered before. You have nothing to loose and much to gain. </p>
@@ -119,9 +121,10 @@
 	<p>This is a hello_world example to illustrate how to write openresty scripts. 
 	  The first thing that we will do is we will create a file structure for our config files and scripts.
 	  Here is a high level overview </p>
-	<pre><code>root
-	    -logs
-	    -conf
+	<pre><code>
+root
+-logs
+-conf
 	</code></pre><p>All the nginx configuration files go within the <code>conf</code> folder and all the logging goes in the <code>logs</code> folder. 
 	  Easy right? This structure will not only do for our 
 	  simple demonstration here but will also  hold well for complex examples 
@@ -317,8 +320,9 @@ content_by_lua_file ./lua/hello_world.lua; #update it with path to your lua file
 	<p>As a general principle refrain from using lua global variables. For most variables you should use a <code>local</code> 
 	  keyword to declare lua variables local to it&#39;s scope. And remember any variable declared
 	  without a <code>local</code> keyword is global in lua.</p>
-	<pre><code>local cat = &quot;meow&quot; -- use this form most of the time
-	    dog = &quot;woof&quot; -- avoid this form except for when it makes sense
+	<pre><code>
+local cat = &quot;meow&quot; -- use this form most of the time
+dog = &quot;woof&quot; -- avoid this form except for when it makes sense
 	</code></pre><p><strong>Why refrain from using global variables?</strong></p>
 	<p>Openresty is based on the principle of request isolation. Any request that goes to a location
 	  block say <code>location /one{}</code> is independent from the request that goes to the <code>location /two{}</code>. Every
@@ -334,10 +338,12 @@ content_by_lua_file ./lua/hello_world.lua; #update it with path to your lua file
 	<p><strong>An example to illustrate the difference b/w local and global variables</strong></p>
 	<h3 id="init_by_lua">init_by_lua</h3>
 
-	<pre><code>init_by_lua &#39;
-	    cjson = require(&quot;cjson&quot;) -- cjson is a global variable
-	    &#39;
-	</code></pre><pre><code>location /one {
+	<pre><code>
+init_by_lua &#39;
+cjson = require(&quot;cjson&quot;) -- cjson is a global variable
+&#39;
+	</code></pre><pre><code>
+location /one {
 content_by_lua &#39;
 local validate = require(&quot;lua/validate&quot;) -- validate is a local variable
 decoded_one = cjson.decode({hello=&quot;world&quot;}) --decoded_one is a global variable
@@ -349,9 +355,12 @@ content_by_lua &#39;
 ngx.say(cjson.encode(decoded_one))
 &#39;
 }
-	</code></pre><p>In the example above we have two global variables. The first one <code>cjson</code> in the init_by_lua is
-	  a true global variable. One that can be accessed across request handlers. The second global variable (decoded_one)
-	  that we declare in the <code>location /one</code> block is global only in the context of <code>/one</code> if we try to access
+	</code></pre>
+	<p>In the example above we have two global variables. The first one <code>cjson</code> in the init_by_lua is
+	  a true global variable. One that can be accessed across request handlers.
+	  The second global variable (decoded_one)
+	  that we declare in the <code>location /one</code>
+	  block is global only in the context of <code>/one</code> if we try to access
 	  this in the <code>/two</code> block we get a nil value. Besides having unexpected effects,that are hard to debug,
 	  global variables have performance
 	  penalties of being looked up from a global table.
@@ -361,12 +370,14 @@ ngx.say(cjson.encode(decoded_one))
 	  containing the lua code that will be run in a global context. 
 	  Everything that we talked about in <code>init_by_lua</code> 
 	  also applies to <code>init_by_lua_file</code>. </p>
-	<pre><code>   location /json{
+	<pre><code>
+location /json{
 content_by_lua &#39;
 ngx.say(cjson.encode({message=&quot;hello world&quot;,another_message=&quot;goodbye world&quot;}));
 &#39;;
 }
-	</code></pre><p>In the location block above we are using <code>cjson</code> global
+	</code></pre>
+	<p>In the location block above we are using <code>cjson</code> global
 	  variable that was declared in an <code>init_by_lua_file</code> to encode
 	  lua tables in json. <code>cjson</code> was a good contender for the global
 	  variable declaration because we are going to be using it in many
@@ -416,7 +427,8 @@ root /data/me;
 	  A location block should have only one content handler. Do not mix nginx&#39;s
 	  default content handlers like proxy_pass or directory mappers with ngx_lua&#39;s content_by_lua.</p>
 	<p>The <code>content_by_lua</code> directive can execute lua code that is contained within it. For ex:</p>
-	<pre><code>location /test{
+	<pre><code>
+location /test{
 content_by_lua &#39;
 local is_test = ngx.req.get_uri_args()[&quot;test&quot;]
 &#39;;
@@ -464,8 +476,11 @@ local is_test = ngx.req.get_uri_args()[&quot;test&quot;]
 	<ol>
 	  <li>The *by_lua modules that tweak the nginx behaviour (for ex the rewrite_by_lua that is the lua
 	    equivalent of nginx http rewrite) module are always run after the standard nginx modules.</li>
-	  <li>The choice of *by_lua module to use largely depends upon the problem that you are trying to solve. For example
-	    the init_by_lua module is used for initialization operations where as access_by_lua may be used to implement access policies for a location block. Personally among the various directives I find most use for content_by_lua. </li>
+	  <li>The choice of *by_lua module to use largely depends upon the problem that you are trying to solve.
+	    For example
+	    the init_by_lua module is used for initialization operations where as
+	    access_by_lua may be used to implement access policies for a location block.
+	    Personally among the various directives I find most use for content_by_lua. </li>
 	</ol>
 	<p>The ones I have covered though are  ones that you will
 	  be using most of the time. So instead of going on and on about the directives
@@ -560,10 +575,11 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	<pre><code>local res = ngx.location.caputre(&quot;/hello&quot;,{args={a=1,b=2}})
 	</code></pre><p>are equivalent. In both the cases a subrequest will be made to <code>/hello?a=1&amp;b=2</code></p>
 	<p>In fact the optional table can hold a lot more keys than just an <code>args</code>.</p>
-	<pre><code>   local account_page = ngx.location.capture(&quot;/get_account&quot;,
-            {method=ngx.HTTP_POST,body=
-            json_body,args={user_name=name}
-            })
+	<pre><code>
+local account_page = ngx.location.capture(&quot;/get_account&quot;,
+{method=ngx.HTTP_POST,body=
+json_body,args={user_name=name}
+})
 	</code></pre><p>The above sample illustrates the point. Here the <code>ngx.location.capture</code> passes in</p>
 	<ol>
 	  <li>method: You can use the ngx constants that we discussed earlier</li>
@@ -580,8 +596,10 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	  One of the unique things about lua is that a function can have multiple return values. If this is your
 	  first time working with lua then it might be a bit hard to to figure out when to use this feature. But
 	  luckily ngx lua makes the application of this unique concept quite obvious. Check this out:-</p>
-	<pre><code>local home,about,contact = ngx.location.capture.multi{{&quot;/home&quot;},{&quot;/about&quot;},{&quot;/contact&quot;}}
-	</code></pre><p>The above snippet of code is just like <code>ngx.location.capture</code> that we talked about before. The
+	<pre><code>
+local home,about,contact = ngx.location.capture.multi{{&quot;/home&quot;},{&quot;/about&quot;},{&quot;/contact&quot;}}
+	</code></pre>
+	<p>The above snippet of code is just like <code>ngx.location.capture</code> that we talked about before. The
 	  only difference here is that instead of making a subrequest to a single uri you can make
 	  subrequests to multiple uris with a single line of code. Two important things to note here is that</p>
 	<p>1) These multiple subrequests run in parallel.
@@ -593,61 +611,70 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	  twitter, facebook and linkedin. In this scenario you have to make at least three separate http requests to collect 
 	  the data. </p>
 	<p>How would you do this in openresty? Like this:-</p>
-	<pre><code>local statuses,tweets,posts = ngx.location.capture.multi{{&quot;/facebook_graph&quot;},{&quot;/tweets&quot;},{&quot;/lnkedin&quot;}}
-	</code></pre><p>and it all simply works. Now the application is not limited to external third party data aggregation.
+	<pre><code>
+local statuses,tweets,posts = ngx.location.capture.multi{{&quot;/facebook_graph&quot;},{&quot;/tweets&quot;},{&quot;/lnkedin&quot;}}
+	</code></pre>
+	<p>and it all simply works. Now the application is not limited to external third party data aggregation.
 	  It is quite probable that internally you use many applications that work on secondary tasks and maybe you
 	  want to generate a report  by querying them for updates. All you got to do is issue an <code>ngx.location.capture.multi</code> and
 	  you are set.</p>
 	<p><strong>Can one use an options table like in the nginx.location.capture?</strong> </p>
 	<p>Of course you can. Here is how:-</p>
-	<pre><code>local res1,res2 = ngx.location.capture.multi{
-	    {&quot;/req1&quot;,{method=ngx.HTTP_POST}},
-	    {&quot;req2&quot;,{args={a=1,b=2}}}
-	    }
-	</code></pre><p>Every request in location.capture_multi is contained within it&#39;s own table which can do all of things that
+	<pre><code>
+local res1,res2 = ngx.location.capture.multi{
+{&quot;/req1&quot;,{method=ngx.HTTP_POST}},
+{&quot;req2&quot;,{args={a=1,b=2}}}
+}
+	</code></pre>
+	<p>Every request in location.capture_multi is contained within it&#39;s own table which can do all of things that
 	  we saw in a simple <code>ngx.location.capture</code>. Cool isn&#39;t it?</p>
 	<hr>
 	<h4 id="loc_cap_faq">location capture FAQS</h4>
 
 	<p><small><a href="#contents">Back to the top</a></small></p>
 	<p><strong>Q</strong>:Is location.caputure/capture_multi synchronous?</p>
-	<p><strong>A</strong>: Yes. location capture is synchronous but non blocking. Synchronous but non blocking? Well yes.
+	<p><strong>A</strong>: Yes. location capture is synchronous but non blocking.
+	  Synchronous but non blocking? Well yes.
 	  You see the location capture provides a lua interface over what are known as <a href="http://openresty.org/download/agentzh-nginx-tutorials-en.html#nginx-variables-a-detour-to-subrequests">subrequests</a> in nginx world. Quoting from the article linked above:-</p>
 	<blockquote>
 	  <p>Subrequests may look very much like an HTTP request in appearance, their implementation, however, has nothing to do with neither the HTTP protocol nor any kind of socket communication. A subrequest is an abstract invocation for decomposing the task of the main request into smaller &quot;internal requests&quot; that can be served independently by multiple different location blocks, either in series or in parallel.</p>
 	  <p>when the Nginx core processes a subrequest, it just calls a few C functions behind the scene, without doing any kind of network or UNIX domain socket communication. For this reason, subrequests are extremely efficient.</p>
 	</blockquote>
 	<p>All right we will now try to translate what a trivial location capture might look like if written using nginx configurations. For this we will be making use of the <a href="http://wiki.nginx.org/HttpEchoModule#echo_location_async">echo module</a>. Consider a single location capture like</p>
-	<pre><code>local res = ngx.location.capture(&quot;/url&quot;)
-	    ngx.say(res.body)
-	</code></pre><p>initiates a subrequest at nginx&#39;s level and it&#39;s equivalent to:-</p>
-	<pre><code>location /main {
-	    echo_location /url;   
-	    }
+	<pre><code>
+local res = ngx.location.capture(&quot;/url&quot;)
+ngx.say(res.body)
+	</code></pre>
+	<p>initiates a subrequest at nginx&#39;s level and it&#39;s equivalent to:-</p>
+	<pre><code>
+location /main {
+echo_location /url;   
+}
 
 
-	    location /url{
-	    echo hello_url;
-	    }
+location /url{
+echo hello_url;
+}
 	</code></pre><p><code>curl http://localhost:8080/main</code> would return &quot;hello_url&quot; as the response.</p>
 	<p>Where as location.capture_multi sends out a series of parallel subrequests to location blocks. For example:-</p>
-	<pre><code>local res1,res2 = ngx.location.capture_multi{{&quot;/url1&quot;},{&quot;url2&quot;}}
-	    ngx.say(res1.body..res2.body)
+	<pre><code>
+local res1,res2 = ngx.location.capture_multi{{&quot;/url1&quot;},{&quot;url2&quot;}}
+ngx.say(res1.body..res2.body)
 	</code></pre><p>the above lua code initiates multiple parallel subrequests to locations <code>url1</code>  and <code>url2</code>. The results are returned after all the requests have been completed. The equivalent nginx code would be</p>
 	<pre><code>location /main{
-	    echo_location_async /url1;
-	    echo_location_async /url2;
-	    }
+echo_location_async /url1;
+echo_location_async /url2;
+}
 
 
-	    location /url1{
-	    echo hello_url1;
-	    }
+location /url1{
+echo hello_url1;
+}
 
 
-	    location /url2{
-	    echo hello_url2;
-	    }
+location /url2{
+echo hello_url2;
+}
 	</code></pre><p>So by &quot;synchronous yet non blocking&quot; we mean that the subrequests are executed independently and concurrently. Yet the location.capture does not return until all the subrequests have been completed. In case you have multiple subrequests using location.capture_multi the time taken to serve all the requests will be equal the time taken by the longest request.</p>
 	<p>The ngx.location.capture() can also be interpreted as location.capture_multi{} with a single subrequest.</p>
 	<p>Of course the code above is just a simplistic translation and as we have already seen location capture can go beyond making simple &quot;GET&quot; requests to location blocks. But hopefully the working of location.capture/capture_multi is a bit more clearer.</p>
@@ -655,10 +682,10 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	<p><strong>Q</strong>: Can I make external http requests with location capture?</p>
 	<p><strong>A</strong>: You sure can! Yes the subrequests are internal. Yes there is no http involved while calling the subrequests. But the subrequests are executed independently. This means that even though the subrequest is not dealing with http the location block themselves can make any kind of request that they want. Like we saw in the examples above the following will absolutely work:-</p>
 	<pre><code>
-	    location /google{
-	    resolver 8.8.8.8;
-	    proxy_pass http://www.google.com/;
-	    }
+location /google{
+resolver 8.8.8.8;
+proxy_pass http://www.google.com/;
+}
 	</code></pre><pre><code>local res = ngx.location.capture(&quot;/google&quot;)
 
 	    -- the res.body should contain the html source of google.com
@@ -676,16 +703,17 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	<p><strong>The headers of the request</strong></p>
 	<p><code>ngx.req.get_headers()</code> gives you back a table of headers for an incoming request
 	  which you can then query as usual. For example</p>
-	<pre><code>local headers = ngx.req.get_headers()
-
-	    local cookie = headers[&quot;Cookie&quot;]
-
-	    local etag = headers[&quot;Etag&quot;]
-
-	    local host = headers[&quot;Host&quot;]
-	</code></pre><p>Similarly it&#39;s counter-part <code>ngx.req.set_header</code> is used to set a req header for outgoing requests</p>
+	<pre><code>
+local headers = ngx.req.get_headers()
+local cookie = headers[&quot;Cookie&quot;]
+local etag = headers[&quot;Etag&quot;]
+local host = headers[&quot;Host&quot;]
+	</code></pre>
+	<p>Similarly it&#39;s counter-part <code>ngx.req.set_header</code>
+	  is used to set a req header for outgoing requests</p>
 	<pre><code>ngx.req.set_header(&quot;Content-type&quot;,&quot;application/json&quot;)
-	</code></pre><p>If for some reason you want the actual headers sent by the client instead of the ones that have been parsed
+	</code></pre>
+	<p>If for some reason you want the actual headers sent by the client instead of the ones that have been parsed
 	  into a table you can use <code>ngx.req.raw_header</code></p>
 	<p>To clear a header you can use <code>ngx.req.clear_header</code>. Can be very useful when making
 	  a proxy req from the client to the server.</p>
@@ -701,9 +729,10 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	<p><strong>The method of the request</strong></p>
 	<p><code>ngx.req.get_method</code> is used to get the method of an incoming request. <code>ngx.req.set_method</code> is used to set
 	  the method for an outgoing request. </p>
-	<pre><code>local method = ngx.req.get_method
+	<pre><code>
+local method = ngx.req.get_method
 
-	    ngx.req.set_method(ngx.HTTP_POST)
+ngx.req.set_method(ngx.HTTP_POST)
 	</code></pre><p><strong>The uri of the request</strong></p>
 	<p>ngx lua also allows you to change the uri from which the req was initiated by the client.</p>
 	<pre><code>ngx.req.set_uri(&quot;/foo&quot;)
@@ -716,9 +745,9 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	<p>You can also modify the query string parameters of the req. Here&#39;s how:</p>
 	<pre><code>ngx.req.set_uri_args(&quot;a=3&amp;b=hello%20world&quot;)
 
-	    ngx.req.set_uri_args({ a = 3, b = {5, 6} })
+ngx.req.set_uri_args({ a = 3, b = {5, 6} })
 
-	    -- this will be translated as &quot;a=3&amp;b=5&amp;b=6&quot;
+-- this will be translated as &quot;a=3&amp;b=5&amp;b=6&quot;
 	</code></pre><p>ngx lua allows setting the uri parameters as query strings and as lua tables. You can get the url arguments using 
 	  <code>ngx.req.get_uri_args()</code>.</p>
 	<pre><code>local is_test = ngx.req.get_uri_args()[&quot;test&quot;]
@@ -744,9 +773,10 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	</code></pre><p>In case you want to set multiple values to a header you just have to pass a list of values:-</p>
 	<pre><code>ngx.header[&quot;My-Multi-Value-Header&quot;] = {&quot;1&quot;,&quot;2&quot;}
 	</code></pre><p>Similarly if you read a multivalued header a list will be returned as a response.</p>
-	<pre><code>local multi_val_read  = ngx.header[&quot;My-Multi-Value-Header&quot;]
+	<pre><code>
+local multi_val_read  = ngx.header[&quot;My-Multi-Value-Header&quot;]
 
-	    -- multi_val_read = {&quot;1&quot;,&quot;2&quot;}
+-- multi_val_read = {&quot;1&quot;,&quot;2&quot;}
 	</code></pre><p>One important thing
 	  to note here is that if you try to set multiple values to a header that can only contain a single value
 	  the last item from the list will be chosen. For instance take the content type header:-</p>
@@ -767,10 +797,12 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	</code></pre><p><strong>The body of the response</strong></p>
 	<p>Unlike response headers and response status there is no prepping stage for the response body.That is there is no <code>ngx.res.body()</code> method where you can set the body before sending the response. Openresty instead offers two methods in <code>ngx.say()</code>
 	  and <code>ngx.print()</code> any argument to the methods will be joined and sent as the res body. It is also important to note that calling any one of these methods means that the response will be sent back to the client. So the response headers and the response status that you have prepared up to this point will be sent back to the client once you call print() or say().</p>
-	<pre><code>ngx.print(&quot;Hello world&quot;) --sends  Hello world
-	    ngx.say(&quot;Hello world&quot;) -- sends Hello world/n that is the body appended with a newline
-	    ngx.say(cjson.encode({a=1,b=2})) -- you can also send json in the response body
-	</code></pre><hr>
+	<pre><code>
+ngx.print(&quot;Hello world&quot;) --sends  Hello world
+ngx.say(&quot;Hello world&quot;) -- sends Hello world/n that is the body appended with a newline
+ngx.say(cjson.encode({a=1,b=2})) -- you can also send json in the response body
+	</code></pre>
+	<hr>
 	<h4 id="debug_openresty">Debugging openresty scripts</h4>
 
 	<p>Remember <a href="#hello_world">our first configuration</a>. Specifically this directive `error_log logs/error.log;. We defined all of the errors to be logged in the ./logs/error.log file. One of the ways to read from the error log is to set a tail on it like so:-</p>
@@ -780,9 +812,11 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	<p><code>error_log /dev/stderr;</code></p>
 	<p>and now all your errors will be logged to the terminal.</p>
 	<p>But error logs are only effective when an error occurs in our program. What if we want to say quickly see the value of a variable? For these cases we can use a combination of <code>ngx.log()</code> and the nginx&#39;s logging constants to write to the error log. For instance we can do this:-</p>
-	<pre><code>local body = res.body
-	    ngx.log(ngx.ERR,body)
-	</code></pre><p>and it will append the body data to the error log. One of the areas where I feel that openresty is lagging in the code inspection part. Unlike it&#39;s name  <code>ngx.print()</code> does not print to the console but instead outputs the data to the client. Although using a combination of displaying the error log on the console and openresty&#39;s log functions we can display results on our terminal but still it is not as good as say <code>console.log()</code> in node js. Maybe the tooling for debugging openresty scripts will improve in the future. But it&#39;s a minor impedance that does not bother much once you get used to it.</p>
+	<pre><code>
+local body = res.body
+ngx.log(ngx.ERR,body)
+	</code></pre>
+	<p>and it will append the body data to the error log. One of the areas where I feel that openresty is lagging in the code inspection part. Unlike it&#39;s name  <code>ngx.print()</code> does not print to the console but instead outputs the data to the client. Although using a combination of displaying the error log on the console and openresty&#39;s log functions we can display results on our terminal but still it is not as good as say <code>console.log()</code> in node js. Maybe the tooling for debugging openresty scripts will improve in the future. But it&#39;s a minor impedance that does not bother much once you get used to it.</p>
         <strong id="z_brane">zerobrane studio-- If you can't print on the terminal just change your ide!</strong>
         <p>
 	  Recently I came to know about
@@ -871,27 +905,27 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	<p>Let us now inspect how a complex json object is decoded</p>
 	<pre><code>//json object
 
-	    {
-	    &quot;admins&quot;: {
-            &quot;names&quot;: [&quot;superuser&quot;],
-            &quot;roles&quot;: [&quot;admins&quot;]
-	    },
-	    &quot;members&quot;: {
-            &quot;names&quot;: [&quot;user1&quot;,&quot;user2&quot;],
-            &quot;roles&quot;: [&quot;developers&quot;]
-	    }
-	    }
+{
+&quot;admins&quot;: {
+&quot;names&quot;: [&quot;superuser&quot;],
+&quot;roles&quot;: [&quot;admins&quot;]
+},
+&quot;members&quot;: {
+&quot;names&quot;: [&quot;user1&quot;,&quot;user2&quot;],
+&quot;roles&quot;: [&quot;developers&quot;]
+}
+}
 	</code></pre><p>When decoded using <code>cjson.decode()</code> it would be converted into the following lua table.  </p>
 	<pre><code>{
-	    admins = {
-	    names = { &quot;superuser&quot; },
-	    roles = { &quot;admins&quot; }
-	    },
-	    members = {
-	    names = { &quot;user1&quot;, &quot;user2&quot; },
-	    roles = { &quot;developers&quot; }
-	    }
-	    }
+admins = {
+names = { &quot;superuser&quot; },
+roles = { &quot;admins&quot; }
+},
+members = {
+names = { &quot;user1&quot;, &quot;user2&quot; },
+roles = { &quot;developers&quot; }
+}
+}
 	</code></pre><p>as you can see the arrays are converted to lua tables. So how do we access the properties of this table?</p>
 	<p>Suppose we want to access the members of the decoded json. It is quite simple</p>
 	<pre><code>local members = json_decoded.members
@@ -901,9 +935,9 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	  indexed starting from 1. So for example:-</p>
 	<pre><code>local lua_arr = {&#39;one&#39;,&#39;two&#39;,&#39;three&#39;}
 
-	    lua_arr[1] -- one
-	    lua_arr[2] --two
-	    lua_arr[3] -- three
+lua_arr[1] -- one
+lua_arr[2] --two
+lua_arr[3] -- three
 	</code></pre><p>this might be confusing at first as it is different from almost every other programming language but once
 	  you are aware of this fact it won&#39;t cause any other problems.
 	  cjson decodes null in a json to a lua <a href="http://www.lua.org/pil/28.5.html">lightuserdata</a> and gives you
@@ -926,34 +960,37 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	  location blocks for different server blocks and they are all included in the main configuration by
 	  the include directive. For example here is what my main configuration file looks like&quot;- </p>
 	<pre><code>
-	    worker_processes  1;
-	    error_log /dev/stderr;
-	    #nginx  -p ./  -c ./wrinq.ngx.conf
-	    events {
-	    worker_connections 1024;
-	    }
-	    http {
-	    lua_code_cache off; #only during development
-	    init_by_lua &#39;cjson = require(&quot;cjson&quot;)&#39;;
-	    include       mime.types;
-	    root ./;
-	    server {
-            server_name localhost;
-            listen 3125;
-            include ./routes.conf;
+worker_processes  1;
+error_log /dev/stderr;
+#nginx  -p ./  -c ./wrinq.ngx.conf
+events {
+worker_connections 1024;
+}
+http {
+lua_code_cache off; #only during development
+init_by_lua &#39;cjson = require(&quot;cjson&quot;)&#39;;
+include       mime.types;
+root ./;
+server {
+server_name localhost;
+listen 3125;
+include ./routes.conf;
 
-	    }
-	    }
+}
+}
 	</code></pre><p>Here is a portion of &quot;routes.conf&quot; </p>
-	<pre><code>location /couchdb{
-	    proxy_pass http://127.0.0.1:5984/$arg_endpoint?$args;
-	    }
+	<pre><code>
+location /couchdb{
+proxy_pass http://127.0.0.1:5984/$arg_endpoint?$args;
+}
 
-	    location /paypal_adaptive_api{
-	    resolver  8.8.8.8;
-	    proxy_pass https://svcs.sandbox.paypal.com/AdaptivePayments/Pay;
-	    }
-	</code></pre><p>To nginx it makes no difference (for it it&#39;s all one big config file) but it helps me focus when I separate out the 
+location /paypal_adaptive_api{
+resolver  8.8.8.8;
+proxy_pass https://svcs.sandbox.paypal.com/AdaptivePayments/Pay;
+}
+	</code></pre>
+	<p>To nginx it makes no difference (for it it&#39;s all one big config file)
+	  but it helps me focus when I separate out the 
 	  configuration for location blocks from global configuration. Global configuration has hardly changed 
 	  since I first committed it but I regularly update the &quot;routes.conf&quot; file. The benefit of splitting on 
 	  location is that in one quick glance of your main file  you can tell how many servers you are using, 
@@ -1004,9 +1041,10 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	<p><strong>&quot;Synchronous yet non blocking everywhere--or how event loops and coroutines come together in openresty&quot;</strong></p>
 	<p>One of things about lua&#39;s coroutines is that the responsibility of scheduling them lies upon the programmer. That is to say they are not scheduled by the language run time. Openresty introduces a concept of light threads which are just lua&#39;s coroutines scheduled by the ngx_lua environment.</p>
 	<p>Openresty&#39;s directives-- content_by_lua,rewrite_by_lua,access_by_lua are run independently in their own light threads. Scheduling and other thread level management tasks are handled by ngx_lua run time on your behalf. You don&#39;t have to write any code for spawning or aborting the execution thread. So when in a location block you do:</p>
-	<pre><code>location /some_location {
-	    content_by_lua &#39;ngx.say(&quot;hello&quot;)&#39;;
-	    }
+	<pre><code>
+location /some_location {
+content_by_lua &#39;ngx.say(&quot;hello&quot;)&#39;;
+}
 	</code></pre><p>The code inside the content_by_lua directive handler is run in it&#39;s own thread. That thread is automatically created for you by the ngx_lua run time.</p>
 	<p>Not all directives are run in this way though. One example of this is the set_by_lua directive which is blocking. You can do a quick check in the official openresty manual to see which directives are run in their own coroutines and which are not.</p>
 	<p>Since most of the &quot;heavy&quot; code for an openresty application is written within these three directives(access,content and rewrite) majority of your application would be concurrent by default. You&#39;ve just got to be careful around those directives that are blocking. </p>
@@ -1078,27 +1116,27 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
         <p>
           <pre>
             <code>
-	      error_log /dev/stderr warn;
-	      #error_log /dev/stderr debug;
+error_log /dev/stderr warn;
+#error_log /dev/stderr debug;
 
-	      events {
-	       worker_connections $conns;
-	      }
+events {
+worker_connections $conns;
+}
 
-	      http {
-	       access_log off;
-	       lua_socket_log_errors off;
-	       resolver @nameservers;
-	       $lua_package_path_config
-	      init_by_lua '
-             --lua code to initlize the global lua VM  ';
+http {
+access_log off;
+lua_socket_log_errors off;
+resolver @nameservers;
+$lua_package_path_config
+init_by_lua '
+--lua code to initlize the global lua VM  ';
 
-	      init_worker_by_lua '
+init_worker_by_lua '
 
-	      $loader -- perl variable for loading lua files
-	      -- rest of lua code to execute the loaded file
-	      -- in a timer.			       
-    ';
+$loader -- perl variable for loading lua files
+-- rest of lua code to execute the loaded file
+-- in a timer.			       
+';
 }
 	    </code>
           </pre>
@@ -1124,27 +1162,28 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	</p>
 	<pre>
 	  <code>
-	        local ok, err = ngx.timer.at(0, function ()
-                -- io.stderr:write("timer firing")
-                local ok, err = pcall(gen) -- the $loader function loads the compiled code in a gen variable
-                if not ok then
-                    return handle_err(err)
-                end
-                local rc = err
-                if rc and type(rc) ~= "number" then
-                    return handle_err("bad return value of type " .. type(rc))
-                end
-                return exit(rc)
-            end)
-            if not ok then
-                return handle_err(err)
-            end
-            -- print("timer created")
-        end)
+local ok, err = ngx.timer.at(0, function ()
+-- io.stderr:write("timer firing")
+local ok, err = pcall(gen)
+-- the $loader function loads the compiled code in a gen variable
+if not ok then
+return handle_err(err)
+end
+local rc = err
+if rc and type(rc) ~= "number" then
+return handle_err("bad return value of type " .. type(rc))
+end
+return exit(rc)
+end)
+if not ok then
+return handle_err(err)
+end
+-- print("timer created")
+end)
 
-        if not ok then
-            return handle_err(err)
-        end
+if not ok then
+return handle_err(err)
+end
 
 	  </code>
 	</pre>
@@ -1172,11 +1211,11 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	
 	<pre>
 	  <code>
-	    local function output(...)
-            local args = {...}
-            return stdout:write(expand_table(args, true))
-            end
-            ngx.print = output
+local function output(...)
+local args = {...}
+return stdout:write(expand_table(args, true))
+end
+ngx.print = output
 
 	  </code>
 	</pre>
@@ -1184,15 +1223,15 @@ Etag=&#39;&quot;E0KG1DRLA505ILRLPEJOPM679&quot;&#39;
 	
 	<pre>
 	  <code>
-	    ngx.say = function (...)
-            local ok, err = output(...)
-            if ok then
-            return output("\\\\n")
-            end
-            return ok, err
-            end
-            print = ngx.say
-	  </code>
+ngx.say = function (...)
+local ok, err = output(...)
+if ok then
+return output("\\\\n")
+end
+return ok, err
+end
+print = ngx.say
+</code>
 	</pre>
 
 	

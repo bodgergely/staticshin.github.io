@@ -114,7 +114,7 @@ We are only focussing on the standard UTF-8 charset. Not the extended one.
 <p>Here's what the code will look like</p>
 	<p class="recommendation">11. Validate for expected data types </p>
         <p>
-To implement this recoomendation we'd have to deviate slightly from our path. Up unitll now we had been doing all 
+To implement this recomendation we'd have to deviate slightly from our path. Up unitll now we had been doing all 
 our validation from a single code file. But now we'd have to split them. Because diffrerent endpoints in our application 
 would expect different data types. And it would be extremely inefficient to scan all of them against all the expected types.
 </p>
@@ -132,15 +132,21 @@ would expect different data types. And it would be extremely inefficient to scan
 	<p>In plain words what this point is suggesting is that if some dangerous characters are to be allowed inside of our main application we must limit their scope only to the apis that need them. For example let's say we need "()" two charsets as inputs for a certain api "/danger" It would be in our interest to limit this potentially dangerous input to the "/danger" api. Well it's quite easy with access_by_lua. Here's what we can do:-</p>
 	<p class="recommendation">16. If your standard validation routine cannot address the following inputs, 
 	  then they should be checked discretely
-	  <ul>
-
-	    <li>Check for null bytes (%00)</li>
-	    <li>
-	      Check for new line characters (%0d, %0a, \r, \n)></li>
-	    <li>Check for "dot-dot-slash" (../ or ..\) path alterations characters. </li>
-	    <li>In cases where UTF-8 extended character set encoding is supported, address alternate representation like: %c0%ae%c0%ae/ (Utilize canonicalization to address double encoding or other forms of obfuscation attacks)
-	    </li>
-	  </ul>
+	  
+	    <p class="recommendtion">Check for null bytes (%00)</p>
+        <p>Null byte injection attacks attempt to confuse your application at a lower level execution. You might be writing your application in Java but at some point in time it may have to interact with say an OS filesystem api implemeted in C. What happens then is that the null characters (%00) are intrepreted as string terminators.   
+	</p>
+	<p><em>"What does it mean?"</em></p>
+	<p>Lets take an example here. Suppose you want to read a file the name of which you take from a url string. If the url is embedded with null characters like "filename%%00.txt" the filesytem api may interpret the name as "filename" and neglect anything after that-- in our case ".txt" extention. Which will confuse our system and may cause something unpredictable.</p>
+	<p>A very good explaination is given on the <a href="http://projects.webappsec.org/w/page/13246949/Null%20Byte%20Injection">web applicaton security consortium page</a>	</p>
+<p>So the solution is quite simple. We simply check our input data for null characters. Here's the lua regex pattern that will take care of it.</p>
+	    <p>Check for new line characters (%0d, %0a, \r, \n)></p>
+            <p></p>
+	    <p>Check for "dot-dot-slash" (../ or ..\) path alterations characters. </p>
+<p>Openresty has solid protection against the directory traversal attacks. Any attempt to make a directory traversal is simply returned as a bad request from the server without us having to write a single line of code. It's pretty sweet if you ask me :)</p>
+	    <p>In cases where UTF-8 extended character set encoding is supported, address alternate representation like: %c0%ae%c0%ae/ (Utilize canonicalization to address double encoding or other forms of obfuscation attacks)
+	    </p>
+	  
 	</p>
         <p><small>-Akshat Jiwan Sharma</small></p>
       </div>

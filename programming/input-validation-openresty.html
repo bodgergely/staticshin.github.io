@@ -142,11 +142,12 @@ would expect different data types. And it would be extremely inefficient to scan
 <p>So the solution is quite simple. We simply check our input data for null characters. Here's the lua regex pattern that will take care of it.</p>
 	    <p>Check for new line characters (%0d, %0a, \r, \n)></p>
             <p></p>
+            <p></p>
 	    <p>Check for "dot-dot-slash" (../ or ..\) path alterations characters. </p>
 <p>Openresty has solid protection against the directory traversal attacks. Any attempt to make a directory traversal is simply returned as a bad request from the server without us having to write a single line of code. It's pretty sweet if you ask me :)</p>
 	    <p>In cases where UTF-8 extended character set encoding is supported, address alternate representation like: %c0%ae%c0%ae/ (Utilize canonicalization to address double encoding or other forms of obfuscation attacks)
 	    </p>
-	  
+          <p>We'll deal with the extened character set some other time. We've covered a lot of ground it this post. Let just reax to some good jazz. <a href="https://www.youtube.com/watch?v=Cv9NSR-2DwM">Moanin'</a>,anyone?</p>
 	</p>
         <p><small>-Akshat Jiwan Sharma</small></p>
       </div>

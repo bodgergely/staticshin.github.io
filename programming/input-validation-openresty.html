@@ -25,30 +25,29 @@
 	  to help you make your input validation more secure. 
 	  We'll try to  implement the points proposed using 
 	  <a href="http://openresty.org/">openresty</a>, 
-	  a library that allows you to write application servers using nginx.   
+	  a library that allows you to script nginx.   
 	</p>
         <p>Of course, what input you need to validate will depend upon your application. 
-	  So for the sake of this post, for some recommendations, 
+	  So for the sake of this post in case of some recommendations, 
 	  I'll assume that an input X needs to be validated and you can easily use the same 
 	  principle to validate the inputs specific to your application. 	
 	</p>
         <p> We are not aiming for a generic implementation of the guidelines. 
 	  The goal of this post is to show how easy it is to extend 
 	  nginx's default behaviour with openresty. 
-	  Since we'll be focussing on input validation the lua code that we'll write will mostly be used 
+	  Since we'll be focussing on input validation, the lua code that we'll write will mostly be used 
 	  within the <code>access_by_lua</code> directive.
 	  If you want to know more about how to use other directives in openresty check out 
-	  <a href="/programming/definitely-an-open-resty-guide/">definitely an openresty guide</a>.
+	  <a href="/programming/definitely-an-open-resty-guide/">Definitely an openresty guide</a>.
 	</p>
 	<p class="recommendation">1. Conduct all data validation on a trusted system (e.g., The server) </p>
-        <p>This is a given. We'll be performing the data validation on an openresty server that we'll write.
-	  So we can safely tick off this item from the checklist. </p>
+        <p>This is a given. We'll be performing the data validation on an openresty server. Since we'll be writing the server ourself we can be sure of the trust aspect. So we can safely tick off this item from the checklist. </p>
 	<p class="recommendation">2. Identify all data sources and classify them into trusted and untrusted. Validate all data from untrusted sources (e.g., Databases, file streams, etc.) </p>
 	<p>We won't be using any databases. The only input data source will be the client and it will be untrusted. 
 	  #2 crossed off.</p>
 	<p class="recommendation">3. There should be a centralized input validation routine for the application</p>
 	<p>We'll be using two of openresty's directives to validate the data input to our application. It'll be 
-	  access_by_lua* directives for the data that comes into our application and body_filter_by_lua* directives for the data that goes out of our system. All the code that will be run by these directives will be abstracted into a lua file called owasp_validate.lua and we'll be reusing the code written here in the location blocks that we build. Here's what the directory structure for the application will look like:- 
+	  access_by_lua* directive for the data that comes into our application and body_filter_by_lua* directive for the data that goes out of our system. All the code that will be run by these directives will be abstracted into a lua file called input_validation.lua and we'll be reusing the code written here in the location blocks that we build. Here's what the directory structure for the application will look like:- 
 	</p>
         <p>
 	  <div>-root of the directory</div>
@@ -57,7 +56,7 @@
 	</p>
 	<p>You can also clone the directory from the 
 	  <a href="https://github.com/brickcap/openresty_examples/tree/master/owasp_validation">
-	    openresty examples repository</a>
+	    openresty examples repository</a> to follow along with the examples. 
 	</p>
 	<p class="recommendation">4. Specify proper character sets, such as UTF-8, for all sources of input</p>
         <p>All right! so we'll finally get to write our first line of code. This recommendation wants us to 
@@ -83,18 +82,44 @@
 	  UTF-8 encoded character sets. If they are not found we are rejecting the request outright. So there is no need for us to encode the data into a common character set. If however we were acepting multiple type of encodings then it would have made sense to use a common character encoding before validating the data. But for now we can overlook this recommendation.</p>
 	<p class="recommendation">6. All validation failures should result in input rejection</p>
 	<p>The only thing we need to ensure to inplement this item is that in case the input 
-	  is found to be invalid there is no way that the it is passed on to our main program. That is the rejection should be prompt and on the spot. In point #4 we did exactly that. If the <code>accept-encoding</code> header was not not set to utf-8 and the data actually sent to the server was not a utf-encoded we just returned a <code>401</code>. The client request was rejected then and there and not entertained any more.</p>
+	  is found to be invalid there is no way that it is passed on to our main program. 
+That is the rejection should be prompt and on the spot. 
+In point #4 we did exactly that. If the <code>charset</code> header was not set to utf-8 and the data actually sent to the server was not a utf-encoded we just returned a <code>401</code>. The client request was rejected then and there and not entertained any more.</p>
+<p>The <code>access_by_lua*</code> directive allows us to "preprocess" the incoming nginx requests before it is passed on to to other directives. All the code inside access_by_lua* is run in the nginx's access phase handler. So if a request is rejected at this point it won't undergo any more processing in the nginx event loop. A request rejected here will be rejected by nginx as a whole. A request passed by the handler can undergo further processing by nginx's phase handlers. 
+  </p>
 	<p class="recommendation">7. Determine if the system supports UTF-8 extended character sets and if so, 
 	  validate after UTF-8 decoding is completed</p>
-	<p></p>
+	<p>
+We are only focussing on the standard UTF-8 charset. Not the extended one. 
+</p>
 	<p class="recommendation">8. Validate all client provided data before processing, including all parameters, URLs and HTTP header content (e.g. Cookie names and values). Be sure to include automated post backs from JavaScript,Flash or other embedded code</p>
 	<p>We've already seen how to validate headers and the data that is posted. Recommendation #8 takes this a step further and suggests to validate all client input. This means that we have to validate even the url parameters and query string vlaues. So for the sake of example let's assume that cokkie names must be "AuthCookie" and the cookie value must be 5 characters long. Further more let's assume that the url can't contain a paramter called "test" if it's not localohost. </p>
 	<p>Now after modifying our validation code what we have is</p>
 	<p class="recommendation">9. Verify that header values in both requests and responses contain only ASCII characters</p>
-	<p>The first part of the suggestion is quite stratightforward. We just need to add one more condition that makes sure that the header value is within the ascii range. For the second part however we need to make use of the <code>header_filter_by_lua directive</code> that will make sure that the output headers are within the ascii range. So here's what the implementation would be like in the lua code. </p>
-	<p>Overall I feel that verifying the output headers is a bit of an overkill. </p>
+	<p>
+	  It's relevant here to discuss what might happen if this recommendation is not followed. 
+	  As mentioned in the Data validation section of the 
+	  <a href="https://www.owasp.org/index.php/Data_Validation_%28Code_Review%29">security guide</a> the input data that is malacious may still be passed. For example we might block "<" and ">" ascii characters but they can still be url-encoded or utf-encoded to  and might find a way in our program if we are not careful to block them. So the while the recommendation talks only about the ascii characters in header value it's a good idea to to check for malacious content in any data that is input to our application. Coming back to the topic again. 
+	</p>
+	<p>The first part of the suggestion is quite stratightforward. We just need to add one more condition that makes sure that the header value is within the ascii range. This should be easy considering that we already have the code that verifies the ascii charset. Here's the lua code that'll implement this</p>
+<p>
+    <pre>
+        <code></code>
+    </pre>
+</p>
+<p>For the second part of the recommendation however, that is for validating the ouput header values,we can make use of the <code>body_filter_by_lua directive</code> that will make sure that the output headers are within the ascii range. The code will mostly remian the same.Here's what the implementation would be like in the lua code. </p>
+	<p>Overall I feel that verifying the output headers is a bit of an overkill for our application. Why? Because the output headers are not coming from a third party source but from the application itself. So we can be somewhat certain of the fact that the headers outputed by the application will be safe.</p>
 	<p class="recommendation">10. Validate data from redirects (An attacker may submit malicious content directly to the target of the redirect, thus circumventing application logic and any validation performed before the redirect)</p>
+<p>One strategy to validate the data coming from redirects is to include a header token that must be verified before the redirect data is accepted. Let's call the header X-REDIRECT-TOKEN. Now all our validator library needs to do is verify the authenticiry of this toke.</p>
+<p>Here's what the code will look like</p>
 	<p class="recommendation">11. Validate for expected data types </p>
+        <p>
+To implement this recoomendation we'd have to deviate slightly from our path. Up unitll now we had been doing all 
+our validation from a single code file. But now we'd have to split them. Because diffrerent endpoints in our application 
+would expect different data types. And it would be extremely inefficient to scan all of them against all the expected types.
+</p>
+<p>A better solution would be to partition our code for generic checks and specific checks. The header checks,the encoding checks and the ascii checks can be abscratcted our into a generic library. Where as the checks for datatypes may be absctracted into specific routines.</p>
+<p>For this example let's create an enpoint that only accepts email addresses and see how we can do that using our existing code. Here's what the code looks like in the access_email.lua</p>
 	<p class="recommendation">12. Validate data range</p>
 	<p class="recommendation">13. Validate data length</p>
 	<p>For this recommendation we have a couple of choices. First we can use the nginx built in directive 
@@ -102,9 +127,9 @@
 	  in the <code>max_body_size</code>. But  if you want more fine  control over over the length of data-- for example in case where the data has to be within a certain range it's best to use access_by_lua directive and calculate the size of data from lua. But for most cases the <code>max_body_size</code> directive should suffice. 
 	</p>
 	<p class="recommendation">14. Validate all input against a "white" list of allowed characters, whenever possible</p>
-	<p>We already implented somtihng like this when we teted for header values in the ascii range. We can extend the same logic to the input data. Assume that the input data must only be numeric. The whitelist in this case consists of numbers and so our validation logic will be something like:-</p>
+	<p>We already implented somtihng like this when we teted for header values in the ascii range. We can extend the same logic to the input data. Assume that the input data must only be numeric. The whitelist in this case consists of numbers and so our validation logic will be something like:-</p> 
 	<p class="recommendation">15. If any potentially hazardous characters must be allowed as input ,be sure that you implement additional controls like output encoding, secure task specific APIs and accounting for the utilization of that data throughout the application. Examples of common hazardous characters include: < > " ' % ( ) & + \\' \" </p>
-	<p>In plain words what this point is suggesting if some dangerous characters are to be allowed inside of our main application we must limit their scope only to the apis that need them. For example let's say we need "()" two charsets as inputs for a certain api "/danger" It would be in our interest to limit this potentially dangerous input to the "/danger" api. Well it's quite easy with access_by_lua. Here's what we can do:-</p>
+	<p>In plain words what this point is suggesting is that if some dangerous characters are to be allowed inside of our main application we must limit their scope only to the apis that need them. For example let's say we need "()" two charsets as inputs for a certain api "/danger" It would be in our interest to limit this potentially dangerous input to the "/danger" api. Well it's quite easy with access_by_lua. Here's what we can do:-</p>
 	<p class="recommendation">16. If your standard validation routine cannot address the following inputs, 
 	  then they should be checked discretely
 	  <ul>

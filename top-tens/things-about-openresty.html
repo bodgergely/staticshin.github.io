@@ -23,8 +23,8 @@
             <p>
 	      I understand the feeling pretty well,ah yes.
 	      It's a dilemma faced by many programmers who hear about openresty for the first time.
-	      "Should we migrate or should we stay with nginx?" But they miss the point. Openresty is not a
-	      fork of nginx. Openresty won't force you to rewrite and retest your existing configurations.
+	      "Should we migrate or should we stay with nginx?" But they miss the point.  
+	      Openresty won't force you to rewrite and retest your existing configurations.
 	      Openresty is nginx. Or maybe I should say it's nginx +</p>
 	    
 	    <p>
@@ -32,8 +32,7 @@
 	      with luajit it gives the developers the ability to <em>program</em> nginx. Yes
 	      I said program. Now you are not just limited to configuring the webserver (although you can still use
 	      it that way) but you can actually write code. And we are not talking about writing
-	      code in some some weird pseudo
-	      language that nginx gives you by default.
+	      code in some some weird pseudo language that nginx gives you by default.
 	      We are talking about a real programming language. We are talking about lua.
 	    </p>
             <p>So let me type this in bold --
@@ -44,12 +43,10 @@
 	      You might need to do some additional
 	      work if you've installed third party modules.
 	      Even then there is a pretty good possibility that
-	      your favorite module comes bundled with openresty.
-	      In the worst case scenario
-	      you might need to install those bundles again
+	      your favorite module comes bundled in with openresty.
+	      In the worst case scenario you might need to install those bundles again
 	      but the default stuff works out of the box.
-	      And that makes for a damn smooth migration.
-	      
+	      And that makes for a damn smooth migration.	      
 	    </p>
             
 	  </li>
@@ -65,7 +62,7 @@
 	    <a href="http://www.techempower.com/benchmarks/#section=data-r11&hw=peak&test=json">
 	      seems
 	    </a>.
-	    openresty uses luajit to compile lua code. The code compiled with lua jit is
+	    Openresty uses luajit to compile lua code. The code compiled with lua jit is
 	    damn <a href="http://luajit.org/performance.html">fast</a> reaching almost c levels of
 	    performance.
 	  </p>
@@ -117,13 +114,14 @@
 	    like  allowing you to return multiple values from a function
 	    (which is used brilliantly, by the way, in the ngx.location.capture api),
 	    declare multiple variables on a single line, using co routines to pause and
-	    start the execution of functions etc. Furthermore it has a very familiar syntax and
-	    decent amount of third party modules. 
+	    start the execution of functions etc. And you can do all of these cool things 
+	    using a very familiar syntax,with decent support of third party libraries. 
 	  </p>
           <p>But there are a couple of things that can be off putting to a person just starting
-	    out. Like for example arrays that start with 1. No ternary operators.</p>
+	    out. Like for example array indices that start with 1. No support for ternary operators.
+	    For some people it can be a bit too verbose with all those end statements.
+	  </p>
 	  
-	  <p>  For some people it can be a bit too verbose with all those end statements.</p>
 	  
 	    <p>But these "problems", if you want to call it that, is just a matter of getting used
 	    to the language. The only serious difficulty that I had while I was learning lua was
@@ -143,9 +141,12 @@
 	    the sweet goodness of lua in nginx. 
 	  </p>
           <p>
-	    For that consider <code>access_by_lua</code> directive which allows you to do
+	    For that take a look at 
+	    <a href="/programming/definitely-an-open-resty-guide/#access_by_lua">access_by_lua</a> 
+	    directive which allows you to do
 	    some lua processing during the access phase of an nginx request. Or
-            <code>rewrite_by_lua</code> directive that allows you to inject lua into the
+            <a href="/programming/definitely-an-open-resty-guide/#rewrite_by_lua">rewrite_by_lua</a>
+	    directive that allows you to inject lua into the
 	    nginx rewrite request phase. 
 	  </p>
           <p>Cool right? At the very least these directives should give you a good excuse to learn more about the
@@ -181,7 +182,7 @@ location /hello_world{
 	  </p>
           <p>
 	    With that out of the way... you don't need to use strings to write lua code. You can
-	    have your all your lua in a file and reference the file using the *by_lua_file.
+	    have your all your lua code in a file and reference the file using the *by_lua_file directives.
 	    All *by_lua directives have an equivalent *by_lua_file directive as well so you are not
 	    really bound to single choice. Or if you insist upon in lining your lua code  you'd find 
 	    the *by_lua_block directives ,that allow you to write lua code inside "{}", quite useful.
@@ -257,7 +258,7 @@ ngx.exit(ngx.OK)
           <p>
 	    Second it allows you to think of your code in terms of request processing phase handlers
 	    cleanly breaking down each action and tying it down to a particular handler. So your 
-	    authorization/authenticationcode, as seen in the example above,
+	    authorization/authentication code, as seen in the example above,
 	    will be handled and run by the access_directive.  
 	  </p>
           <p>"Is access_by_lua the only directive that is available"</p>

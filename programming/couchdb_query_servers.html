@@ -16,6 +16,7 @@ color:black;
 
     <div class="grid grid-pad">
       <div class="col-8-12 push-2-12">
+<p><a href="/">staticshin</a></p>
 	<h1 class="center">couchdb query servers</h1>
 	<div class="postBody">
 	  <p>By default couchdb uses a javscript query server to process it's design documents (ddocs) functions. The communication between couchdb and query server takes place over stdio using a predefined protocol.</p> <p>The default javascript query server runs a <code>main.js</code> file in a loop that interprets the commands sent by couchdb, executes it and then sends the result back to couchdb. Since the communication takes place over stdio the job of <code>main.js</code> file is to read the messages written to stdio and after interpreting and executing those messages write the output to stdio. That's all it does. The <code>main.js</code> is built by concatinating the follwing files:</p>
@@ -39,7 +40,7 @@ var filter_sandbox = null;
 
 function init_sandbox() {
   try {
-    // if possible, use evalcx (not always available)
+   <small> // if possible, use evalcx (not always available)</small>
     sandbox = evalcx('');
     sandbox.emit = Views.emit;
     sandbox.sum = Views.sum;
@@ -53,7 +54,7 @@ function init_sandbox() {
     sandbox.getRow = Render.getRow;
     sandbox.isArray = isArray;
   } catch (e) {
-    //log(e.toSource());
+    <small>//log(e.toSource());</small>
   }
 };
 init_sandbox();
@@ -80,21 +81,21 @@ args.push(arguments[i]);
 };
 var ddocId = args.shift();
 if (ddocId == "new") {
-// get the real ddocId.
+<small>// get the real ddocId.</small>
 ddocId = args.shift();
-// store the ddoc, functions are lazily compiled.
+<small>// store the ddoc, functions are lazily compiled.</small>
 ddocs[ddocId] = args.shift();
 print("true");
 } else {
-// Couch makes sure we know this ddoc already.
+<small>// Couch makes sure we know this ddoc already.</small>
 var ddoc = ddocs[ddocId];
 if (!ddoc) throw(["fatal", "query_protocol_error", "uncached design doc: "+ddocId]);
 var funPath = args.shift();
 var cmd = funPath[0];
-// the first member of the fun path determines the type of operation
+<small>// the first member of the fun path determines the type of operation</small>
 var funArgs = args.shift();
 if (ddoc_dispatch[cmd]) {
-// get the function, call the command with it
+<small>// get the function, call the command with it</small>
 var point = ddoc;
 for (var i=0; i < funPath.length; i++) {
 if (i+1 == funPath.length) {
@@ -106,7 +107,7 @@ throw(["error","not_found",
 }
 if (typeof fun != "function") {
 fun = Couch.compileFunction(fun, ddoc, funPath.join('.'));
-// cache the compiled fun on the ddoc
+<small>// cache the compiled fun on the ddoc</small>
 point[funPath[i]] = fun;
 };
 } else {
@@ -114,10 +115,10 @@ point = point[funPath[i]];
 }
 };
 
-// run the correct responder with the cmd body
+<small>// run the correct responder with the cmd body</small>
 ddoc_dispatch[cmd].apply(null, [fun, ddoc, funArgs]);
 } else {
-// unknown command, quit and hope the restarted version is better
+<small>// unknown command, quit and hope the restarted version is better</small>
 throw(["fatal", "unknown_command", "unknown ddoc command '" + cmd + "'"]);
 }
 }
@@ -127,7 +128,7 @@ throw(["fatal", "unknown_command", "unknown ddoc command '" + cmd + "'"]);
 	    </code>
 	  </pre>
 
-	  <p>Intially the code function looks a bit daunting. So lets break it down step by step.</p> <ol> <li><p>Right in the first line there is a "dispatch list" defined as <code>ddoc_dispatch</code>. The dispatch list should be familliar to you as it contains the "handlers" for common design functions that you use :- lists is just "handler" for couchdb list function and shows is simply the "handler" for couchdb show function etc. T he dispatch function plays the same role for design document that the sandbox function did for the javascript query function. It's a whitelist of the acceptable functions in a design document. Any function that is not in the white list won't be executed.</p> </li> <li><p>The returned function is where the actual work happens. It stores the design document in the ddoc variable. Then depending upon the command it executes a design doc function. The only requirement being that the ddoc function should resolve to one in the whitelist. The end result can either be either a valid response back to couchdb or an error.</p> </li> </ol> <p>Finally there is the actual loop function.</p>
+	  <p>Intially the code function looks a bit daunting. So lets break it down step by step.</p> <ol> <li><p>Right in the first line there is a "dispatch list" defined as <code>ddoc_dispatch</code>. The dispatch list should be familliar to you as it contains the "handlers" for common design functions that you use :- lists is just "handler" for couchdb list function and shows is simply the "handler" for couchdb show function etc. he dispatch function plays the same role for design document that the sandbox function did for the javascript query function. It's a whitelist of the acceptable functions in a design document. Any function that is not in the white list won't be executed.</p> </li> <li><p>The returned function is where the actual work happens. It stores the design document in the ddoc variable. Then depending upon the command it executes a design doc function. The only requirement being that the ddoc function should resolve to one in the whitelist. The end result can either be either a valid response back to couchdb or an error.</p> </li> </ol> <p>Finally there is the actual loop function.</p>
 
 	  <pre>
 	    <code>
@@ -145,7 +146,7 @@ var line, cmd, cmdkey, dispatch = {
 function handleError(e) {
 var type = e[0];
 if (type == "fatal") {
-e[0] = "error"; // we tell the client it was a fatal error by dying
+e[0] = "error"; <small>// we tell the client it was a fatal error by dying</small>
 respond(e);
 quit(-1);
 } else if (type == "error") {
@@ -165,10 +166,10 @@ State.line_length = line.length;
 try {
 cmdkey = cmd.shift();
 if (dispatch[cmdkey]) {
-// run the correct responder with the cmd body
+<small>// run the correct responder with the cmd body</small>
 dispatch[cmdkey].apply(null, cmd);
 } else {
-// unknown command, quit and hope the restarted version is better
+<small>// unknown command, quit and hope the restarted version is better</small>
 throw(["fatal", "unknown_command", "unknown command '" + cmdkey + "'"]);
 }
 } catch(e) {

@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
     <title>couchdb query servers </title>
     <link href="../../style.css" rel="stylesheet"/>
-
+<style>
+pre>code>small{
+color:black;
+}
+</style>
     
   </head>
   <body>
@@ -147,7 +151,7 @@ quit(-1);
 } else if (type == "error") {
 respond(e);
 } else if (e.error && e.reason) {
-// compatibility with old error format
+<small>// compatibility with old error format</small>
 respond(["error", e.error, e.reason]);
 } else if (e.name) {
 respond(["error", e.name, e]);

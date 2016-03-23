@@ -253,12 +253,13 @@ sys:get_state(?MODULE).</code></pre>
 terminate(_Reason, _StateName, _State) -&gt;
     erlang:display(_Reason).</code></pre>
 <p>Here I've defined the terminate function in two clauses. The first clause is for when the fsm completes in a natural manner--that is after simulating all the states that we've defined. The second terminate clause is the generic clause which handles all the other kinds of termination. Regardless of which clause is invoked when the gen_fsm terminates it stops moving. It stands still.  </p>
-<p><strong>Supervising our behaviour</strong></p>
-<p>Which is not something that Captain Haddock would approve. I remember quite well that scene. Tintin was sitting down defeated. All gloomy and despondent when he let the villain escape. He thought that he was a failure. Here is how the Captains responded:-</p>
+
+<p>Which is not something that Captain Haddock would approve. I remember quite well that scene. Tintin was sitting down defeated. All gloomy and despondent when he let the villain escape. He thought that he was a failure. Here's how the Captain responded:-</p>
 <blockquote>
 <p>"Failed. There are plenty of others willing to call you a failure. A fool. A loser. A hopeless souse. Don't you ever say it of yourself. You send out the wrong signal, that is what people pick up. Don't you understand? You care about something, you fight for it. You hit a wall, you push through it. There's something you need to know about failure, Tintin. You can never let it defeat you."</p>
 </blockquote>
-<p>Right now our application is like pre "Captain Haddock Speech" Tintin. Smallest of failures sends it right down from where it refuses to get up. This attitude is of no use to us. We must do something about it. Our application needs some one like Capetian Haddock to cheer it up when the chips are down. To lift the defeated spirit. To... you get the idea I suppose?</p>
+<p>Right now our application is like pre "Captain Haddock Speech" Tintin. Smallest of failures sends it right down from where it refuses to get up. This attitude is of no use to us. We must do something about it. Our application needs some one like Captian Haddock to cheer it up when the chips are down. To lift the defeated spirit. To... you get the idea I suppose?</p>
+<p><strong>Supervising our behaviour</strong></p>
 <p>What we are looking for are supervisors. Supervisors are another type of erlang behaviour which are responsible for starting, stopping and monitoring it's child behaviour. What we are looking for is this.</p>
 <p>When are gen_fsm terminates either naturally or unnaturally we want to restart it from it's in initial state ready to run the tests again. For example after <code>end_contract</code> which terminates the execution we want our gen_fsm to be restored to prepare database so it can run the tests again.</p>
 <p>"What is the benefit of this behaviour?"</p>

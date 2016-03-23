@@ -10,310 +10,319 @@
   </head>
   <body>
     <header> 
-  
-  <nav>
-    <ul>       
-      <li><a href="/">staticshin</a></li>
-      <li><a href="/about.html">about</a></li>
-      <li><a href="/archives.html">archives</a></li>
-      <li title="more" id="more-menu">[...]</li>
-    </ul>
-  </nav>
-  <div class="grid grid-pad nav-grid" style="display:none">
-      <div class="col-1-3">
-	<h3>Popular Posts</h3>
-        <ol>
-          <li><a href="/knife-in-the-water">Knife in the water</a></li>
-          <li><a href="/understanding-punctuation-in-erlang">Understanding punctuation in erlang</a></li>
-          <li><a href="/absurdity-keeler-webwork-and-nis">Absurdity, Keeler, webwork and NIS </a></li>
-          <li><a href="/rayman-origins-is-a-silly-little-game">Rayman origins is a silly little game</a></li>
-          <li><a href="/dead-man">Dead man</a></li>
-        </ol>
-      </div>
-      <div class="col-1-3">
-	<h3>Also on staticshin</h3>
-        <a href="/programming">Thoughts on programming</a>
-	<p> <strong>Feeds</strong></p>
+      
+      <nav>
+	<ul>       
+	  <li><a href="/">staticshin</a></li>
+	  <li><a href="/about.html">about</a></li>
+	  <li><a href="/archives.html">archives</a></li>
+	  <li title="more" id="more-menu">[...]</li>
+	</ul>
+      </nav>
+      <div class="grid grid-pad nav-grid" style="display:none">
+	<div class="col-1-3">
+	  <h3>Popular Posts</h3>
+          <ol>
+            <li><a href="/knife-in-the-water">Knife in the water</a></li>
+            <li><a href="/understanding-punctuation-in-erlang">Understanding punctuation in erlang</a></li>
+            <li><a href="/absurdity-keeler-webwork-and-nis">Absurdity, Keeler, webwork and NIS </a></li>
+            <li><a href="/rayman-origins-is-a-silly-little-game">Rayman origins is a silly little game</a></li>
+            <li><a href="/dead-man">Dead man</a></li>
+          </ol>
+	</div>
+	<div class="col-1-3">
+	  <h3>Also on staticshin</h3>
+          <a href="/programming">Thoughts on programming</a>
+	  <p> <strong>Feeds</strong></p>
 	  <p><a href ="/rss.xml">rss</a>|
-          <a href="/atom.xml">atom</a>
-	</p>
+            <a href="/atom.xml">atom</a>
+	  </p>
+	</div>
+	<div class="col-1-3">
+          
+	</div>
       </div>
-      <div class="col-1-3">
-        
-      </div>
-    </div>
-</header>
+    </header>
 
     <div class="grid grid-pad">
       <div class="col-8-12 push-2-12">
 	<h1>Mocking your application&#39;s state with gen_fsm</h1>
 	<span>Akshat Jiwan Sharma,  Mon Mar 16 2015</span>
 	<div class="postBody"><p>gen_fsm is a generic finite state machine behaviour in erlang. And as the name suggests gen_fsm allows us to model state machines.</p>
-<p>"What is a finite state machine?"</p>
-<p>A finite state machine is a logical machine. Much like a bicycle which is a mechanical machine. A bicycle exists in two states:- a stationary state (where it just stands) and  in motion (when the tires are moving and it's doing the work that it's supposed to do, fulfilling it's life's purpose so to speak. When I think about it bicycles have it easy. All they have to do is move those tires <em>sigh</em>). A force is needed to transform the state from stationary to motion and from motion to stationary. Let's try to model the logical machine for the bicycle. </p>
-<pre><code>Stationary--cycling--&gt;Motion
-|            
-|            
-|            
-Force</code></pre>
-<p>Simple right? This is what in essence a finite state machine is. But we can do better. Let us try to derive a formal definition:-</p>
-<p>A finite state machine is a logical machine that can exist in one of the many states. But only one at a time. A cycle can either be moving or stationary. An event is needed to transform from one state to another. Like how a force must be applied on a stationary cycle to make it move.</p>
-<pre><code>State1--Acton--&gt;State2
-|            
-|            
-|            
-Event1</code></pre>
-<p><em>Fsm</em>(s) can be used to model the states of our applications for the purpose of testing it's behaviour. Though an fsm can be created in any programming language erlang gives us the upper hand by abstracting out all the generic stuff into a  reusable library. So all we have to do is write the specifics of our fsm. </p>
-<p>"Cool but I don't know any erlang"</p>
-<p>No worries. Erlang is easy. So easy in fact that all you need is just <a href="http://learnxinyminutes.com/docs/erlang/">15 minutes of free time</a>. And after reading this post you will have a very good reason to use it in your application. Ready? So here is what we will be doing:-  </p>
-<p>We have a web application. Very basic. Our application starts, creating the database and doing some other housekeeping stuff. A landlord logs into our application. He adds a tenant. The application sends an email to the tenant seeking permission to approve the landlord. When the due date of rent draws another email is sent. The tenant then pays the rent. When the tenant leaves the house the contract between the landlord and the tenant is terminated.</p>
-<p>So if we make a state diagram of our application it should look something like this:-</p>
-<pre><code>prepare_database&lt;---start_event
-|
-add_tenant&lt;--- start_event
-|
-approve_landlord&lt;--- start_event
-|
-prepare_for_notifiaction&lt;--- start_event
-|
-notify_due_rent&lt;--- start_event
-|
-pay_rent&lt;--- start_event
-|
-end_contract</code></pre>
-<p>This diagram is not much different from other state diagrams that we discussed before. For our machine we have only one event-- the start_event. Whenever start_event is called on a state it moves the machinery forward by transforming the existing state to next one. For example when start_event is called on prepare_database state the resultant state would be add_tenant. When the event is called on add_tenant the resultant state would be approve_landlord and so on. Compare this state machine to the pedalling motion of the bicycle. When stationary the pedals put the bicycle in motion. When in motion the pedals move the bicycle forward. </p>
-<p>Now this is just an abstraction. The "real" states are exposed in the form of http endpoints. For example the <code>add_tenant</code> state is reachable in our application from <code>/add_ten</code> url. What we will do is to call the endpoints of each of these states one by one and run some tests against our database to see if our records in the database reflect the state of our application given by the url.</p>
-<p>So let's get right to it.  <a href="https://gist.github.com/brickcap/c28027ea448ea2968ea7">The entire code is available online</a> so if you can open it in a new tab it will be a lot easier to follow along. Though I will be quoting the relevant parts of the code while discussing them. First we will discuss the code and then see how it is executed. One more thing, the code is only for demonstrative purposes. There are some parts missing like the "hrl" file due to which it won't compile.  It was very application specific anyway.  My idea was to show how gen_fsm can be used for testing applications in a stateful way. </p>
-<pre><code>-module(wrinq_state_machine).
--behaviour(gen_fsm).
--include("wrinq_headers.hrl").
+	  <p>"What is a finite state machine?"</p>
+	  <p>A finite state machine is a logical machine. Much like a bicycle which is a mechanical machine. A bicycle exists in two states:- a stationary state (where it just stands) and  in motion (when the tires are moving and it's doing the work that it's supposed to do, fulfilling it's life's purpose so to speak. When I think about it bicycles have it easy. All they have to do is move those tires <em>sigh</em>). A force is needed to transform the state from stationary to motion and from motion to stationary. Let's try to model the logical machine for the bicycle. </p>
+	  <pre><code>Stationary--cycling--&gt;Motion
+	      |            
+	      |            
+	      |            
+	      Force</code></pre>
+	  <p>Simple right? This is what in essence a finite state machine is. But we can do better. Let us try to derive a formal definition:-</p>
+	  <p>A finite state machine is a logical machine that can exist in one of the many states. But only one at a time. A cycle can either be moving or stationary. An event is needed to transform from one state to another. Like how a force must be applied on a stationary cycle to make it move.</p>
+	  <pre><code>State1--Acton--&gt;State2
+	      |            
+	      |            
+	      |            
+	      Event1</code></pre>
+	  <p><em>Fsm</em>(s) can be used to model the states of our applications for the purpose of testing it's behaviour. Though an fsm can be created in any programming language, erlang gives us the upper hand by abstracting out all the generic stuff into a  reusable library. So all we have to do is write the specifics of our fsm. </p>
+	  <p>"Cool but I don't know any erlang"</p>
+	  <p>No worries. Erlang is easy. So easy in fact that all you need is just <a href="http://learnxinyminutes.com/docs/erlang/">15 minutes of free time</a>. And after reading this post you will have a very good reason to use it in your application. Ready?   </p>
+	  <p>Consider that We have a web application. Very basic. Our application starts, creating the database and doing some other housekeeping stuff. A landlord logs into our application. He adds a tenant. The application sends an email to the tenant seeking permission to approve the landlord. When the due date of rent draws another email is sent. The tenant then pays the rent. When the tenant leaves the house the contract between the landlord and the tenant is terminated.</p>
+	  <p>So if we make a state diagram of our application it should look something like this:-</p>
+	  <pre><code>prepare_database&lt;---start_event
+	      |
+	      add_tenant&lt;--- start_event
+	      |
+	      approve_landlord&lt;--- start_event
+	      |
+	      prepare_for_notifiaction&lt;--- start_event
+	      |
+	      notify_due_rent&lt;--- start_event
+	      |
+	      pay_rent&lt;--- start_event
+	      |
+	      end_contract</code></pre>
+	  <p>This diagram is not much different from other state diagrams that we discussed before. For our machine we have only one event-- the start_event. Whenever start_event is called on a state it moves the machinery forward by transforming the existing state to next one. For example when start_event is called on prepare_database state the resultant state would be add_tenant. When the event is called on add_tenant the resultant state would be approve_landlord and so on. Compare this state machine to the pedalling motion of the bicycle. When stationary the pedals put the bicycle in motion. When in motion the pedals move the bicycle forward. </p>
+	  <p>Now this is just an abstraction. The "real" states are exposed to us in the form of http endpoints. For example the <code>add_tenant</code> state is reachable in our application from <code>/add_ten</code> url. What we will do is to call the endpoints of each of these states one by one and run some tests against our database to see if our records in the database reflect the state of our application given by the url.</p>
+	  <p>So let's get right to it.  <a href="https://gist.github.com/brickcap/c28027ea448ea2968ea7">The entire code is available online</a> so if you can open it in a new tab it will be a lot easier to follow along. Though I will be quoting the relevant parts of the code while discussing them. First we will discuss the code and then see how it is executed. One more thing, the code is only for demonstrative purposes. There are some parts missing like the "hrl" file due to which it won't compile.  It was very application specific anyway.  My idea was to show how gen_fsm can be used for testing applications in a stateful way. </p>
+	  <pre><code>-module(wrinq_state_machine).
+	      -behaviour(gen_fsm).
+	      -include("wrinq_headers.hrl").
 
--export([prepare_database/2,add_tenant/2,prepare_for_notification/2,
-     notify_due_rent/2,pay_rent/2,approve_landlord/2,
-     end_contract/2,next_state/0,get_status/0]).
+	      -export([prepare_database/2,add_tenant/2,prepare_for_notification/2,
+	      notify_due_rent/2,pay_rent/2,approve_landlord/2,
+	      end_contract/2,next_state/0,get_status/0]).
 
--export([init/1, handle_event/3,start_link/0,
-         handle_sync_event/4, handle_info/3, terminate/3,
-         code_change/4]).</code></pre>
-<p>The first few lines define the name of the module (wrinq_state_machine), behaviour(which is gen_fsm), the header files to be included("wrinq_headers.hrl") and the functions to be exported. Pretty straightforward. You must be asking yourself why two different export functions. Well you could have a single export declaration but I kept them separate to show the difference between the generic functions of the gen_fsm behaviour and the functions specific to our application.</p>
-<pre><code>-export([prepare_database/2,add_tenant/2,prepare_for_notification/2,
-     notify_due_rent/2,pay_rent/2,approve_landlord/2,
-     end_contract/2,next_state/0,get_status/0]).</code></pre>
-<p>The first export declaration "exports (that is making them available to other modules)" the functions specific to our application. If you will notice the functions with /2 behind them (actually /2 just informs about the airity of the function which in this case is 2) represent the states that we discussed above. The functions with /0 behind them are helper functions that we use  to query the state of the application(get_status) and fire the "start_event" event in the fsm (next_state).</p>
-<pre><code>-export([init/1, handle_event/3,start_link/0,
-         handle_sync_event/4, handle_info/3, terminate/3,
-         code_change/4]).</code></pre>
-<p>The other export definition exports the functions that are mandatory in every gen_fsm behaviour.</p>
-<p>"What is the difference between the two?"</p>
-<p>Well only that you must export mandatory functions of a gen_fsm where as you have a choice to not export the functions that are specific to your application. Moving on</p>
-<pre><code>start_link() -&gt;
-gen_fsm:start_link({local, ?MODULE}, ?MODULE, [],[]).
+	      -export([init/1, handle_event/3,start_link/0,
+              handle_sync_event/4, handle_info/3, terminate/3,
+              code_change/4]).</code></pre>
+	  <p>The first few lines define the name of the module (wrinq_state_machine), behaviour(which is gen_fsm), the header files to be included("wrinq_headers.hrl") and the functions to be exported. Pretty straightforward. You must be asking yourself why two different export functions. Well you could have a single export declaration but I kept them separate to show the difference between the generic functions of the gen_fsm behaviour and the functions specific to our application.</p>
+	  <pre><code>-export([prepare_database/2,add_tenant/2,prepare_for_notification/2,
+	      notify_due_rent/2,pay_rent/2,approve_landlord/2,
+	      end_contract/2,next_state/0,get_status/0]).</code></pre>
+	  <p>The first export declaration "exports (that is making them available to other modules)" the functions specific to our application. If you will notice the functions with /2 behind them (actually /2 just informs about the airity of the function which in this case is 2) represent the states that we discussed above. The functions with /0 behind them are helper functions that we use  to query the state of the application(get_status) and fire the "start_event" event in the fsm (next_state).</p>
+	  <pre><code>-export([init/1, handle_event/3,start_link/0,
+              handle_sync_event/4, handle_info/3, terminate/3,
+              code_change/4]).</code></pre>
+	  <p>The other export definition exports the functions that are mandatory in every gen_fsm behaviour.</p>
+	  <p>"What is the difference between the two?"</p>
+	  <p>Well only that you must export mandatory functions of a gen_fsm where as you have a choice to not export the functions that are specific to your application. Moving on</p>
+	  <pre><code>start_link() -&gt;
+	      gen_fsm:start_link({local, ?MODULE}, ?MODULE, [],[]).
 
-init(_Args) -&gt;
-erlang:display("Initialized the state machine"),
-{ok, prepare_database, initial_state}.
+	      init(_Args) -&gt;
+	      erlang:display("Initialized the state machine"),
+	      {ok, prepare_database, initial_state}.
 
-next_state() -&gt;
-gen_fsm:send_event(?MODULE,start_event).
+	      next_state() -&gt;
+	      gen_fsm:send_event(?MODULE,start_event).
 
-get_status()-&gt;
-sys:get_state(?MODULE).</code></pre>
-<p>The start_link() function provides an entry point into our fsm. Calling this function starts our machine. When the start_link function is called it immediately executes the init() function. The init function writes on to the console and then moves the application to it's first state "prepare_database".</p>
-<p>The next_state() function simply sends events to our fsm which as we discussed above executes the current state and makes it move to the next one. The get_status is a helper function that returns the state which fsm is currently in.</p>
-<pre><code>prepare_database(_Event,State)-&gt;
-    httpc:request(delete,{?wrinq_db,[]},[],[]),
-    os:cmd(?couchapp_push),
-    {next_state,add_tenant,State}.</code></pre>
-<p>The prepare database is the first state of our fsm. When the callback for this state is executed we delete our existing database and create a new one with the built in erlang HTTP library (httpc). When the callback for this state finishes our fsm changes it's state to "add_tenant". Changing states is as simple as returning a tuple of the form <code>{next_state,Next_State_Name,State_Data}</code> where next_state is a predefined atom that tells the fsm to change the state of the machine. The second element of the tuple is another atom which is the name of the actual state to which the fsm must transform. The atom must match the name of the callback function for the state. For example if the name of the state is add_tenant there must be a callback function for add_tenant in the fsm. And so here is our add_tenant callback function</p>
-<pre><code>add_tenant(_Event,State)-&gt;
-    {{_,_,D},_} = erlang:localtime(),
-    {ok,{_,Headers,_}} = httpc:request(
-               post,
-               {"http://localhost:5984/_session", 
-                [], 
-                "application/x-www-form-urlencoded",
-                "name=user1012&amp;password=apple"},
-               [],[]),
-    Cookie = proplists:get_value("set-cookie",Headers),
-    And = &lt;&lt;"&amp;"&gt;&gt;,
-    Equal = &lt;&lt;"="&gt;&gt;,
-    F = fun({A, B},C) -&gt; &lt;&lt;A/binary,Equal/binary,B/binary,And/binary,C/binary&gt;&gt; end,
-    Form_D = lists:foldl(F, &lt;&lt;&gt;&gt;,?con_approve(integer_to_binary(D))),
-    httpc:request(post,
-          {?add_tenant_url, 
-           [{"Cookie",Cookie}], 
-           "application/x-www-form-urlencoded",
-           Form_D},
-          [],[]),
-    {ok,{_,_,Body}}= httpc:request(?get_con_ids),
-    try  proplists:get_value(&lt;&lt;"rows"&gt;&gt;,jsx:decode(list_to_binary(Body))) of
-     [A|_T]-&gt;
-        ID =  proplists:get_value(&lt;&lt;"id"&gt;&gt;,A),
-        {next_state,approve_landlord,
-         [binary_to_list(ID),Cookie]};
-     _ -&gt;
-        {stop,tenant_not_added,State}
+	      get_status()-&gt;
+	      sys:get_state(?MODULE).</code></pre>
+	  <p>The start_link() function provides an entry point into our fsm. Calling this function starts our machine. When the start_link function is called it immediately executes the init() function. The init function writes on to the console and then moves the application to it's first state "prepare_database".</p>
+	  <p>The next_state() function simply sends events to our fsm which as we discussed above executes the current state and makes it move to the next one. The get_status is a helper function that returns the state which fsm is currently in.</p>
+	  <pre><code>prepare_database(_Event,State)-&gt;
+	      httpc:request(delete,{?wrinq_db,[]},[],[]),
+	      os:cmd(?couchapp_push),
+	      {next_state,add_tenant,State}.</code></pre>
+	  <p>The prepare database is the first state of our fsm. When the callback for this state is executed we delete our existing database and create a new one with the built in erlang HTTP library (httpc). When the callback for this state finishes our fsm changes it's state to "add_tenant". Changing states is as simple as returning a tuple of the form <code>{next_state,Next_State_Name,State_Data}</code> where next_state is a predefined atom that tells the fsm to change the state of the machine. The second element of the tuple is another atom which is the name of the actual state to which the fsm must transform. The atom must match the name of the callback function for the state. For example if the name of the state is add_tenant there must be a callback function for add_tenant in the fsm. And so here is our add_tenant callback function</p>
+	  <pre><code>add_tenant(_Event,State)-&gt;
+	      {{_,_,D},_} = erlang:localtime(),
+	      {ok,{_,Headers,_}} = httpc:request(
+              post,
+              {"http://localhost:5984/_session", 
+              [], 
+              "application/x-www-form-urlencoded",
+              "name=user1012&amp;password=apple"},
+              [],[]),
+	      Cookie = proplists:get_value("set-cookie",Headers),
+	      And = &lt;&lt;"&amp;"&gt;&gt;,
+	      Equal = &lt;&lt;"="&gt;&gt;,
+	      F = fun({A, B},C) -&gt; &lt;&lt;A/binary,Equal/binary,B/binary,And/binary,C/binary&gt;&gt; end,
+	      Form_D = lists:foldl(F, &lt;&lt;&gt;&gt;,?con_approve(integer_to_binary(D))),
+	      httpc:request(post,
+              {?add_tenant_url, 
+              [{"Cookie",Cookie}], 
+              "application/x-www-form-urlencoded",
+              Form_D},
+              [],[]),
+	      {ok,{_,_,Body}}= httpc:request(?get_con_ids),
+	      try  proplists:get_value(&lt;&lt;"rows"&gt;&gt;,jsx:decode(list_to_binary(Body))) of
+	      [A|_T]-&gt;
+              ID =  proplists:get_value(&lt;&lt;"id"&gt;&gt;,A),
+              {next_state,approve_landlord,
+              [binary_to_list(ID),Cookie]};
+	      _ -&gt;
+              {stop,tenant_not_added,State}
 
-    catch 
-    _:_-&gt;{stop,tenant_not_added,State}
-    end.</code></pre>
-<p>This piece of code is a bit more interesting. Here is what is happening. First we send a url-encoded data using the erlang http library to ?add_tenant_url. We then query the database using the endpoint ?gen_con_ids. We pattern match the returned body to see if the tenant was actually added or not. If the tenant was added a non empty array list will be returned by the database and the state advances to "approve_landlord" phase with the contract id as the state data. If not we terminate the fsm by calling the returning the stop atom.</p>
-<pre><code>approve_landlord(_Event,State)-&gt;
-    [H|_T] = State,
-    httpc:request(?aproove_by_tenant(H)),
-    {ok,{_,_,Body}} = httpc:request(?wrinq_db++H),
-    Decoded = jsx:decode(list_to_binary(Body)),
-    case proplists:get_value(&lt;&lt;"valid"&gt;&gt;,Decoded) of
-    true-&gt;
-        {next_state,prepare_for_notification,State};
-    _ -&gt;
-        {stop,tenant_not_approved,State}
-    end.</code></pre>
-<p>The approve landlord callback functions mocks the landlord approval in our application and then checks against the database to see if state matches. Once more we first call the http endpoint of our application and then query our database. Finally we pattern match for property (valid in this case). If valid matches to  true we advance to the next state otherwise we stop the fsm.</p>
-<pre><code>prepare_for_notification(_Event,State)-&gt;
-    case unit_tests:add_rent() of 
-    no_rent_added-&gt;
-        {stop,could_not_prepare_for_notifiaction,State};
-    {ok,Id}-&gt;
-        {next_state,notify_due_rent,lists:append(State,[{notify,Id}])}
-    end.</code></pre>
-<p>and here is the code for unit_tests:add_rent() </p>
-<pre><code>add_rent()-&gt;
-    {ok,{_,_,Con_Body}} = httpc:request(?get_con_ids),
-    Contract = jsx:decode(list_to_binary(Con_Body)),
-    [Row|_T] = proplists:get_value(&lt;&lt;"rows"&gt;&gt;,Contract),
-    Con_ID = proplists:get_value(&lt;&lt;"id"&gt;&gt;,Row),
-    {Mega, Secs, _} = erlang:now(),
-    JS_Timestamp = Mega*1000000*1000 + Secs*1000,
-    {ok,{{_,Status,_},_,Body}} = httpc:request(
-                   post,
-                   {?add_rent, 
-                    [], 
-                    "application/json",
-                    jsx:encode(?rent_template(JS_Timestamp,Con_ID))},
-                   [],[]),
-    case Status == 201 of 
-    true-&gt; {ok,Body};
-    _-&gt; no_rent_added
-    end.</code></pre>
-<p>In prepare_for_notification state we  run two checks at once. First we run a unit test that confirms that the add_tenant operation is indeed working as expected. If it is the state of the database changes and an Id of a newly added rent is returned. If the rent was successfully added the state machines changes state and the Id of the rent is passed on as state data .Now this rent can be used in the next state to send notifications.</p>
-<pre><code>notify_due_rent(_Event,State)-&gt;
-    httpc:request(?notify),
-    Notify = proplists:get_value(notify,State),
-    {ok,{_,_,Body}} = httpc:request(?wrinq_db++Notify),
-    Decoded = jsx:decode(list_to_binary(Body)),
-    Sent = proplists:get_value(&lt;&lt;"sent"&gt;&gt;,Decoded),
-    case Sent of
-    undefined-&gt;
-        {stop,notificaton_not_sent,State};
-    _-&gt; 
-        {next_state,pay_rent,State}
+	      catch 
+	      _:_-&gt;{stop,tenant_not_added,State}
+	      end.</code></pre>
+	  <p>This piece of code is a bit more interesting. Here is what is happening. First we send a url-encoded data using the erlang http library to ?add_tenant_url. We then query the database using the endpoint ?gen_con_ids. We pattern match the returned body to see if the tenant was actually added or not. If the tenant was added a non empty array list will be returned by the database and the state advances to "approve_landlord" phase with the contract id as the state data. If not we terminate the fsm by calling the returning the stop atom.</p>
+	  <pre><code>approve_landlord(_Event,State)-&gt;
+	      [H|_T] = State,
+	      httpc:request(?aproove_by_tenant(H)),
+	      {ok,{_,_,Body}} = httpc:request(?wrinq_db++H),
+	      Decoded = jsx:decode(list_to_binary(Body)),
+	      case proplists:get_value(&lt;&lt;"valid"&gt;&gt;,Decoded) of
+	      true-&gt;
+              {next_state,prepare_for_notification,State};
+	      _ -&gt;
+              {stop,tenant_not_approved,State}
+	      end.</code></pre>
+	  <p>The approve landlord callback functions mocks the landlord approval in our application and then checks against the database to see if state matches. Once more we first call the http endpoint of our application and then query our database. Finally we pattern match for property (valid in this case). If valid matches to  true we advance to the next state otherwise we stop the fsm.</p>
+	  <pre><code>prepare_for_notification(_Event,State)-&gt;
+	      case unit_tests:add_rent() of 
+	      no_rent_added-&gt;
+              {stop,could_not_prepare_for_notifiaction,State};
+	      {ok,Id}-&gt;
+              {next_state,notify_due_rent,lists:append(State,[{notify,Id}])}
+	      end.</code></pre>
+	  <p>and here is the code for unit_tests:add_rent() </p>
+	  <pre><code>add_rent()-&gt;
+	      {ok,{_,_,Con_Body}} = httpc:request(?get_con_ids),
+	      Contract = jsx:decode(list_to_binary(Con_Body)),
+	      [Row|_T] = proplists:get_value(&lt;&lt;"rows"&gt;&gt;,Contract),
+	      Con_ID = proplists:get_value(&lt;&lt;"id"&gt;&gt;,Row),
+	      {Mega, Secs, _} = erlang:now(),
+	      JS_Timestamp = Mega*1000000*1000 + Secs*1000,
+	      {ok,{{_,Status,_},_,Body}} = httpc:request(
+              post,
+              {?add_rent, 
+              [], 
+              "application/json",
+              jsx:encode(?rent_template(JS_Timestamp,Con_ID))},
+              [],[]),
+	      case Status == 201 of 
+	      true-&gt; {ok,Body};
+	      _-&gt; no_rent_added
+	      end.</code></pre>
+	  <p>In prepare_for_notification state we  run two checks at once. First we run a unit test that confirms that the add_tenant operation is indeed working as expected. If it is the state of the database changes and an Id of a newly added rent is returned. If the rent was successfully added the state machines changes state and the Id of the rent is passed on as state data .Now this rent can be used in the next state to send notifications.</p>
+	  <pre><code>notify_due_rent(_Event,State)-&gt;
+	      httpc:request(?notify),
+	      Notify = proplists:get_value(notify,State),
+	      {ok,{_,_,Body}} = httpc:request(?wrinq_db++Notify),
+	      Decoded = jsx:decode(list_to_binary(Body)),
+	      Sent = proplists:get_value(&lt;&lt;"sent"&gt;&gt;,Decoded),
+	      case Sent of
+	      undefined-&gt;
+              {stop,notificaton_not_sent,State};
+	      _-&gt; 
+              {next_state,pay_rent,State}
 
-    end.</code></pre>
-<p>The notify_due rent works in exactly the same way except we pattern match the &lt;&lt;"sent"&gt;&gt; property. All we are checking here that the document returned contains a sent property in it. </p>
-<pre><code>pay_rent(_Event,State)-&gt;
-    [H|_T] = State,
-    {ok,{_,_,Body}}= httpc:request(?get_rent(H)),
-    [A|_]=  proplists:get_value(&lt;&lt;"rows"&gt;&gt;,jsx:decode(list_to_binary(Body))),
-    ID =  proplists:get_value(&lt;&lt;"id"&gt;&gt;,A),
-    {ok,_} = httpc:request(?rent_paid(binary_to_list(ID))),
-    {ok,{_,_,Rent}} = httpc:request(?wrinq_db++binary_to_list(ID)),
-    Decoded = jsx:decode(list_to_binary(Rent)),
-    case proplists:get_value(&lt;&lt;"paid"&gt;&gt;,Decoded) of
-    true -&gt;   
-        {next_state,end_contract,State};
-    _-&gt;
-        {stop,rent_not_paid,State}
-    end.</code></pre>
-<p>The pay_rent state state also works in exactly the same except we pattern match the &lt;&lt;"paid"&gt;&gt; property. See a pattern here. We are simply invoking an action in our application and then checking how the data in our database is changed.</p>
-<pre><code>end_contract(_Event,State)-&gt;
-    [H,Cookie|_T] = State,
-    httpc:request(
-      get,
-      {
-    ?end_contract(H), 
-    [{"Cookie",Cookie}]
-      },
-      [],[]),
-    {ok,{_,_,Body}} = httpc:request(?wrinq_db++H),
-    Decoded = jsx:decode(list_to_binary(Body)),
-    case proplists:get_value(&lt;&lt;"valid"&gt;&gt;,Decoded) of
-    false-&gt;
-        {stop,fsm_done,State};
-    _ -&gt;
-        {stop,contract_not_ended,State}
-    end.</code></pre>
-<p>The final state. No more state changes and we stop the fsm here.</p>
-<p>This was all easy right? We do some stuff inside a callback function. Perform some checks and either advance the state or stop the fsm. Erlangs gen_fsm behaviour allows us to focus our energy on writing our states rather than worrying about the details of how to move it forwards or backwards. But it is not over. There is still some stuff left for us to discuss. </p>
-<p><strong>The state of failure</strong></p>
-<p>Remember how we halted the fsm if the callback functions failed our matching criteria? When you return a tuple of the form <code>{stop,NextState,StateData}</code> the gen_fsm behaviour calls a special terminate function.</p>
-<pre><code>terminate(fsm_done,_R,_S)-&gt;
-    erlang:display("The state machine is finished");
+	      end.</code></pre>
+	  <p>The notify_due rent works in exactly the same way except we pattern match the &lt;&lt;"sent"&gt;&gt; property. All we are checking here that the document returned contains a sent property in it. </p>
+	  <pre><code>pay_rent(_Event,State)-&gt;
+	      [H|_T] = State,
+	      {ok,{_,_,Body}}= httpc:request(?get_rent(H)),
+	      [A|_]=  proplists:get_value(&lt;&lt;"rows"&gt;&gt;,jsx:decode(list_to_binary(Body))),
+	      ID =  proplists:get_value(&lt;&lt;"id"&gt;&gt;,A),
+	      {ok,_} = httpc:request(?rent_paid(binary_to_list(ID))),
+	      {ok,{_,_,Rent}} = httpc:request(?wrinq_db++binary_to_list(ID)),
+	      Decoded = jsx:decode(list_to_binary(Rent)),
+	      case proplists:get_value(&lt;&lt;"paid"&gt;&gt;,Decoded) of
+	      true -&gt;   
+              {next_state,end_contract,State};
+	      _-&gt;
+              {stop,rent_not_paid,State}
+	      end.</code></pre>
+	  <p>The pay_rent state state also works in exactly the same except we pattern match the &lt;&lt;"paid"&gt;&gt; property. See a pattern here. We are simply invoking an action in our application and then checking how the data in our database is changed.</p>
+	  <pre><code>end_contract(_Event,State)-&gt;
+	      [H,Cookie|_T] = State,
+	      httpc:request(
+	      get,
+	      {
+	      ?end_contract(H), 
+	      [{"Cookie",Cookie}]
+	      },
+	      [],[]),
+	      {ok,{_,_,Body}} = httpc:request(?wrinq_db++H),
+	      Decoded = jsx:decode(list_to_binary(Body)),
+	      case proplists:get_value(&lt;&lt;"valid"&gt;&gt;,Decoded) of
+	      false-&gt;
+              {stop,fsm_done,State};
+	      _ -&gt;
+              {stop,contract_not_ended,State}
+	      end.</code></pre>
+	  <p>The final state. No more state changes and we stop the fsm here.</p>
+	  <p>This was all easy, right? We do some stuff inside a callback function. Perform some checks and either advance the state or stop the fsm. Erlangs gen_fsm behaviour allows us to focus our energy on writing our states rather than worrying about the details of how to move it forwards or backwards. But it is not over. There is still some stuff left for us to discuss. </p>
+	  <p><strong>The state of failure</strong></p>
+	  <p>Remember how we halted the fsm if the callback functions failed our matching criteria? When you return a tuple of the form <code>{stop,NextState,StateData}</code> the gen_fsm behaviour calls a special terminate function.</p>
+	  <pre><code>terminate(fsm_done,_R,_S)-&gt;
+	      erlang:display("The state machine is finished");
 
-terminate(_Reason, _StateName, _State) -&gt;
-    erlang:display(_Reason).</code></pre>
-<p>Here I've defined the terminate function in two clauses. The first clause is for when the fsm completes in a natural manner--that is after simulating all the states that we've defined. The second terminate clause is the generic clause which handles all the other kinds of termination. Regardless of which clause is invoked when the gen_fsm terminates it stops moving. It stands still.  </p>
+	      terminate(_Reason, _StateName, _State) -&gt;
+	      erlang:display(_Reason).</code></pre>
+	  <p>Here I've defined the terminate function in two clauses. The first clause is for when the fsm completes in a natural manner--that is after simulating all the states that we've defined. The second terminate clause is the generic clause which handles all the other kinds of termination. Regardless of which clause is invoked when the gen_fsm terminates it stops moving. It stands still.  </p>
 
-<p>Which is not something that Captain Haddock would approve. I remember quite well that scene. Tintin was sitting down defeated. All gloomy and despondent when he let the villain escape. He thought that he was a failure. Here's how the Captain responded:-</p>
-<blockquote>
-<p>"Failed. There are plenty of others willing to call you a failure. A fool. A loser. A hopeless souse. Don't you ever say it of yourself. You send out the wrong signal, that is what people pick up. Don't you understand? You care about something, you fight for it. You hit a wall, you push through it. There's something you need to know about failure, Tintin. You can never let it defeat you."</p>
-</blockquote>
-<p>Right now our application is like pre "Captain Haddock Speech" Tintin. Smallest of failures sends it right down from where it refuses to get up. This attitude is of no use to us. We must do something about it. Our application needs some one like Captian Haddock to cheer it up when the chips are down. To lift the defeated spirit. To... you get the idea I suppose?</p>
-<p><strong>Supervising our behaviour</strong></p>
-<p>What we are looking for are supervisors. Supervisors are another type of erlang behaviour which are responsible for starting, stopping and monitoring it's child behaviour. What we are looking for is this.</p>
-<p>When are gen_fsm terminates either naturally or unnaturally we want to restart it from it's in initial state ready to run the tests again. For example after <code>end_contract</code> which terminates the execution we want our gen_fsm to be restored to prepare database so it can run the tests again.</p>
-<p>"What is the benefit of this behaviour?"</p>
-<p>Well it is very handy during the development phase. When you are working on your application it is quite natural that the tests will fail. So instead of manually running the same steps over and over we circle within a predefined set of states. In terms of our application we always remain between the prepare_database and end_contract states. So we don't have to worry about restarting our fsm when our tests fail. </p>
-<p>So here is what our supervisor looks like</p>
-<pre><code>-module(wrinq_state_sup).
--behaviour(supervisor).
+	  <p>Which is not something that Captain Haddock would approve. I remember quite well that scene. Tintin was sitting down defeated. All gloomy and despondent when he let the villain escape. He thought that he was a failure. Here's how the Captain responded:-</p>
+	  <blockquote>
+	    <p>"Failed. There are plenty of others willing to call you a failure. A fool. A loser. A hopeless souse. Don't you ever say it of yourself. You send out the wrong signal, that is what people pick up. Don't you understand? You care about something, you fight for it. You hit a wall, you push through it. There's something you need to know about failure, Tintin. You can never let it defeat you."</p>
+	  </blockquote>
+	  <p>Right now our application is like pre "Captain Haddock Speech" Tintin. Smallest of failures sends it right down from where it refuses to get up. This attitude is of no use to us. We must do something about it. Our application needs some one like Captian Haddock to cheer it up when the chips are down. To lift the defeated spirit. To... you get the idea I suppose?</p>
+	  <p><strong>Supervising our behaviour</strong></p>
+	  <p>What we are looking for are supervisors. A type of erlang behaviour which is responsible for starting, stopping and monitoring it's child behaviour. Here's how we actually want our application to behave:-</p>
+	  <p>When the gen_fsm terminates either naturally or unnaturally we want to restart it from it's in initial state ready to run the tests again. For example after <code>end_contract</code> state which terminates the execution we want our gen_fsm to be restored to prepare database state so it can run the tests again.</p>
+	  <p>"What is the benefit of this behaviour?"</p>
+	  <p>Well it is very handy during the development phase. When you are working on your application it is quite natural that the tests will fail. So instead of manually running the same steps over and over we circle within a predefined set of states. In terms of this particular application we always remain between the prepare_database and end_contract states. So we don't have to worry about restarting our fsm when our tests fail. </p>
+	  <p>This is what our supervisor looks like</p>
+	  <pre><code>-module(wrinq_state_sup).
+	      -behaviour(supervisor).
 
--export([start_link/0,start_in_shell/0]).
--export([init/1]).
+	      -export([start_link/0,start_in_shell/0]).
+	      -export([init/1]).
 
-start_link() -&gt;
-    supervisor:start_link({local,?MODULE},?MODULE, []).
+	      start_link() -&gt;
+	      supervisor:start_link({local,?MODULE},?MODULE, []).
 
-start_in_shell() -&gt;
-    {ok, Pid} =supervisor:start_link({local,?MODULE},?MODULE, []),
-    unlink(Pid).
+	      start_in_shell() -&gt;
+	      {ok, Pid} =supervisor:start_link({local,?MODULE},?MODULE, []),
+	      unlink(Pid).
 
-init(_Args) -&gt;
-    {ok, {{one_for_one, 100, 60},
-          [{wrinq_state_machine, {wrinq_state_machine, start_link, []},
-            permanent, brutal_kill, worker, [wrinq_state_machine]}]}}.</code></pre>
-<p>There is very little logic to supervisors.  All the terms inside the init function are <a href="http://www.erlang.org/doc/man/supervisor.html">predefined</a>. Here we have a restart strategy of <code>one_for_one</code>  that is if a child process dies then restart only that process no more than 100 times in 60 seconds.</p>
-<p>Then we give the supervisor the id of <code>wrinq_state_machine</code> and define the start function in a module {wrinq_state_machine, start_link, []} (wrinq_state_machine is the name of the module and start_link is the function that starts this machine).</p>
-<p>The keyword <code>permanent</code> indicates that this child process is to be always started. The brutal_kill indicates that the child process is to be unconditionally terminated should it be required. And the keyword worker indicates that the child process is a worker.</p>
-<p>There is hardly anything that we have done here. Writing a supervisor is more like choosing a restart strategy and then configuring the "keywords" to implement that strategy.</p>
-<p>Any way with this supervisor in place whenever our machine halts it is restarted with initial state. </p>
-<p>"Are you happy now captain?"</p>
-<p>"<em>Ten thousand thundering typhoons</em>"</p>
-<p>"What?"</p>
-<p>"Yes that means I am happy."</p>
-<p><strong>So how is this machine executed?</strong></p>
-<p>Glad you asked.  Remember our definition of an fsm. Event happens on a state which transforms it to another one. That gives us a <a href="/clue-review/">clue</a>. To make the application jump through the states we've just got to call our next_state() function that sends start_event events to our fsm. I created a module for starting the fsm and making it go through the states:-</p>
-<pre><code>-module(wrinq_start_app).
--export([start/0,test_states/0]).
--include("wrinq_headers.hrl").
+	      init(_Args) -&gt;
+	      {ok, {{one_for_one, 100, 60},
+              [{wrinq_state_machine, {wrinq_state_machine, start_link, []},
+              permanent, brutal_kill, worker, [wrinq_state_machine]}]}}.</code></pre>
+	  <p>There is very little logic to supervisors.  All the terms inside the init function are <a href="http://www.erlang.org/doc/man/supervisor.html">predefined</a>. Here we have a restart strategy of <code>one_for_one</code>  that is if a child process dies then restart only that process no more than 100 times in 60 seconds.</p>
+	  <p>Then we give the supervisor the id of <code>wrinq_state_machine</code> and define the start function in a module {wrinq_state_machine, start_link, []} (wrinq_state_machine is the name of the module and start_link is the function that starts this machine).</p>
+	  <p>The keyword <code>permanent</code> indicates that this child process is to be always started. The brutal_kill indicates that the child process is to be unconditionally terminated should it be required. And the keyword worker indicates that the child process is a worker.</p>
+	  <p>There is hardly anything that we have done here. Writing a supervisor is more like choosing a restart strategy and then configuring the "keywords" to implement that strategy.</p>
+	  <p>Any way with this supervisor in place whenever our machine halts it is restarted with initial state. </p>
+	  <p>"Are you happy now captain?"</p>
+	  <p>"<em>Ten thousand thundering typhoons</em>"</p>
+	  <p>"What?"</p>
+	  <p>"Yes that means I am happy."</p>
+	  <p><strong>So how is this machine executed?</strong></p>
+	  <p>Glad you asked.  Remember our definition of an fsm. Event happens on a state which transforms it to another one. That gives us a <a href="/clue-review/">clue</a>. To make the application jump through the states we've just got to call our next_state() function that sends start_event events to our fsm. I created a module for starting the fsm and making it go through the states:-</p>
+	  <pre><code>-module(wrinq_start_app).
+	      -export([start/0,test_states/0]).
+	      -include("wrinq_headers.hrl").
 
-start()-&gt;
-    inets:start(),
-    wrinq_state_sup:start_in_shell().
+	      start()-&gt;
+	      inets:start(),
+	      wrinq_state_sup:start_in_shell().
 
-test_states()-&gt;
-    next_state().
+	      test_states()-&gt;
+	      next_state().
 
-next_state()-&gt;
-    wrinq_state_machine:next_state(),
-    erlang:display(wrinq_state_machine:get_status()),
-    next_state().</code></pre>
-<p>It is pretty straightforward. The start function initializes the fsm and the test_states() function calls next_state recursively until the fsm terminates. Once terminated the supervisor restarts our function and we can call test_states again to redo the steps. And don't worry the gen_fsm breaks the recursion when an appropriate state is reached  so it's not infinite.  :-). Though be careful if your fsm is circular or if it never terminates then a code like this will create a never ending loop. </p>
-<p><strong>How do I create fsm for my application?</strong></p>
-<p>If you have followed the post up to this point then it should not be too hard. First identify the states of your application. What they are and how they transform. Then identify how you will test that state. My case was quite simple because the state of my application was represented in the database so I could query it to confirm if the execution was successful. And then simply write the fsm.  </p>
-<p><strong>The TDD approach</strong></p>
-<p>Writing states of the application in a TDD like manner can also be pretty effective. You start by writing the mock states of your application and simulating their behaviour in your callbacks. Then for each state you create and each behaviour you write, you implement the corresponding state and the behaviour in your application. Repeat this for every state and you will have a throughly well tested application with pieces working well individually and together. Though I must admit that I have not actually tried this method.  </p>
-</div>
+	      next_state()-&gt;
+	      wrinq_state_machine:next_state(),
+	      erlang:display(wrinq_state_machine:get_status()),
+	      next_state().</code></pre>
+	  <p>It is pretty straightforward. The start function initializes the fsm and the test_states() function calls next_state recursively until the fsm terminates. Once terminated the supervisor restarts our function and we can call test_states again to redo the steps. And don't worry the gen_fsm breaks the recursion when an appropriate state is reached  so it's not infinite.  :-). Though be careful if your fsm is circular or if it never terminates then a code like this will create a never ending loop. </p>
+	  <p><strong>How do I create fsm for my application?</strong></p>
+	  <p>If you have followed the post up to this point then it should not be too hard.
+
+	    <ol>
+	      <li>Identify the states of your application. What they are and how they transform.</li>
+	      <li>Then identify how you will test that state. My case was quite simple because the state of my application was represented in the database so I could query it to confirm if the execution was successful.</li>
+	      <li>And then simply write the fsm.</li>
+	    </ol>
+	    One good thing about state machines is that you can draw them on a piece of paper before you start coding. So you can 
+	    always have a clear idea of what you are about program. There should hardly be any time wasted on thinking where to go next.  
+	  </p>
+	  <p><strong>The TDD approach</strong></p>
+	  <p>Writing states of the application in a TDD like manner can also be pretty effective. You start by writing the mock states of your application and simulating their behaviour in your callbacks. Then for each state you create and each behaviour you write, you implement the corresponding state and the behaviour in your application. Repeat this for every state and you should have a thoroughly tested application with pieces working well individually and together.</p>
+	</div>
       </div>
     </div>
     <div id="disqus_thread"></div>
@@ -324,36 +333,36 @@ next_state()-&gt;
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
-<div>
-  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-  var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+    <div>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
 
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function ()
-  {
-  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function ()
+      {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-37138783-1']);
-  _gaq.push(['_trackPageview']);
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
 
-  (function ()
-  {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+      (function ()
+      {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
 
-</script>
-<script src="/jquery-1.11.1.min.js"> </script>
-<script src="../../staticshin.js"> </script>
+    </script>
+    <script src="/jquery-1.11.1.min.js"> </script>
+    <script src="../../staticshin.js"> </script>
 
-</body>
+  </body>
 
 </html>

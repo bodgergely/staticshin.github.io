@@ -310,7 +310,8 @@
 	      next_state().</code></pre>
 	  <p>It is pretty straightforward. The start function initializes the fsm and the test_states() function calls next_state recursively until the fsm terminates. Once terminated the supervisor restarts our function and we can call test_states again to redo the steps. And don't worry the gen_fsm breaks the recursion when an appropriate state is reached  so it's not infinite.  :-). Though be careful if your fsm is circular or if it never terminates then a code like this will create a never ending loop. </p>
 	  <p><strong>How do I create fsm for my application?</strong></p>
-	  <p>If you have followed the post up to this point then it should not be too hard.
+	  <p>If you have followed the post up to this point then it should not be too hard. 
+	    Here are the steps that you need to follow:-
 
 	    <ol>
 	      <li>Identify the states of your application. What they are and how they transform.</li>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
+    <title>proxy_ssl certificates in nginx </title>
+    <link href="../../style.css" rel="stylesheet"/>
+    
+  </head>
+  <body>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<p><a href="/">staticshin</a></p>
+	<h1 class="center">proxy_ssl certificates in nginx</h1>
+	<div class="postBody">
+          <p>
+	    Client side certificates allow the server to authieticate the source of the request.
+	    The server gives you a key file and a certificate that you have to send along with 
+	    a request for it to be accepted. Nginx can not only serve requests but also act as 
+	    a proxy between requests to to other servers. Hence the name reverse proxy server. 
+	    Nginx's directive allow you to configure both server side and client side certificates. 
+	    We'll see how to do both but first let us clarify the terminology a bit.
+	  </p>
+          <p>
+	    Server side certificate: By server side certificate, in this context, 
+	    we mean that the downstream requests that is the requests 
+	    coming in to nginx must be over a secure connection.  
+	  </p>
+	  <p>Client side certificate: By client side certificate, in this context, we mean that 
+	    all the upstream requests, that is the requests going out of nginx 
+	    are over a secure connection. A better term would be proxy certificates. 
+	  </p>
+          <p>Server side certificates are configured by <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html">ngx_http_module</a>
+	  </p>
+	</div>
+      </div>
+    </div>
+    <div id="disqus_thread"></div>
+    <hr/>
+    <footer>
+      <h1>Thank you for reading</h1>
+    </footer>
+    <noscript>
+      Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+    <div>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function ()
+      {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function ()
+      {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    <script src="/jquery-1.11.1.min.js"> </script>
+    <script src="../../staticshin.js"> </script>
+
+  </body>
+
+</html>

@@ -29,11 +29,25 @@
 	  </p>
 	  <p>Client side certificate: By client side certificate, in this context, we mean that 
 	    all the upstream requests, that is the requests going out of nginx 
-	    are over a secure connection. A better term would be proxy certificates. 
+	    are authenticated. A better term would be proxy certificates.
 	  </p>
-          <p>Server side certificates are configured by <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html">ngx_http_module</a>
+          <p>Server side certificates are configured by <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html">ngx_http_module</a> where as the proxy certificates are handled by the directives in the <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_ssl_certificate">ngx_http_proxy</a> module.  
+	  </p>
+	  <p>So how do the client side certificates work?</p>
+	  <p>Essentially the purpose of client side certificates is authentication of the client to the server. The client sends it's certificate to the server. The server checks whether the client certificate is valid. If it is the connection is established for future requests and if not the request for connection is denied.  
+	  </p>
+	  <p>Where are they used?</p>
+	  <p>Since the responsibility of managing client side certificates is on the client, they are generally used in scenarios where determining the identity of the client becomes essential. Consider that you have an api that you want to expose to a set of valid users. In that case you can issue each user a certificate and keep a copy for yourself. Only when a user sends the right certificate you allow access to the api calls otherwise just send an unauthorized response.</p>
+	  <p>Is there any benefit in letting nginx handle the certificates?</p>
+	  <p>Yes. For one ssl handling in nginx is extremly optimized. It's fast and light. And second it's easy. 
+	    All you got to do is add few directives and you are set.</p>
+	  <p>What is your favorite animal?</p>
+	  <p>Ahh.. hard to say. I really like cows. They are so milky... and they can chew all day long. 
+	    I've tried chewing gums a couple of times but strain becomes unbearable after 3 hours. 
+	    I have to sip on fluids for the rest of the day to restore myself.
 	  </p>
 	</div>
+
       </div>
     </div>
     <div id="disqus_thread"></div>

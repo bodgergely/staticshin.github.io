@@ -18,7 +18,7 @@
 	    Client side certificates allow the server to authenticate the source of the request.
 	    The server gives you a key file and a certificate that you have to send along with 
 	    a request for it to be accepted. Nginx can not only serve requests but also act as 
-	    a proxy between requests to to other servers. Hence the name reverse proxy server. 
+	    a proxy between requests to to other servers(hence the name reverse proxy server) 
 	    Nginx's directive allow you to configure both server side and client side certificates. 
 	    We'll see how to do both but first let us clarify the terminology a bit.
 	  </p>
@@ -33,15 +33,15 @@
 	  </p>
           <p>Server side certificates are configured by <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html">ngx_http_module</a> where as the proxy certificates are handled by the directives in the <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_ssl_certificate">ngx_http_proxy</a> module.  
 	  </p>
-	  <p>So how do the client side certificates work?</p>
+	  <p><em>"So how do the client side certificates work?"</em></p>
 	  <p>Essentially the purpose of client side certificates is authentication of the client to the server. The client sends it's certificate to the server. The server checks whether the client certificate is valid. If it is the connection is established for future requests and if not the request for connection is denied.  
 	  </p>
-	  <p>Where are they used?</p>
+	  <p><em>"Where are they used?"</em></p>
 	  <p>Since the responsibility of managing client side certificates is on the client, they are generally used in scenarios where determining the identity of the client becomes essential. Consider that you have an api that you want to expose to a set of valid users. In that case you can issue each user a certificate and keep a copy for yourself. Only when a user sends the right certificate you allow access to the api calls otherwise just send an unauthorized response.</p>
-	  <p>Is there any benefit in letting nginx handle the certificates?</p>
+	  <p><em>"Is there any benefit in letting nginx handle the certificates?"</em></p>
 	  <p>Yes. For one ssl handling in nginx is extremely optimized. It's fast and light. And second it's easy. 
 	    All you got to do is add few directives and you are set.</p>
-	  <p>What is your favorite animal?</p>
+	  <p><em>"What is your favorite animal?"</em></p>
 	  <p>Ahh.. hard to say. I really like cows. They are so milky... and they can chew all day long. 
 	    I've tried chewing gums a couple of times but strain becomes unbearable after 3 hours. 
 	    I have to sip on fluids for the rest of the day to restore myself.

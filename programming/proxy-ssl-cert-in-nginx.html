@@ -15,7 +15,7 @@
 	<h1 class="center">proxy_ssl certificates in nginx</h1>
 	<div class="postBody">
           <p>
-	    Client side certificates allow the server to authieticate the source of the request.
+	    Client side certificates allow the server to authenticate the source of the request.
 	    The server gives you a key file and a certificate that you have to send along with 
 	    a request for it to be accepted. Nginx can not only serve requests but also act as 
 	    a proxy between requests to to other servers. Hence the name reverse proxy server. 
@@ -39,7 +39,7 @@
 	  <p>Where are they used?</p>
 	  <p>Since the responsibility of managing client side certificates is on the client, they are generally used in scenarios where determining the identity of the client becomes essential. Consider that you have an api that you want to expose to a set of valid users. In that case you can issue each user a certificate and keep a copy for yourself. Only when a user sends the right certificate you allow access to the api calls otherwise just send an unauthorized response.</p>
 	  <p>Is there any benefit in letting nginx handle the certificates?</p>
-	  <p>Yes. For one ssl handling in nginx is extremly optimized. It's fast and light. And second it's easy. 
+	  <p>Yes. For one ssl handling in nginx is extremely optimized. It's fast and light. And second it's easy. 
 	    All you got to do is add few directives and you are set.</p>
 	  <p>What is your favorite animal?</p>
 	  <p>Ahh.. hard to say. I really like cows. They are so milky... and they can chew all day long. 

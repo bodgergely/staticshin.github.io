@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
-    <title>proxy_ssl certificates in nginx </title>
+    <title>Client side and proxy_ssl certificates in nginx </title>
     <link href="../../style.css" rel="stylesheet"/>
     
   </head>
@@ -12,7 +12,7 @@
     <div class="grid grid-pad">
       <div class="col-8-12 push-2-12">
 	<p><a href="/">staticshin</a></p>
-	<h1 class="center">proxy_ssl certificates in nginx</h1>
+	<h1 class="center"> Client side and proxy_ssl certificates in nginx</h1>
 	<div class="postBody">
           <p>
 	    Client side certificates allow the server to authenticate the source of the request.
@@ -58,7 +58,7 @@ proxy_ssl_certificate_key ./keys/key_wrinq.pem;
 	    </pre>
 	  </p>
           <p><strong>An explaination of ssl_client_certificate directive</strong></p>
-          <p>When nginx is acting in a server mode it also provides you with an ssl_client_certificate directive. This directive expects a valid certificate and key pair from the client in order to establish a connection.  </p>
+          <p>When nginx is acting in a server mode it also provides you with an ssl_client_certificate directive. This directive expects a valid certificate and key pair from the client in order to establish a connection.</p>
 	  <p>
             <pre>
 
@@ -69,7 +69,9 @@ ssl_client_certificate ./keys/ca.crt;
 	      </code>
 	    </pre>
 	  </p>
-          <p>Any Ques.... Hold on let me put on my glasses</p>
+          <p> To verify a client certificate all you need is to point ssl_client_certificate directive to the location your CA (Certificate authority) certificate. You can  .With this CA you can verify the </p>
+          <p>Digital ocean has a great guide on creating <a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">SSL certificates</a></p>
+          <p>Any Questions? .... wait a minute let me put on my glasses</p>
 	  <p>Yes,Questions?</p>
 	  <p><em>"So how do the client side certificates work?"</em></p>
 	  <p>Essentially the purpose of client side certificates is authentication of the client by the server. The client sends it's certificate to the server. The server checks whether the client certificate is valid. 

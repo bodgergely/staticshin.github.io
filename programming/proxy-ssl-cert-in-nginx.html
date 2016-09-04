@@ -51,14 +51,26 @@
 
 	      <code>
 #edit this with your own cert
-proxy_ssl_certificate ./keys/cert.pem;
+proxy_ssl_certificate ./certs/cert.pem;
 ## edit this with your own key
 proxy_ssl_certificate_key ./keys/key_wrinq.pem;
 	      </code>
 	    </pre>
 	  </p>
           <p><strong>An explaination of ssl_client_certificate directive</strong></p>
-          <p>When nginx is acting in a server mode it also provides you with an ssl_client_certificate directive. This directive expects a valid certificate and key pair from the client in order to establish a connection. </p>
+          <p>When nginx is acting in a server mode it also provides you with an ssl_client_certificate directive. This directive expects a valid certificate and key pair from the client in order to establish a connection.  </p>
+	  <p>
+            <pre>
+
+	      <code>
+#edit this with your own ca cert
+ssl_client_certificate ./keys/ca.crt;
+
+	      </code>
+	    </pre>
+	  </p>
+          <p>Any Ques.... Hold on let me put on my glasses</p>
+	  <p>Yes,Questions?</p>
 	  <p><em>"So how do the client side certificates work?"</em></p>
 	  <p>Essentially the purpose of client side certificates is authentication of the client by the server. The client sends it's certificate to the server. The server checks whether the client certificate is valid. 
 	    If it is the connection is established for future requests and if not the request for connection is denied.  
@@ -70,7 +82,7 @@ proxy_ssl_certificate_key ./keys/key_wrinq.pem;
 	    All you got to do is add few directives and you are set.</p>
 	  <p><em>"what about the ssl_verify_client directive"</em></p>
 	  <p>The <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_verify_client">ssl_verify_client</a> 
-	    directive is for the scenario where nginx works as your server to entertain requests from the client. Where as the proxy_ssl directive that we've been discussing so far is for the scenario where nginx acts as a client and proxies requests to to other servers.   
+	    directive is for the scenario where nginx works as your server to entertain requests from the client. Where as the proxy_ssl directive that we've been discussing so far is works when nginx acts as a client and proxies requests to to other servers.   
 	  </p>
 	  <p><em>"What is your favorite animal?"</em></p>
 	  <p>Ahh.. hard to pick. I really like cows. They are so milky... and they can chew all day long. 

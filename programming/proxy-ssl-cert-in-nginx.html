@@ -57,6 +57,8 @@ proxy_ssl_certificate_key ./keys/key_wrinq.pem;
 	      </code>
 	    </pre>
 	  </p>
+          <p><strong>An explaination of ssl_client_certificate directive</strong></p>
+          <p>When nginx is acting in a server mode it also provides you with an ssl_client_certificate directive. This directive expects a valid certificate and key pair from the client in order to establish a connection. </p>
 	  <p><em>"So how do the client side certificates work?"</em></p>
 	  <p>Essentially the purpose of client side certificates is authentication of the client by the server. The client sends it's certificate to the server. The server checks whether the client certificate is valid. 
 	    If it is the connection is established for future requests and if not the request for connection is denied.  

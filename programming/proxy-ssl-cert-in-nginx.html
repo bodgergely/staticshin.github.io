@@ -19,9 +19,9 @@
 	    The server gives you a key file and a certificate file that you have to send along with 
 	    a request for the connection to be established. If everything checks out the server 
 	    allows further communication. If it does not the requests from the client are not entertained.</p>
-          <p>One of the most important use cases of client side certificates is in mutual authentication applications. Where both client and the server autheticate each other. As opposed to the server side certificates, in which the client determines the identity of the server, certain applicaitons especially the ones where the load of distribution of certificates is low and security is of prime imporance this method provides a very natural way of establishing trust between a client and server. </p>
-          <p>To use the client side certificate it becomes the resposibility of the client (while establishing a connection) to read the certificate and key files and send it to the server with the connection request. And while it's fairly easy to do, you can delegate this responsibility to a proxy so that the client talks to a proxy and the proxy talks to the server.</p>
-          <p>This allows you to build applicaitons where you are managing multiple client connections to a mutual authentication server with just one client certificate. The proxy autheticates a client and the server autheticates a proxy. Once you introduce a proxy you can distribute the certificate level client authtentication. That is there can be multiple proxys just for managing the client connecting to a server. In business terms this translates into a scenario where you are a trusted associate  with the ability to use services and resources of an organization and you want to be able to distribute these functions to your own clients. Now the source organization will only be dealing with you and you'll be dealing with your clients.</p>
+          <p>One of the most important use cases of client side certificates is in mutual authentication applications. Where both client and the server authenticate each other. As opposed to the server side certificates, in which the client determines the identity of the server, certain applications especially the ones where the load of distribution of certificates is low and security is of prime importance this method provides a very natural way of establishing trust between a client and server. </p>
+          <p>To use the client side certificate it becomes the responsibility of the client (while establishing a connection) to read the certificate and key files and send it to the server with the connection request. And while it's fairly easy to do, you can delegate this responsibility to a proxy so that the client talks to a proxy and the proxy talks to the server.</p>
+          <p>This allows you to build applications where you are managing multiple client connections to a mutual authentication server with just one client certificate. The proxy authenticates a client and the server authenticates a proxy. Once you introduce a proxy you can distribute the certificate level client authentication. That is there can be multiple proxys just for managing the client connecting to a server. In business terms this translates into a scenario where you are a trusted associate  with the ability to use services and resources of an organization and you want to be able to distribute these functions to your own clients. Now the source organization will only be dealing with you and you'll be dealing with your clients.</p>
 	  <p>  </p>
 
 	  <p> Nginx can not only serve requests of the client but also act as 
@@ -29,7 +29,7 @@
 	    Nginx's directives allow you to configure both server side and client side certificates. In this post  we'll see how to use nginx for proxy ssl certificates as well as for client side certificates. But first a definition of <a href="http://stackoverflow.com/questions/32364579/upstream-downstream-terminology-used-backwards-e-g-nginx">upsteam and downstream</a> terminology, as used in nginx. </p>
           <p><em>"Upstream and downstream describe the flow of a message:
 	      all messages flow from upstream to downstream."</em></p>
-          <p>This means that when nginx is used as a normal server (serving the requests of a client) the request is downstream and response is upstream. Simillarly when nginx acts as a proxy it acts as a client and it's request becomes upstream where as the response from the proxied server becomes upstream. </p>
+          <p>This means that when nginx is used as a normal server (serving the requests of a client) the request is downstream and response is upstream. Similarly when nginx acts as a proxy it acts as a client and it's request becomes upstream where as the response from the proxied server becomes upstream. </p>
           <p>Now applying this learning to the certificates let's give a (loose) definition of server side certificate and client side certificates in nginx:- </p>
           <p>
 	    Server side certificate: By server side certificate, in this context, 
@@ -41,7 +41,7 @@
 	    the upstream , that is the requests going out of nginx 
 	    are authenticated. In other words the <strong>server establishes the authenticity of the client</strong>. 
 	  </p>
-	  <p> Proxy certificates are used when the client's request, intead of hitting the server directly,  goes via nginx. In that case the client does not need to provide any certificate to the server directly. The proxy handles the responsibility of establishing the identity of the client to the server. The server for all intents and purposes treats the proxy as a known client, where as the proxy takes care of the resposibility of handling verifying the identity of the client upon itself.  </p>
+	  <p> Proxy certificates are used when the client's request, instead of hitting the server directly,  goes via nginx. In that case the client does not need to provide any certificate to the server directly. The proxy handles the responsibility of establishing the identity of the client to the server. The server for all intents and purposes treats the proxy as a known client, where as the proxy takes care of the responsibility of handling verifying the identity of the client upon itself.  </p>
 
           <p>Server side and client side certificates are configured by <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html">ngx_http_module</a> where as the proxy certificates are handled by the directives in the <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_ssl_certificate">ngx_http_proxy</a> module. In configuration files this translates into a couple of lines of directives.  
 	  </p>
@@ -49,46 +49,61 @@
             <pre>
 
 	      <code>
-#edit this with your own cert
-proxy_ssl_certificate ./certs/cert.pem;
-## edit this with your own key
-proxy_ssl_certificate_key ./keys/key_wrinq.pem;
+		#edit this with your own cert
+		proxy_ssl_certificate ./certs/cert.pem;
+		## edit this with your own key
+		proxy_ssl_certificate_key ./keys/key_wrinq.pem;
 	      </code>
 	    </pre>
 	  </p>
-          <p><strong>An explaination of ssl_client_certificate directive</strong></p>
+          <p><strong>An explanation of ssl_client_certificate directive</strong></p>
           <p>When nginx is acting in a server mode it also provides you with an ssl_client_certificate directive. This directive expects a valid certificate and key pair from the client in order to establish a connection.</p>
 	  <p>
             <pre>
 
 	      <code>
-#edit this with your own ca cert
-ssl_client_certificate ./keys/ca.crt;
+		#edit this with your own ca cert
+		ssl_client_certificate ./keys/ca.crt;
 
 	      </code>
 	    </pre>
 	  </p>
-          <p> To verify a client certificate all you need is to point ssl_client_certificate directive to the location your CA (Certificate authority) certificate. You can  .With this CA you can verify the </p>
-          <p>Digital ocean has a great guide on creating <a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">SSL certificates</a></p>
-          <p>Any Questions? .... wait a minute let me put on my glasses</p>
+          <p> To verify a client certificate all you need is to point ssl_client_certificate directive to the location of your CA (Certificate authority) certificate that you used to create the certificates for your clients. You can create <a href="http://www.freebsdmadeeasy.com/tutorials/freebsd/create-a-ca-with-openssl.php">a CA on your own server</a> using openssl  . With a CA you can create certificate signing requests (CSR) and sign the certificates for your clients. In summary you'll be using the following steps</p>
+          <p>
+            <pre>
+              <code>
+		## Create a CA certificate
+		openssl genrsa -des3 -out ca.key 4096
+		openssl req -new -x509 -days 365 -key ca.key -out ca.crt
+
+		## openssl genrsa -des3 -out client.key 1024
+		openssl req -new -key client.key -out client.csr
+
+		# Sign the client certificate with our CA cert.  
+		openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out client.crt
+
+
+	      </code>
+            </pre>
+          </p>
+          <p>Digital ocean has a great guide on creating <a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">SSL certificates</a> along with an explanation of some of the technical terms used.</p>
+          <p>Any Questions?</p>
+          <p> .... wait a minute let me put on my glasses</p>
 	  <p>Yes,Questions?</p>
+          <p><em>"What is a CA?</em></p>
+          <p>CA stands for certificate authority. A CA is responsible for issuing digital certificates. A client trusts the CA implicitly and relies upon the fact the CA's signature on the certificate proves the authenticity of the certificate holder. If a client goes on the website www.bank.com and the certificate sent by the server contains the signature of the a trusted CA then the client can be certain of the fact the certificate is valid and you are indeed talking to the server of wwww.bank.com . </p>
 	  <p><em>"So how do the client side certificates work?"</em></p>
-	  <p>Essentially the purpose of client side certificates is authentication of the client by the server. The client sends it's certificate to the server. The server checks whether the client certificate is valid. 
-	    If it is the connection is established for future requests and if not the request for connection is denied.  
-	  </p>
-	  <p><em>"Where are they used?"</em></p>
-	  <p>Since the responsibility of managing client side certificates is on the client, they are generally used in scenarios where determining the identity of the client becomes essential. Consider that you have an api that you want to expose to a set of known users. In that case you can issue each user a certificate and keep a copy for yourself. Only when a user sends the right certificate you allow access to the apis otherwise simply send an unauthorized response.Now client side certificates don't make much sense in direct consumer applicaitons. Like websites accessed via a web browser. Because the steps required to install and manage client certificates does not result in a very good user expereince. </p>
+	  <p>Essentially the purpose of client side certificates is authentication of the client by the server. The client sends it's certificate to the server. The server checks whether the client certificate is valid. If it is, the connection is established for future requests and if not the request for connection is denied. As the use case of client side certificates is limited to scenarios where we can control the distribution of certificates, eg restful services to be used primarily by non browser clients,we can make our server the CA and create our own digitally signed certificate. </p>
+          <p>Now all of this may just be a couple of lines of openssl magic but it does fulfill my long time fantasy of owning a CA one day. The fruit of patience is sweet :-)</p>
 	  <p><em>"Is there any benefit in letting nginx handle the certificates?"</em></p>
 	  <p>Yes. For one ssl handling in nginx is extremely optimized. It's fast and light. And second it's easy. 
-	    All you got to do is add few directives and you are set.</p>
-	  <p><em>"what about the ssl_verify_client directive"</em></p>
-	  <p>The <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_verify_client">ssl_verify_client</a> 
-	    directive is for the scenario where nginx works as your server to entertain requests from the client. Where as the proxy_ssl directive that we've been discussing so far is works when nginx acts as a client and proxies requests to to other servers.   
-	  </p>
+	    All you got to do is add few directives and you are set. Furthermore the proxy_ssl_certificate directive allows you to play with concept in client side certificate in novel ways. You are able to design architectures that can reuse a single client certificate across a variety of clients allowing you to combine traditional authentication methods with certificate based identity management.</p>
+	  
 	  <p><em>"What is your favorite animal?"</em></p>
 	  <p>Ahh.. hard to pick. I really like cows. They are so milky... and they can chew all day long. 
-	    I've tried chewing gums a couple of times but strain becomes unbearable after 3 hours. 
-	    I have to sip on fluids for the rest of the day to restore myself.
+	    I've tried chewing gums a couple of times but strain in my jaw becomes unbearable after about 3 hours. 
+	    I have to rely on a liquid diet for the rest of the day to restore myself.
+	    A man's got to know his limitations I suppose. 
 	  </p>
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>
@@ -98,7 +113,7 @@ ssl_client_certificate ./keys/ca.crt;
     <div id="disqus_thread"></div>
     <hr/>
     <footer>
-      <h1>Thank you for reading</h1>
+      <h1>Don't rock the Jukebox</h1>
     </footer>
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>

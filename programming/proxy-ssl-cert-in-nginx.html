@@ -20,12 +20,11 @@
 	    a request for the connection to be established. If everything checks out the server 
 	    allows further communication. If it does not the requests from the client are not entertained.</p>
           <p>One of the most important use cases of client side certificates is in mutual authentication applications. Where both client and the server autheticate each other. As opposed to the server side certificates, in which the client determines the identity of the server, certain applicaitons especially the ones where the load of distribution of certificates is low and security is of prime imporance this method provides a very natural way of establishing trust between a client and server. </p>
-          <p>To use the client side certificate it becomes the resposibility of the client (while establishing) a connection to the server to read the certificate and key files and send it to the server with the connection request.</p>
-	  <p>In this post 
-	    we'll see how to configure a client certificate in nginx for proxying calls to a secure server. 
-	  </p>
+          <p>To use the client side certificate it becomes the resposibility of the client (while establishing a connection) to read the certificate and key files and send it to the server with the connection request. And while it's fairly easy to do, you can delegate this responsibility to a proxy so that the client talks to a proxy and the proxy talks to the server.</p>
+          <p>This allows you to build applicaitons where you are managing multiple client connections to a mutual authentication server with just one client certificate. The proxy autheticates a client and the server autheticates a proxy. And once you introduce a proxy you can distribute even the certificate level client authtentication. That is there can be multiple proxys just for managing the client connecting to a proxy. In business terms this translates into a scenario where you are a trusted associate  with the ability to use services and resources of an organization and you want to be able to distribute these functions to your own clients. Now the source organization will only be dealing with you and you'll be dealing with your clients.</p>
+	  <p>In this post  we'll see how to configure a client certificate in nginx for proxying calls to a secure server. </p>
 
-	  <p> Nginx however can not only serve requests of the client but also act as 
+	  <p> Nginx can not only serve requests of the client but also act as 
 	    a proxy between requests to to other servers (hence the name reverse proxy server) 
 	    Nginx's directives allow you to configure both server side and client side certificates. 
 	  </p>

@@ -21,16 +21,15 @@
 	    allows further communication. If it does not the requests from the client are not entertained.</p>
           <p>One of the most important use cases of client side certificates is in mutual authentication applications. Where both client and the server autheticate each other. As opposed to the server side certificates, in which the client determines the identity of the server, certain applicaitons especially the ones where the load of distribution of certificates is low and security is of prime imporance this method provides a very natural way of establishing trust between a client and server. </p>
           <p>To use the client side certificate it becomes the resposibility of the client (while establishing a connection) to read the certificate and key files and send it to the server with the connection request. And while it's fairly easy to do, you can delegate this responsibility to a proxy so that the client talks to a proxy and the proxy talks to the server.</p>
-          <p>This allows you to build applicaitons where you are managing multiple client connections to a mutual authentication server with just one client certificate. The proxy autheticates a client and the server autheticates a proxy. And once you introduce a proxy you can distribute even the certificate level client authtentication. That is there can be multiple proxys just for managing the client connecting to a proxy. In business terms this translates into a scenario where you are a trusted associate  with the ability to use services and resources of an organization and you want to be able to distribute these functions to your own clients. Now the source organization will only be dealing with you and you'll be dealing with your clients.</p>
-	  <p>In this post  we'll see how to configure a client certificate in nginx for proxying calls to a secure server. </p>
+          <p>This allows you to build applicaitons where you are managing multiple client connections to a mutual authentication server with just one client certificate. The proxy autheticates a client and the server autheticates a proxy. Once you introduce a proxy you can distribute the certificate level client authtentication. That is there can be multiple proxys just for managing the client connecting to a server. In business terms this translates into a scenario where you are a trusted associate  with the ability to use services and resources of an organization and you want to be able to distribute these functions to your own clients. Now the source organization will only be dealing with you and you'll be dealing with your clients.</p>
+	  <p>  </p>
 
 	  <p> Nginx can not only serve requests of the client but also act as 
 	    a proxy between requests to to other servers (hence the name reverse proxy server) 
-	    Nginx's directives allow you to configure both server side and client side certificates. But first a definition of <a href="http://stackoverflow.com/questions/32364579/upstream-downstream-terminology-used-backwards-e-g-nginx">upsteam and downstream</a> terminology as used in nginx.   
-	  </p>
+	    Nginx's directives allow you to configure both server side and client side certificates. In this post  we'll see how to use nginx for proxy ssl certificates as well as for client side certificates. But first a definition of <a href="http://stackoverflow.com/questions/32364579/upstream-downstream-terminology-used-backwards-e-g-nginx">upsteam and downstream</a> terminology, as used in nginx. </p>
           <p><em>"Upstream and downstream describe the flow of a message:
 	      all messages flow from upstream to downstream."</em></p>
-          <p>This means that when nginx is used a a normal server (serving the requests of a client) the request is downstream and response is upstream. Simillarly when nginx acts as a proxy it acts as a client and it's request becomes upstream where as the response from the proxied server becomes upstream. </p>
+          <p>This means that when nginx is used as a normal server (serving the requests of a client) the request is downstream and response is upstream. Simillarly when nginx acts as a proxy it acts as a client and it's request becomes upstream where as the response from the proxied server becomes upstream. </p>
           <p>Now applying this learning to the certificates let's give a (loose) definition of server side certificate and client side certificates in nginx:- </p>
           <p>
 	    Server side certificate: By server side certificate, in this context, 
@@ -39,12 +38,12 @@
 	    In other words the<strong> client establishes the authenticity of the server</strong>. 
 	  </p>
 	  <p>Client side certificate: By client side certificate, in this context, we mean that 
-	    all the upstream , that is the requests going out of nginx 
+	    the upstream , that is the requests going out of nginx 
 	    are authenticated. In other words the <strong>server establishes the authenticity of the client</strong>. 
-	    Since the requests going from nginx to other servers are called proxies what we mean by client side 
-	    certificates is called proxy certificate in nginx's world.
 	  </p>
-          <p>Server side certificates are configured by <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html">ngx_http_module</a> where as the proxy certificates are handled by the directives in the <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_ssl_certificate">ngx_http_proxy</a> module. In configuration files this translates into a couple of lines of directives.  
+	  <p> Proxy certificates are used when the client's request, intead of hitting the server directly,  goes via nginx. In that case the client does not need to provide any certificate to the server directly. The proxy handles the responsibility of establishing the identity of the client to the server. The server for all intents and purposes treats the proxy as a known client, where as the proxy takes care of the resposibility of handling verifying the identity of the client upon itself.  </p>
+
+          <p>Server side and client side certificates are configured by <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html">ngx_http_module</a> where as the proxy certificates are handled by the directives in the <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_ssl_certificate">ngx_http_proxy</a> module. In configuration files this translates into a couple of lines of directives.  
 	  </p>
           <p>
             <pre>

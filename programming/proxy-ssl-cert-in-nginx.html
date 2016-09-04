@@ -18,7 +18,10 @@
 	    Client side certificates allow the server to authenticate the source of the request.
 	    The server gives you a key file and a certificate file that you have to send along with 
 	    a request for the connection to be established. If everything checks out the server 
-	    allows further communication. If it does not the requests from the client are not entertained.In this post 
+	    allows further communication. If it does not the requests from the client are not entertained.</p>
+          <p>One of the most important use cases of client side certificates is in mutual authentication applications. Where both client and the server autheticate each other. As opposed to the server side certificates, in which the client determines the identity of the server, certain applicaitons especially the ones where the load of distribution of certificates is low and security is of prime imporance this method provides a very natural way of establishing trust between a client and server. </p>
+          <p>To use the client side certificate it becomes the resposibility of the client (while establishing) a connection to the server to read the certificate and key files and send it to the server with the connection request.</p>
+	  <p>In this post 
 	    we'll see how to configure a client certificate in nginx for proxying calls to a secure server. 
 	  </p>
 
@@ -35,8 +38,7 @@
 	  <p>Client side certificate: By client side certificate, in this context, we mean that 
 	    all the upstream requests, that is the requests going out of nginx 
 	    are authenticated. In other words the <strong>server establishes the authenticity of the client</strong>. 
-	    Since the requests 
-	    going from nginx to other servers are called proxies what we mean by client side 
+	    Since the requests going from nginx to other servers are called proxies what we mean by client side 
 	    certificates is called proxy certificate in nginx's world.
 	  </p>
           <p>Server side certificates are configured by <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html">ngx_http_module</a> where as the proxy certificates are handled by the directives in the <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_ssl_certificate">ngx_http_proxy</a> module.  
@@ -46,7 +48,7 @@
 	    If it is the connection is established for future requests and if not the request for connection is denied.  
 	  </p>
 	  <p><em>"Where are they used?"</em></p>
-	  <p>Since the responsibility of managing client side certificates is on the client, they are generally used in scenarios where determining the identity of the client becomes essential. Consider that you have an api that you want to expose to a set of known users. In that case you can issue each user a certificate and keep a copy for yourself. Only when a user sends the right certificate you allow access to the apis otherwise simply send an unauthorized response.</p>
+	  <p>Since the responsibility of managing client side certificates is on the client, they are generally used in scenarios where determining the identity of the client becomes essential. Consider that you have an api that you want to expose to a set of known users. In that case you can issue each user a certificate and keep a copy for yourself. Only when a user sends the right certificate you allow access to the apis otherwise simply send an unauthorized response.Now client side certificates don't make much sense in direct consumer applicaitons. Like websites accessed via a web browser. Because the steps required to install and manage client certificates does not result in a very good user expereince. </p>
 	  <p><em>"Is there any benefit in letting nginx handle the certificates?"</em></p>
 	  <p>Yes. For one ssl handling in nginx is extremely optimized. It's fast and light. And second it's easy. 
 	    All you got to do is add few directives and you are set.</p>

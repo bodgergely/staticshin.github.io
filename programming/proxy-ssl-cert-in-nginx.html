@@ -87,7 +87,7 @@ openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 
 	      </code>
             </pre>
           </p>
-          <p>Digital ocean has a great guide on creating <a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">SSL certificates</a> along with an explanation of some of the technical terms used.</p>
+          <p>Once a certificate has been created you can distribute these to the client. It then becomes the responsibility of the client to send this certificate while establishing a connection. Our server which is also the CA in this case verifies the genuineness of the certificate by ensuring the validity of the digital signature. Once that is done a connection is established.</p>
           <p>Any Questions?</p>
           <p> .... wait a minute let me put on my glasses</p>
 	  <p>Yes,Questions?</p>
@@ -114,6 +114,10 @@ openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 
 	    I have to rely on a liquid diet for the rest of the day to restore myself.
 	    A man's got to know his limitations I suppose. 
 	  </p>
+<p>
+  [<small>  Digital ocean has a great guide on what it takes to create <a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">SSL certificates</a> along with an explanation of some of the technical terms used.]
+  </small>
+</p>
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>
 

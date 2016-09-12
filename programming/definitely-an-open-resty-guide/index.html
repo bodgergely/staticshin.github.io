@@ -201,7 +201,8 @@ content_by_lua_file ./lua/hello_world.lua;
 	    on writing lua scripts. If you have a pretty big lua application it is likely that your code will be divided
 	    into specific scripts that execute as directive handlers (like the content_by_lua script that we wrote above) and
 	    generic modules that will be used across many handlers (like say an authentication module that will be run across multiple content_by_lua handlers)</li>
-	  <li>Openresty follows lua convention of modules. So you can easily package a repeatable unit of code in a file and <code>require()</code> the file and use it&#39;s functions. We discuss more on this in the <a href="#organization">organizing your lua code section</a></li>
+	  <li>Openresty follows the lua module system. So you can easily package a repeatable unit of code in a file and <code>require()</code> the file and use it&#39;s functions. We discuss more on this in the <a href="#organization">organizing your lua code section</a>.</li>
+          <li>If you'd like to quickly create a barebones openresty application (with sensible defaults) that lets you see how nginx configuration  and lua files work together check out the command line tool <a href="https://github.com/brickcap/restyskeleton">restyskeleton</a>.</li>
 	</ol>
 	<hr>
 	<h1 id="directives">Directives</h1>
@@ -939,9 +940,10 @@ lua_arr[3] -- three
 	  cjson decodes null in a json to a lua <a href="http://www.lua.org/pil/28.5.html">lightuserdata</a> and gives you
 	  cjson.null for comparison. </p>
 	<p>This should help you deal with any kind of json
-	  you come across in lua. If you encounter any problems refer the
+	  you come across in lua. If you encounter any problems refer to the
 	  <a href="http://www.kyne.com.au/~mark/software/lua-cjson-manual.html">cjson manual</a> it is quite small and easy to understand. </p>
 	<h3 id="structuring_openresty_apps">Organizing openresty code</h3>
+
 
 	<p><small><a href="#contents">Back to the contents</a></small></p>
 	<p>When you are building openresty applications you are usually working either with the nginx
@@ -1008,6 +1010,13 @@ proxy_pass https://svcs.sandbox.paypal.com/AdaptivePayments/Pay;
 	<p>But if you have a preferred way of organizing your code feel free to do it that way. All that 
 	  matters is that when you read your code it should be easy for you to understand it. Apart from that use whatever 
 	  that suits you.</p>
+		<p> <small>
+	    <a href="https://github.com/brickcap/restyskeleton">
+	      [generate barebones openresty applications from the command line]
+	    </a>
+	  </small>
+	</p>
+
 	<h3 id="concurrency_in_openresty">Concurrency in openresty</h3>
 
 	<p><small><a href="#contents">Back to the contents</a></small></p>
@@ -1242,7 +1251,7 @@ print = ngx.say
 	<a class="brand" href="/">staticshin</a>
       </div>
       <div class="col-3-12 push-1-12">
-        <div id="ad_div"></div>
+	<div id="ad_div"></div>
       </div>
     </div>
     <div id="disqus_thread"></div>

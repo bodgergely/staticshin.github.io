@@ -1029,7 +1029,7 @@ proxy_pass https://svcs.sandbox.paypal.com/AdaptivePayments/Pay;
 	  per cpu core is used. So far so good.</p>
 	<p>The handling of requests by the worker processes is much more interesting. Each worker process
 	  runs in a single thread of execution &quot;reacting&quot; to the signals from the master. Events coming on the
-	  master process are passed along to the worker processes or stored in a queue from where it is read by a worker process. The worker process handles these events but they don&#39;t wait around for them to be completed. When they are notified
+	  master process are passed along to the worker processes or stored in a queue from where it is read by a worker process. The worker processes handle these events but they don&#39;t wait around for them to be completed. When they are notified
 	  of the completion they send back the response. This is what it looks like inside nginx</p>
 	<p>An event happens ----&gt; worker sends the request to be processed in a handler -----&gt; worker starts servicing other events -----&gt; on completion of event it sends back the response. </p>
 	<p>Concurrency in lua is implemented with the help of  coroutines. A coroutine

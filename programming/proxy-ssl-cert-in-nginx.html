@@ -21,7 +21,8 @@
 	    allows further communication. If it does not the requests from the client are not entertained.</p>
           <p>One of the most important use cases of client side certificates is in creating mutual authentication systems. Where both client and the server authenticate each other. As opposed to the server side certificates, in which the client determines the identity of the server, certain applications, especially the ones where the load of distribution of certificates is low and security is of prime importance, this method provides a very natural way of establishing trust between a client and server. </p>
           <p>To use the client side certificate it becomes the responsibility of the client (while establishing a connection) to read the certificate file and send it to the server with the connection request. And while it's fairly easy to do, you can delegate this responsibility of handling the certificate to a proxy so that the client talks to a proxy and the proxy talks to the server.</p>
-          <p>This allows you to build applications where you are managing multiple client connections to a mutual authentication system with just one client certificate. The proxy authenticates a client and the server authenticates a proxy. Once you introduce a proxy you can also distribute the certificate level client authentication. That is, there can be multiple proxys just for managing the client connecting to a server. In business terms this translates into a scenario where you are a trusted associate  with the ability to use services and resources of an organization and you want to be able to distribute these services to your own clients. Now the source organization will only be dealing with you and you'll be dealing with your clients.</p>
+          <p>This allows you to build applications where you are managing multiple client connections to a mutual authentication system with just one client certificate. The proxy authenticates a client and the server authenticates a proxy. Once you introduce a proxy you can also distribute the certificate level client authentication. That is, there can be multiple proxys just for managing the client connecting to a server.</p>
+	  <p>In business terms this translates into a scenario where you are a trusted associate  with the ability to use services and resources of an organization and you want to be able to distribute these services to your own clients. Now the source organization will only be dealing with you and you'll be dealing with your clients.</p>
 
 	  <p> Nginx can not only serve requests of the client but also act as 
 	    a proxy to  other servers (hence the name reverse proxy server) 
@@ -47,7 +48,6 @@
           
           <p>
             <pre>
-
 	      <code>
 #edit this with your own cert
 proxy_ssl_certificate ./certs/cert.pem;
@@ -60,11 +60,9 @@ proxy_ssl_certificate_key ./keys/key_wrinq.pem;
           
 	  <p>
             <pre>
-
 	      <code>
 #edit this with your own ca cert
 ssl_client_certificate ./keys/ca.crt;
-
 	      </code>
 	    </pre>
 	  </p>
@@ -76,14 +74,12 @@ ssl_client_certificate ./keys/ca.crt;
 openssl genrsa -des3 -out ca.key 4096
 openssl req -new -x509 -days 365 -key ca.key -out ca.crt
 
-## Create a CST
+## Create a CSR (certificate signing request)
 openssl genrsa -des3 -out client.key 1024
 openssl req -new -key client.key -out client.csr
 
 # Sign the client certificate with our CA cert.  
 openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out client.crt
-
-
 	      </code>
             </pre>
           </p>
@@ -92,7 +88,7 @@ openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 
           <p> .... wait a minute let me put on my glasses</p>
 	  <p>Yes,Questions?</p>
           <p><em>"What is a CA?</em></p>
-          <p>CA stands for certificate authority. A CA is responsible for issuing digital certificates. A client trusts the CA implicitly and relies upon the fact the CA's signature on the certificate proves the authenticity of the certificate holder. If a client goes on the website www.bank.com and the certificate sent by the server contains the signature of a trusted CA (this trust is verified by the public key of the CA)  then the client can be certain of the fact the certificate is valid and you are indeed talking to the server of wwww.bank.com . </p>
+          <p>CA stands for certificate authority. A CA is responsible for issuing digital certificates. A client trusts the CA implicitly and relies upon the fact the CA's signature on the certificate proves the authenticity of the certificate holder. If a client goes on the website www.bank.com and the certificate sent by the server contains the signature of a trusted CA (this trust is verified by the public key of the CA)  then the client can be certain of the fact the certificate is valid and that he is  indeed talking to the server of wwww.bank.com . </p>
 	  <p><em>"So how do the client side certificates work?"</em></p>
 <p>Essentially the purpose of client side certificates is authentication of the client by the server. The client sends it's certificate to the server. The server checks whether the client certificate is valid. If it is, the connection is established for future requests and if not the request for connection is denied. As the use case of client side certificates is limited to scenarios where we can control the distribution of certificates, eg restful services to be used primarily by non browser clients,we can make our server the CA and create our own digitally signed certificate. </p>
 <p>In plain english:-</p>
@@ -103,7 +99,7 @@ openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 
         <li>The server verifies the signature and hence the validity of the certificate and proceeds further </li>
     </ol>
 </p>
-          <p>Now all of this may just be a couple of lines of openssl magic but it does fulfill my long time fantasy of owning a CA one day. The fruit of patience is sweet :-)</p>
+          <p>Now all of this may just be a couple of lines of openssl magic but it does fulfill our long time fantasy of owning a Certificate Authority one day,does it not? The fruit of patience is sweet :-)</p>
 	  <p><em>"Is there any benefit in letting nginx handle the certificates?"</em></p>
 	  <p>Yes. For one ssl handling in nginx is extremely optimized. It's fast and light. And second it's easy. 
 	    All you got to do is add few directives and you are set. Furthermore the proxy_ssl_certificate directive allows you to play with concept of client side certificate in novel ways. You are able to design architectures that can reuse a single client certificate across a variety of clients allowing you to combine traditional authentication methods with certificate based identity management.</p>
@@ -112,7 +108,7 @@ openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 
 	  <p>Ahh.. hard to pick. I really like cows. They are so milky... and they can chew all day long. 
 	    I've tried chewing gums a couple of times but strain in my jaw becomes unbearable after about 3 hours. 
 	    I have to rely on a liquid diet for the rest of the day to restore myself.
-	    A man's got to know his limitations I suppose. 
+	    <a href="/pensive/dirty_harry.html">A man's got to know his limitations</a>, I suppose? 
 	  </p>
 <p>
   [<small>  Digital ocean has a great guide on what it takes to create <a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">SSL certificates</a> along with an explanation of some of the technical terms used.]

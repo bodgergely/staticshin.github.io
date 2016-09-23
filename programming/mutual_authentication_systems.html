@@ -39,10 +39,70 @@
 	  <p>The `-passout` parameter specifies a password to encrypt the private key with. It ensures that even if the private key gets stolen to attacker is not able to do much with it. The password can also be supplied via a file using the notation `-passout file:path`. Supplying the password via a file has the advantage it it can't be read by the utilites like `ps`.</p>
 	            <p>Simillarly the -passin parameter specifies the password to decrypt the file. Just like `-passout` it may be supplied in a file to prevent it from being read from utilities like `ps` . </p>
           <p>The `out` parameter accepts the path to which the ouput file is written. </p>
-          <p>The `subj` allows you to pass the distinguished name (DN) as command line arguments instead of being prompted on the terminal.</p>
-<p>If the commands are executed successfully you should see the "ca.cert" and the "ca.key" files in the "test_certs" directory</p>
+          <p>The `subj` allows you to pass the Distinguished Name (DN) as command line arguments instead of being prompted on the terminal.</p>
+	  <p>If the commands are executed successfully you should see the "ca.cert" and the "ca.key" files in the "test_certs" directory</p>
 	  
+          <p>So much for the generation of the Certificate Authority. Now we may create client certificates and have them signed by our CA. The steps invovled for creation of a client certificate are not all that different from the creation of a CA certificate.</p>
+          <pre>
 
+            <code>
+#create a private key for the client	      
+openssl  genrsa  -des3 -passout pass:abba -out utils/test_certs/client_new.key
+
+#create a certificate signing request using the client private key
+openssl req -new -key utils/test_certs/client_new.key -out utils/test_certs/client_new.csr -passin pass:abba -subj "/C=IN/ST=HR/L=GGN/O=wrinq/CN=www.wrinq.com/emailAddress=akshat@wrinq.com"
+
+#create the client certificate from the CSR and digitally sign it with the CA certificate that we created previously
+
+openssl x509 -req -days 365 -in utils/test_certs/client_new.csr -CA utils/test_certs/ca.cert -CAkey utils/test_certs/ca.key -passin pass:abba -set_serial 01 -out utils/test_certs/shail.cert
+	    </code>
+          </pre>
+<p>The only difference between creating a client certificate and creating a CA is that, while creating a client, we introduce an additional step where it's digitally signed by our CA. And since we've already discussed the importance of signing it with a CA lets move look at the directives needed to configure nginx to accept client certificates.</p>
+          <p><strong>Nginx configuration for client side certificates</strong></p>
+	  <p> The the ssl configuration for nginx is simple enough</p>
+          <p>
+              <pre>
+                <code>
+## server certificate configuration		  
+ssl_certificate      ./utils/test_certs/test_cert.pem;
+ssl_certificate_key  ./utils/test_certs/test_key.pem;
+
+## CA certificate configuration
+ssl_client_certificate      ./utils/test_certs/ca.cert;
+ssl_verify_client	    on;
+
+## Other ssl directives
+ssl_session_timeout  5m;
+ssl_protocols  SSLv2 SSLv3 TLSv1 TLSv1.2 TLSv1.1;
+ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+ssl_prefer_server_ciphers   on;
+</code>
+              </pre>
+          </p>
+          <p>The ssl configuration can be divided into three distinct sections. The `ssl_certificate` and the `ssl_certificate_key` directives specify the path for certificate and key files for the server. These directives allow the client to authenticate the server.</p>
+          <p>The `ssl_client_certificate` directive allows our server to verfify the authenticity of the client by  </p>
+          <p>There are some other ssl directives for configuring the timeout, ciphers to be used etc but they are not pertinent to the discussion. </p>
+          <p>With the following configuration in place:-</p>
+          <ol>
+              <li>A client will be forced to send a certificate with the connection request</li>
+              <li>Any request without the certificate will be denied</li>
+              <li>The certificate will only be accepted if it's signed by our certificate authority. Any unsigned certificate or a certificate that has expired will be explicitly rejected.</li>
+          </ol>
+          <p><strong>Aadditional procession on parsed certificate parameters</strong></p>
+          <p>Nginx gives you access to certain parameters that allow you to determine the status of client certificate. They are <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#variables">documented</a>
+	    on the nginx's official website. Among the listed variables I found the `ssl_client_s_dn` variable to be most useful because it gives you the distingued name in a parsed format like so:- </p>
+          <p>
+              <pre>
+                  <code>/C=IN/ST=HR/L=GGN/O=wrinq/CN=www.wrinq.com/emailAddress=akshat@wrinq.com</code>
+              </pre>
+          </p>
+          <p>Now you can parse this information and perform additional processing on the parameters. Now this would be pretty simple if you are using <a href="/programming/definitely-an-open-resty-guide/">openresty</a> (which you should be since its the <a href="/top-tens/things-about-openresty.html">best thing in the world</a>). Here's all that you need to do: </p>
+          <p>
+              <pre>
+                  <code>local dn = ngx.var.ssl_client_s_dn</code>
+              </pre>
+          </p>
+          <p>Now there can be various strategies employed here. One that I particularly like is to have a database entry on the email field of the distinguished name. This way I ensure that I issue only one certificate per email address (which by the way is a standard partice among the big CAs) and if I have to look up additional details for person to whom the certificate belongs I can simply look up the corresponding email. The certificate ensures the authenticity and the rest of the details are kept safe in the database.</p>
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>
 

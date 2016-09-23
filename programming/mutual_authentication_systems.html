@@ -12,8 +12,37 @@
     <div class="grid grid-pad">
       <div class="col-8-12 push-2-12">
 	<p><a href="/">staticshin</a></p>
-	<h1 class="center"> Building mutual authentication systems with openresty</h1>
+	<h1 class="center"> Building mutual authentication systems with nginx</h1>
 	<div class="postBody">
+          <p><em>"If the user trusts the CA and can verify the CA's signature, then he can also assume that a certain public key does indeed belong to whoever is identified in the certificate."</em></p>
+	  <p>Mutual authentication systems are designed to authenticate the two communicating parties to each other. In most scenarios an ssl certificate authenticates the server. Whereas the client is authenticated by the means of a username and password. SSL certificates however, can also be used to <a href="/programming/proxy-ssl-cert-in-nginx.html">authenticate the client</a>. The easiest way to do that is to create our own certificate authority. But before we do that lets quickly address the most important question regarding the CA</p> 
+          <p><em>Why do we even need a CA?</em></p>
+	  <p>When you get a certificate from a CA what becomes most important is the fact that its authenticity is protected. In other words a CA digitally signs the certificate with its private key. A public (unsigned) certificate can be hijacked. But a digitally signed certificate can't be reproduced since the hijacker does not have a private key to sign the certificate with. </p>
+	  <p>To state simply if you have a CA on your server and you can ensure the protection of the CA's private key any certificate that is signed by the CA comes with a guarantee that it has been issued by a trusted source. An unsigned certificate has no such guarantee.</p>
+          <p>Now when it comes to server side certificates this gurantee is provided by organizations like GeoTrust, go daddy, letsencrypt etc. This ensures that when our server is accessed by clients like webbrowser, which already come prepackaged with the public certificates of these organizations, the signature of the server certificate can be verified and the end user can safely assume that he his connection is secure.</p>
+          <p>We are free to create our own CA. It won't be reconized by client tools like web browsers but it provides more than enough trust for using it  backend api services as long as the private key is protected. Enough with the theory though. It's time for some action.</p>
+          <p><strong>I like my sugar sweet</strong></p>
+          <p>To create a certificate authority all we need is a couple of lines of openssl magic</p>
+          <p>
+              <pre>
+		<code>
+--For generating the CA Key--
+-- openssl  genrsa  -des3 -passout pass:abba -out ../utils/test_certs/ca.key 4096
+
+--For generating the CA certificate--
+
+--openssl req -new -x509 -days 365 -key ../utils/test_certs/ca.key  -passin pass:abba -out ../utils/test_certs/ca.cert -subj "/C=IN/ST=HR/L=GGN/O=wrinq/CN=www.wrinq.com"
+		</code>
+              </pre>
+          </p>
+	  <p>And that's bascically all there is to it. Let's quickly go through the parameters used to generate the key and the certificate.</p>
+	  <p>The `-passout` parameter specifies a password to encrypt the private key with. It ensures that even if the private key gets stolen to attacker is not able to do much with it. The password can also be supplied via a file using the notation `-passout file:path`. Supplying the password via a file has the advantage it it can't be read by the utilites like `ps`.</p>
+	            <p>Simillarly the -passin parameter specifies the password to decrypt the file. Just like `-passout` it may be supplied in a file to prevent it from being read from utilities like `ps` . </p>
+          <p>The `out` parameter accepts the path to which the ouput file is written. </p>
+          <p>The `subj` allows you to pass the distinguished name (DN) as command line arguments instead of being prompted on the terminal.</p>
+<p>If the commands are executed successfully you should see the "ca.cert" and the "ca.key" files in the "test_certs" directory</p>
+	  
+
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>
 
@@ -22,7 +51,7 @@
     <div id="disqus_thread"></div>
     <hr/>
     <footer>
-      <h1>Thank you for reading</h1>
+      <h1>Quinn,The Eskimo</h1>
     </footer>
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>

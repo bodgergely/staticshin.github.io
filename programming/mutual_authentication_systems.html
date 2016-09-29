@@ -19,8 +19,8 @@
           <p><em>Why do we even need a CA?</em></p>
 	  <p>When you get a certificate from a CA what becomes most important is the fact that its authenticity is protected. In other words a CA digitally signs the certificate with its private key. A public (unsigned) certificate can be hijacked. But a digitally signed certificate can't be reproduced since the hijacker does not have a private key to sign the certificate with. </p>
 	  <p>To state simply if you have a CA on your server and you can ensure the protection of the CA's private key any certificate that is signed by the CA comes with a guarantee that it has been issued by a trusted source. An unsigned certificate has no such guarantee.</p>
-          <p>Now when it comes to server side certificates this gurantee is provided by organizations like GeoTrust, go daddy, letsencrypt etc. This ensures that when our server is accessed by clients like webbrowser, which already come prepackaged with the public certificates of these organizations, the signature of the server certificate can be verified and the end user can safely assume that he his connection is secure.</p>
-          <p>We are free to create our own CA. It won't be reconized by client tools like web browsers but it provides more than enough trust for using it  backend api services as long as the private key is protected. Enough with the theory though. It's time for some action.</p>
+          <p>Now when it comes to server side certificates this guarantee is provided by organizations like GeoTrust, go daddy, letsencrypt etc. This ensures that when our server is accessed by clients like web browser, which already come prepackaged with the public certificates of these organizations, the signature of the server certificate can be verified and the end user can safely assume that his connection is secure.</p>
+          <p>We are free to create our own CA. It won't be recognized by client tools like web browsers but it provides more than enough trust for using it in, say, backend api services as long as the private key is protected. Enough with the theory though. It's time for some action.</p>
           <p><strong>I like my sugar sweet</strong></p>
           <p>To create a certificate authority all we need is a couple of lines of openssl magic</p>
           <p>
@@ -35,21 +35,21 @@
 		</code>
               </pre>
           </p>
-	  <p>And that's bascically all there is to it. Let's quickly go through the parameters used to generate the key and the certificate.</p>
-	  <p>The `-passout` parameter specifies a password to encrypt the private key with. It ensures that even if the private key gets stolen to attacker is not able to do much with it. The password can also be supplied via a file using the notation `-passout file:path`. Supplying the password via a file has the advantage it it can't be read by the utilites like `ps`.</p>
-	            <p>Simillarly the -passin parameter specifies the password to decrypt the file. Just like `-passout` it may be supplied in a file to prevent it from being read from utilities like `ps` . </p>
-          <p>The `out` parameter accepts the path to which the ouput file is written. </p>
+	  <p>And that's basically all there is to it. Let's quickly go through the parameters used to generate the key and the certificate.</p>
+	  <p>The `-passout` parameter specifies a password to encrypt the private key with. It ensures that even if the private key gets stolen to attacker is not able to do much with it. The password can also be supplied via a file using the notation `-passout file:path`. Supplying the password via a file has the advantage it it can't be read by the utilities like `ps`.</p>
+	            <p>Similarly the -passin parameter specifies the password to decrypt the file. Just like `-passout` it may be supplied in a file to prevent it from being read from utilities like `ps` . </p>
+          <p>The `out` parameter accepts the path to which the output file is written. </p>
           <p>The `subj` allows you to pass the Distinguished Name (DN) as command line arguments instead of being prompted on the terminal.</p>
-	  <p>If the commands are executed successfully you should see the "ca.cert" and the "ca.key" files in the "test_certs" directory</p>
+	  <p>If the commands are executed successfully you should see the "ca.cert" and the "ca.key" files in the "test_certs" directory.So much for the generation of the Certificate Authority. Now we may create client certificates and have them signed by our CA.</p>
 	  
-          <p>So much for the generation of the Certificate Authority. Now we may create client certificates and have them signed by our CA. The steps invovled for creation of a client certificate are not all that different from the creation of a CA certificate.</p>
+          <p> The steps involved for creation of a client certificate are not all that different from the creation of a CA certificate.</p>
           <pre>
 
             <code>
 #create a private key for the client	      
 openssl  genrsa  -des3 -passout pass:abba -out utils/test_certs/client_new.key
 
-#create a certificate signing request using the client private key
+#create a certificate signing request using the clients private key
 openssl req -new -key utils/test_certs/client_new.key -out utils/test_certs/client_new.csr -passin pass:abba -subj "/C=IN/ST=HR/L=GGN/O=wrinq/CN=www.wrinq.com/emailAddress=akshat@wrinq.com"
 
 #create the client certificate from the CSR and digitally sign it with the CA certificate that we created previously
@@ -80,7 +80,7 @@ ssl_prefer_server_ciphers   on;
               </pre>
           </p>
           <p>The ssl configuration can be divided into three distinct sections. The `ssl_certificate` and the `ssl_certificate_key` directives specify the path for certificate and key files for the server. These directives allow the client to authenticate the server.</p>
-          <p>The `ssl_client_certificate` directive allows our server to verfify the authenticity of the client by  </p>
+          <p>The `ssl_client_certificate` directive allows our server to verify the authenticity of the client by  </p>
           <p>There are some other ssl directives for configuring the timeout, ciphers to be used etc but they are not pertinent to the discussion. </p>
           <p>With the following configuration in place:-</p>
           <ol>
@@ -88,28 +88,36 @@ ssl_prefer_server_ciphers   on;
               <li>Any request without the certificate will be denied</li>
               <li>The certificate will only be accepted if it's signed by our certificate authority. Any unsigned certificate or a certificate that has expired will be explicitly rejected.</li>
           </ol>
-          <p><strong>Aadditional procession on parsed certificate parameters</strong></p>
+          <p><strong>Additional processing on parsed certificate parameters</strong></p>
           <p>Nginx gives you access to certain parameters that allow you to determine the status of client certificate. They are <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#variables">documented</a>
-	    on the nginx's official website. Among the listed variables I found the `ssl_client_s_dn` variable to be most useful because it gives you the distingued name in a parsed format like so:- </p>
+	    on the nginx's official website. Among the listed variables I found the `ssl_client_s_dn` variable to be most useful because it gives you the distinguished name in a parsed format like so:- </p>
           <p>
               <pre>
                   <code>/C=IN/ST=HR/L=GGN/O=wrinq/CN=www.wrinq.com/emailAddress=akshat@wrinq.com</code>
               </pre>
           </p>
-          <p>Now you can parse this information and perform additional processing on the parameters. Now this would be pretty simple if you are using <a href="/programming/definitely-an-open-resty-guide/">openresty</a> (which you should be since its the <a href="/top-tens/things-about-openresty.html">best thing in the world</a>). Here's all that you need to do: </p>
+          <p>You can parse this information and perform additional processing on the parameters. It's pretty simple if you are using <a href="/programming/definitely-an-open-resty-guide/">openresty</a> (which you should be since its the <a href="/top-tens/things-about-openresty.html">best thing in the world</a>). Here's all that you need to do: </p>
           <p>
               <pre>
                   <code>local dn = ngx.var.ssl_client_s_dn</code>
               </pre>
-          </p>
-          <p>Now there can be various strategies employed here. One that I particularly like is to have a database entry on the email field of the distinguished name. This way I ensure that I issue only one certificate per email address (which by the way is a standard partice among the big CAs) and if I have to look up additional details for person to whom the certificate belongs I can simply look up the corresponding email. The certificate ensures the authenticity and the rest of the details are kept safe in the database.</p>
+	  <p>This one line of code opens up all sorts of possibilities for us. One that I particularly like is to have a database entry on the email field of the distinguished name. This way we ensure that we issue only one certificate per email address (which by the way is a standard practice among the big CAs) and if we have to look up additional details for person to whom the certificate belongs we can simply look up the corresponding email. The certificate ensures the authenticity and the rest of the details are kept safe in the database.</p>
+          <p><em>Shouldn't a serial number be used to uniquely identify a certificate?</em></p>
+          <p>A serial number uniquely identifies a certificate issued by a CA. That is two certificates issued by two different CA's can have same serial numbers. In our case, since we are our own CA, a serial number seems like a good choice .But our goal here is not to uniquely identify a certificate. Rather to uniquely identify a certificate holder. A valid email account with an organization is a good indicator of authenticity of a certificate holder. A serial number is just a random string that conveys no useful information regarding "the face behind" the certificate. However do experiment for yourself and see what parameter best fits your needs.</p>
+          <p><strong>Testing our MAS server</strong></p>
+          <p>There is only so much that can be written about the concepts and strategy. A program is meant to be run. So without wasting anymore words lets see how our code behaves in run time. Clone this repository and follow the instructions in the README file.</p>
+          <p>You should be able to verify that:-</p>
+          <ol>
+              <li>All requests without a certificate are rejected</li>
+              <li>All the requests containing a certificate not signed by the CA are rejected </li>
+              <li>All the requests with an expired or a blacklisted certificate are rejected.</li>
+          </ol>
+          <p>The concept of mutual authentication systems is underutilized only because most of the client side certificates don't work with the browsers. However in the day and age of microservices the client certificates provide a very convent way to authenticate your consumers.</p>
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>
-
       </div>
     </div>
     <div id="disqus_thread"></div>
-    <hr/>
     <footer>
       <h1>Quinn,The Eskimo</h1>
     </footer>
@@ -144,7 +152,6 @@ ssl_prefer_server_ciphers   on;
 
     </script>
     <script src="/jquery-1.11.1.min.js"> </script>
-    <script src="../../staticshin.js"> </script>
 
   </body>
 

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
+    <title>Routing in openresty  </title>
+    <link href="../../style.css" rel="stylesheet"/>
+    
+  </head>
+  <body>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<p><a href="/">staticshin</a></p>
+	<h1 class="center"> Routing in openresty</h1>
+	<div class="postBody">
+          <p> Nginx offers very proficient routing mechanims in the form of location blocks. But since it is mostly used as a proxy webserver the location directives remain underutilized as static endpoints for maybe proxying requests to another weserver,rewriting urls or for redirecting http requests. Openresty turns nginx into a fully programable webserver and therefore gives us a <a href="/top-tens/things-about-openresty.html">better opportunity</a> to fully utilize the capabilities of location block directives and create complex routing schemes for our applications.</p>
+          <p>In any webserver there are a few basic routing principles that we take for granted:-</p>
+          <ul>
+              <li>That we should be able to parametrize the urls</li>
+              <li>That we should be able to accept/reject a request based on it's method</li>
+              <li>That we should be able to "inject" certain routines that allow us perform housekeeping tasks on an endpoint. Ex checking the validity of the cookie before accepting/rejecting a request. </li>
+          </ul>
+	  <p>All of these principles can be implemented quite easily in openresty
+	    with a mix of default nginx directives and some simple lua code. </p>
+          <p><strong>Should hats have heads in them?</strong></p>
+          <p>First let us see how we can parametrize the urls. Consider this simple location block</p>
+          <p>
+              <pre>
+                <code>
+location ~*/a/(?&lt;param&gt;[a-zA-Z]+){
+content_by_lua 'ngx.say("first match")';
+}
+
+		</code>
+              </pre>
+          </p>
+          <p>The syntax it very simple to understand. `~*` at the begining of the location string tells us to look for a case insensitive regex pattern. `(?&lt;param&gt;[a-zA-Z0-9]+)` captures a match in a named group called `param`. The match occurs if the character class [a-zA-Z0-9]+ is satisfied. If the regex in this location block is satisfied you should see the string "first match" printed on the screen.</p>
+         <p>
+             <pre>
+               <code>
+curl http://localhost:3125/a/b
+first match
+
+curl http://localhost:3125/a/baba
+first match
+
+	      </code>
+             </pre>
+         </p>
+          <p>Lets add another location block to make things a bit more interesting.</p>
+          <p>
+              <pre>
+                <code>
+location ~*/(?&lt;param&gt;[a-zA-Z0-9]+)/a{
+content_by_lua 'ngx.say("second match")';
+}
+		</code>
+              </pre>
+          </p>
+          <p>The behaviour that we are expecting now is any url pattern that starts with 'a' should match the first location. And any url pattern that ends with "a" should match the second string.</p>
+          <p>
+              <pre>
+                <code>
+curl http://localhost:3125/b/a/
+second match
+b
+curl http://localhost:3125/a/b/
+first match
+b
+
+curl http://localhost:3125/b/a/c
+second match
+b
+
+		</code>
+
+              </pre>
+          </p>
+          <p>As we can see the results are as expected. One trick that you can use to limit the regex match only the the url pattern is to add a simple rewrite rule in the location block. For example the following rewrite in the first location block will not consider any string after the match</p>
+          <p>
+              <pre>
+                <code>
+rewrite ~*/a/(?&lt;param&gt;[a-zA-Z0-9]+)/(.+) /a/$1/	 permanent; </code>
+              </pre>
+          </p>
+<p>What this does is to rewrite all the requests of type /a/b/c to /a/b/ . So that nginx doesn't get carried away when matching regex locations.</p>
+          <p><strong>Do walls ruin wallpapers?</strong></p>
+          <p>Next let us look at limiting the methods only to a particular type of request.
+	    It's as easy as a thing can be.</p>
+          <p>
+              <pre>
+                <code>
+
+location = /only_post{
+limit_except POST{}
+return 200;
+}
+		</code>
+              </pre>
+          </p>
+          <p>This location block only accepts post requests and denies everything else. Lets test it out:-</p>
+          <p>
+              <pre>
+                <code>
+curl -v -X PUT http://localhost:3125/only_post
+< HTTP/1.1 405 Not Allowed
+< Server: openresty
+< Date: Sat, 08 Oct 2016 17:39:33 GMT
+< Content-Type: text/html
+< Content-Length: 399
+< Connection: keep-alive
+< ETag: "57f8c5e9-18f"
+
+curl -v -X DELETE http://localhost:3125/only_post
+
+< HTTP/1.1 405 Not Allowed
+< Server: openresty
+< Date: Sat, 08 Oct 2016 17:41:19 GMT
+< Content-Type: text/html
+< Content-Length: 399
+< Connection: keep-alive
+< ETag: "57f8c5e9-18f"
+<     
+
+curl -v -X POST http://localhost:3125/only_post
+< HTTP/1.1 200 OK
+< Server: openresty
+< Date: Sat, 08 Oct 2016 17:41:53 GMT
+< Content-Type: text/plain
+< Content-Length: 0
+< Connection: keep-alive
+< X-Frame-Options: SAMEORIGIN
+< X-Content-Type-Options: nosniff
+< X-XSS-Protection: 1; mode=block   
+   </code>
+              </pre>
+          </p>
+          <p><strong>Is bread better when eaten?</strong></p>
+          <p><strong>Is cleanliness good for the soap?</strong></p>
+	  <p><small>-Akshat Jiwan Sharma</small></p>
+	</div>
+      </div>
+    </div>
+    <div id="disqus_thread"></div>
+    <footer>
+      <h1>You don't need a weatherman to know which way the wind blows</h1>
+    </footer>
+    <noscript>
+      Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+    <div>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function ()
+      {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function ()
+      {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    <script src="/jquery-1.11.1.min.js"> </script>
+
+  </body>
+
+</html>

@@ -136,8 +136,52 @@ curl -v -X POST http://localhost:3125/only_post
    </code>
               </pre>
           </p>
+          <p>You can also supply more than one method to accept like so:-</p>
+          <p>
+              <pre>
+                <code>
+
+location = /only_post_and_put{
+limit_except POST PUT{}
+return 200;
+}		  
+		</code>
+              </pre>
+          </p>
+          <p>The location block above will only accept POST and PUT methods and deny everything else.</p>
+          <p>It is generally a good practice to explicity specfy what methods a location will except. Saves unwanted trouble later on.</p>
           <p><strong>Is bread better when eaten?</strong></p>
+          <p>One of the features of modern routing frameworks is that it allows us to run functions before the processing is passed on to the actual handler. Openresty provides a good approximation for this in the form of access_by_lua handlers. In practice this is very simple. Consider that you want to to give an authenticated access to an endpoint. Here's a code snippet</p>
+          <p>
+              <pre>
+                <code>
+
+location =  /auth {
+access_by_lua_block {	      
+local headers = ngx.req.get_headers()
+local uname_pass = 'abc:def'
+if  headers["Authorization"] ~= "Basic "..ngx.encode_base64(uname_pass) then
+   ngx.header["WWW-Authenticate"]="Basic"
+   ngx.req.clear_header("Authorization")
+   return  ngx.exit(ngx.HTTP_UNAUTHORIZED)
+end
+ngx.exit(ngx.OK)
+ }
+ return 200;
+}		  
+		</code>
+              </pre>
+          </p>
+          <p>Any request to /auth without the valid authentication header will be rejected, requests with a valid auth header will be accepted. Now if you create a lua file out of this code you can simply refrence the same file in as many location directives you want. Now this is not exactly a catch all function that most other frameworks provide but it's a pretty close enough approximation in practical terms.</p>
           <p><strong>Is cleanliness good for the soap?</strong></p>
+          <p>There are certian technoqies that I've found especially useful when building routing for openresty applications:-  </p>
+          <ol>
+              <li>If you are parametrizing the urls try to keep the name of the capturing group same. For example you can name all parameters as `param` reagardless of the position they appear in the location block. The advantage is that you get a bit of consistency in your locations. You know that if a url has a parameter it will be named param. This will help a great deal if you want to run validation checks on your parameters. With a consistant name you can write a series of checks once and run them against all the url parameters.</li>
+              <li>Remember to use ngx.ctx. Often you'll find yourself in a situation where you are validating post parameters, url arguments etc. Once they've been verified you can save them inside a ngx.ctx.VAR. Since the ngx.ctx remians valid for the duration of the request you can gain some benefits by variable caching. Good canditates for caching are post bidy paramters, decode json, user meta data etc Think of ngx.ctx as a per request cache and use it accordingly. </li>
+              <li>Do not disregard nginx's directives in favour of lua.If you want to rewirte/redirect add or remove certain headers, impose some accessibility restritions or do anything else, research whether its possible to do it with a built in directive or a configuration parameter. Keep things tight, use lua code only when you have to. </li>
+              <li> Make your routes as exlusive as possible. Lacking a header? Bad request. Illegal method? 405. You can create a general "location_rules.conf" file and then incude it in the location blocks to DRY up the code. With clever use of include you can even create very elaborate access control lists consisting of nothing more than a few basic nginx configrations. </li>
+              <li>Use internal proxying. Nginx can have multiple server blocks. Effectively use them to create sperate instances of services when it makes sense. Openresty gives you tools that encourages a micro service architechture.And since the change is only a few lines of configuration to move back and forth between a microservice and a unified server design experimentation is not all that expensive.. </li>
+          </ol>
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>
       </div>

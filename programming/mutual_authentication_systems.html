@@ -105,7 +105,7 @@ ssl_prefer_server_ciphers   on;
           <p><em>Shouldn't a serial number be used to uniquely identify a certificate?</em></p>
           <p>A serial number uniquely identifies a certificate issued by a CA. That is two certificates issued by two different CA's can have same serial numbers. In our case, since we are our own CA, a serial number seems like a good choice .But our goal here is not to uniquely identify a certificate. Rather to uniquely identify a certificate holder. A valid email account with an organization is a good indicator of authenticity of a certificate holder. A serial number is just a random string that conveys no useful information regarding "the face behind" the certificate. However do experiment for yourself and see what parameter best fits your needs.</p>
           <p><strong>Testing our MAS server</strong></p>
-          <p>There is only so much that can be written about the concepts and strategy. A program is meant to be run. So without wasting anymore words lets see how our code behaves in run time. Clone this <a href="https://github.com/brickcap/openresty_examples">repository</a> and follow the instructions in the README file.</p>
+          <p>There is only so much that can be written about the concepts and strategy. A program is meant to be run. So without wasting anymore words lets see how our code behaves in run time. Clone this <a href="https://github.com/brickcap/openresty_examples">repository</a> and follow the instructions in the <a href="https://github.com/brickcap/openresty_examples/tree/master/mas">README file</a>.</p>
           <p>You should be able to verify that:-</p>
           <ol>
               <li>All requests without a certificate are rejected</li>

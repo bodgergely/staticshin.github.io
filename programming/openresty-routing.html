@@ -14,12 +14,12 @@
 	<p><a href="/">staticshin</a></p>
 	<h1 class="center"> Routing in openresty</h1>
 	<div class="postBody">
-          <p> Nginx offers very proficient routing mechanisms in the form of location blocks. But since it is mostly used as a proxy webserver the location directives remain underutilized as static endpoints for maybe proxying requests to another webserver,rewriting urls or for redirecting http requests. Openresty turns nginx into a fully programable webserver and therefore gives us a <a href="/top-tens/things-about-openresty.html">better opportunity</a> to fully utilize the capabilities of location block directives and create complex routing schemes for our applications.</p>
+          <p> Nginx offers very proficient routing mechanisms in the form of location blocks. But since it is mostly used as a proxy server the location directives remain underutilized as simple endpoints for maybe passing on the requests to another webserver,rewriting urls or for redirecting http requests. Openresty turns nginx into a programable webserver and therefore gives us a better opportunity to <a href="/top-tens/things-about-openresty.html">fully utilize</a>  the capabilities of location block directives and create complex routing schemes for our applications.</p>
           <p>In any webserver there are a few basic routing principles that we take for granted:-</p>
           <ul>
               <li>That we should be able to parametrize the urls</li>
               <li>That we should be able to accept/reject a request based on it's method</li>
-              <li>That we should be able to "inject" certain routines that allow us perform housekeeping tasks on an endpoint. Ex checking the validity of the cookie before accepting/rejecting a request. </li>
+              <li>That we should be able to "inject" certain routines that allow us perform housekeeping tasks on an endpoint. eg: checking the validity of the cookie before accepting a request. </li>
           </ul>
 	  <p>All of these principles can be implemented quite easily in openresty
 	    with a mix of default nginx directives and some simple lua code. </p>
@@ -35,7 +35,7 @@ content_by_lua 'ngx.say("first match")';
 		</code>
               </pre>
           </p>
-          <p>The syntax it very simple to understand. `~*` at the beginning of the location string tells us to look for a case insensitive regex pattern. `(?&lt;param&gt;[a-zA-Z0-9]+)` captures a match in a named group called `param`. The match occurs if the character class [a-zA-Z0-9]+ is satisfied. If the regex in this location block is satisfied you should see the string "first match" printed on the screen.</p>
+          <p>The syntax it very simple to understand. `~*` at the beginning of the location string tells us to look for a case insensitive regex pattern. `(?&lt;param&gt;[a-zA-Z0-9]+)` captures a match in a named group called `param`. The match occurs if the character class [a-zA-Z0-9]+ is satisfied. If the url passes the regex in this location block you should see the string "first match" printed on the screen.</p>
          <p>
              <pre>
                <code>
@@ -77,7 +77,7 @@ b
 
               </pre>
           </p>
-          <p>As we can see the results are as expected. One trick that you can use to limit the regex match only the the url pattern is to add a simple rewrite rule in the location block. For example the following rewrite in the first location block will not consider any string after the match</p>
+          <p>As we can see the results are as expected. You can add rewrites to reject any string after the regex has been satisfied. For example the following rewrite in the first location block will not consider any string after the match</p>
           <p>
               <pre>
                 <code>
@@ -86,13 +86,13 @@ rewrite ~*/a/(?&lt;param&gt;[a-zA-Z0-9]+)/(.+) /a/$1/	 permanent; </code>
           </p>
 <p>What this does is to rewrite all the requests of type /a/b/c to /a/b/ . So that nginx doesn't get carried away when matching regex locations.</p>
           <p><strong>Do walls ruin wallpapers?</strong></p>
-          <p>Next let us look at limiting the methods only to a particular type of request.
-	    It's as easy as a thing can be.</p>
+          <p>Next let us look at limiting the methods only to a particular type of request. In nginx
+	   this is as easy as a thing can be.</p>
           <p>
               <pre>
                 <code>
 
-location = /only_post{
+location = /return_to_sender{
 limit_except POST{}
 return 200;
 }
@@ -103,7 +103,7 @@ return 200;
           <p>
               <pre>
                 <code>
-curl -v -X PUT http://localhost:3125/only_post
+curl -v -X PUT http://localhost:3125/return_to_sender
 < HTTP/1.1 405 Not Allowed
 < Server: openresty
 < Date: Sat, 08 Oct 2016 17:39:33 GMT
@@ -112,7 +112,7 @@ curl -v -X PUT http://localhost:3125/only_post
 < Connection: keep-alive
 < ETag: "57f8c5e9-18f"
 
-curl -v -X DELETE http://localhost:3125/only_post
+curl -v -X DELETE http://localhost:3125/return_to_sender
 
 < HTTP/1.1 405 Not Allowed
 < Server: openresty
@@ -123,7 +123,7 @@ curl -v -X DELETE http://localhost:3125/only_post
 < ETag: "57f8c5e9-18f"
 <     
 
-curl -v -X POST http://localhost:3125/only_post
+curl -v -X POST http://localhost:3125/return_to_sender
 < HTTP/1.1 200 OK
 < Server: openresty
 < Date: Sat, 08 Oct 2016 17:41:53 GMT
@@ -141,7 +141,7 @@ curl -v -X POST http://localhost:3125/only_post
               <pre>
                 <code>
 
-location = /only_post_and_put{
+location = /elvis{
 limit_except POST PUT{}
 return 200;
 }		  
@@ -172,15 +172,16 @@ ngx.exit(ngx.OK)
 		</code>
               </pre>
           </p>
-          <p>Any request to /auth without the valid authentication header will be rejected, requests with a valid auth header will be accepted. Now if you create a lua file out of this code you can simply reference the same file in as many location directives you want. Now this is not exactly a catch all function that most other frameworks provide but it's a pretty close enough approximation in practical terms.</p>
+          <p>Any request to /auth without the valid authentication header will be rejected, requests with a valid auth header will be accepted. Now if you create a lua file out of this code you can simply reference the same file in as many location directives you want.This is not exactly a catch all function that most other frameworks provide but it's a pretty close enough approximation in practical terms.</p>
           <p><strong>Is cleanliness good for the soap?</strong></p>
-          <p>There are certain techniques that I've found especially useful when building routing for openresty applications:-  </p>
+          <p>There are certain principles that have served me well when creating routes for openresty applications:-
+	  </p>
           <ol>
-              <li>If you are parametrizing the urls try to keep the name of the capturing group same. For example you can name all parameters as `param` regardless of the position they appear in the location block. The advantage is that you get a bit of consistency in your locations. You know that if a url has a parameter it will be named param. Also try to limit every url to have no more than one parameter. If other parameters are needed they can always be passed in the body. This will help a great deal when you want to run validation checks on your parameters. With a consistent name you can write a series of checks once and run them against all the url parameters.</li>
+              <li>If you are parametrizing the urls try to keep the name of the capturing group same. For example you can name all parameters as `param` regardless of the position they appear in the location block. Also try to limit every url to have no more than one parameter. If other parameters are needed they can always be passed in the body.  The advantage is that you get a bit of consistency in your locations. This will help a great deal when you want to run validation checks on your parameters as you know that if a url has a parameter it will be named param. With a consistent name you can write a series of checks once and run them against all the url parameters.</li>
               <li>Remember to use ngx.ctx. Often you'll find yourself in a situation where you are validating post parameters, url arguments etc. Once they've been verified you can save them inside a ngx.ctx.VAR. Since the ngx.ctx remains valid for the duration of the request you can gain some benefits by variable caching. Good candidates for caching are post body paramters, decoded json, user meta data etc Think of ngx.ctx as a per request cache and use it accordingly. </li>
               <li>Do not disregard nginx's directives in favour of lua.If you want to rewrite/redirect add or remove certain headers, impose some accessibility restrictions or do anything else, research whether its possible to do it with a built in directive or a configuration parameter. Keep things tight, use lua code only when you have to. </li>
               <li> Make your routes as exclusive as possible. Lacking a header? Bad request. Illegal method? 405. You can create a general "location_rules.conf" file and then include it in the location blocks to DRY up the code. With clever use of include you can even create very elaborate access control lists consisting of nothing more than a few basic nginx configrations. </li>
-              <li>Use internal proxying. Nginx can have multiple server blocks. Effectively use them to create separate instances of services when it makes sense. Openresty gives you tools that encourages a micro service architecture.And since the change is only a few lines of configuration to move back and forth between a microservice and a unified server design experimentation is not all that expensive.</li>
+              <li>A single nginx instance can have multiple server blocks. Effectively use them to create separate instances of services when it makes sense. Openresty gives you tools that encourages a micro service architecture.And since you  only need to change a few lines of configuration to move back and forth between a microservice and a unified server design experimentation is not all that expensive.</li>
           </ol>
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>

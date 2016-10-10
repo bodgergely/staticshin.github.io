@@ -15,13 +15,13 @@
 	<h1 class="center"> Routing in openresty</h1>
 	<div class="postBody">
           <p> Nginx offers very proficient routing mechanisms in the form of location blocks. But since it is mostly used as a proxy server the location directives remain underutilized as simple endpoints for maybe passing on the requests to another webserver,rewriting urls or for redirecting http requests. Openresty turns nginx into a programable webserver and therefore gives us a better opportunity to <a href="/top-tens/things-about-openresty.html">fully utilize</a>  the capabilities of location block directives and create complex routing schemes for our applications.</p>
-          <p>In any webserver there are a few basic routing principles that we take for granted:-</p>
+          <p>In any webserver there are a few basic routing features that we take for granted:-</p>
           <ul>
               <li>That we should be able to parametrize the urls</li>
               <li>That we should be able to accept/reject a request based on it's method</li>
               <li>That we should be able to "inject" certain routines that allow us perform housekeeping tasks on an endpoint. eg: checking the validity of the cookie before accepting a request. </li>
           </ul>
-	  <p>All of these principles can be implemented quite easily in openresty
+	  <p>All of these features can be implemented quite easily in openresty
 	    with a mix of default nginx directives and some simple lua code. </p>
           <p><strong>Should hats have heads in them?</strong></p>
           <p>First let us see how we can parametrize the urls. Consider this simple location block</p>

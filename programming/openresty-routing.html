@@ -183,6 +183,7 @@ ngx.exit(ngx.OK)
               <li> Make your routes as exclusive as possible. Lacking a header? Bad request. Illegal method? 405. You can create a general "location_rules.conf" file and then include it in the location blocks to DRY up the code. With clever use of include you can even create very elaborate access control lists consisting of nothing more than a few basic nginx configrations. </li>
               <li>A single nginx instance can have multiple server blocks. Effectively use them to create separate instances of services when it makes sense. Openresty gives you tools that encourages a micro service architecture.And since you  only need to change a few lines of configuration to move back and forth between a microservice and a unified server design experimentation is not all that expensive.</li>
           </ol>
+          <p>All code is  available for testing on the  <a href="https://github.com/brickcap/openresty_examples/tree/master/routing"> github repository </a> </p>
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>
       </div>

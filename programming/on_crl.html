@@ -28,14 +28,14 @@
           <p>If the private key of the user has been stolen and the certificate issued has been compromised then the certificate serial number (or other attribute) can be unmapped from the user table and a notification be issued to user to get a new certificate. Meanwhile all requests from the old certficate can be responded with a succint 400. </p>
           <p>If the CA's private key has been compromised then rather than invalidating all the cient certificates it would be best to create a new CA and issue new certificates to your cients. A CRL does not make any sense here because all the vcertificates have been compromised. </p>
           <p><em>"What about speed?"</em></p>
-          <p>A CRL is certainly faster since it rejects the user at the time of e</p>
+          <p>A CRL is certainly faster since it rejects the user when he's about to establish the connection but if you take into account that a series of checks will have to be performed after establishment of the connection the equation changes somewhat. Add to this the inconvinence of maintaining two different levels of access control and consequently dealing with two data points when it comes to determine the validity of user, it becomes simpler and effecient to not keep a crl at the cost of a tiny gain in performance.</p>
 	  <p><small>-Akshat Jiwan Sharma</small></p>
 	</div>
       </div>
     </div>
     <div id="disqus_thread"></div>
     <footer>
-      <h1>Quinn,The Eskimo</h1>
+      <h1>Tender cocunut shake,Please</h1>
     </footer>
     <noscript>
       Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>

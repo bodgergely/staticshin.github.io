@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width; initial-scale = 1.0;" />
+    <title>On the usefulness of CRLs for client side certificates </title>
+    <link href="../../style.css" rel="stylesheet"/>
+    
+  </head>
+  <body>
+
+    <div class="grid grid-pad">
+      <div class="col-8-12 push-2-12">
+	<p><a href="/">staticshin</a></p>
+	<h1 class="center"> On the usefulness of CRLs for client side certificates</h1>
+	<div class="postBody">
+          <p>A certificate revocation list is a collection of certificates that can't be trusted anymore. The reasons of mistrust can be many:-</p>
+          <ul>
+              <li>A suspicious activity by the certificate holder</li>
+              <li>A comporomised private key that allows the impostor to trick the system </li>
+              <li>A compromise of the CA's private key that allows the attacker to malaciously sign client certificates to gain access to protected systems</li>
+          </ul>
+          <p>When we talk about client side certificates, we are not dealing with just a single certificate, but with a much larger volume of certificates that complicates their management. Automatic checks like email verification only gurantee that a certian email belongs to a certificate holder and not much else. Therefore when we talk about valid certificate what we mean is that the certificate being presented to us is signed by a trusted CA. No more, no less. Once a connection has been established by a valid certificate we still need to authorize the actions of a certificate holder. Not all certificate holders should be able to perform all actions on our server.</p>
+          <p>A certificate itself provides very little information to us. For that pupose we need to map some attributes of a client certificate to our user table. That attribute could be a DN or a serial number. In doing that we are saying that a certificate with an attribute X belongs to a user Y. It should be the responsibility of the certificate issuer to make sure the the attribute that is being mapped is unique across the certificates.</p>
+          <p>A CRL invalidates a certificate during the establishment of a connection. But this presents some inconsistencies in our application design since even with a CRL it is important to define what actions are allowed for a user passing the CRL check. A rejection at the level of access control is much more manageable/intuitive than a rejection at CRL level.</p>
+          <p><strong>Keep a clean nose</strong></p>
+          <p>If a certificate holder is doing a suspicious activity with a valid certificate then revoking the certificate is an icorrect response because the certificate is genuine. Instead steps should be taken to either warn the user or ban him from performing certain actions within the application. </p>
+          <p>If the private key of the user has been stolen and the certificate issued has been compromised then the certificate serial number (or other attribute) can be unmapped from the user table and a notification be issued to user to get a new certificate. Meanwhile all requests from the old certficate can be responded with a succint 400. </p>
+          <p>If the CA's private key has been compromised then rather than invalidating all the cient certificates it would be best to create a new CA and issue new certificates to your cients. A CRL does not make any sense here because all the vcertificates have been compromised. </p>
+          <p><em>"What about speed?"</em></p>
+          <p>A CRL is certainly faster since it rejects the user at the time of e</p>
+	  <p><small>-Akshat Jiwan Sharma</small></p>
+	</div>
+      </div>
+    </div>
+    <div id="disqus_thread"></div>
+    <footer>
+      <h1>Quinn,The Eskimo</h1>
+    </footer>
+    <noscript>
+      Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+    <div>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'staticshin'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function ()
+      {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function ()
+      {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    <script src="/jquery-1.11.1.min.js"> </script>
+
+  </body>
+
+</html>

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Booking engine</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -25,38 +25,78 @@
       <div class="grid">
 	<div class="col-sm-6">
 	  <!-- search panel -->
-	  <div class="panel panel-default">
-	    <div class="panel-heading">Panel heading without title</div>
+	  <div class="panel panel-default" style="margin-top:2px;">
+	    <div class="panel-heading">Staying at the Majestic?</div>
 	    <div class="panel-body">
 	      <!-- search elements -->
 	      <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                  <input type='text' class="form-control" />
-                  <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-                </div>
-		<!-- end search elements -->
+		<label for="f_name">Full Name</label>
+                  <input type='text' class="form-control" id="f_name"/>
+              </div>
+	      
+	      <div class="form-group">
+		<label for="email">Email</label>
+                  <input type='text' class="form-control" id="email"/>
+              </div>
+	      <div class="form-group">
+		<label for="n_people">No. of People Staying</label>
+                  <input type='text' class="form-control" id="n_people"/>
 	      </div>
+
+	      <div class="form-group">
+		<label for="type">Type</label>
+                  <select name="" id="" class="form-control">
+                      <option value="sgl">Single</option>
+                      <option value="dbl">Double</option>
+                      <option value="sut">Suite</option>
+                  </select>
+	      </div>
+
+
+	      <div class="form-group">
+		<label for="check_in">Check In</label>
+		<div class='input-group date' id='check_out'>
+		  <input type='text' class="form-control" />
+		  <span class="input-group-addon">
+		    <span class="glyphicon glyphicon-calendar"></span>
+		  </span>
+		</div>
+	      </div>
+
+	      <div class="form-group">
+		<label for="check_out">Check Out</label>
+		<div class='input-group date' id='check_out'>
+		  <input type='text' class="form-control" />
+		  <span class="input-group-addon">
+		    <span class="glyphicon glyphicon-calendar"></span>
+		  </span>
+		</div>
+	      </div>
+	      
+                <div class="form-group">
+                  <button class="btn btn-primary" type="button">Check Availability</button>
+		</div>
+	      <!-- end search elements -->
 	    </div>
-	    <!-- end search panel -->
 	  </div>
+	  <!-- end search panel -->
 	</div>
       </div>
-      <!-- end parent container -->
+    </div>
+    <!-- end parent container -->
 
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-      <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
 
-      <script src="js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="./bower_components/moment/min/moment.min.js"></script>
-      <script type="text/javascript" src="./bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-      <script type="text/javascript">
-	$(function () {
-	$('#datetimepicker1').datetimepicker();
-	});
-      </script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="./bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+      $(function () {
+      $('#check_in,#check_out').datetimepicker();
+      });
+    </script>
 
   </body>
 </html>

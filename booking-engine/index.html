@@ -54,6 +54,10 @@
       .hidden{
       display:none;
       }
+      #close{
+      font-size:30px;
+      cursor:pointer;
+      }
     </style>
   </head>
   <body>
@@ -129,7 +133,7 @@
     <!-- end parent container -->
     <div class="container hidden" id="filter_container">
       <!-- filter grid -->
-      
+      <p class="pull-right" id="close">X</p>
       <div class="grid grid-pad" >
         <div class="col-sm-4">
 	  <div class="form-group">
@@ -177,7 +181,7 @@
             <button class="btn btn-primary">Book</button>
 	  </div>
 	</div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 hidden">
 	  <div class="panel panel-default">
 	    <div class="panel-heading">Booking Summary</div>
 	    <div class="panel-body">
@@ -200,9 +204,13 @@
     <script type="text/javascript">
       $(function () {
       $('#check_in,#check_out,#f_check_in,#f_check_out').datetimepicker();
+      $("#close").click(function(){
+      $("#filter_container,#result_container").hide();
+      $("#splash").show();
+      })
       $("#search").click(function(){
       $("#splash").hide();
-      $("#filter_container,#result_container").removeClass("hidden");
+      $("#filter_container,#result_container").removeClass("hidden").show();
       });
       });
     </script>

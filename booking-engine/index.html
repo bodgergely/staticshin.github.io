@@ -201,19 +201,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="./bower_components/moment/min/moment.min.js"></script>
     <script type="text/javascript" src="./bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript">
-      $(function () {
-      $('#check_in,#check_out,#f_check_in,#f_check_out').datetimepicker();
-      $("#close").click(function(){
-      $("#filter_container,#result_container").hide();
-      $("#splash").show();
-      })
-      $("#search").click(function(){
-      $("#splash").hide();
-      $("#filter_container,#result_container").removeClass("hidden").show();
-      });
-      });
-    </script>
+    <script src="js/main.js" type="text/javascript"></script>
 
   </body>
 </html>

@@ -48,6 +48,9 @@
       margin:1%;
       padding:1%;
       }
+      #filter_container{
+      padding:1%;
+      }
     </style>
   </head>
   <body>
@@ -121,10 +124,13 @@
       </div>
     </div>
     <!-- end parent container -->
-    <div class="container">
-      <div class="grid grid-pad">
-        <div class="col-sm-6">
+    <div class="container" id="filter_container">
+      <!-- filter grid -->
+      
+      <div class="grid grid-pad" >
+        <div class="col-sm-4">
 	  <div class="form-group">
+            <label for="f_check_in">Check In</label>
 	    <div class='input-group date' id='f_check_in'>
 	      <input type='text' class="form-control" />
 	      <span class="input-group-addon">
@@ -133,8 +139,9 @@
 	    </div>
 	  </div>
 	</div>
-        <div class="col-sm-6">	  
+        <div class="col-sm-4">	  
 	  <div class="form-group">
+            <label for="f_check_out">Check Out</label>
 	    <div class='input-group date' id='f_check_out'>
 	      <input type='text' class="form-control" />
 	      <span class="input-group-addon">
@@ -144,6 +151,11 @@
 	  </div>
 	</div>
       </div>
+      <!--end filter grid -->
+
+    </div>
+    <div class="container">
+      <!-- result grid -->
       <div class="grid grid-pad">
 	<div class="col-sm-6">
           <div class="result">
@@ -174,7 +186,7 @@
       </div>
     </div>
 
-<p class="center engine"><small>Powered by</small> BASE<span class="seven">7</span>B<span class="powered_by">OO</span>KING</p>
+    <p class="center engine"><small>Powered by</small> BASE<span class="seven">7</span>B<span class="powered_by">OO</span>KING</p>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

@@ -23,9 +23,16 @@ $(function () {
 	var id = $(this).data("id");
 	var price = $(this).data("price");
 	var curr = $(this).data("curr");
-	$("#booked").append("<p class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book'>[X]</p>");
+	$("#booked").append("<p class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book' data-id='"+id+"'>[X]</p>");
 	$(this).prop('disabled','true');
     });
-
+    
+    $(document).on('click',".r_book",function(){
+	var id  = $(this).data("id");
+	console.log($("#"+id).find("button"));
+	$(this).parent().html('');
+	var button = $("#"+id).find("button");
+	$(button).removeAttr('disabled');
+    });
     
 });

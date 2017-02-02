@@ -78,7 +78,7 @@
   <body>
     <!-- The main menu -->
     <p class="center">
-      <span class="logo">The Majestic</span>
+      <span class="logo" id="home">The Majestic</span>
     </p>
 
     <!-- parent container     -->
@@ -152,11 +152,12 @@
     </div>
 
     <div class="container hidden" id="result_container">
-      <img src="img/reservation_page.png" style="height:100%;width:100%;" alt=""/>
+      <!-- <img src="img/reservation_page.png" style="height:100%;width:100%;" alt=""/> -->
       <!-- result grid -->
      
-      
-      <h1 class="center">Your search results  <small title="Choose a different room" id="close">[X]</small></h1>
+      <h1 class="center" style="background-color:#FFD034;color:white;padding:2%">Choose room(s) to confirm
+	<small style="color:black" class="pull-right" title="Go back to search" id="close">X</small></h1>
+
       <div class="grid grid-pad">
 	<div class="col-sm-6">
           <div class="result" id="0">
@@ -188,13 +189,19 @@
               <ol id="booked"></ol>
               <hr/>
               <p><span>Total:</span> <span id="curr"></span><span id="total">0</p>
-              <button class="btn btn-success">Confirm Booking</button>
+              <button class="btn btn-success" id="confirm">Confirm Booking</button>
 	    </div>
 	  </div>
 	</div>
       </div>
     </div>
-
+    <div class="container hidden" id="confirmed">
+      <div class="grid grid-pad">
+	<div class="col-sm-12 center">
+	  <h1>Your rooms have been confirmed. Enjoy your stay at the majestic :) </h1>
+        </div>
+      </div>
+    </div>
     <p class="center engine"><small>Powered by</small> BASE<span class="seven">7</span>B<span class="powered_by">OO</span>KING</p>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

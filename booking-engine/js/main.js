@@ -3,8 +3,8 @@ $(function () {
     $('#check_in,#check_out,#f_check_in,#f_check_out').datetimepicker();
     
     //close handler
-    $("#close").click(function(){
-	$("#filter_container,#result_container").hide();
+    $("#close,#home").click(function(){
+	$("#confirmed_container,#result_container").hide();
 	$("#splash").show();
     });
     
@@ -28,7 +28,7 @@ $(function () {
 	var curr = $(this).data("curr");
 	var total = parseInt($("#total").text());
 	total = total+price;
-	$("#booked").append("<li class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book' title='Remove' data-id='"+id+"'>X</li>");
+	$("#booked").append("<li class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book' title='Remove' data-id='"+id+"'>[Remove]</li>");
 	$(this).prop('disabled','true');
 	$("#curr").text(curr);
 	$("#total").text(total);
@@ -48,6 +48,11 @@ $(function () {
 	    $("#book_summary").hide();
 	}
 	$(button).removeAttr('disabled');
+    });
+
+    $(document).on('click','#confirm',function(){
+	$("#result_container").hide();
+	$("#confirmed").removeClass("hidden").show();
     });
     
 });

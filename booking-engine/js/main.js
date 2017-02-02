@@ -24,7 +24,7 @@ $(function () {
 	var price = $(this).data("price");
 	var curr = $(this).data("curr");
 	$("#booked").append("<p class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book'>[X]</p>");
-	console.log();
+	$(this).prop('disabled','true');
     });
 
     

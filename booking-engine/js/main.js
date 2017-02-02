@@ -23,20 +23,29 @@ $(function () {
 	$("#book_summary").removeClass("hidden").show();
 	var name = $(this).data("name");
 	var id = $(this).data("id");
-	var price = $(this).data("price");
+	var price = parseInt($(this).data("price"));
 	var curr = $(this).data("curr");
+	var total = parseInt($("#total").text());
+	total = total+price;
 	$("#booked").append("<p class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book' data-id='"+id+"'>[X]</p>");
 	$(this).prop('disabled','true');
+	$("#curr").text(curr);
+	$("#total").text(total);
     });
     
     $(document).on('click',".r_book",function(){
 	var id  = $(this).data("id");
-	console.log($("#"+id).find("button"));
+	var button = $("#"+id).find("button");
+	var price = parseInt($(button).data("price"));
+	var curr = $(this).data("curr");
+	var total = parseInt($("#total").text());
+	total = total - price;
+	$("#curr").text(curr);
+	$("#total").text(total);
 	$(this).parent().remove();
 	if($("#booked").html()===''){
 	    $("#book_summary").hide();
 	}
-	var button = $("#"+id).find("button");
 	$(button).removeAttr('disabled');
     });
     

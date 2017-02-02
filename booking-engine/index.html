@@ -98,7 +98,12 @@
               </div>
 	      <div class="form-group">
 		<label for="n_people">No. of People</label>
-                <input type='text' class="form-control" id="n_people"/>
+                <select name="" id="" class="form-control">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+		  <option value="4">4</option>
+                </select>
 	      </div>
 
 	      <div class="form-group">
@@ -174,7 +179,7 @@
     </div>
     <div class="container hidden" id="result_container">
       <!-- result grid -->
-      <h1>Your search results</h1>
+      <h1 class="center">Your search results</h1>
       <p class="pull-right" id="close">X</p>
       <div class="grid grid-pad">
 	<div class="col-sm-6">
@@ -201,7 +206,7 @@
 	</div>
         <div class="col-sm-6 hidden" id="book_summary">
 	  <div class="panel panel-default affix" style="width:400px;">
-	    <div class="panel-heading">Akshat Jiwan Sharma, your booking summary</div>
+	    <div class="panel-heading">Your booking summary</div>
 	    <div class="panel-body">
               
               <div id="booked"></div>

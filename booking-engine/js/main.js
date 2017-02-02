@@ -28,7 +28,7 @@ $(function () {
 	var curr = $(this).data("curr");
 	var total = parseInt($("#total").text());
 	total = total+price;
-	$("#booked").append("<p class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book' data-id='"+id+"'>[X]</p>");
+	$("#booked").append("<p class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book' title='Remove' data-id='"+id+"'>X</p>");
 	$(this).prop('disabled','true');
 	$("#curr").text(curr);
 	$("#total").text(total);

@@ -45,8 +45,8 @@
       }
       .result{
       border:1px solid whitesmoke;
-      margin:1%;
-      padding:1%;
+      margin:3%;
+      padding:2%;
       }
       #filter_container{
       padding:1%;
@@ -146,48 +146,20 @@
 	</div>
       </div>
     </div>
-    <!-- end parent container -->
-    <!-- <div class="container hidden" id="filter_container"> -->
-    <!--   <\!-- filter grid -\-> -->
-    <!--   <p class="pull-right" id="close">X</p> -->
-    <!--   <div class="grid grid-pad" > -->
-    <!--     <div class="col-sm-4"> -->
-    <!-- 	  <div class="form-group"> -->
-    <!--         <label for="f_check_in">Check In</label> -->
-    <!-- 	    <div class='input-group date' id='f_check_in'> -->
-    <!-- 	      <input type='text' class="form-control" /> -->
-    <!-- 	      <span class="input-group-addon"> -->
-    <!-- 		<span class="glyphicon glyphicon-calendar"></span> -->
-    <!-- 	      </span> -->
-    <!-- 	    </div> -->
-    <!-- 	  </div> -->
-    <!-- 	</div> -->
-    <!--     <div class="col-sm-4">	   -->
-    <!-- 	  <div class="form-group"> -->
-    <!--         <label for="f_check_out">Check Out</label> -->
-    <!-- 	    <div class='input-group date' id='f_check_out'> -->
-    <!-- 	      <input type='text' class="form-control" /> -->
-    <!-- 	      <span class="input-group-addon"> -->
-    <!-- 		<span class="glyphicon glyphicon-calendar"></span> -->
-    <!-- 	      </span> -->
-    <!-- 	    </div> -->
-    <!-- 	  </div> -->
-    <!-- 	</div> -->
-    <!--   </div> -->
-      <!--end filter grid -->
 
-    </div>
     <div class="container hidden" id="result_container">
+      <img src="img/reservation_page.png" style="height:100%;width:100%;" alt=""/>
       <!-- result grid -->
-      <h1 class="center">Your search results</h1>
-      <p class="pull-right" id="close">X</p>
+     
+      
+      <h1 class="center">Your search results  <small title="Choose a different room" id="close">[X]</small></h1>
       <div class="grid grid-pad">
 	<div class="col-sm-6">
           <div class="result" id="0">
             <h1>Hallowed hall <small>&pound 320</small></h1>  
             <p><img src="./img/glass_and_bed.jpg" style="width:100%;height:100%"alt=""/></p>
             <p class="booking_summary">Lorem ipsum dolor sit amet, cu pri feugait volutpat, et habeo nihil scriptorem has. In his wisi instructior, ad modo vidit gubergren vim. Vis case impetus delectus cu, duo no ridens deserunt. Augue debet est an, sit modo enim complectitur eu.Suscipit sensibus has ex, dolor periculis ad mea, quis posidonium efficiantur eu eam. Iracundia dignissim ex his, no nostro pertinax vis. Modo fugit liberavisse has id. Ut erant appetere pro, eos congue ancillae omittantur ea. Ea mel paulo efficiantur contentiones, eu sint posse nam, duo wisi legere alienum ex. Per urbanitas gloriatur ei, sit iuvaret iracundia comprehensam ex.
-</p>
+	    </p>
             <button class="btn btn-primary book" data-curr="&pound;" data-name="Hallowed Hall" data-price="320" data-id="0">Book</button>
 	  </div>
 	  <div class="result" id="1">
@@ -206,7 +178,7 @@
 	</div>
         <div class="col-sm-6 hidden" id="book_summary">
 	  <div class="panel panel-default affix" style="width:400px;">
-	    <div class="panel-heading">Your booking summary</div>
+	    <div class="panel-heading">Your bookings</div>
 	    <div class="panel-body">
               
               <div id="booked"></div>

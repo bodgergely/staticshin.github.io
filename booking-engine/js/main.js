@@ -11,6 +11,8 @@ $(function () {
     //search handler
     $("#search").click(function(){
 	$("#splash").hide();
+	$("button").removeAttr("disabled");
+	$("#booked").html("");
 	$("#book_summary").hide();
 	$("#filter_container,#result_container").removeClass("hidden").show();
     });

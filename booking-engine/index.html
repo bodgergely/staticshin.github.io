@@ -69,6 +69,10 @@
       color:red;
       cursor:pointer;
       }
+      #booked{
+      padding:0;
+      margin:2%;
+      }
     </style>
   </head>
   <body>
@@ -181,8 +185,9 @@
 	    <div class="panel-heading">Your bookings</div>
 	    <div class="panel-body">
               
-              <div id="booked"></div>
-              <p><strong>Total:</strong><span id="curr"></span><span id="total">0</p>
+              <ol id="booked"></ol>
+              <hr/>
+              <p><span>Total:</span> <span id="curr"></span><span id="total">0</p>
               <button class="btn btn-success">Confirm Booking</button>
 	    </div>
 	  </div>

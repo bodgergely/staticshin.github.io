@@ -4,18 +4,17 @@ $(function () {
     
     //close handler
     $("#close,#home").click(function(){
-	$("#confirmed_container,#result_container").hide();
+	$("#confirmed,#result_container").hide();
 	$("#splash").show();
     });
     
     //search handler
     $("#search").click(function(){
-	$("#splash").hide();
+	$("#splash,#confirmed,#book_summary").hide();
 	$("button").removeAttr("disabled");
 	$("#booked").html("");
-	$("#book_summary").hide();
 	$("#total").text("0");
-	$("#filter_container,#result_container").removeClass("hidden").show();
+	$("#result_container").removeClass("hidden").show();
     });
     
     //booking handler

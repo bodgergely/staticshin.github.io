@@ -14,6 +14,7 @@ $(function () {
 	$("button").removeAttr("disabled");
 	$("#booked").html("");
 	$("#book_summary").hide();
+	$("#total").text("0");
 	$("#filter_container,#result_container").removeClass("hidden").show();
     });
     

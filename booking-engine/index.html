@@ -58,6 +58,17 @@
       font-size:30px;
       cursor:pointer;
       }
+      .booking_summary{
+      font-size:12px;
+      }
+      .b_item{
+      font-size:12px;
+      border-bottom-1px solid dotted;
+      }
+      .r_book{
+      color:red;
+      cursor:pointer;
+      }
     </style>
   </head>
   <body>
@@ -165,33 +176,33 @@
       <!-- result grid -->
       <div class="grid grid-pad">
 	<div class="col-sm-6">
-          <div class="result">
+          <div class="result" id="0">
             <h1>Hallowed hall <small>&pound 320</small></h1>  
             <p><img src="./img/glass_and_bed.jpg" style="width:100%;height:100%"alt=""/></p>
-            <p>Lorem ipsum dolor sit amet, cu pri feugait volutpat, et habeo nihil scriptorem has. In his wisi instructior, ad modo vidit gubergren vim. Vis case impetus delectus cu, duo no ridens deserunt. Augue debet est an, sit modo enim complectitur eu.Suscipit sensibus has ex, dolor periculis ad mea, quis posidonium efficiantur eu eam. Iracundia dignissim ex his, no nostro pertinax vis. Modo fugit liberavisse has id. Ut erant appetere pro, eos congue ancillae omittantur ea. Ea mel paulo efficiantur contentiones, eu sint posse nam, duo wisi legere alienum ex. Per urbanitas gloriatur ei, sit iuvaret iracundia comprehensam ex.
+            <p class="booking_summary">Lorem ipsum dolor sit amet, cu pri feugait volutpat, et habeo nihil scriptorem has. In his wisi instructior, ad modo vidit gubergren vim. Vis case impetus delectus cu, duo no ridens deserunt. Augue debet est an, sit modo enim complectitur eu.Suscipit sensibus has ex, dolor periculis ad mea, quis posidonium efficiantur eu eam. Iracundia dignissim ex his, no nostro pertinax vis. Modo fugit liberavisse has id. Ut erant appetere pro, eos congue ancillae omittantur ea. Ea mel paulo efficiantur contentiones, eu sint posse nam, duo wisi legere alienum ex. Per urbanitas gloriatur ei, sit iuvaret iracundia comprehensam ex.
 </p>
-            <button class="btn btn-primary">Book</button>
+            <button class="btn btn-primary book" data-name="Hallowed Hall" data-price="320" data-id="0">Book</button>
 	  </div>
-	  <div class="result">
+	  <div class="result" id="1">
             <h1>Jazz Balcony <small>&pound 360</small></h1>
-	    <p><img src="./img/glass_and_bed.jpg" style="width:100%;height:100%"alt=""/></p>
+	    <p><img src="./img/jazz_balcony.jpg" style="width:100%;height:100%"alt=""/></p>
 
-            <p>Lorem ipsum dolor sit amet, cu pri feugait volutpat, et habeo nihil scriptorem has. In his wisi instructior, ad modo vidit gubergren vim. Vis case impetus delectus cu, duo no ridens deserunt. Augue debet est an, sit modo enim complectitur eu.Suscipit sensibus has ex, dolor periculis ad mea, quis posidonium efficiantur eu eam. Iracundia dignissim ex his, no nostro pertinax vis. Modo fugit liberavisse has id. Ut erant appetere pro, eos congue ancillae omittantur ea. Ea mel paulo efficiantur contentiones, eu sint posse nam, duo wisi legere alienum ex. Per urbanitas gloriatur ei, sit iuvaret iracundia comprehensam ex.</p>
-            <button class="btn btn-primary">Book</button>
+            <p class="booking_summary">Lorem ipsum dolor sit amet, cu pri feugait volutpat, et habeo nihil scriptorem has. In his wisi instructior, ad modo vidit gubergren vim. Vis case impetus delectus cu, duo no ridens deserunt. Augue debet est an, sit modo enim complectitur eu.Suscipit sensibus has ex, dolor periculis ad mea, quis posidonium efficiantur eu eam. Iracundia dignissim ex his, no nostro pertinax vis. Modo fugit liberavisse has id. Ut erant appetere pro, eos congue ancillae omittantur ea. Ea mel paulo efficiantur contentiones, eu sint posse nam, duo wisi legere alienum ex. Per urbanitas gloriatur ei, sit iuvaret iracundia comprehensam ex.</p>
+            <button class="btn btn-primary book" data-name="Jazz Balcony" data-price="360" data-id="1">Book</button>
 	  </div>
-	  <div class="result">
+	  <div class="result" id="2">
             <h1>The Moon Room <small>&pound 820</small></h1>
-	    <p><img src="./img/glass_and_bed.jpg" style="width:100%;height:100%"alt=""/></p>
-            <p>Lorem ipsum dolor sit amet, cu pri feugait volutpat, et habeo nihil scriptorem has. In his wisi instructior, ad modo vidit gubergren vim. Vis case impetus delectus cu, duo no ridens deserunt. Augue debet est an, sit modo enim complectitur eu.Suscipit sensibus has ex, dolor periculis ad mea, quis posidonium efficiantur eu eam. Iracundia dignissim ex his, no nostro pertinax vis. Modo fugit liberavisse has id. Ut erant appetere pro, eos congue ancillae omittantur ea. Ea mel paulo efficiantur contentiones, eu sint posse nam, duo wisi legere alienum ex. Per urbanitas gloriatur ei, sit iuvaret iracundia comprehensam ex.</p>
-            <button class="btn btn-primary">Book</button>
+	    <p><img src="./img/moon_room.jpg" style="width:100%;height:100%"alt=""/></p>
+            <p class="booking_summary">Lorem ipsum dolor sit amet, cu pri feugait volutpat, et habeo nihil scriptorem has. In his wisi instructior, ad modo vidit gubergren vim. Vis case impetus delectus cu, duo no ridens deserunt. Augue debet est an, sit modo enim complectitur eu.Suscipit sensibus has ex, dolor periculis ad mea, quis posidonium efficiantur eu eam. Iracundia dignissim ex his, no nostro pertinax vis. Modo fugit liberavisse has id. Ut erant appetere pro, eos congue ancillae omittantur ea. Ea mel paulo efficiantur contentiones, eu sint posse nam, duo wisi legere alienum ex. Per urbanitas gloriatur ei, sit iuvaret iracundia comprehensam ex.</p>
+            <button class="btn btn-primary book" data-price="820" data-name="The Moon Room" data-id="2">Book</button>
 	  </div>
 	</div>
-        <div class="col-sm-6 hidden">
+        <div class="col-sm-6 hidden" id="book_summary">
 	  <div class="panel panel-default affix" style="width:400px;">
-	    <div class="panel-heading">Booking Summary</div>
+	    <div class="panel-heading">Akshat Jiwan Sharma, your booking summary</div>
 	    <div class="panel-body">
-              <p>Name: Akshat Jiwan Sharma</p>
-              <p>Email: akshatjiwan@gmail.com</p>
+              
+              <div id="booked"></div>
               <p><strong>Total:</strong><span id="total"></p>
               <button class="btn btn-success">Confirm Booking</button>
 	    </div>

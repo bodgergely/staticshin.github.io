@@ -21,7 +21,9 @@ $(function () {
 	$("#book_summary").removeClass("hidden").show();
 	var name = $(this).data("name");
 	var id = $(this).data("id");
-	$("#booked").append("<p class='b_item'>"+name+" <span class='r_book'>[X]</p>");
+	var price = $(this).data("price");
+	var curr = $(this).data("curr");
+	$("#booked").append("<p class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book'>[X]</p>");
 	console.log();
     });
 

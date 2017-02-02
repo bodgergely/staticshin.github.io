@@ -32,7 +32,10 @@ $(function () {
     $(document).on('click',".r_book",function(){
 	var id  = $(this).data("id");
 	console.log($("#"+id).find("button"));
-	$(this).parent().html('');
+	$(this).parent().remove();
+	if($("#booked").html()===''){
+	    $("#book_summary").hide();
+	}
 	var button = $("#"+id).find("button");
 	$(button).removeAttr('disabled');
     });

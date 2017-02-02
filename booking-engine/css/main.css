@@ -1,0 +1,55 @@
+
+.center{
+    text-align:center;
+}
+.powered_by{
+    color:#08c;
+}
+.engine{
+    color:#dddd;
+    margin-top:2px;
+    letter-spacing:2px;
+}
+.seven{
+    font-size:20px;
+}
+.logo{
+    letter-spacing:2px;
+    border-bottom:1px dotted black;
+    text-align:center;
+    cursor:pointer;
+}
+.menu{
+    border:1px solid whitesmoke;
+    padding:1px;
+}
+.result{
+    border:1px solid whitesmoke;
+    margin:3%;
+    padding:2%;
+}
+#filter_container{
+    padding:1%;
+}
+.hidden{
+    display:none;
+}
+#close{
+    font-size:30px;
+    cursor:pointer;
+}
+.booking_summary{
+    font-size:12px;
+}
+.b_item{
+    font-size:12px;
+    border-bottom-1px solid dotted;
+}
+.r_book{
+    color:red;
+    cursor:pointer;
+}
+#booked{
+    padding:0;
+    margin:2%;
+}

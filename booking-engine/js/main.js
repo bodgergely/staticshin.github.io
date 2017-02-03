@@ -1,4 +1,12 @@
 $(function () {
+
+    //email validator -- http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+
+    var validateEmail =  function (email) {
+	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email);
+    };
+    
     // initialize date time plugin
     var today = Date.now();
     var tomorrow = moment().add(1, 'day').calendar(null,{nextDay:"L"}).toString();
@@ -17,12 +25,20 @@ $(function () {
     
     //close handler
     $("#close,#home").click(function(){
-	$("#confirmed,#result_container").hide();
+	$("#confirmed,#result_container,#error").hide();
 	$("#splash").show();
     });
     
     //search handler
     $("#search").click(function(){
+	var email = $("#email").val();
+	var name = $("#f_name").val();
+	console.log(name);
+	console.log(email);
+	if(!validateEmail(email) || name===""){
+	    $("#error").removeClass("hidden").show();
+	    return;
+	}
 	$("#splash,#confirmed,#book_summary").hide();
 	$("button").removeAttr("disabled");
 	$("#booked").html("");
@@ -40,7 +56,8 @@ $(function () {
 	var curr = $(this).data("curr");
 	var total = parseInt($("#total").text());
 	total = total+price;
-	$("#booked").append("<li class='b_item'>"+name+" -- "+ curr + price+" <span class='r_book' title='Remove' data-id='"+id+"'>[Remove]</li>");
+	$("#booked").append("<li class='b_item'>"+name+" -- "+ curr
+			    + price+" <span class='r_book' title='Remove' data-id='"+id+"'>[Remove]</li>");
 	$(this).prop('disabled','true');
 	$("#curr").text(curr);
 	$("#total").text(total);

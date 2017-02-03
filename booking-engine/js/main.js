@@ -1,9 +1,19 @@
 $(function () {
     // initialize date time plugin
-    var date_pick_opts = {
-	disabledDates:["02/14/2017"]
+    var today = Date.now();
+    var tomorrow = moment().add(1, 'day').calendar(null,{nextDay:"L"}).toString();
+    var init_ops = function(d_date){
+
+	var date_pick_opts = {
+	defaultDate:d_date,
+	disabledDates:["02/14/2017"],
+	daysOfWeekDisabled:[6]
+	};
+	return date_pick_opts;
     };
-    $('#check_in,#check_out').datetimepicker(date_pick_opts);
+    
+    $('#check_in').datetimepicker(init_ops(today));
+    $("#check_out").datetimepicker(init_ops(tomorrow));
     
     //close handler
     $("#close,#home").click(function(){

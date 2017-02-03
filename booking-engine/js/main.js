@@ -13,16 +13,20 @@ $(function () {
     var init_ops = function(d_date){
 
 	var date_pick_opts = {
-	defaultDate:d_date,
-	disabledDates:["02/14/2017"],
-	daysOfWeekDisabled:[6]
+	    defaultDate:d_date,
+	    disabledDates:["02/14/2017"],
+	    daysOfWeekDisabled:[6],
+	    useCurrent:false
 	};
 	return date_pick_opts;
     };
     
     $('#check_in').datetimepicker(init_ops(today));
     $("#check_out").datetimepicker(init_ops(tomorrow));
-    
+    $("#check_in").on("dp.change", function (e) {
+	console.log(e.date);
+        $('#check_out').data("DateTimePicker").minDate(e.date);
+    });    
     //close handler
     $("#close,#home").click(function(){
 	$("#confirmed,#result_container,#error").hide();

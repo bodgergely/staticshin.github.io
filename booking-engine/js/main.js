@@ -1,6 +1,9 @@
 $(function () {
     // initialize date time plugin
-    $('#check_in,#check_out,#f_check_in,#f_check_out').datetimepicker();
+    var date_pick_opts = {
+	disabledDates:["02/14/2017"]
+    };
+    $('#check_in,#check_out').datetimepicker(date_pick_opts);
     
     //close handler
     $("#close,#home").click(function(){

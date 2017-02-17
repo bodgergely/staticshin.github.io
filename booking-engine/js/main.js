@@ -16,7 +16,8 @@ $(function () {
 	    defaultDate:d_date,
 	    disabledDates:["02/14/2017"],
 	    daysOfWeekDisabled:[6],
-	    useCurrent:false
+	    useCurrent:false,
+	    minDate: today
 	};
 	return date_pick_opts;
     };

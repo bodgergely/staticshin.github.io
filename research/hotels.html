@@ -11,12 +11,26 @@
       .strong{
       font-weight:bold;
       }
+      hr{
+      border: 1px solid whitesmoke;
+      }
     </style>
 
   </head>
   
   <body style="font-family:monospace">
-    <p><strong>Data Points</strong></p>
+    <p><strong>Table of Contents</strong></p>
+    <ol>
+        <li><a href="#data_points">Data Points</a></li>
+        <li><a href="#ex_o">Expert Opinions</a></li>
+        <li><a href="#lnk">Links</a></li>
+        <li><a href="#get_u">Getting users</a></li>
+        <li><a href="#pricing">Pricing </a></li>
+        <li><a href="#feat">Features</a></li>
+        <li><a href="#d_n">Domain Names</a></li>
+        <li><a href="#q_a">Questions and Answers</a></li>
+    </ol>
+    <p id="data_points"><strong>Data Points</strong></p>
     <ul>
       <li>The Average lead-in time between a booking and arrival is six weeks</li>
       <li>The average length of a stay is four days</li>
@@ -85,12 +99,12 @@
     </ul>
     <hr/>
     
-    <p><strong>Expert opinions</strong></p>
+    <p id="ex_o"><strong>Expert opinions</strong></p>
     <ul>
         <li>"Ancillaries are the next frontier for us on the airline side because every airline is really unbundling all of their products." -- <a href="https://skift.com/2014/08/25/interview-cheapoair-ceo-on-booking-site-and-travel-agent-gap/">Jain, CheapOair</a></li>
     </ul>
     <hr/>
-    <p class="strong">Links</p>
+    <p class="strong" id="lnk">Links</p>
     <ul>
       <li><a href="http://framework7.io/" target="_blank" rel="noreferrer">Framework 7 for building IOS and android app</a></li>
       <li><a href="https://developer.sabre.com/docs/REST_APIs" target="_blank" rel="noreferrer">Sabre Api</a> </li>
@@ -105,15 +119,17 @@
       <li><a href="https://developer.travelport.com/app/developer-network/resource-centre-uapi/session/L3RpbWUvMTQ4Nzk5MzAxMi9zaWQveXU2S1Y0Y24%3D" target="_blank" rel="noreferrer">Travelport universal api</a></li>
       <li><a href="https://www.tnooz.com/article/free-apis-that-travel-startups-should-consider-when-building-any-search-product/" target="_blank" rel="noreferrer">Free Travel API's</a></li>
       <li><a href="http://www.olery.com/blog/the-best-travel-apis-discover-contribute/" target="_blank" rel="noreferrer">Best Travel apis</a></li>
+      <li><a href="https://www.homeaway.com/platform/documentation#testMode">Home away api</a></li>
     </ul>
     <p><strong>Data Sources</strong><br>-<a href="https://drive.google.com/file/d/0B7pllk0x1zPpWmNsZG94MS05TUU/view?usp=sharing" target="_blank" rel="noreferrer">Airbnb's expert playbook</a><br>- <a href="https://research.skift.com/reports/state-of-global-vacation-rental-market-2017/" target="_blank" rel="noreferrer">State of vacation rental market by skift</a><br>-<a href="http://insideairbnb.com/get-the-data.html" target="_blank" rel="noreferrer">Inside Airbnb</a><br>-<a href="https://www.multifamilyinsiders.com/" target="_blank" rel="noreferrer">Multifamily Insiders</a><br>-<a href="http://airbnbapi.org/" target="_blank" rel="noreferrer">Airbnb api</a><br>-<a href="http://airdna.co/" target="_blank" rel="noreferrer">Airdna</a><br>-<a href="http://wikitravel.org/wiki/en/api.php" target="_blank" rel="noreferrer">Wikitravel api</a><br>-<a href="https://www.bnbflow.com/homepage/" target="_blank" rel="noreferrer">bnbflow -- property management for airbnb</a><br>-<a href="http://rentalsunited.com/WhoWho16.pdf" target="_blank" rel="noreferrer">Whos who for vacation rentals</a><br>- <a href="https://www.property118.com/" target="_blank" rel="noreferrer">Property 118</a></p>
     <ul>
       <li><a href="http://www.i-rates.com/" target="_blank" rel="noreferrer">Irates</a></li>
       <li><a href="https://www.rezdy.com/pricing/" target="_blank" rel="noreferrer">Rezdy</a></li>
       <li><a href="https://www.rented.com/" target="_blank" rel="noreferrer">Rented</a></li>
+      <li><a href="http://pegs.com/">Pegasus solutions</a></li>
     </ul>
     <hr/>
-    <p><strong>Getting users</strong></p>
+    <p id="get_u"><strong>Getting users</strong></p>
 
     <ul>
       <li>Find people from stackexchange travel board, use api to automate information gathering.
@@ -127,7 +143,7 @@
       <li>Appeal to Eco tourists</li>
     </ul>
     <hr/>
-    <p><strong>Pricing</strong></p>
+    <p id="pricing"><strong>Pricing</strong></p>
     <ol>
       <li>Fixed price Per Booking</li>
       <li>Fixed price Per Day of use </li>
@@ -138,6 +154,7 @@
       <li>Provide custom hosting for discussion forums. We should be able to provide a while label discourse to help tour operators/people running popular travel blogs increase their engagement with their audience. It could be another stream of income. </li>
     </ol>
     <hr/>
+    <p id="feat"><strong>Features</strong></p>
     <p><strong>Analytics for users</strong></p>
     <div>
       <p>We can use google anaytics  to track the webstes <a href="https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSite" target="_blank" rel="noreferrer">across multiple domains and subdomains</a>. We can also pull results using the analytics api for every domain/subdomain. </p>
@@ -161,7 +178,7 @@
       </ul>
       <p>Based on the numbers we may also provide him tips on maximizing his occupancy rate.  Or at least encourage him to talk of the discussion forums so that he may get help from the community. </p>
       <hr/>
-      <div><p><strong>Guideline</strong></p>
+      <div><p id="d_n"><strong>Domain Names</strong></p>
 	<p>To add a domain name lookup on a domain registrar and verify that it's available.</p>
 	<p><strong>Available on go daddy</strong></p>
 	<ul>
@@ -171,6 +188,8 @@
 	  <li>bedflight,<strong>bedflow</strong>,bedflo</li>
 	</ul>
       </div>
+      <hr/>
+      <p id="q_a"><strong>Q's and A's</strong></p>
       <p><small>-- Akshat Jiwan Sharma</small></p>
   </body>
 </html>

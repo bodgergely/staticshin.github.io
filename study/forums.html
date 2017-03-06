@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8"/>
-    <title>Discourse</title>
+    <title>Forums</title>
     <style>
       li{
       margin-top:5px;
@@ -22,11 +22,31 @@
 
   </head>
   <body>
+    <div id="test" style="display:none">e55a91a7</div>
+    <h1>Discourse</h1>
     <ul>
       <li>The installation of discourse was simple enough following <a href="https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md">this guide</a></li>
-      <li>But I wanted a discourse env on my local machine so I installed it <a href="https://github.com/discourse/discourse/blob/master/docs/VAGRANT.md">using this giude</a>. </li>
+      <li>But I wanted a discourse env on my local machine so I installed it <a href="https://github.com/discourse/discourse/blob/master/docs/VAGRANT.md">using this guide</a>. </li>
+      <li>Unfortunately though I could not get it to work using vagrant. Twice it failed to download the images. When the images were downloaded it failed to it threw up another error "While executing VboxManage"</li>
     </ul>
-    
+    <h1>NodeBB</h1>
+    <ul>   
+      <li>Fortunately I found another cool forum software called <a href="https://github.com/NodeBB/NodeBB">nodebb</a>. It has everything that discourse has plus it's written in node so I don't have to learn a new language in case I want to hack it. Furthermore I really liked it's plugin api so I decided to go with it.</li>
+      <li>I can use the nodebb write api to create a <a href="http://stackoverflow.com/questions/32626908/nodebb-write-api-example-to-create-new-user">new user</a></li>
+      <li>It looks like we can activate nodebb plugins via <a href="https://github.com/NodeBB/NodeBB/issues/4252">command line</a></li>
+      <li>The issue that added command line setup <a href="https://github.com/NodeBB/NodeBB/issues/382">script for nodebb</a></li>
+      <li>The install directory contains default setup data that can be configured to set different defaults for the type of forum user we are targeting. ex a community of landlords may have different defaults from say a community of college students. </li>
+      <li>The default setup with no parameters automatically creates an adminstrative account with a username and a randomly generated password.</li>
+      <li>Nodebb requires restart everytime a new plugin is installed or a theme is changed. </li>
+    </ul>
+    <h1>Node bb plugin list</h1>
+    <ol>
+        <li><a href="https://www.npmjs.com/package/nodebb-plugin-email">Plugin email</a></li>
+        <li><a href="https://github.com/NodeBB/nodebb-plugin-write-api">Nodebb plugin write api</a></li>
+        <li><a href="https://github.com/barisusakli/nodebb-plugin-dbsearch">Db search plugin</a></li>
+        <li><a href="https://github.com/pitaj/nodebb-plugin-calendar/tree/1.0.x">Nodebb calendar plugin</a></li>
+        <li><a href="https://community.nodebb.org/topic/7273/social-login/2">Node bb social login plugin</a></li>
+    </ol>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
 
     <script type="text/javascript">

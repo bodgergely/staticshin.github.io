@@ -22,7 +22,8 @@
       <li>The install directory contains default setup data that can be configured to set different defaults for the type of forum user we are targeting. ex a community of landlords may have different defaults from say a community of college students. </li>
       <li>The default setup with no parameters automatically creates an adminstrative account with a username and a randomly generated password.</li>
       <li>Nodebb requires restart everytime a new plugin is installed or a theme is changed. </li>
-      <li id="stat_data">By default nodebb installs with a pre-configured list of topics and categories. These topics and categories are defined statically in the <em>/install/data</em> directory. At the time of installation we should be able to modify the files contained in this directory to create categories and topics specific to our particular audience. For example the categories and topics for a college community forum would be a different as compared to the categories and topics for a boutique hotel management helpdesk app.</li>
+      <li id="stat_data">By default nodebb installs with a pre-configured list of topics and categories. These topics and categories are defined statically in the <em>/install/data</em> directory. At the time of installation we should be able to modify the files contained in this directory to create categories and topics specific to our particular audience. For example the categories and topics for a college community forum would be a different as compared to the categories and topics for a boutique hotel helpdesk app.</li>
+      <li>Node bb can setup via <a href="https://community.nodebb.org/topic/4325/set-up-nodebb-via-environment-variables/6">environment variables</a>. Once the app is setup it creates a config.json file. If we include a config.json file with the docker image we won't even need to bother with the setup steps.</li>
     </ul>
     <h1 id="plug_list">NodeBB plugin list</h1>
     <ol>

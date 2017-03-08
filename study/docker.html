@@ -6,19 +6,32 @@
     <link href="/study/index.css" rel="stylesheet"/>
   </head>
   <body>
+    <h1>Docker</h1>
     <ul>
       <li><a href="http://stackoverflow.com/questions/27912917/how-to-configure-docker-port-mapping-to-use-nginx-as-an-upstream-proxy">Docker ports served via nginx</a></li>
       <li><a href="http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/">Automated nginx reverse proxy for docker</a></li>
       <li><a href="http://stackoverflow.com/questions/26153686/how-to-run-a-command-on-an-already-existing-docker-container">Running Command on an existing docker container</a></li>
       <li id="events"><a href="https://docs.docker.com/engine/reference/commandline/events/">A guide to docker events</a> [Docker events can be formatted as json and handled by any program that can read the output from the shell]</li>
+      <li><a href="https://docs.docker.com/engine/api/v1.26/">It seems that docker has an http api</a> [Oh yes baby]</li>
+      <li><a href="http://stackoverflow.com/questions/24702233/docker-container-and-memory-consumption">The memory consumption of a docker container</a></li>
+      <li><a href="http://stackoverflow.com/documentation/docker/3935/docker-remote-api#t=201703080728266851921">Enable remote api for docker</a></li>
+      <li><a href="http://stackoverflow.com/questions/18496940/how-to-deal-with-persistent-storage-e-g-databases-in-docker">Persistent storage in docker</a></li>
+      <li><a href="https://github.com/tianon/dockerfiles">Big list of dockerfiles</a> [Can help in understanding various commands]</li>
+      <li><a href="https://groups.google.com/forum/#!topic/docker-user/RDpH2OYs6Xw">Docker images don't need to contain an os</a></li>
+      <li>Docker files can be <a href="https://github.com/docker/docker/issues/3378">chained</a>. [We'll probably have to use this technique to configure our node and redis environments before launching nodebb it seems]</li>
+      <li>Every instruction is a layer in a docker image. Which ties well with docker's change propogation <a href="#prop_changes">mechanism</a> </li>
     </ul>
     <h1>Things that we need to do with docker</h1>
     <ol>        
-      <li>Perform housekeeping tasks-- dynamically replace the files in the <a href="/study/forums.html#stat_data"><em>/install/data/</em></a> directory depending upon the type of forum software that we want to create.</li>
+      <li>Perform housekeeping tasks-- dynamically replace the files in the <em>/install/data/</em> directory depending upon <a href="/study/forums.html#stat_data">the type of forum</a> software that we want to create.</li>
       <li>Auto install nodebb with all of it's dependencies in separate (individual) containers -- imagemagick, node, node_modules,redis and nodebb <a href="/study/forums.html#plug_list">plugins</a>.</li>
       <li>The status of installation should be <a href="#events">notified</a> to the process that initiated the installation.</li>
       <li>Configure docker in a way that we are able to send commands to it during run time.</li>
     </ol>
+    <h1>Notes</h1>
+    <p id="prop_changes"><em>"When you change a Docker image, such as when you update an application to a new version, a new layer is built and replaces only the layer it updates. The other layers remain intact. To distribute the update, you only need to transfer the updated layer. Layering speeds up distribution of Docker images. Docker determines which layers need to be updated at runtime."</em>-- This means that we should be able to install plugins and update dependencies on a single docker image and the changes will propogate to all the containers. [Man this is getting better and better]</p>
+    <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
+
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-37138783-1']);

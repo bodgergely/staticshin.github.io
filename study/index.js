@@ -2,8 +2,6 @@ $("a").click(function(){
     console.log("clicked");
     var url = $(this).attr('href');
     var id = url;
-    console.log(id);
-
     change_color(id);
 });
 

@@ -1,0 +1,17 @@
+.yellow{
+    background-color:yellow;
+}
+li{
+    margin-top:5px;
+}
+.strong{
+    font-weight:bold;
+}
+hr{
+    border: 1px solid whitesmoke;
+}
+body{
+    font-family:monospace;
+    width:80%;
+
+}

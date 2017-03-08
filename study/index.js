@@ -1,12 +1,14 @@
 $("a").click(function(){
+    $(".yellow").removeClass("yellow");
     console.log("clicked");
     var url = $(this).attr('href');
     var id = url;
     change_color(id);
+    
 });
 
 var change_color = function(id){
-    $(id).css("background-color","yellow");
+    $(id).addClass("yellow");
 };
 
 var url = document.URL;

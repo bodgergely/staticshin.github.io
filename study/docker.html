@@ -8,6 +8,7 @@
   <body>
     <h1>Docker</h1>
     <ul>
+      <li><a href="https://gist.github.com/ju2wheels/3d1a1dfa498977874d03">Docker file reference</a></li>
       <li><a href="http://stackoverflow.com/questions/27912917/how-to-configure-docker-port-mapping-to-use-nginx-as-an-upstream-proxy">Docker ports served via nginx</a></li>
       <li><a href="http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/">Automated nginx reverse proxy for docker</a></li>
       <li><a href="http://stackoverflow.com/questions/26153686/how-to-run-a-command-on-an-already-existing-docker-container">Running Command on an existing docker container</a></li>
@@ -31,6 +32,11 @@
     <h1>Notes</h1>
     <p id="prop_changes"><em>"When you change a Docker image, such as when you update an application to a new version, a new layer is built and replaces only the layer it updates. The other layers remain intact. To distribute the update, you only need to transfer the updated layer. Layering speeds up distribution of Docker images. Docker determines which layers need to be updated at runtime."</em>-- <s>This means that we should be able to install plugins and update dependencies on a single docker image and the changes will propagate to all the containers. [Man this is getting better and better]</s> [It seems that the layering only applied to image builds and does not actually propagate to containers. But we have a <a href="#alter_exec">few alternatives</a>]</p>
     <p id="alter_exec">There is an api endpoint that <a href="https://docs.docker.com/engine/api/v1.26/#operation/ContainerExec">creates exec instances</a>. Although we can run command inside a docker container using this api we won't need to do so. Since the docker containers will be networked we can simply instruct them to run a command via http. </p>
+
+    <p><em>"Not at all! Any data that your application writes to disk gets preserved in its container until you explicitly delete the container. The file system for the container persists even after the container halts."</em>[It seems that data does persist inside the <a href="#ex_im">docker container</a>]</p>
+
+    <p id="ex_im">Docker containers can be compressed into a tar file and then exported, later on the data from the tar file can be imported in a different container. So that whatever data is stored inside the UFS is safe as long as the container is not deleted. [Forget about all the best practice of having different volumes and other mumbo jumbo]. This answer gives the details of some other <a href="http://stackoverflow.com/questions/26331651/how-can-i-backup-a-docker-container-with-its-data-volumes">data backup</a> strategies.</p>
+    
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
 
     <script type="text/javascript">

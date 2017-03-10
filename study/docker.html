@@ -27,7 +27,7 @@
       <li>Perform housekeeping tasks-- dynamically replace the files in the <em>/install/data/</em> directory depending upon <a href="/study/forums.html#stat_data">the type of forum</a> software that we want to create.</li>
       <li>Auto install nodebb with all of it's dependencies in separate (individual) containers -- imagemagick, node, node_modules,redis and nodebb <a href="/study/forums.html#plug_list">plugins</a>.</li>
       <li>The status of installation should be <a href="#events">notified</a> to the process that initiated the installation.</li>
-      <li>Configure docker in a way that we are able to send commands to it during run time.</li>
+      <li>Configure docker in a way that we are able to <a href="#alter_exec">send commands</a> to it during run time.</li>
     </ol>
     <h1>Notes</h1>
     <p id="prop_changes"><em>"When you change a Docker image, such as when you update an application to a new version, a new layer is built and replaces only the layer it updates. The other layers remain intact. To distribute the update, you only need to transfer the updated layer. Layering speeds up distribution of Docker images. Docker determines which layers need to be updated at runtime."</em>-- <s>This means that we should be able to install plugins and update dependencies on a single docker image and the changes will propagate to all the containers. [Man this is getting better and better]</s> [It seems that the layering only applied to image builds and does not actually propagate to containers. But we have a <a href="#alter_exec">few alternatives</a>]</p>
@@ -36,7 +36,7 @@
     <p><em>"Not at all! Any data that your application writes to disk gets preserved in its container until you explicitly delete the container. The file system for the container persists even after the container halts."</em>[It seems that data does persist inside the <a href="#ex_im">docker container</a>]</p>
 
     <p id="ex_im">Docker containers can be compressed into a tar file and then exported, later on the data from the tar file can be imported in a different container. So that whatever data is stored inside the UFS is safe as long as the container is not deleted. [Forget about all the best practice of having different volumes and other mumbo jumbo]. This answer gives the details of some other <a href="http://stackoverflow.com/questions/26331651/how-can-i-backup-a-docker-container-with-its-data-volumes">data backup</a> strategies.</p>
-    
+<p id="h_name">Docker allows us to <a href="https://docs.docker.com/engine/api/v1.26/#operation/ContainerCreate">set hostnames</a> that can be used to access containers. Hostnames can be randomly generated ids stored in a database and proxied by a master nginx server.</p>    
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
 
     <script type="text/javascript">

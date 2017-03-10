@@ -10,6 +10,7 @@
     <ul>
       <li><a href="https://gist.github.com/ju2wheels/3d1a1dfa498977874d03">Docker file reference</a></li>
       <li><a href="http://stackoverflow.com/questions/27912917/how-to-configure-docker-port-mapping-to-use-nginx-as-an-upstream-proxy">Docker ports served via nginx</a></li>
+      <li><a href="http://stackoverflow.com/questions/22111060/difference-between-expose-and-publish-in-docker">Difference between expose and publish</a> [Basically expose is for inter container communication where as publish allows for communication outside docker containers]</li>
       <li><a href="http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/">Automated nginx reverse proxy for docker</a></li>
       <li><a href="http://stackoverflow.com/questions/26153686/how-to-run-a-command-on-an-already-existing-docker-container">Running Command on an existing docker container</a></li>
       <li id="events"><a href="https://docs.docker.com/engine/reference/commandline/events/">A guide to docker events</a> [Docker events can be formatted as json and handled by any program that can read the output from the shell]</li>
@@ -36,7 +37,7 @@
     <p><em>"Not at all! Any data that your application writes to disk gets preserved in its container until you explicitly delete the container. The file system for the container persists even after the container halts."</em>[It seems that data does persist inside the <a href="#ex_im">docker container</a>]</p>
 
     <p id="ex_im">Docker containers can be compressed into a tar file and then exported, later on the data from the tar file can be imported in a different container. So that whatever data is stored inside the UFS is safe as long as the container is not deleted. [Forget about all the best practices of having a volume seperate from the data and other mumbo jumbo]. This answer gives the details of some alternative <a href="http://stackoverflow.com/questions/26331651/how-can-i-backup-a-docker-container-with-its-data-volumes">data backup</a> strategies.</p>
-<p id="h_name">Docker allows us to <a href="https://docs.docker.com/engine/api/v1.26/#operation/ContainerCreate">set hostnames</a> that can be used to access containers. Hostnames can be randomly generated ids stored in a database and proxied by a master nginx server.</p>    
+<p id="h_name">Docker allows us to <a href="https://docs.docker.com/engine/api/v1.26/#operation/ContainerCreate">set hostnames</a> that can be used to access containers. These hostnames can be randomly generated ids stored in a database  proxied by a master nginx server.</p>    
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
 
     <script type="text/javascript">

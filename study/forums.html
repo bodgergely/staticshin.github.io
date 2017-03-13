@@ -45,6 +45,21 @@
       <li><a href="https://en.wikipedia.org/wiki/BBCode">BB code reference</a></li>
       <li><a href="http://webapps.stackexchange.com/questions/33354/how-do-i-follow-a-google-group-using-an-rss-reader">Google groups offers an rss feed</a></li>
     </ul>
+    <h1>Application architecture of the forum_container</h1>
+    <div id="app_arch">
+      <p>The <em>forum_container</em> is a git branch which represents  an instance of the docker container spawned from the base image, consisting of the following applications:- </p>
+      <ol>
+        <li>A redis server</li>
+          <li>Nodebb forum running on port number 4567 along with all it's plugins and <em>node_modules</em></li>
+          <li>Openresty as the reverse proxy server</li>
+      </ol>
+      <p>Once the container has been initialized all the updates to it will be pulled dynamically from the <em>forum_container</em> branch. Therefore we need to configure our applications to:-</p>
+      <ol>
+          <li>Communicate with the master process. Master process should be able to send instructions to the running application. And the running application must be able to execute it.</li>
+          <li>The process of communication must be two ways. The application must also be able to send updates to the master process about it's state.</li>
+          <li>Since all the state information will be stored in the git repository we need to configure our app to pull from the branch at runtime, apply the changes and start the server again. Fortunately there are node bindings for <a href="https://github.com/nodegit/nodegit">native git client</a> that should simplify this process a lot.</li>
+      </ol>
+    </div>
     <h1>Use cases</h1>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
     <script type="text/javascript">

@@ -27,18 +27,18 @@
     </ul>
     <h1 id="plug_list">NodeBB plugin list</h1>
     <ol>
-        <li><a href="https://www.npmjs.com/package/nodebb-plugin-email">Plugin email</a></li>
-        <li><a href="https://github.com/NodeBB/nodebb-plugin-write-api">Nodebb plugin write api</a></li>
-        <li><a href="https://github.com/barisusakli/nodebb-plugin-dbsearch">Db search plugin</a></li>
-        <li><a href="https://github.com/pitaj/nodebb-plugin-calendar/tree/1.0.x">Nodebb calendar plugin</a></li>
-        <li><a href="https://community.nodebb.org/topic/7273/social-login/2">Node bb social login plugin</a></li>
-        <li><a href="https://community.nodebb.org/topic/6423/is-there-a-way-to-remove-the-site-logo-from-the-acp">
-	    Change logos</a></li>
-        <li><a href="https://github.com/Schamper/nodebb-plugin-poll">Nodebb Polling</a></li>
-        <li><a href="https://github.com/LouiseMcMahon/nodebb-plugin-s3-uploads#nodebb-s3-uploads-plugin">Uploading pictures to S3</a></li>
-        <li><a href="https://community.nodebb.org/topic/8572/lost-in-subdomains">Making the cookie work across domains</a></li>
-        <li><a href="https://community.nodebb.org/topic/6824/automatically-authenticate-users-on-nodebb-using-the-session-cookie-passed-in-the-redirect/3">Session Sharing</a></li>
-        <li><a href="https://github.com/julianlam/nodebb-plugin-session-sharing">Node BB session sharing plugin</a></li>
+      <li><a href="https://www.npmjs.com/package/nodebb-plugin-email">Plugin email</a></li>
+      <li><a href="https://github.com/NodeBB/nodebb-plugin-write-api">Nodebb plugin write api</a></li>
+      <li><a href="https://github.com/barisusakli/nodebb-plugin-dbsearch">Db search plugin</a></li>
+      <li><a href="https://github.com/pitaj/nodebb-plugin-calendar/tree/1.0.x">Nodebb calendar plugin</a></li>
+      <li><a href="https://community.nodebb.org/topic/7273/social-login/2">Node bb social login plugin</a></li>
+      <li><a href="https://community.nodebb.org/topic/6423/is-there-a-way-to-remove-the-site-logo-from-the-acp">
+	  Change logos</a></li>
+      <li><a href="https://github.com/Schamper/nodebb-plugin-poll">Nodebb Polling</a></li>
+      <li><a href="https://github.com/LouiseMcMahon/nodebb-plugin-s3-uploads#nodebb-s3-uploads-plugin">Uploading pictures to S3</a></li>
+      <li><a href="https://community.nodebb.org/topic/8572/lost-in-subdomains">Making the cookie work across domains</a></li>
+      <li><a href="https://community.nodebb.org/topic/6824/automatically-authenticate-users-on-nodebb-using-the-session-cookie-passed-in-the-redirect/3">Session Sharing</a></li>
+      <li><a href="https://github.com/julianlam/nodebb-plugin-session-sharing">Node BB session sharing plugin</a></li>
     </ol>
     <h1>Additional links</h1>
     <ul>
@@ -50,17 +50,31 @@
       <p>The <em>forum_container</em> is a git branch which represents  an instance of the docker container spawned from the base image, consisting of the following applications:- </p>
       <ol>
         <li>A redis server</li>
-          <li>Nodebb forum running on port number 4567 along with all it's plugins and <em>node_modules</em></li>
-          <li>Openresty as the reverse proxy server</li>
+        <li>Nodebb forum running on port number 4567 along with all it's plugins and <em>node_modules</em></li>
+        <li>Openresty as the reverse proxy server</li>
       </ol>
       <p>Once the container has been initialized all the updates to it will be pulled dynamically from the <em>forum_container</em> branch. Therefore we need to configure our applications to:-</p>
       <ol>
-          <li>Communicate with the master process. Master process should be able to send instructions to the running application. And the running application must be able to execute it.</li>
-          <li>The process of communication must be two ways. The application must also be able to send updates to the master process about it's state.</li>
-          <li>Since all the state information will be stored in the git repository we need to configure our app to pull from the branch at runtime, apply the changes and start the server again. Fortunately there are node bindings for <a href="https://github.com/nodegit/nodegit">native git client</a> that should simplify this process a lot.</li>
+        <li>Communicate with the master process. Master process should be able to send instructions to the running application. And the running application must be able to execute it.</li>
+        <li>The process of communication must be two ways. The application must also be able to send updates to the master process about it's state.</li>
+        <li>Since all the state information will be stored in the git repository we need to configure our app to pull from the branch at runtime, apply the changes and start the server again. Fortunately there are node bindings for <a href="https://github.com/nodegit/nodegit">native git client</a> that should simplify this process a lot.</li>
       </ol>
     </div>
-    <h1>Use cases</h1>
+    <div id="feat_list">
+      <h1>Feature list for use as a helpdesk software</h1>
+      <ol>
+        <li>Manage availability, complaints and promotions.</li>
+        <li>Convert these mails and calls into tickets, so your support staff can categorize and address them.</li>
+        <li>Provide a knowledge base and FAQ section for your travelers to gather information on the move.</li>
+        <li>Centralized service desk for all your internal business communications as well as communication across your supply chain.</li>
+        <li>With the forums, customers can bring positive and constructive feedback about their experience and also view feedback from other customers, thereby enhancing your customer base.</li>
+        <li>With this social media integration, they can send private messages to your Facebook account that your support staff will receive as a ticket. Any responses on the ticket will go back as a message to your customer.[Will have to implement via api calls, but a good feature suggestion]</li>
+      </ol>
+    </div>
+    
+    
+    <h1 id="use_case">Use cases</h1>
+    
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
     <script type="text/javascript">
       var _gaq = _gaq || [];

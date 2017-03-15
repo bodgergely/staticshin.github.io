@@ -51,14 +51,36 @@
     </div>
     <div id="dock_swarm">
       <h1>Hello docker swarm</h1>
-      <p>The key difference between networked containers and swarm mode is highlighted in this quote from the official docker dockumentation</p>
+      <p>The key difference between networked containers and swarm mode is highlighted in this quote from the official docker documentation</p>
       <p><em>When you run Docker without using swarm mode, you execute container commands. When you run the Docker in swarm mode, you orchestrate services. You can run swarm services and standalone containers on the same Docker instances.
       </em></p>
+      <p><strong>Tasks and services</strong></p>
+      <p>A task is a container running on a swarm. A service is a collection of tasks on a swarm.</p>
+      <ol>
+        <li>A docker node is an instance of docker engine running on a swarm</li>
+	<li>The manager node has all the capabilities of a worker node.</li>
+        <li>Docker swarm introduces a concept of overlay networks. All the container in an overlay network can communicate with each other regardless of the machine they are hosted on/ the node on which they are deployed on.</li>
+        <li>Overlay networks can be created with the help of a api call to the network endpoint with the <a href="https://docs.docker.com/engine/api/v1.26/#operation/NetworkCreate">driver specified as overlay</a></li>
+        <li>In the swarm mode if a service is not running on the node, the swarm manager is intelligent enough to route the request to a node on which the service is actually running a phenomenon known as "ingress load balancing".</li>
+      </ol>
+      <p><strong>Rationale behind using a swarm instead of containers</strong></p>
+      <p>We'll its a very simple decision. A docker swarm gives us service level networking with the master process out of te box. With containers we'll have to write our networking logic. I don't want to do that. Yes we're not using the swarm in a way it was intended(to distribute/orchestrate services) but it works well for what we need so it's all good :)</p>
+      <p><strong>How are we going to use docker swarm ?</strong></p>
+      <p>Here's how we'll structure our application:-</p>
+      <ol>
+        <li>We'll create a single machine swarm. That is we'll only have one node of execution. We're not considering scalability/distribution/redudance of individual services. Our goal is to run a set of services for a client that are independent from the services of other clients.</li>
+        <li>Services will be grouped by an overlay network. An overlay network is the bucket underwich various services will reside. For example a network called "loco" could hold the services for an organization called loco.</li>
+	        <li>These services are just containers created from static docker images. If we modify the images propagating the updates to the services is quite straightforward by the means of http api.</li>
+        <li>We'll need to hold the service information in a master database. What kind of information? Probably just a has that maps the service metadata with network overlays so that we can access them using our nginx configuration and update them using the docker api. We'll be using a redis instance because the data storage requirements are quite low.</li>
+
+         <li>It should be very much possible to move the docker service to its own machine and then add the node to the swarm so that it's still available on the overlay network. We'll have to update the information in the database if we do that. However we'll try to keep everything running on a single machine and apply vertical scaling to it. If we foresee running out of scale then we'll consider moving out to different machines. The upgrade is quite simple from an operational perspective. We'll replicate the service on a different machine, update the database information and delete the service on the original machine. In essence we'll never be distributing the individual service. We'll only be configuring them in a way so that multiple services can run along side each other efficiently.</li>
+      </ol>
+<p>On docker's website there is a little experiment that attaches two distinct services to a network overlay. One is an nginx server listening on port 80 and other is a "busy box application". It is shown that from the busy box container it is possible to wget nginx using just the network overlay name i.e without publishing the port outside of the swarm. This is the behaviour that we want to replicate.</p>
     </div>
     <div id="docker_machine">
       <h1>Docker machine</h1>
-      <p>Docker machines allow you to create and manage docker hosts. This is just fancy talk for a virtual machine with docker installed on it. Essentially a docker machine is a tool that allows you to remotely log in to ta virtual machine and execute docker related commands on it. To the developer it gives the illusion that he is only interacting with docker and pulling the strings with docker machine to manage his remote server.</p>
-      <p>I can't find much use for it in the production environments, good old ssh and a setup script is enough for me. Nonetheless its a very handy tool for testing and managing swarms locally. So I'll be testing stuff locally, where as in production everything will be managed by api calls.</p>
+      <p>Docker machines allow you to create and manage docker hosts. This is just fancy talk for a virtual machine with docker installed on it. Essentially a docker machine is a tool that allows you to remotely log in to a vm and execute docker related commands on it. To the developer it gives the illusion that he is only interacting with docker and pulling the strings with docker machine to manage his remote server.</p>
+      <p>I can't find much use for it in the production environments, good old ssh and a setup script is enough for me. Nonetheless its a very handy tool for testing and managing swarms locally. So I'll be using it on my dev machine, where as in production everything will be managed by api calls.</p>
       <p><strong>Some links</strong></p>
       <ul>
           <li><a href="https://rominirani.com/docker-machine-to-control-docker-hosts-on-google-cloud-3a48b46809dc#.w6pna2bv9">Docker machine controlling docker hosts on google cloud</a></li>

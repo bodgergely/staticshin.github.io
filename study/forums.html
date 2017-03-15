@@ -54,6 +54,7 @@
         <li>Openresty as the reverse proxy server</li>
       </ol>
       <p>Once the container has been initialized all the updates to it will be pulled dynamically from the <em>forum_container</em> branch. Therefore we need to configure our applications to:-</p>
+      <p>[we might not need all these steps as <a href="/study/docker.html#dock_swarm">docker swarm</a> could manage rolling updates for us]</p>
       <ol>
         <li>Communicate with the master process. Master process should be able to send instructions to the running application. And the running application must be able to execute it.</li>
         <li>The process of communication must be two ways. The application must also be able to send updates to the master process about it's state.</li>

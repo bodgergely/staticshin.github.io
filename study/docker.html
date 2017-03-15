@@ -41,13 +41,19 @@
     <p>Docker runs as root by default.</p>
     <p>We can run docker images either <a href="http://stackoverflow.com/questions/18497688/run-a-docker-image-as-a-container">by name or by ids</a>. The advantage of using id is that we won't have to waste any time in laying down a naming convention for our images. The disadvantage is that the id of the image does not give us much hint of what the image actually contains. But the disadvantage is bearable. We won't be changing images. We'll make containers smart instead.</p>
     <p><strong>Propagating updates to docker containers via a git branch</strong></p>
-    <div id="prop_updates">
-      The problem of propagating updates to the containers can be easily solved by pulling the changes from a git branch. We need to create a base image that initializes a container and the applications in it with to a default state. The actual state of the application would be maintained inside a git repository. Once we push updates to the repo we can instruct the master process to command a container to pull all the updates from the repo and restart the applications. This would work because:-
+    <div id="prop_updates"><s>
+<p>      The problem of propagating updates to the containers can be easily solved by pulling the changes from a git branch. We need to create a base image that initializes a container and the applications in it with to a default state. The actual state of the application would be maintained inside a git repository. Once we push updates to the repo we can instruct the master process to command a container to pull all the updates from the repo and restart the applications. This would work because:-</p>
       <ol>
           <li>The containers are networked</li>
           <li>The master process has the ids of all the containers in a network</li>
       </ol>
-      Later on when the update has been applied to the container and the application server has been restarted we can send a notification to the master process. In openresty terms this simply translates to a handler on the master server that listens to the incoming post requests.
+      <p>Once the update has been applied to the container and the application server has been restarted we can send a notification to the master process. In openresty terms this simply translates to a handler on the master server that listens to the incoming post requests.</p></s> [Say <a href="#dock_swarm">hello to docker swarm</a>]
+    </div>
+    <div id="dock_swarm">
+      <h1>Hello docker swarm</h1>
+      <p>The key difference between networked containers and swarm mode is highlighted in this quote from the official docker dockumentation</p>
+      <p><em>When you run Docker without using swarm mode, you execute container commands. When you run the Docker in swarm mode, you orchestrate services. You can run swarm services and standalone containers on the same Docker instances.
+      </em></p>
     </div>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
 

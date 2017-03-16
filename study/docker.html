@@ -62,6 +62,7 @@
         <li>Docker swarm introduces a concept of overlay networks. All the container in an overlay network can communicate with each other regardless of the machine they are hosted on/ the node on which they are deployed on.</li>
         <li>Overlay networks can be created with the help of a api call to the network endpoint with the <a href="https://docs.docker.com/engine/api/v1.26/#operation/NetworkCreate">driver specified as overlay</a></li>
         <li>In the swarm mode if a service is not running on the node, the swarm manager is intelligent enough to route the request to a node on which the service is actually running a phenomenon known as "ingress load balancing".</li>
+        <li>1000 nodes can be run without any problem. Each manager should be able to handle about 95k tasks.</li>
       </ol>
       <p><strong>Rationale behind using a swarm instead of containers</strong></p>
       <p>We'll its a very simple decision. A docker swarm gives us service level networking with the master process out of te box. With containers we'll have to write our networking logic. I don't want to do that. Yes we're not using the swarm in a way it was intended(to distribute/orchestrate services) but it works well for what we need so it's all good :)</p>

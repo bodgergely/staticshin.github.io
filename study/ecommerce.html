@@ -11,33 +11,65 @@
     <h1>SAP Hybris</h1>
     <div>
       <p>Hybris is a software for commerce,marketing,revenue and sales.</p>
+      <p><strong>Features</strong></p>
+      <ol>
+        <li id="cock">The Customer Service Cockpit pulls customer data together in one place, allowing customer
+	  service agents to serve their clients’ needs regardless of channel. <small>[We can replicate this feature with our <a href="/study/forums.html#help_desk">forum helpdesk</a> idea, even hybris has a forum integration with <a href="/study/forums.html#sap_jam">sap jam</a> that they encourage their users to buy]</small></li>
+        <li>The internationalization helps brands to serve an audience around the world</li>
+        <li>Manage content – and your entire catalog – from one place.</li>
+        <li>Manage different businesses from a single platform, including your relationships with different suppliers, distributors and partners.</li>
+        <li>Make order processing across all channels quick and easy, including complex arrangements such as bulk ordering, order replenishment and multi-channel fulfillment.</li>
+        <li>Enable B2B customers to manage their own accounts and place orders. They can assign rights to employees, set up purchasing limits, and maintain individual budgets.</li>
+      </ol>
+
       <p><strong>Lafayette Case Study observations</strong></p>
       <p><small>[Hybris did a case study with a major french fashion store. The study highlights how hybris solution was used to replace their old crufty electronic store. I note down my observations below.]</small></p>
       <ol>
         <li>Apparently its hard for a company with billion dollars in revenue to create a simple ecommerce platform (which is nothing more than a content management system really).The in house team could not even build a software that allows dynamic updation of store catalogue [I find it <strong>hard</strong> to <strong>swallow</strong> but it indicates that there is a market for dedicated ecommerce platforms. Amazon is not the be all end all of electronic stores].</li>
-          <li>The language of the study indicates that the product was custom built for the store. Its as if every feature of the product was designed specifically for them. For ex the study boasts that the brand is known for listening and responding to their customers' needs and therefore they used the customer service <a href="#cock"><strong>cock</strong>pit</a> feature. I believe though they just signed up for it because one of their sales representative pushed the feature too <strong>hard</strong>, the brand had too much money to burn and they were just to exhausted with there day to day operations to deliberate on IT decisions. So they let the "experts" chose for them. [<small>And it's quite plain to see how hybris has gone to great lengths to establish their expertise in the market by conducting seminars and publishing papers and doing a PR story on founders struggling to put the idea out when they were just little kinds in college. Standard stuff.</small>]. We won't be taking this approach but there are still some lessons to be learnt on the art of product building/selling. </li>
-          <li>The project took 9 months to complete. <small>[9 months? aha!]</small></li>
+        <li>The language of the study indicates that the product was custom built for the store. Its as if every feature of the product was designed specifically to alleviate their pain [<small>Thats what every company wants their users to believe</small>] .For ex the study boasts that the brand is known for listening and responding to their customers' needs and therefore the brand went with their customer service <a href="#cock"><strong>cock</strong>pit</a> product. However I believe the real reason they signed up for it was because one of <strong>cock</strong>pit's sales representative pushed the feature too <strong>hard</strong>, the "brand" had too much money to burn and they were just too exhausted with their day to day operations to deliberate on IT decisions. So they let the "experts" chose for them. [<small>And it's quite plain to see how hybris has gone to great lengths to establish their expertise in the market by conducting seminars and publishing papers and doing a PR story on founders struggling to put the idea out when they were just little kinds in college. Standard stuff.</small>]. We won't be taking this approach but there are still some lessons to be learnt on the art of product building/selling. </li>
+        <li>The project took 9 months to complete. <small>[9 months? aha!]</small></li>
         <li>40 million unique visitors in 2013. [<small>We should be able to use this
 	    number as the test data</small>]</li>
       </ol>
-      <p><strong>Features</strong></p>
-      <ol>
-          <li id="cock">The Customer Service Cockpit pulls customer data together in one place, allowing customer
-service agents to serve their clients’ needs regardless of channel. <small>[This can be tied together with our <a href="/study/forums.html#help_desk">forum helpdesk</a> idea, hybris uses this approach by encouraging users to deploy <a href="/study/forums.html#sap_jam">sap jam</a> with their hybris app]</small></li>
-          <li>The internationalization helps brands to serve an audience around the world</li>
-          <li>Manage content – and your entire catalog – from one place.</li>
-          <li>Manage different businesses from a single platform, including your relationships with different suppliers, distributors and partners.</li>
-          <li>Make order processing across all channels quick and easy, including complex arrangements such as bulk ordering, order replenishment and multi-channel fulfillment.</li>
-          <li>Enable B2B customers to manage their own accounts and place orders. They can assign rights to employees, set up purchasing limits, and maintain individual budgets.</li>
-      </ol>
+      <div id="yaas">
+	<p><strong>YAAS</strong></p>
+	<p>[<small>YAAS exposes sap hybris components as a service [They call it CAAS i.e. commerce as a service] that allows its customers to have more control over the product development. Every small/big thing that goes into making an ecommerce application is exposed as a service to the developers. Pricing is based on number of api calls per month. So the api calls are monitored</small>]</p>
+	<ol>
+          <li>Microservice based architecture. Either build new applications or extend existing ones.
+	    API based approach.</li>
+          <li><em>"you can focus on building an amazing customer experience"</em>.yaas recognizes that a unique user interface would be important for stores to get their branding right so they encourage the users to use their api driven service. To facilitate the UI building part they have created <a href="#ui-component">opensource templates</a> that simplifies the process. Brilliant.</li>
+          <li>Instant provisioning, autoscale and mashup are key selling points. Users can pick and use the components they want.</li>
+          <li>YAAS also offers a marketplace where developers can publish their own apps that can be used by other customers with a pay per use model.</li>
+	</ol>
+	<p><strong>Superbowl 50 case study</strong></p>
+	<ol>
+          <li>Took 2 weeks for a small team to assemble a microsite</li>
+          <li>Because of the pay per use nature of the website the site was taken down after the event was over.</li>
+          <li>Looks like yaas could not get a testimonial from the superbowl 50 team so they just "invented" it themselves. The website has a prominent quote from the SVP of yaas (they call him SVP of "hybris as a service" [<small>just admire the brilliant spin from the copywriter for a moment</small>]).  Man this is desperate!</li>
+	</ol>
+      </div>
       <p><strong>Links</strong></p>
       <ol>
-          <li><a href="http://www.keyrus.com/"> Keyrus consulting group</a> <small>[Partner of hybris]</small></li>
+        <li><a href="https://devportal.yaas.io/services/">YAAS dev portal</a></li>
+        <li><a href="http://www.keyrus.com/"> Keyrus consulting group</a> <small>[Partner of hybris]</small></li>
+        <li><a href="https://intl.tumi.com/">Tumi</a> [<small>Hybris customer</small>]</li>
+        <li>
+          <a href="https://www.blue-tomato.com/de-DE/">Blue tomato</a>
+          <small>[Hybris cusomer]</small>
+        </li>
+	<li id="ui-component">
+          <a href="https://github.com/SAP/techne">Techne</a>
+          <small>[Some UI components from yaas]</small>
+        </li>
       </ol>
     </div>
-    <h1>Klarna</h1>
+    <div id="klarna">
+      <h1>Klarna</h1>
+    </div>
+    <div id="reaction">
+      <h1>Reaction</h1>
+    </div>
     <h1>For hotels</h1>
-    <h1 id="reaction">Reaction</h1>
     
     <h1>Links</h1>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     

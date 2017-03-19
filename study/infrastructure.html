@@ -11,7 +11,20 @@
     <ul>
       <li><a href="https://cloud.google.com/compute/">Google Compute Engine</a>
 	[<a href="https://cloud.google.com/compute/pricing">Pricing Breakdown</a>]</li>
+      <li><a href="https://www.quora.com/What-are-some-real-world-examples-of-AWS-usage-costs#!n=12">Real world Usage</a></li>
+      <li>Amazon supports <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instances-and-amis.html">application machine image</a>. From an application machine image multiple instances of servers can be launched from the cloud.
+        <small>This architecture is quite similar to <a href="/study/docker.html">docker images</a></small>
+      </li>
     </ul>
+    <div id="notes">
+      <h1>Notes</h1>
+      <p><em>"EC2 instances must be created prior to requesting ECS"</em>[<a href="https://platform9.com/blog/compare-kubernetes-vs-ecs/">link</a>]</p>
+    </div>
+    <h1 id="usage">Usage</h1>
+    <p>
+      Initial tests showed that around 300-500 MB of ram is needed for all the services to run on idle.
+      <small>[Of course we'll need more ram than that because there would be sockets involved that can shoot up the ram usage.]</small>
+    </p>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
 
     <script type="text/javascript">

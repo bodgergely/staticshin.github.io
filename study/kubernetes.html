@@ -8,7 +8,9 @@
   <body>
     <h1>Kubernetes</h1>
     <p>It seems that Kubernetes is a "platform independent" (it works with docker as well as rkt) container management tool. Among other things it allows me to perform updates to running containers. This greatly simplifies my work as I won't have to build my own <a href="/study/docker.html#prop_updates">update propagation</a> chain.  </p>
-    <p>However most of the features that I need from kubernetis are also available natively in docker swarm. So I will be sticking to that.</p>
+    <p id="docker_swarm"><s>However most of the features that I need from kubernetes are also available natively in docker swarm. So I will be sticking to that.</s></p>
+    <p>One point about kubernetes that I hadn't considered before was that it allows me to run my app in a managed google container engine environment. Which means that I can provision on demand servers from google itself. If I <a href="#docker_swarm">go with docker swarm</a> I'm on my own and I'll have to manage and deploy apps by writing programs. This will make my job harder. Amazon does offer an <a href="/study/infrastructure.html#ecs">elastic container service</a> but that is very costly because first it forces me to use multiple amazon services and second it locks me in.
+      Therefore I'm looking into kubernetes again.</p>
 
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
     <script type="text/javascript">

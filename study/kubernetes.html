@@ -22,12 +22,13 @@
       <p>Consider a building. Each building has multiple apartments. A tenant owns an apartment and he may have his stuff within that apartment. The way I'm seeing things right now is :- Kubernetes master is the building. A node is an apartment and pods is all the stuff in the apartment. I need to create apartments for my customers.</p>
       <p>Since each apartment or node will be a physical server I'll have to be very careful about what <a href="/study/infrastructure.html">infrastructure provider</a> I use.  We need to keep the costs of provisioning and monitoring new nodes as low as possible. With this point in mind <a href="#consider_this">Amazon ECS</a> looks pretty expensive to me.</p>
       <p><strong>A word on rolling updates</strong></p>
-      <p>Kubernetes performs rolling updates by creating new pods with an image description and then terminating the existing pods. This raises two important implications for our architechture:- </p>
+      <p>Kubernetes performs rolling updates by creating new pods with an image description and then terminating the existing pods. This raises two important implications for our architecture:- </p>
       <ol>
-          <li>Since we are designing one service pod per node artchitechture we need to plan for unavailibility/maintennce of apps</li>
+          <li>Since we are designing one service pod per node architecture we need to plan for unavailability/maintenance of apps</li>
           <li>
 	    It would be best if app containers could simply update themselves via a <a href="/study/docker.html#prop_updates">git repo</a> the same idea which we considered with docker.
 	  </li>
+          <li>I can't think of a scenario in production where rollback would be useful. The update is so heavy with creation and deletion of pods that if I ever take the plunge to update I'll make sure that I won't have to roll back under any circumstance.</li>
       </ol>
     </div>
 

@@ -15,9 +15,12 @@
     <p>It is important to remember that in the dev mode minikube assigns the ip address to our virtual node. So that to get the ip address we must use the built in command <small>sudo minikube service $service_name --url
       </small>
     </p>
-    <p><strong>A word on scaling and replicas</strong></p>
-    <div>
-      <p>Scaling in kubernetes refers to increasing/decreasing the number of replicas in the deployment. Now replication of has been a bit difficult for me to understand. What I want to achieve is ability to run multiple instances of an app. Now this comes quite close to what replication does but it does not solve my problem. Why?</p>
+    <div id="scale_replica">
+      <p><strong>A word on scaling and replicas</strong></p>
+
+      <p>Scaling in kubernetes refers to increasing/decreasing the number of replicas in the deployment. Now replication of has been a bit difficult for me to understand. What I want to achieve is ability to run multiple instances of an app. Now this comes quite close to what replication does but it does not solve my problem. Why?
+        <small>[Maybe it could look into <a href="#headless">headless</a> services]</small>
+      </p>
       <p>Because kubernetes distributes traffic automatically among all the available pods. While it's good for scaling the app and distributing traffic this is not what I want. Instead I need a node to host pods for a particular client. So it's more like multiple nodes and each of the node having multiple pods (which refer to the services used by a client). A <a href="#analogy">helpful analogy<a/>.</p>
       <p><strong>A word on rolling updates</strong></p>
       <p>Kubernetes performs rolling updates by creating new pods with an image description and then terminating the existing pods. This raises two important implications for our architecture:- </p>
@@ -39,6 +42,13 @@
         <p>There is a much better way to implement what we are trying to do. Rather than considering nodes as the apartments, we can consider a node as a building, a pod as an apartment and containers as the objects in the apartment. With this analogy we can create a single pod for database. Multiple pods for application instances. The database pod may be moved to a different node. The application instances may also be moved if they get too resource hungry.</p>
         <p>For a client with higher resrouce requirements we may consider to provision a sperate node and deploy the database and application pods on it. However we must keep in mind that node updates are a bit complex and we need to setup automatic  backups of the database. </p>
       </div>
+    </div>
+    
+    <div id="headless">
+      <p><strong>A headless service</strong></p>
+      <p>Kubernetes has a concept of "headless" services in which it does not configure any load balancing. These services will still have dns records and they can be accessed via IP addresses but if such services are to be <a href="#scale_replica">scaled</a> then mechanism then the burden of writing a discovery pattern is upon us. In other words headless services allow you to use kubernetes without load balancing.</p>
+      <p>This has one very obvious implication for us. A replica for a load balanced pod functions as a single service.Eg:- lets say an nginx pod has two replicas a request coming in to kubernetes system would by dynamically assigned to one of the two instances.</p>
+      <p>Where as if there are replicas in a headless system thy will not be load balanced for us and we can simply route the url to the pod of our choosing. Which means we can create replica pods for clients using similar kind of services and then route the incoming traffic to a particular pod ip address. </p>
     </div>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
     <script type="text/javascript">

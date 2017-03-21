@@ -1,8 +1,8 @@
-<!doctype html>
+s<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8"/>
-    <title>Idea log</title>
+    <title>Todo list</title>
     <style>
       li{
       margin-top:5px;
@@ -26,8 +26,26 @@
       <li class="post"> Write a post exploring the childhood of socrates. His relationship with his parents, his siblings, neighbours etc. <span class="origin"> 5 Oct 2016</span> </li>
       <li class="post"> Write a post comparing socrates' and Emersons views on poets <span class="origin">5 Oct 2016</span></li>
       <li class="post"> write a post explaining localhost tunneling with the help of ngrok and dynamic proxies in nginx <span class="origin">6 Oct 2016</span></li>
-      <li class="people">Write an email to rapid formations cancelling the renewal of wrinq with companies house</li>
+      <li class="people">Write an email to rapid formations cancelling the renewal of wrinq with companies house.</li>
     </ol>
+    <div id="ellobed_dev">
+      <p><strong>Ellobed todo list</strong></p>
+      <dl>
+        <dt><strong>Creating mongodb service</strong></dt>
+        <dd>-Expose mongodb api through <a href="http://restheart.org/">rest heart</a></dd>
+        <dd>
+	  -Hide the api behind openresty's proxy
+	  <small>
+	    [Optional] Create listners on the proxy that lets it execute commands throught the rest api
+	  </small>
+	</dd>
+        <dd>-Collect metrics on what it takes for the entire stack to run</dd>
+        <dd>-Create a master server that talks with all the kubernetes pods</dd>
+        <dd>-Start work on "kubernetizing" the application</dd>
+        
+      </dl>
+      
+    </div>
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-37138783-1']);

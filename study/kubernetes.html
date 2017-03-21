@@ -21,7 +21,7 @@
       <p><strong>A word on scaling and replicas</strong></p>
 
       <p>Scaling in kubernetes refers to increasing/decreasing the number of replicas in the deployment. Now replication of has been a bit difficult for me to understand. What I want to achieve is ability to run multiple instances of an app. Now this comes quite close to what replication does but it does not solve my problem. Why?
-        <small>[Maybe it could look into <a rel="noreferrer" href="#headless">headless</a> services]</small>
+        <small>[Maybe we could look into <a rel="noreferrer" href="#headless">headless</a> services]</small>
       </p>
       <p>Because kubernetes distributes traffic automatically among all the available pods. While it's good for scaling the app and distributing traffic this is not what I want. Instead I need a node to host pods for a particular client. So it's more like multiple nodes and each of the node having multiple pods (which refer to the services used by a client). A <a rel="noreferrer" href="#analogy">helpful analogy<a rel="noreferrer"/>.</p>
       <p><strong>A word on rolling updates</strong></p>

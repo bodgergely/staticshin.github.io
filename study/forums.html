@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8"/>
+    <meta name="referrer" content="no-referrer">
     <title>Forums</title>
     <link href="/study/index.css" rel="stylesheet"/>
   </head>
@@ -9,50 +10,50 @@
     <div id="test" style="display:none">e55a91a7</div>
     <h1>Discourse</h1>
     <ul>
-      <li>The installation of discourse was simple enough following <a href="https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md">this guide</a></li>
-      <li>But I wanted a discourse env on my local machine so I installed it <a href="https://github.com/discourse/discourse/blob/master/docs/VAGRANT.md">using this guide</a>. </li>
+      <li>The installation of discourse was simple enough following <a rel="noreferrer" href="https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md">this guide</a></li>
+      <li>But I wanted a discourse env on my local machine so I installed it <a rel="noreferrer" href="https://github.com/discourse/discourse/blob/master/docs/VAGRANT.md">using this guide</a>. </li>
       <li>Unfortunately though I could not get it to work using vagrant. Twice it failed to download the images. When the images were downloaded it threw up another error "While executing VboxManage". I decided to look for other alternatives.</li>
     </ul>
     <h1>NodeBB</h1>
     <ul>   
-      <li>Fortunately I found another cool forum software called <a href="https://github.com/NodeBB/NodeBB">nodebb</a>. It has everything that discourse has plus it's written in node so I don't have to learn a new language in case I want to hack it. Furthermore I really liked it's plugin api so I decided to go with it.</li>
-      <li><s>I can use the nodebb write api to create a <a href="http://stackoverflow.com/questions/32626908/nodebb-write-api-example-to-create-new-user">new user</a></s>.
+      <li>Fortunately I found another cool forum software called <a rel="noreferrer" href="https://github.com/NodeBB/NodeBB">nodebb</a>. It has everything that discourse has plus it's written in node so I don't have to learn a new language in case I want to hack it. Furthermore I really liked it's plugin api so I decided to go with it.</li>
+      <li><s>I can use the nodebb write api to create a <a rel="noreferrer" href="http://stackoverflow.com/questions/32626908/nodebb-write-api-example-to-create-new-user">new user</a></s>.
         <small>[Who needs an api if you got direct access to the database?]</small>
       </li>
-      <li>It looks like we can activate nodebb plugins via <a href="https://github.com/NodeBB/NodeBB/issues/4252">command line</a></li>
-      <li>The issue that added command line setup <a href="https://github.com/NodeBB/NodeBB/issues/382">script for nodebb</a></li>
-      <li>The install directory contains default setup data that can be <a href="#config">configured</a> to set different defaults for the type of forum user we are targeting. ex a community of landlords may have different defaults from say a community of college students. </li>
+      <li>It looks like we can activate nodebb plugins via <a rel="noreferrer" href="https://github.com/NodeBB/NodeBB/issues/4252">command line</a></li>
+      <li>The issue that added command line setup <a rel="noreferrer" href="https://github.com/NodeBB/NodeBB/issues/382">script for nodebb</a></li>
+      <li>The install directory contains default setup data that can be <a rel="noreferrer" href="#config">configured</a> to set different defaults for the type of forum user we are targeting. ex a community of landlords may have different defaults from say a community of college students. </li>
       <li>The default setup with no parameters automatically creates an administrative account with a username and a randomly generated password.</li>
       <li>Nodebb requires restart everytime a new plugin is installed or a theme is changed. </li>
       <li id="stat_data">By default nodebb installs with a pre-configured list of topics and categories. These topics and categories are defined statically in the <em>/install/data</em> directory. At the time of installation we should be able to modify the files contained in this directory to create categories and topics specific to our particular audience. For example the categories and topics for a college community forum would be a different as compared to the categories and topics for a boutique hotel helpdesk app.</li>
-      <li>Node bb can setup via <a href="https://community.nodebb.org/topic/4325/set-up-nodebb-via-environment-variables/6">environment variables</a>. Once the app is setup it creates a config.json file. If we include a config.json file with the docker image we won't even need to bother with the setup steps.</li>
+      <li>Node bb can setup via <a rel="noreferrer" href="https://community.nodebb.org/topic/4325/set-up-nodebb-via-environment-variables/6">environment variables</a>. Once the app is setup it creates a config.json file. If we include a config.json file with the docker image we won't even need to bother with the setup steps.</li>
       <li>
 	Nodebb can be run on
-	<a href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html">
+	<a rel="noreferrer" href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html">
 	  MongoDb
 	</a>
-        <small>Also look at <a href="https://docs.mongodb.com/manual/administration/configuration/#run-multiple-database-instances-on-the-same-system"> mongodb configuration</a>, it seems that a single mongodb server can support <a href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html#step-8-configuring-nodebb">multiple nodebb</a>instances</small>
+        <small>Also look at <a rel="noreferrer" href="https://docs.mongodb.com/manual/administration/configuration/#run-multiple-database-instances-on-the-same-system"> mongodb configuration</a>, it seems that a single mongodb server can support <a rel="noreferrer" href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html#step-8-configuring-nodebb">multiple nodebb</a>instances</small>
       </li>
     </ul>
     <h1 id="plug_list">NodeBB plugin list</h1>
     <ol>
-      <li><a href="https://www.npmjs.com/package/nodebb-plugin-email">Plugin email</a></li>
-      <li><a href="https://github.com/NodeBB/nodebb-plugin-write-api">Nodebb plugin write api</a></li>
-      <li><a href="https://github.com/barisusakli/nodebb-plugin-dbsearch">Db search plugin</a></li>
-      <li><a href="https://github.com/pitaj/nodebb-plugin-calendar/tree/1.0.x">Nodebb calendar plugin</a></li>
-      <li><a href="https://community.nodebb.org/topic/7273/social-login/2">Node bb social login plugin</a></li>
-      <li><a href="https://community.nodebb.org/topic/6423/is-there-a-way-to-remove-the-site-logo-from-the-acp">
+      <li><a rel="noreferrer" href="https://www.npmjs.com/package/nodebb-plugin-email">Plugin email</a></li>
+      <li><a rel="noreferrer" href="https://github.com/NodeBB/nodebb-plugin-write-api">Nodebb plugin write api</a></li>
+      <li><a rel="noreferrer" href="https://github.com/barisusakli/nodebb-plugin-dbsearch">Db search plugin</a></li>
+      <li><a rel="noreferrer" href="https://github.com/pitaj/nodebb-plugin-calendar/tree/1.0.x">Nodebb calendar plugin</a></li>
+      <li><a rel="noreferrer" href="https://community.nodebb.org/topic/7273/social-login/2">Node bb social login plugin</a></li>
+      <li><a rel="noreferrer" href="https://community.nodebb.org/topic/6423/is-there-a-way-to-remove-the-site-logo-from-the-acp">
 	  Change logos</a></li>
-      <li><a href="https://github.com/Schamper/nodebb-plugin-poll">Nodebb Polling</a></li>
-      <li><a href="https://github.com/LouiseMcMahon/nodebb-plugin-s3-uploads#nodebb-s3-uploads-plugin">Uploading pictures to S3</a></li>
-      <li><a href="https://community.nodebb.org/topic/8572/lost-in-subdomains">Making the cookie work across domains</a></li>
-      <li><a href="https://community.nodebb.org/topic/6824/automatically-authenticate-users-on-nodebb-using-the-session-cookie-passed-in-the-redirect/3">Session Sharing</a></li>
-      <li><a href="https://github.com/julianlam/nodebb-plugin-session-sharing">Node BB session sharing plugin</a></li>
+      <li><a rel="noreferrer" href="https://github.com/Schamper/nodebb-plugin-poll">Nodebb Polling</a></li>
+      <li><a rel="noreferrer" href="https://github.com/LouiseMcMahon/nodebb-plugin-s3-uploads#nodebb-s3-uploads-plugin">Uploading pictures to S3</a></li>
+      <li><a rel="noreferrer" href="https://community.nodebb.org/topic/8572/lost-in-subdomains">Making the cookie work across domains</a></li>
+      <li><a rel="noreferrer" href="https://community.nodebb.org/topic/6824/automatically-authenticate-users-on-nodebb-using-the-session-cookie-passed-in-the-redirect/3">Session Sharing</a></li>
+      <li><a rel="noreferrer" href="https://github.com/julianlam/nodebb-plugin-session-sharing">Node BB session sharing plugin</a></li>
     </ol>
     <h1>Additional links</h1>
     <ul>
-      <li><a href="https://en.wikipedia.org/wiki/BBCode">BB code reference</a></li>
-      <li><a href="http://webapps.stackexchange.com/questions/33354/how-do-i-follow-a-google-group-using-an-rss-reader">Google groups offers an rss feed</a></li>
+      <li><a rel="noreferrer" href="https://en.wikipedia.org/wiki/BBCode">BB code reference</a></li>
+      <li><a rel="noreferrer" href="http://webapps.stackexchange.com/questions/33354/how-do-i-follow-a-google-group-using-an-rss-reader">Google groups offers an rss feed</a></li>
     </ul>
     <h1>Application architecture of the forum_container</h1>
     <div id="app_arch">
@@ -63,11 +64,11 @@
         <li>Openresty as the reverse proxy server</li>
       </ol>
       <p>Once the container has been initialized all the updates to it will be pulled dynamically from the <em>forum_container</em> branch. Therefore we need to configure our applications to:-</p>
-      <p>[we might not need all these steps as <a href="/study/docker.html#dock_swarm">docker swarm</a> could manage rolling updates for us]</p>
+      <p>[we might not need all these steps as <a rel="noreferrer" href="/study/docker.html#dock_swarm">docker swarm</a> could manage rolling updates for us]</p>
       <ol>
         <li>Communicate with the master process. Master process should be able to send instructions to the running application. And the running application must be able to execute it.</li>
         <li>The process of communication must be two ways. The application must also be able to send updates to the master process about it's state.</li>
-        <li>Since all the state information will be stored in the git repository we need to configure our app to pull from the branch at runtime, apply the changes and start the server again. Fortunately there are node bindings for <a href="https://github.com/nodegit/nodegit">native git client</a> that should simplify this process a lot.</li>
+        <li>Since all the state information will be stored in the git repository we need to configure our app to pull from the branch at runtime, apply the changes and start the server again. Fortunately there are node bindings for <a rel="noreferrer" href="https://github.com/nodegit/nodegit">native git client</a> that should simplify this process a lot.</li>
       </ol>
     </div>
     <div id="feat_list">
@@ -81,7 +82,7 @@
           <li>With the forums, customers can bring positive and constructive feedback about their experience and also view feedback from other customers, thereby enhancing your customer base.</li>
           <li>With this social media integration, they can send private messages to your Facebook account that your support staff will receive as a ticket. Any responses on the ticket will go back as a message to your customer. <small>[Will have to implement via api calls, but a good feature suggestion]</small></li>
 	</ol>
-        <p><small>[Also check out the features of <a href="#zen_desk">zendesk</a> ]</small></p>
+        <p><small>[Also check out the features of <a rel="noreferrer" href="#zen_desk">zendesk</a> ]</small></p>
       </div>
       <div id="sap_jam">
         <h1>SAP JAM Communities feature list</h1>
@@ -143,29 +144,31 @@
     <div id="config">
       <h1>The configuration setup</h1>
       <p>To configure nodebb database we'll create on demand files. The configuration data will be stored in mongodb collection belonging to a particular nodebb instance. Before starting nodebb we'll execute a shell script that queries the database and saves the result of configuration in a file. Then nodebb can be started with that configuration.</p>
-      <p>Same technique can be used to replace <a href="http://stackoverflow.com/questions/15275599/how-do-i-insert-html-into-mongodb">templates, headers and footers</a> of a particular installation instance.</p>
+      <p>Same technique can be used to replace <a rel="noreferrer" href="http://stackoverflow.com/questions/15275599/how-do-i-insert-html-into-mongodb">templates, headers and footers</a> of a particular installation instance.</p>
     </div>    
     <div id="use_cases">    
       <h1>Use cases</h1>
       <ol>
-        <li>As a  <a href="#help_desk">helpdesk software</a></li>
-	<li>Community engagement tool for <a href="/study/ecommerce.html#cock">ecommerce</a> applications</li>
-        <li id="ed_tech">Community engagement tools for schools and colleges <small>[Study <a href="#edtech">ed tech apps</a>  and determine features that can be built for college communities.A correct determination of appropriate features will help us sell our app to schools and colleges]</small></li>
-        <li>Package the forum as an application to discuss legal matters and sell it to top legal firms like <a href="https://united-kingdom.taylorwessing.com/">Taylor Wessing</a>. There are a couple of such apps for research in case we need it. ex
-	  <a href="http://lawrato.com">lawrato</a>
-	  <a href="https://www.kaanoon.com/">Kanoon</a>
+        <li>As a  <a rel="noreferrer" href="#help_desk">helpdesk software</a></li>
+	<li>Community engagement tool for <a rel="noreferrer" href="/study/ecommerce.html#cock">ecommerce</a> applications</li>
+        <li id="ed_tech">Community engagement tools for schools and colleges <small>[Study <a rel="noreferrer" href="#edtech">ed tech apps</a>  and determine features that can be built for college communities.A correct determination of appropriate features will help us sell our app to schools and colleges]</small></li>
+        <li>Package the forum as an application to discuss legal matters and sell it to top legal firms like <a rel="noreferrer" href="https://united-kingdom.taylorwessing.com/">Taylor Wessing</a>. There are a couple of such apps for research in case we need it. ex
+	  <a rel="noreferrer" href="http://lawrato.com">lawrato</a>
+	  <a rel="noreferrer" href="https://www.kaanoon.com/">Kanoon</a>
 	</li>
-	<li>Sell the app to healthcare industries like <a href="https://www.axappphealthcare.co.uk/">axa app healthcare</a></li>
+	<li>Sell the app to healthcare industries like <a rel="noreferrer" href="https://www.axappphealthcare.co.uk/">axa app healthcare</a></li>
       </ol>
       <div id="edtech">
 	<h1>Education</h1>
         <ol>
-          <li><a href="https://quizlet.com/">Quizlet</a></li>
-          <li><a href="https://www.coursehero.com/">course hero</a></li>
+          <li><a rel="noreferrer" href="https://quizlet.com/">Quizlet</a></li>
+          <li><a rel="noreferrer" href="https://www.coursehero.com/">course hero</a></li>
+          <li>Check out learnboost's <a href="https://www.learnboost.com/tour/parentandstudent">parent student</a> communication page</li>
+          <li>The freshdesk for schools <a href="https://freshdesk.com/support-software/customer-service-tool-k-12-institutions-universities">sales pitch</a></li>
         </ol>
       </div>
     </div>
-    <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
+    <p><small>-- <a rel="noreferrer" href="/about.html">Akshat Jiwan Sharma</a></small></p>     
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-37138783-1']);

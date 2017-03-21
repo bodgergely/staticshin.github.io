@@ -19,7 +19,7 @@
       <li>I can use the nodebb write api to create a <a href="http://stackoverflow.com/questions/32626908/nodebb-write-api-example-to-create-new-user">new user</a></li>
       <li>It looks like we can activate nodebb plugins via <a href="https://github.com/NodeBB/NodeBB/issues/4252">command line</a></li>
       <li>The issue that added command line setup <a href="https://github.com/NodeBB/NodeBB/issues/382">script for nodebb</a></li>
-      <li>The install directory contains default setup data that can be configured to set different defaults for the type of forum user we are targeting. ex a community of landlords may have different defaults from say a community of college students. </li>
+      <li>The install directory contains default setup data that can be <a href="#config">configured</a> to set different defaults for the type of forum user we are targeting. ex a community of landlords may have different defaults from say a community of college students. </li>
       <li>The default setup with no parameters automatically creates an administrative account with a username and a randomly generated password.</li>
       <li>Nodebb requires restart everytime a new plugin is installed or a theme is changed. </li>
       <li id="stat_data">By default nodebb installs with a pre-configured list of topics and categories. These topics and categories are defined statically in the <em>/install/data</em> directory. At the time of installation we should be able to modify the files contained in this directory to create categories and topics specific to our particular audience. For example the categories and topics for a college community forum would be a different as compared to the categories and topics for a boutique hotel helpdesk app.</li>
@@ -138,7 +138,11 @@
         <p>To build our own little CRM service all we need to do is focus on theming and the looks of our application and we should be able to sell it to a wide audience. Once we have the basic tools ready we can study the market research done by other providers and build on the base created by them. So there is a huge scope for branching products here and lots of money machines can be spun off from a single core service.</p>
       </div>
     </div>
-    
+    <div id="config">
+      <h1>The configuration setup</h1>
+      <p>To configure nodebb database we'll create on demand files. The configuration data will be stored in mongodb collection belonging to a particular nodebb instance. Before starting nodebb we'll execute a shell script that queries the database and saves the result of configuration in a file. Then nodebb can be started with that configuration.</p>
+      <p>Same technique can be used to replace <a href="http://stackoverflow.com/questions/15275599/how-do-i-insert-html-into-mongodb">templates, headers and footers</a> of a particular installation instance.</p>
+    </div>    
     <div id="use_cases">    
       <h1>Use cases</h1>
       <ol>

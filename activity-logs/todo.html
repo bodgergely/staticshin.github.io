@@ -1,4 +1,4 @@
-s<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8"/>
@@ -31,20 +31,35 @@ s<!doctype html>
     <div id="ellobed_dev">
       <p><strong>Ellobed todo list</strong></p>
       <dl>
+        <dt><strong>Operation</strong></dt>
+        <dd>Get a bank account</dd>
+        <dt><strong>Infrastructure</strong></dt>
+        <dd>Create a repository</dd>
+        <dd>Buy the domain name</dd>
+        <dd>Provision server</dd>
         <dt><strong>Creating mongodb service</strong></dt>
-        <dd>-Expose mongodb api through <a href="http://restheart.org/">rest heart</a></dd>
+        <dd><s>Expose mongodb api through <a href="http://restheart.org/">rest heart</a></s></dd>
         <dd>
-	  -Hide the api behind openresty's proxy
+	  <s>Hide the api behind openresty's proxy
 	  <small>
 	    [Optional] Create listners on the proxy that lets it execute commands throught the rest api
-	  </small>
+	  </small></s>
 	</dd>
-        <dd>-Collect metrics on what it takes for the entire stack to run</dd>
-        <dd>-Create a master server that talks with all the kubernetes pods</dd>
-        <dd>-Start work on "kubernetizing" the application</dd>
-        
+        <dd><s>write a shell script that adds an admin user when mongo starts for the first time</s></dd>
+        <s><dd>Create a meta database and add a config collection</dd></s>
+        <s><dd>Combine the scripts into a single bootstrap script</dd></s>
+        <dd>Add the basic auth header in the proxy pass</dd>
+	<dd>Collect metrics on what it takes for the entire stack to run</dd>
+        <dd>Start work on "kubernetizing" the application</dd>
+        <!-- <dd>-Create a master server that talks with all the kubernetes pods</dd> -->
+        <dt><strong>Creating a master service</strong></dt>
+        <dd>Create a service endpoint that allows us to query meta information of our pod services</dd>
+        <dd>
+	  Create a new collection in the meta database that stores information related to client services
+          <small>[This should go in the bootstrap file]</small>
+	</dd>
+        <dd>Create an endpoint that allows the master service to return configuration data for individual services</dd>
       </dl>
-      
     </div>
     <script type="text/javascript">
       var _gaq = _gaq || [];

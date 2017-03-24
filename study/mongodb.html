@@ -17,19 +17,19 @@
     <div id="proxy_pool">
       <h1>Proxy based connection pooling with mongodb</h1>
       <p>
-       Proxying a tcp server with nginx causes the client to create a <a href="/activity-logs/index.html#m_p_pool">new connection</a> with the server. This is fine if the connections are few and short lived. But can get a bit unmanageable hand if we're talking about lots of long lived connections. Moreover the entire purpose of using a proxy is to shield our server from an unexpected spike/ minimize the traffic it has to serve so that it can simply do it's job and the request/response is handled by the proxy.  
+       Proxying a tcp server with nginx causes the client to create a <a href="/activity-logs/index.html#m_p_pool">new connection</a> with the server. This is fine if the connections are few and short lived. But can get a bit unmanageable and degrade the performance if we deal with lots of long lived connections. Moreover the entire purpose of using a proxy is to shield our server from an unexpected spike/ minimize the traffic it has to serve so that it can simply do it's job and leave the request reponse management to the proxy.  
       </p>
-      <p>In an ideal case nginx should handle the incoming client connections and a tcp server like mongodb should reply only the requests of nginx. So the communications flows like this:-</p>
-      <ul>
+      <p>In an ideal case nginx should handle the incoming client connections and a tcp server like mongodb should reply only the requests of nginx. So the communication flows like this:-</p>
+      <ol>
           <li>Client connects with nginx</li>
           <li>nginx connects with mongodb</li>
           <li>Client requests info from mongodb server</li>
           <li>nginx intercepts that request and passes it through the socket that is connected with mongo db</li>
           <li>Mongo db responds to the same socket</li>
           <li>And nginx relays that response to the client</li>
-      </ul>
+      </ol>
       <p>
-	Such a channel can't be established with plain nginx it seems.
+	Such a channel can't be established with plain nginx, it seems.
 	But there is an <a href="https://github.com/openresty/stream-lua-nginx-module">openresty module</a>
 	that allows us "inject" lua code into tcp streams.
 	In terms of openresty we can implement our plan like this :- 

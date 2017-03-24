@@ -32,7 +32,7 @@
 	<a rel="noreferrer" href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html">
 	  MongoDb
 	</a>
-        <small>Also look at <a rel="noreferrer" href="https://docs.mongodb.com/manual/administration/configuration/#run-multiple-database-instances-on-the-same-system"> mongodb configuration</a>, it seems that a single mongodb server can support <a rel="noreferrer" href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html#step-8-configuring-nodebb">multiple nodebb</a>instances</small>
+        <small>Also look at <a rel="noreferrer" href="https://docs.mongodb.com/manual/administration/configuration/#run-multiple-database-instances-on-the-same-system"> mongodb configuration</a>, it seems that a single mongodb server can support <a rel="noreferrer" href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html#step-8-configuring-nodebb">multiple nodebb</a> instances</small>
       </li>
     </ul>
     <h1 id="plug_list">NodeBB plugin list</h1>
@@ -143,7 +143,7 @@
     </div>
     <div id="config">
       <h1>The configuration setup</h1>
-      <p>To configure nodebb database we'll create on demand files. The configuration data will be stored in mongodb collection belonging to a particular nodebb instance. Before starting nodebb we'll execute a shell script that queries the database and saves the result of configuration in a file. Then nodebb can be started with that configuration.</p>
+      <p>To configure nodebb database we'll create on demand files. <s>The configuration data will be stored in mongodb collection belonging to a particular nodebb instance</s>. The configruation setup will be stored in a meta database that will be common across all the services. Before starting nodebb we'll execute a shell script (<a href="/activity-logs/todo.html#q_config"> should be a matter of simple http request</a>) that queries the database and saves the result of configuration in a file. Then nodebb can be started with that configuration. The configuration may be templatized to suit the demands of a particular service instance. The data to render the template will also be stored in the <a href="/activity-logs/todo.html#config_meta">meta database</a>.</p>
       <p>Same technique can be used to replace <a rel="noreferrer" href="http://stackoverflow.com/questions/15275599/how-do-i-insert-html-into-mongodb">templates, headers and footers</a> of a particular installation instance.</p>
     </div>    
     <div id="use_cases">    
@@ -152,6 +152,7 @@
         <li>As a  <a rel="noreferrer" href="#help_desk">helpdesk software</a></li>
 	<li>Community engagement tool for <a rel="noreferrer" href="/study/ecommerce.html#cock">ecommerce</a> applications</li>
         <li id="ed_tech">Community engagement tools for schools and colleges <small>[Study <a rel="noreferrer" href="#edtech">ed tech apps</a>  and determine features that can be built for college communities.A correct determination of appropriate features will help us sell our app to schools and colleges]</small></li>
+        <li>Community engagement tools for accomodation providers [Note that there maybe  <a href="/study/hotels.html#ca_subtype">multiple type</a> of providers and we may have to fine tune our <a href="/study/forums.html#config">configuration</a> for each of the type]</li>
         <li>Package the forum as an application to discuss legal matters and sell it to top legal firms like <a rel="noreferrer" href="https://united-kingdom.taylorwessing.com/">Taylor Wessing</a>. There are a couple of such apps for research in case we need it. ex
 	  <a rel="noreferrer" href="http://lawrato.com">lawrato</a>
 	  <a rel="noreferrer" href="https://www.kaanoon.com/">Kanoon</a>

@@ -9,3 +9,4 @@ _rel
 .ebin
 node_modules
 logs
+.exe

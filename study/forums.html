@@ -148,11 +148,19 @@
       <p>Same technique can be used to replace <a rel="noreferrer" href="http://stackoverflow.com/questions/15275599/how-do-i-insert-html-into-mongodb">templates, headers and footers</a> of a particular installation instance.</p>
       <div id="first_run">
         <p><strong>The first run experience</strong></p>
+        <p>Basically we need to do two things. Modify the files in the install directory and automate the running of the nodebb script. That's all. For file modification we need to prepare sales copies for different type of client categories.</p>
         <ol>
-          <li id="auto_ans"><s>We need a script to provide automatic answers to nodebb command line prompts.
+	  <li>Customize the category names and category descriptions in the install directory. This should be different for each type of client. For example a client in the hospitality sector will have different. Note that even the colors and icons of the categories can be customized. Once more we'll keep the category definitions templatized in mongodb, query it via the http interface, render the data and replace the flies on the client pod. This step must be completed before the installation is complete</li>
+
+	  <li id="auto_ans"><s> Once the installation setup has been completed.
+	      We need a script to provide automatic answers to nodebb command line prompts.
 	      This can easily be done with the help of <a href="/study/infrastructure.html#infra_expect">expect</a></s>.
 	    We don't actually need expect as we can simply <a href="http://stackoverflow.com/questions/14392525/passing-arguments-to-an-interactive-program-non-interactively">redirect</a> the program input from a file. We'll however need to dynamically generate an answers file. But that should be easy.
 	  </li>
+	  <li>Update the logo and forum title directly in the database once the installation has been completed.
+	    The exact data to update the fields with, will be provided from the meta database.
+	  </li>
+          <li>Modify the welcome text to give all the details of what can be done with the forum application. The welcome text will be different based on the type of service used by the client. A welcome text for building communities for example will be different from the welcome text for running a helpdesk application.</li>
         </ol>
       </div>
     </div>    

@@ -15,7 +15,8 @@
       <li>Unfortunately though I could not get it to work using vagrant. Twice it failed to download the images. When the images were downloaded it threw up another error "While executing VboxManage". I decided to look for other alternatives.</li>
     </ul>
     <h1>NodeBB</h1>
-    <ul>   
+    <ul>
+      <li>I don't think that we should ever encounter <a href="https://community.nodebb.org/topic/3538/scalability-and-responsiveness">scalability problems</a> with nodebb. Especially if we look at some <a href="/study/hotels.html#sc_facts">statistics</a> for the hosing industry. <small>(At 3 concurrent users we can serve upto 2 million views a month, scalability of a single forum should be no problem at all)</small></li>
       <li>Fortunately I found another cool forum software called <a rel="noreferrer" href="https://github.com/NodeBB/NodeBB">nodebb</a>. It has everything that discourse has plus it's written in node so I don't have to learn a new language in case I want to hack it. Furthermore I really liked it's plugin api so I decided to go with it.</li>
       <li><s>I can use the nodebb write api to create a <a rel="noreferrer" href="http://stackoverflow.com/questions/32626908/nodebb-write-api-example-to-create-new-user">new user</a></s>.
         <small>[Who needs an api if you got direct access to the database?]</small>

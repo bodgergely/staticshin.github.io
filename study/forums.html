@@ -146,6 +146,14 @@
       <h1>The configuration setup</h1>
       <p>To configure nodebb database we'll create on demand files. <s>The configuration data will be stored in mongodb collection belonging to a particular nodebb instance</s>. The configruation setup will be stored in a meta database that will be common across all the services. Before starting nodebb we'll execute a shell script (<a href="/activity-logs/todo.html#q_config"> should be a matter of simple http request</a>) that queries the database and saves the result of configuration in a file. Then nodebb can be started with that configuration. The configuration may be templatized to suit the demands of a particular service instance. The data to render the template will also be stored in the <a href="/activity-logs/todo.html#config_meta">meta database</a>.</p>
       <p>Same technique can be used to replace <a rel="noreferrer" href="http://stackoverflow.com/questions/15275599/how-do-i-insert-html-into-mongodb">templates, headers and footers</a> of a particular installation instance.</p>
+      <div id="first_run">
+        <p><strong>The first run experience</strong></p>
+        <ol>
+          <li id="auto_ans">We need a script to provide automatic answers to nodebb command line prompts.
+	    This can easily be done with the help of <a href="/study/infrastructure.html#infra_expect">expect</a>.
+	  </li>
+        </ol>
+      </div>
     </div>    
     <div id="use_cases">    
       <h1>Use cases</h1>

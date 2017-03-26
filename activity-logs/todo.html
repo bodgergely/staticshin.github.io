@@ -65,7 +65,7 @@
 	  the client information from the meta database</dd>
         <dd>
 	  Filter the output body for admin pages using
-          <a href="">body_filter_by_lua</a> and , header_filter_by_lua and <a href="https://github.com/openresty/lua-nginx-module#ngxresub">ngx.re.sub</a> to remove out unwanted content in the admin pages.
+          <a href="">body_filter_by_lua</a>, header_filter_by_lua and <a href="https://github.com/openresty/lua-nginx-module#ngxresub">ngx.re.sub</a> to remove out unwanted content in the admin pages.
 	</dd>
         <dd>Use the rewrite module (either the the default nginx or the lua one) to reroute the "?api=true" request to the /api endpoint for the forum service. This will give the user an easy way to embed the data in his app.</dd>
         <dt><strong>Creating a master service</strong></dt>

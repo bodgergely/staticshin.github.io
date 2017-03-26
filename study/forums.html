@@ -157,10 +157,26 @@
 	      This can easily be done with the help of <a href="/study/infrastructure.html#infra_expect">expect</a></s>.
 	    We don't actually need expect as we can simply <a href="http://stackoverflow.com/questions/14392525/passing-arguments-to-an-interactive-program-non-interactively">redirect</a> the program input from a file. We'll however need to dynamically generate an answers file. But that should be easy.
 	  </li>
-	  <li>Update the logo and forum title directly in the database once the installation has been completed.
+	  <li>Update the <a href="#update_title">logo and forum title</a> directly in the database once the installation has been completed.
 	    The exact data to update the fields with, will be provided from the meta database.
 	  </li>
           <li>Modify the welcome text to give all the details of what can be done with the forum application. The welcome text will be different based on the type of service used by the client. A welcome text for building communities for example will be different from the welcome text for running a helpdesk application.</li>
+        </ol>
+      </div>
+      <div id="db_struct">
+        <p><strong>The database structure</strong></p>
+        <ol>
+          <li id="update_title">
+	    The forum title is contained in the "config" document. All we need to do to change it is
+	    update the "title" property.
+	    This can be done at run time via the <a href="/activity-logs/todo.html#mongo_http">http api</a>
+	    that we've exposed off the mongo db service.
+            <small>db.objects.find({_key:"config"}).pretty()</small>
+	  </li>
+          <li>
+	    The config document also allows us to set up the home page screen (meaning the page that comes up when the user first hits the service root endpoint) by setting the
+            <small>homePageRoute</small> property.
+	  </li>
         </ol>
       </div>
     </div>    

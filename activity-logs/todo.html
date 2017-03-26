@@ -40,12 +40,12 @@
         <dd>Create a repository</dd>
         <dd>Buy the domain name</dd>
         <dd>Provision server</dd>
-        <dt><strong>Creating mongodb service</strong></dt>
-        <dd><s>Expose mongodb api through <a href="http://restheart.org/">rest heart</a></s></dd>
+        <dt><strong>Create mongodb service</strong></dt>
+        <dd id="mongo_http"><s>Expose mongodb api through <a href="http://restheart.org/">rest heart</a></s></dd>
         <dd>
 	  <s>Hide the api behind openresty's proxy
 	  <small>
-	    [Optional] Create listners on the proxy that lets it execute commands throught the rest api
+	    [Optional] Create listeners on the proxy that lets it execute commands thorough the rest api
 	  </small></s>
 	</dd>
         <dd><s>write a shell script that adds an admin user when mongo starts for the first time</s></dd>
@@ -59,10 +59,15 @@
         <dt><strong>Nodebb setup</strong></dt>
 	<s>
 	  <dd>Write a shell script that <a href="/study/forums.html#auto_ans">automates installation</a>
-	    and configration</dd>
+	    and configuration</dd>
 	</s>
         <dd>Generate an answers file after <a href="#config_meta">querying</a>
 	  the client information from the meta database</dd>
+        <dd>
+	  Filter the output body for admin pages using
+          <a href="">body_filter_by_lua</a> and , header_filter_by_lua and <a href="https://github.com/openresty/lua-nginx-module#ngxresub">ngx.re.sub</a> to remove out unwanted content in the admin pages.
+	</dd>
+        <dd>Use the rewrite module (either the the default nginx or the lua one) to reroute the "?api=true" request to the /api endpoint for the forum service. This will give the user an easy way to embed the data in his app.</dd>
         <dt><strong>Creating a master service</strong></dt>
         <dd id="q_config">Create a service endpoint that allows us to query meta information of our pod services</dd>
         <dd id="config_meta">

@@ -166,6 +166,7 @@
       <div id="db_struct">
         <p><strong>The database structure</strong></p>
         <ol>
+          <li>Nodebb may use websockets to communicate with the app routes (internally defined libraries) so the normal network requests would not show up in the dev tools. Inspect the socket connections to overcome this limitation.</li>
           <li id="update_title">
 	    The forum title is contained in the "config" document. All we need to do to change it is
 	    update the "title" property.
@@ -176,6 +177,12 @@
           <li>
 	    The config document also allows us to set up the home page screen (meaning the page that comes up when the user first hits the service root endpoint) by setting the
             <small>homePageRoute</small> property.
+	  </li>
+          <li>Custom headers (including links to scripts and css files) maybe added with the "customJS" and "useCustomJS" keys in the config document of the object collection.</li>
+          <li>Skins can be changed without recompiling. In the config collection the skin is represented by "bootswatchSkin" key.</li>
+          <li>
+	    The social visibility of the posts can be configured by the social:posts.activated key.
+            <small>db.objects.find({_key:"social:posts.activated"}).pretty()</small>
 	  </li>
         </ol>
       </div>

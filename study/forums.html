@@ -151,7 +151,12 @@
         <p>Basically we need to do two things. Modify the files in the install directory and automate the running of the nodebb script. That's all. For file modification we need to prepare sales copies for different type of client categories.</p>
         <ol>
 	  <li>Customize the category names and category descriptions in the install directory. This should be different for each type of client. For example a client in the hospitality sector will have different. Note that even the colors and icons of the categories can be customized. Once more we'll keep the category definitions templatized in mongodb, query it via the http interface, render the data and replace the flies on the client pod. This step must be completed before the installation is complete</li>
-          <li>Enable arbitrary uploads in the forum directory</li>
+          <li>
+	    Enable arbitrary uploads in the forum directory
+            <small>Use
+              <a href="https://minio.io/">minio</a> to provide a lease/document management function for the cloud. It comes with automatic installation guide for kubernetes.
+	    </small>
+	  </li>
 
 	  <li id="auto_ans"><s> Once the installation setup has been completed.
 	      We need a script to provide automatic answers to nodebb command line prompts.

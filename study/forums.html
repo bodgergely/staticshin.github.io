@@ -160,7 +160,7 @@
 	  <li>Update the <a href="#update_title">logo and forum title</a> directly in the database once the installation has been completed.
 	    The exact data to update the fields with, will be provided from the meta database.
 	  </li>
-          <li>Modify the welcome text to give all the details of what can be done with the forum application. The welcome text will be different based on the type of service used by the client. A welcome text for building communities for example will be different from the welcome text for running a helpdesk application.</li>
+          <li>Modify the welcome text to give all the details of what can be done with the application. The welcome text will be different based on the type of service used by the client. A welcome text for building communities, for example, will be different from the welcome text for running a helpdesk application.</li>
         </ol>
       </div>
       <div id="db_struct">
@@ -183,6 +183,15 @@
           <li>
 	    The social visibility of the posts can be configured by the social:posts.activated key.
             <small>db.objects.find({_key:"social:posts.activated"}).pretty()</small>
+	  </li>
+          <li>
+	    Global headers and footers are stored in the "global:widgets" key
+	    <small>db.objects.find(_key:"widgets:global")</small>
+	  </li>
+          <li>
+	    Other widgets can be found using
+            <small>db.objects.find({_key:/widgets.*/}).pretty()</small>
+	    Even if they are not present we may create them to customize the first run expereince. The app will take care of finding and updating them later on should the client request to do that. The formatting is also taken care of for us.
 	  </li>
         </ol>
       </div>

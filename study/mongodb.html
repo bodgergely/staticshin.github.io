@@ -13,7 +13,9 @@
 	To run a meteor application in production mode first build it using
         <small>meteor build</small> command. Extract the package. Install the dependencies,set the env variables (There would be a readme file that specifies all this) and simply do a <small>node main</small>
       </li>
-      <li>We can start meteor with an external <a href="http://stackoverflow.com/questions/18545905/meteor-without-mongo">mongodb</a> to prevent the running of it's local mongodb instance </li>
+      <li><s>We can start meteor with an external <a href="http://stackoverflow.com/questions/18545905/meteor-without-mongo">mongodb</a> to prevent the running of it's local mongodb instance </s>
+	[In production meteor runs on a preconfigured mongodb server so we don't need to worry about all this stuff, since we are not developing on meteor at all we can simply forget about the nonsense of file watching and packaged database server]
+      </li>
       <li> How to pass a mongourl reference <a href="http://meteor.hromnik.com/blog/meteor-run-without-creating-local-mongo-database">to the command line</a>
         <small>[we probably won't need to do this because reaction config <a href="/study/ecommerce.html#database_url">file</a> will take care of this for us]</small>
       </li>

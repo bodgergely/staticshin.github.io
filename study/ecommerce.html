@@ -86,7 +86,16 @@
 	</li>
                       
       </ol>
-      <p><small>[Since it runs on mongo db we need to be really careful of our deployments. Too many mongo db instances can quickly eat up our available ram. Plus it seems that there will be lots of websockets involved so that means more server resources, we need to build our pricing scheme appropriately]</small></p>
+      <p>
+	<s><small>[Since it runs on mongo db we need to be really careful of our deployments. Too many mongo db instances can quickly eat up our available ram. Plus it seems that there will be lots of websockets involved so that means more server resources, we need to build our pricing scheme appropriately]</small>
+	</s>
+        <small>
+	  [We don't need to worry about this any more.
+	  Since we'll be using <a href="/activity-logs/todo.html#mongo_service">a single mongo db</a>
+	  container with connections
+	  <a href="/study/mongodb.html#proxy_pool">proxied via nginx</a>]
+	</small>
+      </p>
       <p><small>[A hosted platform is offered at $2500 a month. We can build our own usage based pricing scheme like yaas/shopify]</small></p>
       <p><small>[We'll start by selling the service to people who don't need to ship their products. i.e just like forums it'll start it's life as an integration with ellobed. Later on we can figue out the shipping method integrations and offer the platform to people who have to ship physical products]</small></p>
     </div>

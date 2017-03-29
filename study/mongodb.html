@@ -17,9 +17,9 @@
     <div id="proxy_pool">
       <h1>Proxy based connection pooling with mongodb</h1>
       <p>
-       Proxying a tcp server with nginx causes the client to create a <a href="/activity-logs/index.html#m_p_pool">new connection</a> with the server. This is fine if the connections are few and short lived. But can get a bit unmanageable and degrade the performance if we deal with lots of long lived connections. Moreover the entire purpose of using a proxy is to shield our server from an unexpected spike/ minimize the traffic it has to serve so that it can simply do it's job and leave the request reponse management to the proxy.  
+       Proxying a tcp server with nginx causes the client to create a <a href="/activity-logs/index.html#m_p_pool">new connection</a> with the server. This is fine if the connections are few and short lived. But things can get a bit unmanageable and maybe even degrade the performance if we have to deal with lots of long lived connections. Moreover the entire purpose of using a proxy is to shield our tcp server from an unexpected spike/ minimize the traffic it has to serve so that it can simply do it's job and leave the request reponse management to the proxy.  
       </p>
-      <p>In an ideal case nginx should handle the incoming client connections and a tcp server like mongodb should reply only the requests of nginx. So the communication flows like this:-</p>
+      <p>In an ideal case nginx should handle the incoming client connections and a tcp server like mongodb should reply only to the request of nginx. All of this shouold happen in such a way that the communication flows like this:-</p>
       <ol>
           <li>Client connects with nginx</li>
           <li>nginx connects with mongodb</li>

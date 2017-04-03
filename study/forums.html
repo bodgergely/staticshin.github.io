@@ -9,17 +9,17 @@
   <body>
     <div id="test" style="display:none">e55a91a7</div>
     <h1>Discourse</h1>
-    <ul>
+    <ol>
       <li>The installation of discourse was simple enough following <a rel="noreferrer" href="https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md">this guide</a></li>
       <li>But I wanted a discourse env on my local machine so I installed it <a rel="noreferrer" href="https://github.com/discourse/discourse/blob/master/docs/VAGRANT.md">using this guide</a>. </li>
-      <li>Unfortunately though I could not get it to work using vagrant. Twice it failed to download the images. When the images were downloaded it threw up another error "While executing VboxManage". I decided to look for other alternatives.</li>
-    </ul>
+      <li>Unfortunately though I could not get it to work using vagrant. Twice it failed to download the images. When the images were downloaded it threw up another error "While executing VboxManage". Therefore I decided to look for other alternatives.</li>
+    </ol>
     <h1>NodeBB</h1>
-    <ul>
-      <li>I don't think that we should ever encounter <a href="https://community.nodebb.org/topic/3538/scalability-and-responsiveness">scalability problems</a> with nodebb. Especially if we look at some <a href="/study/hotels.html#sc_facts">statistics</a> for the housing industry. We should remove all doubts of scalability from our mind .<small>(At 3 concurrent users we can serve upto 2 million views a month, scalability of a single forum should be no problem at all, nginx is also very good at maintaining websocket connections <a href="https://www.nginx.com/blog/nginx-websockets-performance/?utm_source=websocket-nginx&utm_medium=blog&utm_campaign=Core+Product">with about 50k sockets</a> being happily connected on a single server with 1gb of ram )</small> </li>
+    <ol>
+      
       <li>Fortunately I found another cool forum software called <a rel="noreferrer" href="https://github.com/NodeBB/NodeBB">nodebb</a>. It has everything that discourse has plus it's written in node so I don't have to learn a new language in case I want to hack it. Furthermore I really liked it's plugin api so I decided to go with it.</li>
       <li><s>I can use the nodebb write api to create a <a rel="noreferrer" href="http://stackoverflow.com/questions/32626908/nodebb-write-api-example-to-create-new-user">new user</a></s>.
-        <small>[Who needs an api if you got direct access to the database?]</small>
+        <small>[Who needs an api if you've got <a href="/activity-logs/todo.html#mongo_http">direct access</a> to the database?]</small>
       </li>
       <li>It looks like we can activate nodebb plugins via <a rel="noreferrer" href="https://github.com/NodeBB/NodeBB/issues/4252">command line</a></li>
       <li>The issue that added command line setup <a rel="noreferrer" href="https://github.com/NodeBB/NodeBB/issues/382">script for nodebb</a></li>
@@ -35,7 +35,8 @@
 	</a>
         <small>Also look at <a rel="noreferrer" href="https://docs.mongodb.com/manual/administration/configuration/#run-multiple-database-instances-on-the-same-system"> mongodb configuration</a>, it seems that a single mongodb server can support <a rel="noreferrer" href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html#step-8-configuring-nodebb">multiple nodebb</a> instances</small>
       </li>
-    </ul>
+      <li>I don't think that we will ever encounter any <a href="https://community.nodebb.org/topic/3538/scalability-and-responsiveness">scalability problems</a> with nodebb. Especially if we look at some <a href="/study/hotels.html#sc_facts">statistics</a> for the housing industry. We should promptly get rid all doubts from our mind. <small>(At 3 concurrent users we can serve > 2 million views a month, scalability of a single forum should be no problem at all, nginx is also very good at maintaining websocket connections <a href="https://www.nginx.com/blog/nginx-websockets-performance/?utm_source=websocket-nginx&utm_medium=blog&utm_campaign=Core+Product">with about 50k sockets</a> being happily connected on a single server with 1gb of ram, what we should be careful about is spikes in usage)</small> </li>
+    </ol>
     <h1 id="plug_list">NodeBB plugin list</h1>
     <ol>
       <li><a rel="noreferrer" href="https://www.npmjs.com/package/nodebb-plugin-email">Plugin email</a></li>
@@ -223,6 +224,46 @@
           <li>Check out learnboost's <a href="https://www.learnboost.com/tour/parentandstudent">parent student</a> communication page</li>
           <li>The freshdesk for schools <a href="https://freshdesk.com/support-software/customer-service-tool-k-12-institutions-universities">sales pitch</a></li>
         </ol>
+      </div>
+    </div>
+    <div id="sales_pitch">
+      <p><u><strong>For property managers</strong></u></p>
+      <ol>
+        <li>
+	  Use the
+          <a href="https://www.liverpool.ac.uk/facilities-management/faq/#d.en.144407">University of Liverpool FAQS</a>
+	  for creating a story about pinned topics/knowledge base that can be reused for clients.
+	</li>
+      </ol>
+      
+    </div>
+    <div id="prospects">
+      <p><u><strong>The big prospect list</strong></u></p>
+      <ol>
+        <li>
+          <a href="http://propertyserve.net">FM helpdesk Property serve</a>
+          <small>[<a href="#ps_notes">NOTES</a>] [Email: info@propertyserve.co.uk]</small>
+	</li>
+        <li>
+	  <a href="http://www.jll.co.in/india/en-gb">Jones Lang LaSalle</a>
+          <small>[Investment management and <strong>services</strong> firm specializing in real estate]</small>
+	</li>
+      </ol>
+    </div>
+    <div id="prospect_notes">
+      <p><u><strong>Prospect Notes</strong></u></p>
+      <p>An FM is not necessarily cloud based self service application. In most cases a helpdesk consists of a real person sitting on one end of a telephone line, responding to queries from the customers. For example check out the University of Liverpool FM helpdesk <a href="https://www.liverpool.ac.uk/facilities-management/services/helpdesk/">page</a> [<s>It goes without saying, I suppose, that they could be our customers</s>. It seems that they have a portal of their own]. </p>
+      
+      <div id="ps_notes">
+        <p> Moto:- <em>Assist you with all your property maintenance issues, from creating great environments, resulting in better client retention and increased occupancy levels to providing exemplary customer service.</em></p>
+        <p>We can help them with</p>
+        <ol>
+            <l1>Job tracking across their portfolio of clients</l1>
+            <l1>Customer service</l1>
+            <l1>A single point of communication between clients and owners and their sourced contractors</l1>
+        </ol>
+        <p class="red"><small>[Since they've been in business for about a decade now it is quite probable that they are already using a mix of applications to satisfy these requirements, so we may have to prove how we provide a better service]
+	</small></p>
       </div>
     </div>
     <p><small>-- <a rel="noreferrer" href="/about.html">Akshat Jiwan Sharma</a></small></p>     

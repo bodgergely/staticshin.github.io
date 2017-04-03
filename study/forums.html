@@ -14,7 +14,7 @@
       <li>But I wanted a discourse env on my local machine so I installed it <a rel="noreferrer" href="https://github.com/discourse/discourse/blob/master/docs/VAGRANT.md">using this guide</a>. </li>
       <li>Unfortunately though I could not get it to work using vagrant. Twice it failed to download the images. When the images were downloaded it threw up another error "While executing VboxManage". Therefore I decided to look for other alternatives.</li>
     </ol>
-    <h1>NodeBB</h1>
+    <h1>Node BB</h1>
     <ol>
       
       <li>Fortunately I found another cool forum software called <a rel="noreferrer" href="https://github.com/NodeBB/NodeBB">nodebb</a>. It has everything that discourse has plus it's written in node so I don't have to learn a new language in case I want to hack it. Furthermore I really liked it's plugin api so I decided to go with it.</li>
@@ -27,7 +27,7 @@
       <li>The default setup with no parameters automatically creates an administrative account with a username and a randomly generated password.</li>
       <li>Nodebb requires restart everytime a new plugin is installed or a theme is changed. </li>
       <li id="stat_data">By default nodebb installs with a pre-configured list of topics and categories. These topics and categories are defined statically in the <em>/install/data</em> directory. At the time of installation we should be able to modify the files contained in this directory to create categories and topics specific to our particular audience. For example the categories and topics for a college community forum would be a different as compared to the categories and topics for a boutique hotel helpdesk app.</li>
-      <li>Node bb can setup via <a rel="noreferrer" href="https://community.nodebb.org/topic/4325/set-up-nodebb-via-environment-variables/6">environment variables</a>. Once the app is setup it creates a config.json file. If we include a config.json file with the docker image we won't even need to bother with the setup steps.</li>
+      <li>Node BB can setup via <a rel="noreferrer" href="https://community.nodebb.org/topic/4325/set-up-nodebb-via-environment-variables/6">environment variables</a>. Once the app is setup it creates a config.json file. If we include a config.json file with the docker image we won't even need to bother with the setup steps.</li>
       <li>
 	Nodebb can be run on
 	<a rel="noreferrer" href="https://nodebb.readthedocs.io/en/latest/configuring/databases/mongo.html">
@@ -145,7 +145,7 @@
     </div>
     <div id="config">
       <h1>The configuration setup</h1>
-      <p>To configure nodebb database we'll create on demand files. <s>The configuration data will be stored in mongodb collection belonging to a particular nodebb instance</s>. The configruation setup will be stored in a meta database that will be common across all the services. Before starting nodebb we'll execute a shell script (<a href="/activity-logs/todo.html#q_config"> should be a matter of simple http request</a>) that queries the database and saves the result of configuration in a file. Then nodebb can be started with that configuration. The configuration may be templatized to suit the demands of a particular service instance. The data to render the template will also be stored in the <a href="/activity-logs/todo.html#config_meta">meta database</a>.</p>
+      <p>To configure nodebb database we'll create on demand files. <s>The configuration data will be stored in mongodb collection belonging to a particular nodebb instance</s>. The configuration setup will be stored in a meta database that will be common across all the services. Before starting nodebb we'll execute a shell script (<a href="/activity-logs/todo.html#q_config"> should be a matter of simple http request</a>) that queries the database and saves the result of configuration in a file. Then nodebb can be started with that configuration. The configuration may be templatized to suit the demands of a particular service instance. The data to render the template will also be stored in the <a href="/activity-logs/todo.html#config_meta">meta database</a>.</p>
       <p>Same technique can be used to replace <a rel="noreferrer" href="http://stackoverflow.com/questions/15275599/how-do-i-insert-html-into-mongodb">templates, headers and footers</a> of a particular installation instance.</p>
       <div id="first_run">
         <p><strong>The first run experience</strong></p>
@@ -209,8 +209,8 @@
         <li>As a  <a rel="noreferrer" href="#help_desk">helpdesk software</a></li>
 	<li>Community engagement tool for <a rel="noreferrer" href="/study/ecommerce.html#cock">ecommerce</a> applications</li>
         <li id="ed_tech">Community engagement tools for schools and colleges <small>[Study <a rel="noreferrer" href="#edtech">ed tech apps</a>  and determine features that can be built for college communities.A correct determination of appropriate features will help us sell our app to schools and colleges]</small></li>
-        <li id="comm_accomodation">Community engagement tools for accomodation providers [Note that there maybe  <a href="/study/hotels.html#ca_subtype">multiple type</a> of providers and we may have to fine tune our <a href="/study/forums.html#config">configuration</a> for each of the type]</li>
-        <li>Package the forum as an application to discuss legal matters and sell it to top legal firms like <a rel="noreferrer" href="https://united-kingdom.taylorwessing.com/">Taylor Wessing</a>. There are a couple of such apps for research in case we need it. ex
+        <li id="comm_accomodation">Community engagement tools for accommodation providers [Note that there maybe  <a href="/study/hotels.html#ca_subtype">multiple type</a> of providers and we may have to fine tune our <a href="/study/forums.html#config">configuration</a> for each of the type]</li>
+        <li>Package the forum as an application to discuss legal matters and sell it to top legal firms like <a rel="noreferrer" href="https://united-kingdom.taylorwessing.com/">Taylor Wessig</a>. There are a couple of such apps for research in case we need it. ex
 	  <a rel="noreferrer" href="http://lawrato.com">lawrato</a>
 	  <a rel="noreferrer" href="https://www.kaanoon.com/">Kanoon</a>
 	</li>
@@ -236,7 +236,7 @@
               <li>Allowing the audience to login via facebook and google to the discussion platform </li>
           </ol>
 	</li>
-        <li>Illustrate how the user may susbscirbe to RSS feeds to get (almost) real time
+        <li>Illustrate how the user may subscribe to RSS feeds to get (almost) real time
 	  notification on his favorite news reading app.
 	  The ability of our service to integrate with other application would raises
 	  the customer engagement many times.
@@ -246,7 +246,7 @@
           <a href="https://www.liverpool.ac.uk/facilities-management/faq/#d.en.144407">University of Liverpool FAQS</a>
 	  (free data) for creating a story around pinned topics/knowledge base that can be reused for clients.
 	</li>
-        <li id="pitch_embed">Demonstrate the embeddability of the service. Any content on the platform can be requested in the form of json data that can then be added dynamically to a website, a blog, an app or fed to a service or any other publishing channel. Esentially we would be positioning the service as a content management system with powerful social engagement features.
+        <li id="pitch_embed">Demonstrate the embeddability of the service. Any content on the platform can be requested in the form of json data that can then be added dynamically to a website, a blog, an app or fed to a service or any other publishing channel. Essentially we would be positioning the service as a content management system with powerful social engagement features.
 	  <small>
 	    [Eventually we should move our own content to the forum
 	    platform so that it can serve as an example for others to copy]
@@ -273,6 +273,12 @@
               <a href="#savills">[NOTES]</a>
 	    </small>
         </li>
+        <li><a href="http://tarahousenursery.co.uk">Tara house</a> Nursery School</li>
+        <li>
+            <a href="http://www.unitestudents.com/">Unite students</a> and
+            <a href="http://www.unite-group.co.uk/">Unite Group</a>
+            [<small>Also checkout the connection with <a href="#savills_unite">Savills</a></small>]
+        </li>
       </ol>
     </div>
     <div id="prospect_notes">
@@ -281,9 +287,10 @@
       <div id="savills">
         <p><strong>Savills, facts at a glance</strong></p>
         <ol>
+          <li id="savills_unite">Acquired Tara House and Leece street on behalf of Unite students</li>
           <li>More than 700 offices, more than 30K employees</li>
           <li>They offer a range of real estate expertise across residential, office, industrial, retail, leisure, healthcare, rural, hotel and mixed use development schemes.
-            <small>[This means that they are a potential target for all of our existing and planned services in the accomodation sector]</small>
+            <small>[This means that they are a potential target for all of our existing and planned services in the accommodation sector]</small>
 	  </li>
           <li>Their website is very well designed with abundant use of yellow,blue(both light and dark) and red colors. It looks like a corporate magazine. However the content of the website is pretty much useless. There are a lot of words to read, but no useful information to be gained.  
             <small>[We should keep this is mind because it's possible that  that's how corporate customers want to access information from the websites]</small>
@@ -294,7 +301,7 @@
 	<ol>
           <li>
 	    A web based solution for their <a href="http://www.savills.com/services/property-management.aspx">
-	      facilities management serivces</a>.
+	      facilities management services</a>.
 	  </li>
           <li>
 	    A CSR <a href="#s_com_eng">community engagement</a> tool. The environment policy for property management sounds like a very important point that can be used to sell the
@@ -303,9 +310,8 @@
 	      [Check out <a href="http://support.charitywater.org/hc/en-us">Charity Water</a>
 	      help desk application for inspiration]</small>
 	  </li>
-          <li></li>
         </ol>
-        <div id="s_scr">
+        <div id="s_csr">
           <p><strong>Savills CSR</strong></p>
           <ol>
             <li id="s_com_eng">
@@ -313,22 +319,23 @@
               <small>[This could be a great point to include in our sales pitch]</small>
               <small>[The Structure of this pitch can also be used to create a pitch for <a href="/study/opportunities.html#wri-india">WRI India</a>]</small>
 	    </li>
-            <li></li>
-            <li></li>
+            <li> As a part of their CSR Savills seek to provide a work life balance for their employees and give them an opportunity where they can all flourish as individuals. Once more we can position our platform as a tool where prospective employees can interact directly with HR. Archived interactions can serve as case studies for other prospects and give them an idea of what it's like to work at Savills. </li>
+            <li>Savills code of conduct is a part of their CSR and it presents another opportunity for us to illustrate how our knowledge base feature can be used for efficient publishing and community engagement. We can show them how they can store all of their COC policies in a single place and then publish those policies on multiple platforms
+	    </li>
           </ol>
 	</div>
-        <p class="red">They seem to put a heavy emphasis on confidentiality of their clients and as such may not trust a cloud based provider but rather they may want the software to be deployed and managed by an in house team.</p>
+        <p class="red">They seem to put a heavy emphasis on confidentiality of their clients and as such they might not trust a cloud based provider but rather insist on the software to be deployed and managed by an in house team.</p>
         <p>
-	  But then again the representatives of the company are very open. So we might have a chance of selling our software to them. Even if they don't buy it we may appeal to their <a href="#s_csr">corporate social responsibility</a> sentiments and ask introductions to people who might actually buy our apps. 
+	  But then again the representatives of the company are very open. So we might have a chance of selling our software to them. Even if they don't buy it, we can appeal to their <a href="#s_csr">corporate social responsibility</a> sentiments and ask at the very least for some introductions to people who might actually buy our apps. 
 	  </p>
       </div>
       <div id="ps_notes">
         <p> Moto:- <em>Assist you with all your property maintenance issues, from creating great environments, resulting in better client retention and increased occupancy levels to providing exemplary customer service.</em></p>
-        <p>We can help them with</p>
+        <p><strong>We can help them with</strong>/p>
         <ol>
-            <l1>Job tracking across their portfolio of clients</l1>
-            <l1>Customer service</l1>
-            <l1>A single point of communication between clients and owners and their sourced contractors</l1>
+            <li>Job tracking across their portfolio of clients</li>
+            <li>Customer service</li>
+            <li>A single point of communication between clients and owners and their sourced contractors</l1>
         </ol>
         <p class="red"><small>[Since they've been in business for about a decade now it is quite probable that they are already using a mix of applications to satisfy these requirements, so we may have to prove how we provide a better service]
 	</small></p>

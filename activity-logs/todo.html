@@ -9,7 +9,7 @@
       margin-top:5px;
       width:80%;
       }
-     
+      
       .date{
       border-bottom:1px solid whitesmoke;
       font-weight:bold;
@@ -22,18 +22,17 @@
     </style>
     <link href="/study/index.css" rel="stylesheet"/>
   </head>
+  <ol>
+      <li><a href="#todo">To-Do</a></li>
+      <li><a href="#completed">Completed</a></li>
+      <li><a href="#low_prior">Low priority</a></li>
+  </ol>
   <body style="font-family:monospace">
     <!-- RANDOM -->
+    <div id="todo">
     <h1>Todo</h1>
     <ol>
-      <li class="post"> Write a post exploring the childhood of socrates. His relationship with his parents, his siblings, neighbours etc. <span class="origin"> 5 Oct 2016</span> </li>
-      <li class="post"> Write a post comparing socrates' and Emersons views on poets <span class="origin">5 Oct 2016</span></li>
-      <li class="post"> write a post explaining localhost tunneling with the help of ngrok and dynamic proxies in nginx <span class="origin">6 Oct 2016</span></li>
-     
-      <li class="write">Write a post explaining how to
-	<a href="/study/mongodb.html#proxy_pool">pool redis client connections</a> with a proxy</li>
-      <li>Research on online to offline business model</li>
-      <li>Research on GIC [<a href="/study/hotels.html#gic_realestate">why?</a>]</li>
+      
       <li>Study ach payments with paypal</li>
       <li>Learn about upstart</li>
       <li>Study google domains</li>
@@ -58,83 +57,12 @@
 	  Update openresty and learn
 	  to use <a href="https://github.com/openresty/opm#installation">OPM</a>
 	</li>
-	<li>
-	  <s>Find a way to query and aggregate from distributed sql-lite databases</s>
-          <small>
-	    The <a href="#e_lsql">lua sql lite</a> library turns openresty into an http interface for our sqllite dbs. All we need to do now is to write an api that returns the result of sql queries from the database in simple json. We can feed that json into our reporting systems.
-	  </small>
-          <small>[10 Apr 2017]</small>
-	</li>
-
-	<li id="e_lsql"> <s> Experiment lsqlite3complete library with openresty.
-	    Instantiate the library in the init_by_lua_directive.
-	    Test whether its possible to access its method from the routes.
-            <small>
-	      Expected behaviour: they will be
-	    </small>
-	  </s>
-          <small>[10 Apr 2017]</small>
-	</li>	
-        <s><li>Unlock wrinq and ellobed on godaddy</li> [3 Apr 2017]</s>
-      </div>
-      <li>
-	<s>Contact Amazon pay and google wallet support teams</s> [6 Apr 2017]
-        <small>Amazon pay only works for US citizens, google wallet can't "request" money in India.
-	  I'm stuck with paypal.
-	</small>
-      </li>
-
-      <li id="its_iift">
-	<s>Contact ITS and IIFT representatives from the India internet conference</s>
-	[6 Apr 2017]</li>    
-       <s>
-	<li class="people">
-	  Write an email to rapid formations cancelling the renewal of wrinq with companies house. [27 Mar 2017]
-	</li> 
-       </s>
-      <li><s>Go through the India internet conference Agenda</s> [6 Apr 2017]</li>
-      <li><s>Contact paypal support team and ask them about status in India</s> [5 Apr 2017]</li>
-      <li><s><a href="/study/cms.html#investigating_ghost">Investigate</a> the features of ghost</s> [5 Apr 2017]</li>
-
-      <li>
-	<s>Email Nannette and ask her about the pricing for yardi and other proeprty management softwares</s>
-	[31 Mar 2017]
-      </li>
-      <li>
-	<s>Update reaction commerce and note down any findings</s> [4 Apr 2017]
-        <small>[As expected running reaction update also updates reaction core]</small>
-      </li>
-
-      <s><li>
-	  Contact Paypal merchant technical support even though
-	  we've come to a <a href="/study/paypal.html#p_c">decision regarding</a> the issue of multiple business identities.
-	  It is possible that we might find a solution that is even better than the one we have right now. 
-      </li></s>
-
-      <s><li id="pc_enq">
-	  Contact paypal and inquire about the
-          <a href="/study/paypal.html#p_c">parent child</a> accounts.
-	</li> [31 Mar 2017]</s>
-      <div id="adhar_application">
-	<s><li>Collect documents for aadhar card</li>[27 Mar 2017]</s>
-	<s><li>Fill up the aadhar card form</li> [29 Mar 2017]</s>
-	<s><li>Apply for aadhar card</li> [29 Mar 2017]</s>
-      </div>
-      <s><li>Change wifi password</li> [28 Mar 2017]</s>
-      <s><li>Contact google domains team to inquire about the api [31 Mar 2017]</li></s>
-
-      <s>
-	<li>Email Mandy to ask her if we can use her address with the companies registration house</li>
-        <small>[29 Mar 2017]</small>
-      </s>
-      <s><li>Figure out how to <a href="/study/mongodb.html#r_meteor">run meteor</a>
-	  as a simple nodejs app</li> [29 Mar 2017]</s>      
+	
     </ol>
-
+    </div>
     <!-- ELLOBED LIST -->
     
     <div id="ellobed_dev">
-      <p><strong>Ellobed todo list</strong></p>
       <dl>
         <dt><strong>Operations</strong></dt>
         <dd>Get a <a href="#bank">bank</a> account</dd>
@@ -150,14 +78,10 @@
 	      [Optional] Create listeners on the proxy that lets it execute commands thorough the rest api
 	  </small></s>
 	</dd>
-        <dd><s>write a shell script that adds an admin user when mongo starts for the first time</s></dd>
-        <s><dd>Create a meta database and add a config collection</dd></s>
-        <s><dd>Combine the scripts into a single bootstrap script</dd></s>
-        <s><dd>Update mongodb to 3.4</dd></s>
         <dd>Add the basic auth header in the proxy pass</dd>
 	<dd>Collect metrics on what it takes for the entire stack to run</dd>
         <dd>Start work on "kubernetizing" the application</dd>
-        <!-- <dd>-Create a master server that talks with all the kubernetes pods</dd> -->
+        
         <dt><strong>Nodebb setup</strong></dt>
 	<s>
 	  <dd>Write a shell script that <a href="/study/forums.html#auto_ans">automates installation</a>
@@ -166,14 +90,19 @@
         <dd>Generate an answers file after <a href="#config_meta">querying</a>
 	  the client information from the meta database
 	</dd>
-        <dd>Add sample json for the <a href="/study/forums.html#db_struct">database queries</a> that we've identified.</dd>
+        <dd>Add sample json for the <a href="/study/forums.html#db_struct">database queries</a>
+	  that we've identified.</dd>
         <dd>
-	  Filter the output body for admin pages using
+	  <s>Filter the output body for admin pages using
           <a href="">body_filter_by_lua</a>, header_filter_by_lua and <a href="https://github.com/openresty/lua-nginx-module#ngxresub">ngx.re.sub</a> to remove out unwanted content in the admin pages.
-          <small>[Use <a href="https://github.com/craigbarnes/lua-gumbo">lua gumbo</a> instead]</small>
+          <small>[Use <a href="https://github.com/craigbarnes/lua-gumbo">lua gumbo</a> instead]</small></s>
+          <small>We'll use client side javascript to show hide content dynamically</small>
+          <small>[10 Apr 2017]</small>
 	</dd>
         <dd>Install lua gumbo</dd>
-        <dd><s>Use the rewrite module (either the the default nginx or the lua one) to reroute the "?embed=true" request to the /api endpoint for the forum service. This will give the user an easy way to embed the data in his app.[28 Mar 2017]</s> </dd>
+        <dd><s>Use the rewrite module (either the the default nginx or the lua one) to
+	    reroute the "?embed=true" request to the /api endpoint for the forum service.
+	    This will give the user an easy way to embed the data in his app.[28 Mar 2017]</s> </dd>
         <dt><strong>Creating a master service</strong></dt>
         <dd id="q_config">Create a service endpoint that allows us to query meta information of our pod services</dd>
         <dd id="config_meta">
@@ -223,7 +152,112 @@
         <s><li>Sign up for the bank account</li> [4 Apr 2017]</s>
 	<li>Request a credit card</li>
         <li>Apply for the FD</li>
-        <li>Install the banks app and claim guaranteed prizes</li>
+        <li>
+	  <s>Install the banks app and claim guaranteed prizes</s>
+          <small>10 Apr 2017</small>
+	</li>
+      </ol>
+    </div>
+    
+    <div id="low_prior">
+      <h1>Low priority</h1>
+      <ol>
+	<li class="post"> Write a post exploring the childhood of socrates.
+	  His relationship with his parents, his siblings, neighbours etc.
+	  <span class="origin"> 5 Oct 2016</span> </li>
+
+	<li class="post"> Write a post comparing socrates' and Emersons views on poets
+	  <span class="origin">5 Oct 2016</span></li>
+
+	<li class="post"> write a post explaining localhost tunneling with the
+	  help of ngrok and dynamic proxies in nginx
+	  <span class="origin">6 Oct 2016</span></li>
+	
+	<li class="write">Write a post explaining how to
+	  <a href="/study/mongodb.html#proxy_pool">pool redis client connections</a> with a proxy</li>
+	<li>Research on online to offline business model</li>
+	<li>Research on GIC [<a href="/study/hotels.html#gic_realestate">why?</a>]</li>
+      </ol>
+    </div>
+    <div id="completed">
+      <h1>Completed</h1>
+      <ol>
+	<li>
+	  <s>Find a way to query and aggregate from distributed sql-lite databases</s>
+          <small>
+	    The <a href="#e_lsql">lua sql lite</a> library turns openresty into an http interface for our sqllite dbs. All we need to do now is to write an api that returns the result of sql queries from the database in simple json. We can feed that json into our reporting systems.
+	  </small>
+          <small>[10 Apr 2017]</small>
+	</li>
+
+	<li id="e_lsql"> <s> Experiment lsqlite3complete library with openresty.
+	    Instantiate the library in the init_by_lua_directive.
+	    Test whether its possible to access its method from the routes.
+            <small>
+	      Expected behaviour: they will be
+	    </small>
+	  </s>
+          <small>[10 Apr 2017]</small>
+	</li>	
+	<s><li>Unlock wrinq and ellobed on godaddy</li> [3 Apr 2017]</s>
+	<li>
+	  <s>Contact Amazon pay and google wallet support teams</s> [6 Apr 2017]
+	  <small>Amazon pay only works for US citizens, google wallet can't "request" money in India.
+	    I'm stuck with paypal.
+	  </small>
+	</li>
+
+	<li id="its_iift">
+	  <s>Contact ITS and IIFT representatives from the India internet conference</s>
+	  [6 Apr 2017]</li>    
+	<s>
+	  <li class="people">
+	    Write an email to rapid formations cancelling the renewal of wrinq with companies house. [27 Mar 2017]
+	  </li> 
+	</s>
+	<li><s>Go through the India internet conference Agenda</s> [6 Apr 2017]</li>
+	<li><s>Contact paypal support team and ask them about status in India</s> [5 Apr 2017]</li>
+	<li><s><a href="/study/cms.html#investigating_ghost">Investigate</a> the features of ghost</s> [5 Apr 2017]</li>
+
+	<li>
+	  <s>Email Nannette and ask her about the pricing for yardi and other proeprty management softwares</s>
+	  [31 Mar 2017]
+	</li>
+	<li>
+	  <s>Update reaction commerce and note down any findings</s> [4 Apr 2017]
+	  <small>[As expected running reaction update also updates reaction core]</small>
+	</li>
+
+	<s><li>
+	    Contact Paypal merchant technical support even though
+	    we've come to a <a href="/study/paypal.html#p_c">decision regarding</a>
+	    the issue of multiple business identities.
+	    It is possible that we might find a solution that is even better than the one we have right now. 
+	  </li>
+	</s>
+
+	<s><li id="pc_enq">
+	    Contact paypal and inquire about the
+            <a href="/study/paypal.html#p_c">parent child</a> accounts.
+	  </li> [31 Mar 2017]</s>
+	<div id="adhar_application">
+	  <s><li>Collect documents for aadhar card</li>[27 Mar 2017]</s>
+	  <s><li>Fill up the aadhar card form</li> [29 Mar 2017]</s>
+	  <s><li>Apply for aadhar card</li> [29 Mar 2017]</s>
+	</div>
+	<s><li>Change wifi password</li> [28 Mar 2017]</s>
+	<s><li>Contact google domains team to inquire about the api [31 Mar 2017]</li></s>
+
+	<s>
+	  <li>Email Mandy to ask her if we can use her address with the companies registration house</li>
+	  <small>[29 Mar 2017]</small>
+	</s>
+	<s><li>Figure out how to <a href="/study/mongodb.html#r_meteor">run meteor</a>
+	    as a simple nodejs app</li> [29 Mar 2017]</s>
+	<li><s>write a shell script that adds an admin user when mongo starts for the first time</s></li>
+	<s><li>Create a meta database and add a config collection</li></s>
+	<s><li>Combine the scripts into a single bootstrap script</li></s>
+	<s><li>Update mongodb to 3.4</li></s>
       </ol>
     </div>
     <script type="text/javascript">

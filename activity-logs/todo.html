@@ -43,7 +43,7 @@
 	</li>	  
       </ol>
     </div>
-    <!-- ELLOBED LIST -->
+<!-- ------------------------------------ELLOBED LIST-------------------------------------------------- -->
     
     <div id="ellobed_dev">
       <dl>
@@ -63,7 +63,6 @@
 	</dd>
         <dd>Add the basic auth header in the proxy pass</dd>
 	<dd>Collect metrics on what it takes for the entire stack to run</dd>
-        <dd>Start work on "kubernetizing" the application</dd>
         
         <dt><strong>Nodebb setup</strong></dt>
 	<s>
@@ -82,16 +81,10 @@
           <small>We'll use client side javascript to show hide content dynamically</small>
           <small>[10 Apr 2017]</small>
 	</dd>
-        <dd>Install lua gumbo</dd>
+        <s><dd>Install lua gumbo</dd>[10 Apr 2017]</s>
         <dd><s>Use the rewrite module (either the the default nginx or the lua one) to
 	    reroute the "?embed=true" request to the /api endpoint for the forum service.
 	    This will give the user an easy way to embed the data in his app.[28 Mar 2017]</s> </dd>
-        <dt><strong>Creating a master service</strong></dt>
-        <dd id="q_config">Create a service endpoint that allows us to query meta information of our pod services</dd>
-        <dd id="config_meta">
-	  Create a new collection in the meta database that stores information related to client services
-          <small>[This should go in the bootstrap file]</small>
-	</dd>
         <dd>Create an endpoint that allows the master service to return configuration data for individual services</dd>
         <dt><strong>Commerce</strong></dt>
         <s><dd>Install reaction</dd></s>
@@ -142,6 +135,9 @@
       </ol>
     </div>
     
+<!-- ------------------------------------LOW PRIORITY-------------------------------------------------- -->
+
+
     <div id="low_prior">
       <h1>Low priority</h1>
       <ol>
@@ -162,9 +158,35 @@
 	<li>Research on GIC [<a href="/study/hotels.html#gic_realestate">why?</a>]</li>
       </ol>
     </div>
+
+<!-- ------------------------------------COMPLETED-------------------------------------------------- -->
+
+
+    
     <div id="completed">
       <h1>Completed</h1>
       <ol>
+
+	<div id="kubernetes">
+          <li>
+            <dt><s><strong>Creating a master service</strong></s></dt>
+            <s><dd id="q_config">Create a service endpoint that allows us to query meta information
+		of our pod services</dd>
+              <dd id="config_meta">
+		Create a new collection in the meta database that stores information related to client services
+		<small>[This should go in the bootstrap file]</small>
+	      </dd>
+	      <dd>Start work on "kubernetizing" the application</dd></s>
+            <p id="why_not_kubernetes">
+	      We won't be using Kubernetes. Despite all of its advantages it actually complicates our application design.
+	      For the most part we should be able to get a kubernetes like set up by a
+	      clever use of virtual ip addresses on linux and trafiic
+	      forwarding using iptables
+	    </p>
+            <small>10 Apr 2017</small>
+	  </li>
+	</div>
+
 	<li>
 	  <s>Find a way to query and aggregate from distributed sql-lite databases</s>
           <small>

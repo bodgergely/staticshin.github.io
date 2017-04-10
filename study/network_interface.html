@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="referrer" content="no-referrer">
+    <title>Network Interface</title>
+    <link href="/study/index.css" rel="stylesheet"/>
+
+  </head>
+  <body>
+    <div id="net_i">
+      <h1>Network Interfaces in Ubuntu</h1>
+      <p>What is the problem we are trying to solve?</p>
+      <p>We want multiple copies of an application to bind on same ports.
+	For example port 80 may be used by different applications with different IP addresses. Since our machine will only have a single IP address we want to create a virtual network from which the applications can be accessed by the outside world</p>
+      <p>We don't want to dockerize/kubernetize the application just yet. Because it has a very steep setup time. We won't be dealing on a scale where kubernetes/docker can do us any good. So we just want to use simple tools that are present on any linux os and run multiple copies of a same applications accessible via different virtual ip addresses. If a time comes when we have to move the application to a different machine we can simply configure port forwarding so that the requests from a virtual host go to the specific IP of the machine. </p>
+      
+      <p>To create virtual IP address we need to</p>
+      <ol>
+        <li>Add an IP to the /etc/network/interfaces file</li>
+        <li>Create an entry of the virtual ip address in the routing table</li>
+      </ol>
+    </div>
+    <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function ()
+      {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    <script src="/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="/study/index.js" type="text/javascript"></script>
+  </body>
+</html>

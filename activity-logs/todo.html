@@ -8,16 +8,19 @@
   </head>
   <body>
     <ol>
-      <li><a href="#todo">To-Do</a></li>
+      <li>
+	<a href="#todo">To-Do</a>
       <li><a href="#completed">Completed</a></li>
       <li><a href="#low_prior">Low priority</a></li>
+      <li><a href="#ellobed_dev">Ellobed Development</a></li>
     </ol>
 
     <!-- RANDOM -->
     <div id="todo">
       <h1>Todo</h1>
 
-      <ol>	
+      <ol>
+        <li>Check Aadhar card status</li>
 	<li>Study ach payments with paypal</li>
 	<li>Learn about upstart</li>
 	<li>Study google domains</li>
@@ -26,7 +29,7 @@
 	  <a href="https://developers.google.com/domains/widget/v1/overview">google domain management</a> widget</li>
 	<li>Create an <a href="http://www.mca.gov.in/mcafoportal/showEformUpload.do">e filing account</a> with MCA</li>
 	<li>Experiment JSON types with lsqlite3 library</li>	
-	<li>Create a fesibility study of morphing ghost into a fully featured booking engine</li>
+	<li>Create a feasibility study of morphing ghost into a fully featured booking engine</li>
 	<li>Note down the information gathered from the India internet conference and derive next steps of action</li>
 	<li>Add a table of contents to the forum page, for improved readability</li>
 	<li>Analyze the pitch sent to <a href="#its_iift">prospects</a>
@@ -43,52 +46,64 @@
 	</li>	  
       </ol>
     </div>
-<!-- ------------------------------------ELLOBED LIST-------------------------------------------------- -->
+    <!-- ------------------------------------ELLOBED LIST-------------------------------------------------- -->
     
     <div id="ellobed_dev">
       <dl>
-        <dt><strong>Operations</strong></dt>
-        <dd>Get a <a href="#bank">bank</a> account</dd>
-        <dt><strong>Infrastructure</strong></dt>
-	<s><dd>Create a repository [27 Mar 2017]</dd></s>
-	<s><dd>Buy the domain name [27 Mar 2017]</dd></s>
-        <dd>Provision server</dd>
-        <dt id="mongo_service"><strong>Create mongodb service</strong></dt>
-        <dd id="mongo_http"><s>Expose mongodb api through <a href="http://restheart.org/">rest heart</a></s></dd>
-        <dd>
-	  <s>Hide the api behind openresty's proxy
-	    <small>
-	      [Optional] Create listeners on the proxy that lets it execute commands thorough the rest api
-	  </small></s>
-	</dd>
-        <dd>Add the basic auth header in the proxy pass</dd>
-	<dd>Collect metrics on what it takes for the entire stack to run</dd>
-        
-        <dt><strong>Nodebb setup</strong></dt>
-	<s>
-	  <dd>Write a shell script that <a href="/study/forums.html#auto_ans">automates installation</a>
-	    and configuration</dd>
-	</s>
-        <dd>Generate an answers file after <a href="#config_meta">querying</a>
-	  the client information from the meta database
-	</dd>
-        <dd>Add sample json for the <a href="/study/forums.html#db_struct">database queries</a>
-	  that we've identified.</dd>
-        <dd>
-	  <s>Filter the output body for admin pages using
-            <a href="">body_filter_by_lua</a>, header_filter_by_lua and <a href="https://github.com/openresty/lua-nginx-module#ngxresub">ngx.re.sub</a> to remove out unwanted content in the admin pages.
-            <small>[Use <a href="https://github.com/craigbarnes/lua-gumbo">lua gumbo</a> instead]</small></s>
-          <small>We'll use client side javascript to show hide content dynamically</small>
-          <small>[10 Apr 2017]</small>
-	</dd>
-        <s><dd>Install lua gumbo</dd>[10 Apr 2017]</s>
-        <dd><s>Use the rewrite module (either the the default nginx or the lua one) to
-	    reroute the "?embed=true" request to the /api endpoint for the forum service.
-	    This will give the user an easy way to embed the data in his app.[28 Mar 2017]</s> </dd>
-        <dd>Create an endpoint that allows the master service to return configuration data for individual services</dd>
-        <dt><strong>Commerce</strong></dt>
-        <s><dd>Install reaction</dd></s>
-        <dd>Configure reaction to use a local mongodb instead of the packaged database that is shipped with meteor</dd>
+        <div id="ellobed_ops">
+          <dt><strong>Operations</strong></dt>
+          <dd>Get a <a href="#bank">bank</a> account</dd>
+	</div>
+
+        <div id="ellobed_infra">
+          <dt><strong>Infrastructure</strong></dt>
+	  <s><dd>Create a repository [27 Mar 2017]</dd></s>
+	  <s><dd>Buy the domain name [27 Mar 2017]</dd></s>
+          <dd>Provision server</dd>
+	</div>
+
+        <div id="ellobed_mongo">
+	  
+          <dt id="mongo_service"><strong>Create mongodb service</strong></dt>
+       	  <dd>Add the basic auth header in the proxy pass</dd>
+	  <dd>Collect metrics on what it takes for the entire stack to run</dd>        
+          <dd>Generate an answers file after <a href="#config_meta">querying</a>
+	    the client information from the meta database
+	  </dd>
+	  <dd id="mongo_http"><s>Expose mongodb api through <a href="http://restheart.org/">rest heart</a></s></dd>
+          <dd>
+	    <s>Hide the api behind openresty's proxy
+	      <small>
+		[Optional] Create listeners on the proxy that lets it execute commands thorough the rest api
+	    </small></s>
+	  </dd>
+	</div>
+
+        <div id="ellobed_nodebb">
+          <dt><strong>Nodebb setup</strong></dt>
+	  
+          <dd>Add sample json for the <a href="/study/forums.html#db_struct">database queries</a>
+	    that we've identified.</dd>
+	  <dd>Create an endpoint that allows the master service to return configuration data for individual services</dd>
+
+	  <s>
+	    <dd>Write a shell script that <a href="/study/forums.html#auto_ans">automates installation</a>
+	      and configuration</dd>
+	  </s>
+          <dd>
+	    <s>Filter the output body for admin pages using
+              <a href="">body_filter_by_lua</a>, header_filter_by_lua and <a href="https://github.com/openresty/lua-nginx-module#ngxresub">ngx.re.sub</a> to remove out unwanted content in the admin pages.
+              <small>[Use <a href="https://github.com/craigbarnes/lua-gumbo">lua gumbo</a> instead]</small>
+	    </s>
+            <small>We'll use client side javascript to show hide content dynamically</small>
+            <small>[10 Apr 2017]</small>
+	  </dd>
+          <s><dd>Install lua gumbo</dd>[10 Apr 2017]</s>
+          <dd><s>Use the rewrite module (either the the default nginx or the lua one) to
+	      reroute the "?embed=true" request to the /api endpoint for the forum service.
+	      This will give the user an easy way to embed the data in his app.[28 Mar 2017]</s> </dd>
+	</div>
+
         <dt><strong>Business</strong></dt>
         <div id="helpdesk_research">
 	  <dd>Research on helpdesk applications for schools and colleges</dd>
@@ -135,17 +150,17 @@
       </ol>
     </div>
     
-<!-- ------------------------------------LOW PRIORITY-------------------------------------------------- -->
+    <!-- ------------------------------------LOW PRIORITY-------------------------------------------------- -->
 
 
     <div id="low_prior">
       <h1>Low priority</h1>
       <ol>
-	<li class="post"> Write a post exploring the childhood of socrates.
+	<li class="post"> Write a post exploring the childhood of Socrates.
 	  His relationship with his parents, his siblings, neighbours etc.
 	  <span class="origin"> 5 Oct 2016</span> </li>
 
-	<li class="post"> Write a post comparing socrates' and Emersons views on poets
+	<li class="post"> Write a post comparing Socrates' and Emersons views on poets
 	  <span class="origin">5 Oct 2016</span></li>
 
 	<li class="post"> write a post explaining localhost tunneling with the
@@ -159,13 +174,40 @@
       </ol>
     </div>
 
-<!-- ------------------------------------COMPLETED-------------------------------------------------- -->
+    <!-- ------------------------------------COMPLETED-------------------------------------------------- -->
 
 
     
     <div id="completed">
       <h1>Completed</h1>
       <ol>
+	<div id="ellobed_commerce">
+	  
+	  <li>
+            <s><dd>Install reaction</dd></s>
+            <dd><s>Configure reaction to use a local mongodb instead of the packaged database that is shipped with meteor
+	    </dd>
+	  </li>
+	  <li>
+	    <s>Update reaction commerce and note down any findings</s> [4 Apr 2017]
+	    <small>[As expected running reaction update also updates reaction core]</small>
+	  </li>
+
+	  </s>
+	  <div>
+	    We won't be using reaction commerce because we can approximate the
+	    fearures of any ecommerce application using a popular content management system. For
+	    our particular usecase we'll be going with
+            <a href="#cms_investigate">Ghost</a> because it has:-
+            <ol>
+              <li>a very small memory footprint</li>
+              <li>an <a href="#sqlite">embedded database</a> in the form of sqlite will help us spawn
+		100s of instances on a single server.</li>
+              <li>a very large fanbase that has created lots of custom themes that we can use free of cost</li>
+            </ol>
+	    
+	  </div>
+	</div>
 
 	<div id="kubernetes">
           <li>
@@ -180,30 +222,32 @@
             <p id="why_not_kubernetes">
 	      We won't be using Kubernetes. Despite all of its advantages it actually complicates our application design.
 	      For the most part we should be able to get a kubernetes like set up by a
-	      clever use of virtual ip addresses on linux and trafiic
+	      clever use of virtual ip addresses on linux and traffic
 	      forwarding using iptables
 	    </p>
-            <small>10 Apr 2017</small>
+            <small>[10 Apr 2017]</small>
 	  </li>
 	</div>
 
-	<li>
-	  <s>Find a way to query and aggregate from distributed sql-lite databases</s>
-          <small>
-	    The <a href="#e_lsql">lua sql lite</a> library turns openresty into an http interface for our sqllite dbs. All we need to do now is to write an api that returns the result of sql queries from the database in simple json. We can feed that json into our reporting systems.
-	  </small>
-          <small>[10 Apr 2017]</small>
-	</li>
-
-	<li id="e_lsql"> <s> Experiment lsqlite3complete library with openresty.
-	    Instantiate the library in the init_by_lua_directive.
-	    Test whether its possible to access its method from the routes.
+	<div id="sqlite">
+	  <li id="e_lsql"> <s> Experiment lsqlite3complete library with openresty.
+	      Instantiate the library in the init_by_lua_directive.
+	      Test whether its possible to access its method from the routes.
+              <small>
+		Expected behaviour: they will be
+	      </small>
+	    </s>
+            <small>[10 Apr 2017]</small>
+	  </li>
+	  <li>
+	    <s>Find a way to query and aggregate from distributed sql-lite databases</s>
             <small>
-	      Expected behaviour: they will be
+	      The <a href="#e_lsql">lua sql lite</a> library turns openresty into an http interface for our sqlite dbs. All we need to do now is to write an api that returns the result of sql queries from the database in simple json. We can feed that json into our reporting systems.
 	    </small>
-	  </s>
-          <small>[10 Apr 2017]</small>
-	</li>	
+            <small>[10 Apr 2017]</small>
+	  </li>
+
+	</div>
 	<s><li>Unlock wrinq and ellobed on godaddy</li> [3 Apr 2017]</s>
 	<li>
 	  <s>Contact Amazon pay and google wallet support teams</s> [6 Apr 2017]
@@ -222,15 +266,17 @@
 	</s>
 	<li><s>Go through the India internet conference Agenda</s> [6 Apr 2017]</li>
 	<li><s>Contact paypal support team and ask them about status in India</s> [5 Apr 2017]</li>
-	<li><s><a href="/study/cms.html#investigating_ghost">Investigate</a> the features of ghost</s> [5 Apr 2017]</li>
+
+	<li id="cms_investigate">
+	  <s>
+	    <a href="/study/cms.html#investigating_ghost">Investigate</a>
+	    the features of ghost</s>
+	  [5 Apr 2017]
+	</li>
 
 	<li>
-	  <s>Email Nannette and ask her about the pricing for yardi and other proeprty management softwares</s>
+	  <s>Email Nannette and ask her about the pricing for yardi and other property management softwares</s>
 	  [31 Mar 2017]
-	</li>
-	<li>
-	  <s>Update reaction commerce and note down any findings</s> [4 Apr 2017]
-	  <small>[As expected running reaction update also updates reaction core]</small>
 	</li>
 
 	<s><li>

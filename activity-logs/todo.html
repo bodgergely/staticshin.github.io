@@ -9,6 +9,10 @@
       margin-top:5px;
       width:80%;
       }
+      body{
+      font-size:14px;
+      }
+     
       .date{
       border-bottom:1px solid whitesmoke;
       font-weight:bold;
@@ -22,7 +26,7 @@
     <link href="/study/index.css" rel="stylesheet"/>
   </head>
   <body style="font-family:monospace">
-    <!-- post -->
+    <!-- RANDOM -->
     <h1>Todo</h1>
     <ol>
       <li class="post"> Write a post exploring the childhood of socrates. His relationship with his parents, his siblings, neighbours etc. <span class="origin"> 5 Oct 2016</span> </li>
@@ -40,16 +44,10 @@
       <li>Understand the capabilities of
 	<a href="https://developers.google.com/domains/widget/v1/overview">google domain management</a> widget</li>
       <li>Create an <a href="http://www.mca.gov.in/mcafoportal/showEformUpload.do">e filing account</a> with MCA</li>
-      <li id="e_lsql">Experiment lsqlite3complete library with openresty.
-	Instantiate the library in the init_by_lua_directive.
-	Test whether its possible to access its method from the routes.
-        <small>Expected behaviour they will be</small>
-      </li>
       <li>Experiment JSON types with lsqlite3 library</li>
       
       <li>Create a fesibility study of morphing ghost into a fully featured booking engine</li>
 
-      <li>Find a way to query and aggregate from distributed sql-lite databses</li>
       <li>Note down the information gathered from the India internet conference and derive next steps of action</li>
       <li>Add a table of contents to the forum page, for improved readability</li>
       <li>Analyze the pitch sent to <a href="#its_iift">prospects</a>
@@ -59,6 +57,27 @@
        	  Transfer the existing domains to google domains
           <small>[Transferring a domain name requires purchasing an additional year of registration. Since we don't have the billing information set up with google we must wait for this until we get a <a href="#bank">credit card</a>]</small>
 	</li>
+        <li>
+	  Update openresty and learn
+	  to use <a href="https://github.com/openresty/opm#installation">OPM</a>
+	</li>
+	<li>
+	  <s>Find a way to query and aggregate from distributed sql-lite databases</s>
+          <small>
+	    The <a href="#e_lsql">lua sql lite</a> library turns openresty into an http interface for our sqllite dbs. All we need to do now is to write an api that returns the result of sql queries from the database in simple json. We can feed that json into our reporting systems.
+	  </small>
+          <small>[10 Apr 2017]</small>
+	</li>
+
+	<li id="e_lsql"> <s> Experiment lsqlite3complete library with openresty.
+	    Instantiate the library in the init_by_lua_directive.
+	    Test whether its possible to access its method from the routes.
+            <small>
+	      Expected behaviour: they will be
+	    </small>
+	  </s>
+          <small>[10 Apr 2017]</small>
+	</li>	
         <s><li>Unlock wrinq and ellobed on godaddy</li> [3 Apr 2017]</s>
       </div>
       <li>
@@ -114,6 +133,9 @@
       <s><li>Figure out how to <a href="/study/mongodb.html#r_meteor">run meteor</a>
 	  as a simple nodejs app</li> [29 Mar 2017]</s>      
     </ol>
+
+    <!-- ELLOBED LIST -->
+    
     <div id="ellobed_dev">
       <p><strong>Ellobed todo list</strong></p>
       <dl>
@@ -202,8 +224,9 @@
 	  </small>
 	  [27 Mar 2017] </s>
         <s><li>Sign up for the bank account</li> [4 Apr 2017]</s>
+	<li>Request a credit card</li>
         <li>Apply for the FD</li>
-        <li>Request a credit card</li>
+        <li>Install the banks app and claim guaranteed prizes</li>
       </ol>
     </div>
     <script type="text/javascript">
@@ -221,6 +244,5 @@
     </script>
     <script src="/jquery-1.11.1.min.js" type="text/javascript"></script>
     <script src="/study/index.js" type="text/javascript"></script>
-
   </body>    
 </html>

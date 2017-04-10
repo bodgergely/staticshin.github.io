@@ -5,11 +5,18 @@
     line-height:1.2em;
     
 }
+s{
+    color:grey;
+}
 .red{
     color:red;
 }
 li{
     margin-top:5px;
+    margin-bottom:10px;
+}
+dd{
+    margin-bottom:5px;
 }
 .strong{
     font-weight:bold;

@@ -20,31 +20,19 @@
       <h1>Todo</h1>
 
       <ol>
-        <li>Check Aadhar card status</li>
         <li>Learn about virtual domains</li>
 	<li>Study ach payments with paypal</li>
-	<li>Learn about upstart</li>
-	<li>Study google domains</li>
-	<li>Research on One person companies</li>
-	<li>Understand the capabilities of
-	  <a href="https://developers.google.com/domains/widget/v1/overview">google domain management</a> widget</li>
-	<li>Create an <a href="http://www.mca.gov.in/mcafoportal/showEformUpload.do">e filing account</a> with MCA</li>
+        <li>Use couchdb's logrotate on our server logs (/usr/local/etc/logrotate.d/)</li>
 	<li>Experiment JSON types with lsqlite3 library</li>	
 	<li>Create a feasibility study of morphing ghost into a fully featured booking engine</li>
 	<li>Note down the information gathered from the India internet conference and derive next steps of action</li>
 	<li>Add a table of contents to the forum page, for improved readability</li>
-	<li>Analyze the pitch sent to <a href="#its_iift">prospects</a>
-	  and find out the ways in which it can be improved for further communication</li>
-	<div id="d_transfer">
-	  <li>
-       	    Transfer the existing domains to google domains
-            <small>[Transferring a domain name requires purchasing an additional year of registration. Since we don't have the billing information set up with google we must wait for this until we get a <a href="#bank">credit card</a>]</small>
-	  </li>
-	</div>
+	
         <li>
 	  Update openresty and learn
 	  to use <a href="https://github.com/openresty/opm#installation">OPM</a>
-	</li>	  
+	</li>
+        <li>Create a story for property managers</li>
       </ol>
     </div>
     <!-- ------------------------------------ELLOBED LIST-------------------------------------------------- -->
@@ -157,6 +145,22 @@
     <div id="low_prior">
       <h1>Low priority</h1>
       <ol>
+	<div id="d_transfer">
+	  <li>Analyze the pitch sent to <a href="#its_iift">prospects</a>
+	    and find out the ways in which it can be improved for further communication
+	  </li>
+	  <li>
+       	    Transfer the existing domains to google domains
+            <small>[Transferring a domain name requires purchasing an additional year of registration. Since we don't have the billing information set up with google we must wait for this until we get a <a href="#bank">credit card</a>]</small>
+	  </li>
+	</div>
+	<li>Study google domains</li>
+	<li>Check Aadhar card status</li>
+	<li>Research on One person companies</li>
+	<li>Understand the capabilities of
+	  <a href="https://developers.google.com/domains/widget/v1/overview">google domain management</a> widget</li>
+	<li>Create an <a href="http://www.mca.gov.in/mcafoportal/showEformUpload.do">e filing account</a> with MCA</li>
+
 	<li class="post"> Write a post exploring the childhood of Socrates.
 	  His relationship with his parents, his siblings, neighbours etc.
 	  <span class="origin"> 5 Oct 2016</span> </li>
@@ -182,8 +186,25 @@
     <div id="completed">
       <h1>Completed</h1>
       <ol>
+
+	<li>
+	  <s>Learn about upstart</s>
+          <div id="notes">
+            <ul>
+              <li>The preferred way of starting nodebb is via the <a href="https://github.com/NodeBB/NodeBB/issues/1377">executeable supplied</a> with the app. It automatically restarts nodebb if it crashes.</li>
+              <li>
+		We'll be daemonizing ghost with forever (great choice of words!)
+	      </li>
+              <li>Openresty automatically runs as a background service and never crashes.
+		Therefore I'll stick with the default method and add some
+		location blocks that allow the application to configure and restart itself.</li>
+              <li>In all probability we'll never have to write an init script.</li>
+            </ul>
+	  </div>
+	</li>
+
+	
 	<div id="ellobed_commerce">
-	  
 	  <li>
             <s><dd>Install reaction</dd></s>
             <dd><s>Configure reaction to use a local mongodb instead of the packaged database that is shipped with meteor
@@ -205,8 +226,7 @@
               <li>an <a href="#sqlite">embedded database</a> in the form of sqlite will help us spawn
 		100s of instances on a single server.</li>
               <li>a very large fanbase that has created lots of custom themes that we can use free of cost</li>
-            </ol>
-	    
+            </ol>	    
 	  </div>
 	</div>
 

@@ -12,7 +12,6 @@
       <li><a href="https://github.com/punkave/apostrophe">Apostrophe</a></li>
       <li><a href="http://keystonejs.com/">Keystonejs</a></li>
       <li><a href="https://github.com/TryGhost/Ghost">Ghost</a> <small>[We'll be going with ghost most probably]
-[One liner that does <a href="http://stackoverflow.com/questions/25675314/how-to-backup-sqlite-database">sql lite backups</a>]
       </small></li>
     </ul>
     <div id="investigating_ghost">
@@ -45,7 +44,17 @@
       </ol>
     </div>
     <div id="new_cms">
-      
+      <h1>An embeddable dynamic cms</h1>
+      <p>So I've been thinking, instead of modifying all of the already built content management system why don't we create our own little CMS that can be used to serve the specific requirements of our prospects? The idea is that we'll create a generic cms that will have the ability to store, query and modify the data. Nothing more, nothing less. Once we have the data api ready we can focus our attention on building components that can present this data into different formats? </p>
+      <p><strong>What will be the components of a generic cms?</strong></p>
+      <ol>
+        <li>An editor to manage the content. We can use <a href="https://quilljs.com/">quill</a></li>
+        <li id="temp_comp">Lots and lots of opensource themes, templatized (we'll write a script to automate this operation) to support our data model</li>
+	<li>A client side script that will morph the cms engine into different front ends on a <a href="#temp_comp">given template</a>. For example the same cms will work as a booking engine, an ecommerce platform (with the help of simple cart plugin) a portfolio website depending upon the client requirements. Of course while a cms can work as different apps it can't work as different apps at run time. At any given moment a cms will either be a booking engine or an ecommerce platform. Not both.</li>
+        <li>A unified admin panel where the end user can edit his content.</li>
+      </ol>
+      <p><strong>Why not use any of the existing content management systems?</strong></p>
+      <p>Because they are too heavy. After finding an <a href="/study/sqlite.html#http_rel_json">embeddable webserver + database combo</a> we can safely create applications that can be spawned on demand for our users. If they get too big they can be easily moved to a different server without affecting the services for any of our existing clients. This way we can not only simplify our operational management but also create applications that are personalized for each of our clients. Win win.</p>
     </div>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
 

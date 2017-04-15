@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="referrer" content="no-referrer">
+    <title>SQLITE</title>
+    <link href="/study/index.css" rel="stylesheet"/>
+
+  </head>
+  <body>
+    <ol>
+      <li>My experiments with <a href="https://github.com/brickcap/openresty_examples/tree/master/sqlite"></a>sqlite were successful. It can indeed function as a very effective JSON document database. </li>
+      <li>
+	I discovered <a href="http://ulua.io/luarocks_packages.html">ulua</a>
+	that allows me to run an embedded web server on luajit. I can embed the sqlite library in the webserver and access sqlite3 over http. 
+      </li>
+      <li>Combining the sqlite capabilities of storing JSON and luajit embedded webserver I can get an http, document oriented database that's accessible from any program that has the capability of making http requests. It also allows me to replicate some of the <a href="#e_features">features</a> of other json oriented databases. </li>
+      <li id="in_memory">From what I understand the JSON extension parses the stored json in realtime (at a rate of 250 mb/sec) and then stores it in a vritual table. I'm not sure if that virtual table is kept in memory or on disk. If the virtual table is stored in memory then it might be trouble because I don't want to deal with big in memory databases. </li>
+      <li>To avoid the limitations of in memory storage I can design my keys more efficiently and store the data I want to query on within the columns itself. Yes it will duplicate the data on disk,but disk is cheap. Furthermore since sqlite is embedded I can create a separate file for each database. So that I future if any one database becomes a bottleneck I can simply put it on a different machine.</li>
+      <li>On the other hand the in memory database could be useful for certain operations like storing cookies. So understanding them will help me get more out of sqlite.</li>
+    </ol>
+    <div id="e_features">
+    </div>
+    <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function ()
+      {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    <script src="/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="/study/index.js" type="text/javascript"></script>
+  </body>
+</html>

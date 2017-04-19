@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="referrer" content="no-referrer">
+    <title>Completed</title>
+    <link href="/study/index.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <!-- ------------------------------------COMPLETED-------------------------------------------------- -->
+
+
+    
+    <div id="completed">
+      <h1>Completed</h1>
+      <ol>
+	<li><s>Create an s3 bucket and get keys for aws access</s> [18 Apr 2017]</li>s
+	<li><s>Create amazon ses smtp credentials</s> [18 Apr 2017]</li>
+	<li>
+	  <s>Buy an amazon ec2 instance</s>
+          <small>[18 Apr 2017]</small>
+	</li>
+	<li><s>Buy google compute engine</s> <small>[17 Apr 2017]</small></li>
+	<li>Report the lua bit version bug to the upkg maintainer and supply the fix as well</li>
+	<li>	  
+          <s><li>Remove the "root ./" directive from the nginx configuration file and publish the
+	      new version of restyskeleton</li>[11 Apr 2017]</s>
+	  <s>Learn about upstart</s>
+          <div id="notes">
+            <ul>
+              <li>The preferred way of starting nodebb is via the <a href="https://github.com/NodeBB/NodeBB/issues/1377">executeable supplied</a> with the app. It automatically restarts nodebb if it crashes.</li>
+              <li>
+		We'll be daemonizing ghost with forever (great choice of words!)
+	      </li>
+              <li>Openresty automatically runs as a background service and never crashes.
+		Therefore I'll stick with the default method and add some
+		location blocks that allow the application to configure and restart itself.</li>
+              <li>In all probability we'll never have to write an init script.</li>
+            </ul>
+	  </div>
+	</li>
+
+	
+	<div id="ellobed_commerce">
+	  <li>
+            <s><dd>Install reaction</dd></s>
+            <dd><s>Configure reaction to use a local mongodb instead of the packaged database that is shipped with meteor
+	    </dd>
+	  </li>
+	  <li>
+	    <s>Update reaction commerce and note down any findings</s> [4 Apr 2017]
+	    <small>[As expected running reaction update also updates reaction core]</small>
+	  </li>
+
+	  </s>
+	  <div>
+	    We won't be using reaction commerce because we can approximate the
+	    fearures of any ecommerce application using a popular content management system. For
+	    our particular usecase we'll be going with
+            <a href="#cms_investigate">Ghost</a> because it has:-
+            <ol>
+              <li>a very small memory footprint</li>
+              <li>an <a href="#sqlite">embedded database</a> in the form of sqlite will help us spawn
+		100s of instances on a single server.</li>
+              <li>a very large fanbase that has created lots of custom themes that we can use free of cost</li>
+            </ol>	    
+	  </div>
+	</div>
+
+	<div id="kubernetes">
+          <li>
+            <dt><s><strong>Creating a master service</strong></s></dt>
+            <s><dd id="q_config">Create a service endpoint that allows us to query meta information
+		of our pod services</dd>
+              <dd id="config_meta">
+		Create a new collection in the meta database that stores information related to client services
+		<small>[This should go in the bootstrap file]</small>
+	      </dd>
+	      <dd>Start work on "kubernetizing" the application</dd></s>
+            <p id="why_not_kubernetes">
+	      We won't be using Kubernetes. Despite all of its advantages it actually complicates our application design.
+	      For the most part we should be able to get a kubernetes like set up by a
+	      clever use of virtual ip addresses on linux and traffic
+	      forwarding using iptables
+	    </p>
+            <small>[10 Apr 2017]</small>
+	  </li>
+	</div>
+
+	<div id="sqlite">
+	  <li id="e_lsql"> <s> Experiment lsqlite3complete library with openresty.
+	      Instantiate the library in the init_by_lua_directive.
+	      Test whether its possible to access its method from the routes.
+              <small>
+		Expected behaviour: they will be
+	      </small>
+	    </s>
+            <small>[10 Apr 2017]</small>
+	  </li>
+	  <li>
+	    <s>Find a way to query and aggregate from distributed sql-lite databases</s>
+            <small>
+	      The <a href="#e_lsql">lua sql lite</a> library turns openresty into an http interface for our sqlite dbs. All we need to do now is to write an api that returns the result of sql queries from the database in simple json. We can feed that json into our reporting systems.
+	    </small>
+            <small>[10 Apr 2017]</small>
+	  </li>
+
+	</div>
+	<s><li>Unlock wrinq and ellobed on godaddy</li> [3 Apr 2017]</s>
+	<li>
+	  <s>Contact Amazon pay and google wallet support teams</s> [6 Apr 2017]
+	  <small>Amazon pay only works for US citizens, google wallet can't "request" money in India.
+	    I'm stuck with paypal.
+	  </small>
+	</li>
+
+	<li id="its_iift">
+	  <s>Contact ITS and IIFT representatives from the India internet conference</s>
+	  [6 Apr 2017]</li>    
+	<s>
+	  <li class="people">
+	    Write an email to rapid formations cancelling the renewal of wrinq with companies house. [27 Mar 2017]
+	  </li> 
+	</s>
+	<li><s>Go through the India internet conference Agenda</s> [6 Apr 2017]</li>
+	<li><s>Contact paypal support team and ask them about status in India</s> [5 Apr 2017]</li>
+
+	<li id="cms_investigate">
+	  <s>
+	    <a href="/study/cms.html#investigating_ghost">Investigate</a>
+	    the features of ghost</s>
+	  [5 Apr 2017]
+	</li>
+
+	<li>
+	  <s>Email Nannette and ask her about the pricing for yardi and other property management softwares</s>
+	  [31 Mar 2017]
+	</li>
+
+	<s><li>
+	    Contact Paypal merchant technical support even though
+	    we've come to a <a href="/study/paypal.html#p_c">decision regarding</a>
+	    the issue of multiple business identities.
+	    It is possible that we might find a solution that is even better than the one we have right now. 
+	  </li>
+	</s>
+
+	<s><li id="pc_enq">
+	    Contact paypal and inquire about the
+            <a href="/study/paypal.html#p_c">parent child</a> accounts.
+	  </li> [31 Mar 2017]</s>
+	<div id="adhar_application">
+	  <s><li>Collect documents for aadhar card</li>[27 Mar 2017]</s>
+	  <s><li>Fill up the aadhar card form</li> [29 Mar 2017]</s>
+	  <s><li>Apply for aadhar card</li> [29 Mar 2017]</s>
+	</div>
+	<s><li>Change wifi password</li> [28 Mar 2017]</s>
+	<s><li>Contact google domains team to inquire about the api [31 Mar 2017]</li></s>
+
+	<s>
+	  <li>Email Mandy to ask her if we can use her address with the companies registration house</li>
+	  <small>[29 Mar 2017]</small>
+	</s>
+	<s><li>Figure out how to <a href="/study/mongodb.html#r_meteor">run meteor</a>
+	    as a simple nodejs app</li> [29 Mar 2017]</s>
+	<li><s>write a shell script that adds an admin user when mongo starts for the first time</s></li>
+	<s><li>Create a meta database and add a config collection</li></s>
+	<s><li>Combine the scripts into a single bootstrap script</li></s>
+	<s><li>Update mongodb to 3.4</li></s>
+      </ol>
+    </div>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function ()
+      {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    <script src="/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="/study/index.js" type="text/javascript"></script>
+  </body>    
+</html>

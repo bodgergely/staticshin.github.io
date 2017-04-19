@@ -1,88 +1,89 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta name="referrer" content="no-referrer">
-    <title>CMS</title>
-    <link href="/study/index.css" rel="stylesheet"/>
-
-  </head>
-  <body>
-    <ul>
-      <li><a href="https://github.com/punkave/apostrophe">Apostrophe</a></li>
-      <li><a href="http://keystonejs.com/">Keystonejs</a></li>
-      <li><a href="https://github.com/TryGhost/Ghost">Ghost</a> <small>[We'll be going with ghost most probably]
-      </small></li>
-    </ul>
-    <div id="investigating_ghost">
-      <h1>Investigating Ghost for use as a booking engine</h1>
-      <p>One of the best things about ghost is that it's very lightweight. It saves all of its data to sqlite which makes the entire application highly embeddable. This works very well for us if we want to deploy multiple instances of the same application for different users. All we need to do is find out a way to aggregate the data from multiple sources.Here we are investigating the use of ghost as a spawnable booking engine:-</p>
-      <p><u><strong>PROS</strong></u></p>
-      <ol>
-        <li>Lots and lots of <a href="http://marketplace.ghost.org/themes/free/">free and beautiful</a>
-	  themes that we can use as it is. Lots of customizability options in the default theme as well.
-	  <small>[Masonry looks nice and clean]</small>
-	</li>
-        <li>A decent tagging system that we can use to categorize our listings</li>
-        <li>Post recommendations that can be re purposed as listing recommendations</li>
-        <li>A side menu bar that can be re-tooled to </li>
-        <li>A header image for post file that can be used to create a carousal for property photos</li>
-        <li>A simple administration panel that we can build on top of for specific requirements of our application (Mostly integration with calenders and making the default label names more suitable for use in the hospitality industry)</li>
-      </ol>
-      <p><u><strong>Cons of ghost</strong></u></p>
-      <ol>
-        <li>Sqlite is a new database for me. Which means that there is a slightly steeper
-	  <a href="/study/sqlite.html">learning</a> curve. </li>
-        <li>
-	  Ghost is dropping support for later versions of sqlite
-          <small>[Although the latest stable version (0.11) is good enough for our usecase]</small>
-	</li>
-        <li>The editor is not suitable for the people we are trying to target.
-	  Markdown is not something that they'll be willing to learn.
-	</li>
-        <li>We may need to design additional screens to capture the meta information</li>
-      </ol>
-    </div>
-    <div id="new_cms">
-      <h1>An embeddable dynamic cms</h1>
-      <p>So I've been thinking, instead of modifying all of the already built content management systems why don't we create our own little CMS that can be used to serve the specific requirements of our prospects? The idea is that we'll create a generic cms that will have the ability to store, query and modify the data. Nothing more, nothing less. Once we have the data api ready we can focus our attention on building components that can present this data into different formats. </p>
-      <p><strong>What will be the components of a generic cms?</strong></p>
-      <ol>
-        <li>An editor to manage the content. We can use <a href="https://quilljs.com/">quill</a></li>
-        <li id="temp_comp">Lots and lots of <a href="#getting_themes">opensource themes</a>, templatized (we'll write a script to automate this operation) to support our data model</li>
-	<li>A client side script that will morph the cms engine into different front ends on a <a href="#temp_comp">given template</a>. For example the same cms will work as a booking engine, an ecommerce platform (with the help of simple cart plugin) a portfolio website depending upon the client requirements. Of course while a cms can work as different apps it can't work as different apps at run time. At any given moment a cms will either be a booking engine or an ecommerce platform. Not both.</li>
-        <li>A unified admin panel where the end user can edit his content.</li>
-      </ol>
-      <p><strong>Why not use any of the existing content management systems?</strong></p>
-      <p>Because they are too heavy. After finding an <a href="/study/sqlite.html#http_rel_json">embeddable webserver + database combo</a> we can safely create applications that can be spawned on demand for our users. If they get too big they can be easily moved to a different server without affecting the services for any of our existing clients. This way we can not only simplify our operational management but also create applications that are personalized for each of our clients. Win win.</p>
-    </div>
-    <div id="getting_themes">
-      <p> Themes will be one of the most important
-        <a href="#temp_component">components</a> of our cms. Consequently we should spend effort in creating a set of customized themed templates that our users can choose from to style their cms. I've identified blog post themes as very basic type of theme that is both easily available and flexible enough to be morphed in order to suit the requirements of different kinds of cms. I've decided to go with blog themes as a starting point. Here's my reasoning:-
-      </p>
-      <ol>
-        <li>Every blog post theme comes with a basic master--> detail setup. Here the master is a list of items and the detail is a view of a specific item. This basic setup can be customized to suit the requirements of any kind of cms.</li>
-							     <li>There are lots of opensource static site generators that have become popular these days. For these generators the OS community has created 100s of excellent themes. We can reuse these themes for our cms as well.</li>
-							     <li>Perhaps the most important reason is we don't have the development bandwith to do everything. We should focus on creating the core services (meaning the api layer, the client side scripts tol present the interface and the server side infrastructure) that'll bring in the money and use anything we can get from elsewhere. This means that we need to design a system that plays well with components that are not built for it explicitly. It may sound complex but it's not that hard to implement.</li>
-							     </ol>
-							   
-    </div>
-    <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
-
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-37138783-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function ()
-      {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>
-    <script src="/jquery-1.11.1.min.js" type="text/javascript"></script>
-    <script src="/study/index.js" type="text/javascript"></script>
-  </body>
+<head>
+	<meta charset="UTF-8">
+	<meta content="no-referrer" name="referrer">
+	<title>CMS</title>
+	<link href="/study/index.css" rel="stylesheet">
+</head>
+<body>
+	<ul>
+		<li>
+			<a href="https://github.com/punkave/apostrophe">Apostrophe</a>
+		</li>
+		<li>
+			<a href="http://keystonejs.com/">Keystonejs</a>
+		</li>
+		<li>
+			<a href="https://github.com/TryGhost/Ghost">Ghost</a> <small>[We'll be going with ghost most probably]</small>
+		</li>
+	</ul>
+	<div id="investigating_ghost">
+		<h1>Investigating Ghost for use as a booking engine</h1>
+		<p>One of the best things about ghost is that it's very lightweight. It saves all of its data to sqlite which makes the entire application highly embeddable. This works very well for us if we want to deploy multiple instances of the same application for different users. All we need to do is find out a way to aggregate the data from multiple sources.Here we are investigating the use of ghost as a spawnable booking engine:-</p>
+		<p><u><strong>PROS</strong></u></p>
+		<ol>
+			<li>Lots and lots of <a href="http://marketplace.ghost.org/themes/free/">free and beautiful</a> themes that we can use as it is. Lots of customizability options in the default theme as well. <small>[Masonry looks nice and clean]</small>
+			</li>
+			<li>A decent tagging system that we can use to categorize our listings</li>
+			<li>Post recommendations that can be re purposed as listing recommendations</li>
+			<li>A side menu bar that can be re-tooled to</li>
+			<li>A header image for post file that can be used to create a carousal for property photos</li>
+			<li>A simple administration panel that we can build on top of for specific requirements of our application (Mostly integration with calenders and making the default label names more suitable for use in the hospitality industry)</li>
+		</ol>
+		<p><u><strong>Cons of ghost</strong></u></p>
+		<ol>
+			<li>Sqlite is a new database for me. Which means that there is a slightly steeper <a href="/study/sqlite.html">learning</a> curve.
+			</li>
+			<li>Ghost is dropping support for later versions of sqlite <small>[Although the latest stable version (0.11) is good enough for our usecase]</small></li>
+			<li>The editor is not suitable for the people we are trying to target. Markdown is not something that they'll be willing to learn.</li>
+			<li>We may need to design additional screens to capture the meta information</li>
+		</ol>
+	</div>
+	<div id="new_cms">
+		<h1>An embeddable dynamic cms</h1>
+		<p>So I've been thinking, instead of modifying all of the already built content management systems why don't we create our own little CMS that can be used to serve the specific requirements of our prospects? The idea is that we'll create a generic cms that will have the ability to store, query and modify the data. Nothing more, nothing less. Once we have the data api ready we can focus our attention on building components that can present this data into different formats.</p>
+		<p><strong>What will be the components of a generic cms?</strong></p>
+		<ol>
+			<li>An editor to manage the content. We can use <a href="https://quilljs.com/">quill</a>
+			</li>
+			<li id="temp_comp">Lots and lots of <a href="#getting_themes">opensource themes</a>, templatized (we'll write a script to automate this operation) to support our data model
+			</li>
+			<li>A client side script that will morph the cms engine into different front ends on a <a href="#temp_comp">given template</a>. For example the same cms will work as a booking engine, an ecommerce platform (with the help of simple cart plugin) a portfolio website depending upon the client requirements. Of course while a cms can work as different apps it can't work as different apps at run time. At any given moment a cms will either be a booking engine or an ecommerce platform. Not both.
+			</li>
+			<li>A unified admin panel where the end user can edit his content.</li>
+		</ol>
+		<p><strong>Why not use any of the existing content management systems?</strong></p>
+		<p>Because they are too heavy. After finding an <a href="/study/sqlite.html#http_rel_json">embeddable webserver + database combo</a> we can safely create applications that can be spawned on demand for our users. If they get too big they can be easily moved to a different server without affecting the services for any of our existing clients. This way we can not only simplify our operational management but also create applications that are personalized for each of our clients. Win win.</p>
+	</div>
+	<div id="getting_themes">
+		<p>Themes will be one of the most important <a href="#temp_component">components</a> of our cms. Consequently we should spend effort in creating a set of customized themed templates that our users can choose from to style their cms. I've identified blog post themes as very basic type of theme that is both easily available and flexible enough to be morphed in order to suit the requirements of different kinds of cms. I've decided to go with blog themes as a starting point. Here's my reasoning:-</p>
+		<ol>
+			<li>Every blog post theme comes with a basic master--&gt; detail setup. Here the master is a list of items and the detail is a view of a specific item. This basic setup can be customized to suit the requirements of any kind of cms.</li>
+			<li>There are lots of opensource static site generators that have become popular these days. For these generators the OS community has created 100s of excellent themes. We can reuse these themes for our cms as well.</li>
+			<li>Perhaps the most important reason is we don't have the development bandwith to do everything. We should focus on creating the core services (meaning the api layer, the client side scripts tol present the interface and the server side infrastructure) that'll bring in the money and use anything we can get from elsewhere. This means that we need to design a system that plays well with components that are not built for it explicitly. It may sound complex but it's not that hard to implement.</li>
+		</ol>
+		<p>With that out of the way here's what we are doing to collect themes from various sources</p>
+		<ol>
+			<li>We've already created a <a href="https://github.com/brickcap/muddha">repository</a> where themes for different static site generators are added as sub-modules. This will allow us to update all themes in the repository with a single command. Although it may take a long time to run, but that's okay as long as it saves us the headache of manually updating each and every repo.
+			</li>
+			<li>We need to automate the process of finding themes. A solution is to clone the showcase repositories that highlight the "best of the best" and then parse the files to add submodules to our own repo. While this won't get us all the repos we'll have a decent amount of choice.</li>
+			<li>We also need to automate the generation of compiled html files. The themes follow a structure that is specific to a static site generator. For example a jekyll theme will follow the file structure and organization of a jekyll generator. We need to convert these files into standard html that we can use. And we can't do all of that manually so we'll have to write a small script that invokes a static site generator to compile a files in a directory. This shouldn't be that hard.</li>
+			<li>The most difficult part in all of this is going to be the "discoverablity" of files. Since all the static site generators have a different file structure we need to create database that tell us the organization of a compiled theme. Such a database would come in handy when we are templatizing the themes. The meta information will all be json and will be structured something like this:-
+				<ol>
+					<li>static: this key would hold the path of the static assests</li>
+					<li>index: this key would hold the path of the index template for the entire website</li>
+					<li>tag: this key would hold the index template to a specific tag</li>
+					<li>detail: this key would hold the template path0 for a detail view for a particular item</li>
+				</ol>The most important items for us a #2 and #4 but we'll keep everything in the database. This database will come in handy at the time of rendering the themes.We can just query it ask for the location of a particular file, get the file, render it and send it back to the client. We'll be using ulua+sqlite for creating an embedded database that can be used by anyone on any platform.
+			</li>
+		</ol>
+	</div>
+	<p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>
+	<script src="/study/ga.js" type="text/javascript">	</script> 
+	<script src="/jquery-1.11.1.min.js" type="text/javascript">
+	</script> 
+	<script src="/study/index.js" type="text/javascript">
+	</script>
+</body>
 </html>

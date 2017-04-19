@@ -8,18 +8,20 @@
 
   </head>
   <body>
-   <small> [One liner for <a href="http://stackoverflow.com/questions/25675314/how-to-backup-sqlite-database">sql lite backups</a>]</small>
+    <small> [One liner for <a href="http://stackoverflow.com/questions/25675314/how-to-backup-sqlite-database">sql lite backups</a>]</small>
 
-    <ol id="sqlite_experiments">
-      <li>My experiments with <a href="https://github.com/brickcap/openresty_examples/tree/master/sqlite"></a>sqlite were successful. It can indeed function as a very effective JSON document database. </li>
-      <li>
-	I discovered <a href="http://ulua.io/luarocks_packages.html">ulua</a>
-	that allows me to run an embedded web server on luajit. I can embed the sqlite library in the webserver and access sqlite3 over http. 
-      </li>
-      <li id="http_rel_json">Combining the sqlite capabilities of storing and querying JSON objects and embedded webserver running on luajit I can get an http, document oriented database that's accessible from any program that has the capability of making http requests. It also allows me to replicate some of the <a href="#e_features">features</a> of other json oriented databases. </li>
-      <li id="in_memory">From what I understand the JSON extension parses the stored json in realtime (at a rate of 250 mb/sec) and then stores it in a vritual table. I'm not sure if that virtual table is kept in memory or on disk. If the virtual table is stored in memory then it might be trouble because I don't want to deal with big in memory databases. </li>
-      <li>To avoid the limitations of in memory storage I can design my keys more efficiently and store the data I want to query on, in  a different column as well. Yes it will duplicate the data on disk,but disk is cheap. Furthermore since sqlite is embedded I can create a separate file for each database. So that in future if any one database becomes a bottleneck I can simply put it on a different machine.</li>
-      <li>On the other hand the in memory database could be useful for certain operations like storing cookies. So understanding them will help me get more out of sqlite.</li>
+    <ol>
+      <div id="sqlite_experiments">
+	<li>My experiments with <a href="https://github.com/brickcap/openresty_examples/tree/master/sqlite"></a>sqlite were successful. It can indeed function as a very effective JSON document database. </li>
+	<li>
+	  I discovered <a href="http://ulua.io/luarocks_packages.html">ulua</a>
+	  that allows me to run an embedded web server on luajit. I can embed the sqlite library in the webserver and access sqlite3 over http. 
+	</li>
+	<li id="http_rel_json">Combining the sqlite capabilities of storing and querying JSON objects and embedded webserver running on luajit I can get an http, document oriented database that's accessible from any program that has the capability of making http requests. It also allows me to replicate some of the <a href="#e_features">features</a> of other json oriented databases (I want to "replicate" as many features of couchdb in this as possible). </li>
+	<li id="in_memory">From what I understand the JSON extension parses the stored json in realtime (at a rate of 250 mb/sec) and then keeps it in a vritual table. I'm not sure if that virtual table is kept in memory or on disk. If the virtual table is stored in memory then it might be trouble because I don't want to deal with big in memory databases. </li>
+	<li>To avoid the limitations of in memory storage I can design my keys more efficiently and store the data I want to query on, in  a different column as well. Yes it will duplicate the data on disk,but disk is cheap. Furthermore since sqlite is embedded I can create a separate file for each database. So that in future if any one database becomes a bottleneck I can simply put it on a different machine.</li>
+	<li>On the other hand the in memory database could be useful for certain operations like storing cookies. So understanding them will help me get more out of sqlite.</li>
+      </div>
     </ol>
     <div id="e_features">
     </div>

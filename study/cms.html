@@ -82,9 +82,15 @@
     
     <div id="wordpress">
       <p id="wp_multisite"> Heavy is a relative term. If we have to deploy 500mb~1Gb (runtime memory) instances for each and every customer then we won't be able sustain ourselves. But if a single 1gb instance can run 10-20 websites in the multi tenant mode then it is a very good deal. Especially if everything is already done for us. While the <a href="/study/muddha.html">idea</a> of creating a lightweight content management system is good it will be a whole lot of work solving the problems that have already been solved. Instead of doing everything from scratch it would be better to focus on improving the existing systems. Therefore I'm exploring the wordpress multisite option to create a dedicated wordpress install for everyone of our customers. It comes nowhere near the performance and minimal resource requirements of luajit but we'll have to adjust. I feel that with Openresty I can take a lot of load off wordpress so we'll be able to do more with less. Lets see how this goes. We always have the custom cms option as a fallback.  </p>
-      <p>Wordpress multisite does not have an api yet. An api is only a convent and secure way to access the database and since I've got a direct connection to the <a href="https://deliciousbrains.com/wordpress-multisite-database-tour/>"database</a> I don't think I'll need an api. But I <a href="/study/forums.html#direct_access_quote">shouldn't be repeating myself</a>.</p>
+      <p>Wordpress multisite does not have an api yet. An api is only a convent and secure way to access the database and since I've got a direct connection to the <a href="https://deliciousbrains.com/wordpress-multisite-database-tour/">database</a> I don't think I'll need an api. But I <a href="/study/forums.html#direct_access_quote">shouldn't be repeating myself</a>.</p>
       <p>It should also be possible to discover the websites in network using the<a href="https://developer.wordpress.org/rest-api/using-the-rest-api/discovery/"> discovery api</a>. What I should be focussing on right now is to automate the creation of new websites in the network. If I can do that I'm set.</p>
+      <p>wordpress has wp-cli a command line tool that makes it easy to manage wp installations. What's more is that we can also configure multisite installs with this tool. Its a very good reason to learn its use.
+        <small>We can use <a href="https://github.com/joewalnes/websocketd">websocketd</a> to interact with the command line tools. A tool that turns shell scripts into websocket is much more preferable because it gives realtime notifications on the output. As an alternative there is also <a href="https://github.com/jprjr/lua-resty-exec">lua-resty-exec</a> which is much more lightweight and straight forward. Furthermore we can attach it to client by calling the functions inside the content by lua block. </small>
+      </p>
+      <p> The <a href="https://wordpress.org/plugins/booking/advanced/">opensource wordpress</a> booking calender would simplify the creation of booking websites</p>
+      <p>wordpress 4.5+ offer domain mapping feature natively. Oh I could cry with joy!!</p>
     </div>
+    
 
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>
     <script src="/study/ga.js" type="text/javascript">	</script> 

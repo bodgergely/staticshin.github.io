@@ -54,7 +54,7 @@
 	<li>A unified admin panel where the end user can edit his content.</li>
       </ol>
       <p><strong>Why not use any of the existing content management systems?</strong></p>
-      <p>Because they are too heavy. After finding an <a href="/study/sqlite.html#http_rel_json">embeddable webserver + database combo</a> we can safely create applications that can be spawned on demand for our users. If they get too big they can be easily moved to a different server without affecting the services for any of our existing clients. This way we can not only simplify our operational management but also create applications that are personalized for each of our clients. Win win.</p>
+      <p>Because they are too <a href="#wp_nultisite">heavy</a>. After finding an <a href="/study/sqlite.html#http_rel_json">embeddable webserver + database combo</a> we can safely create applications that can be spawned on demand for our users. If they get too big they can be easily moved to a different server without affecting the services for any of our existing clients. This way we can not only simplify our operational management but also create applications that are personalized for each of our clients. Win win.</p>
     </div>
     <div id="getting_themes">
       <p>Themes will be one of the most important <a href="#temp_component">components</a> of our cms. Consequently we should spend effort in creating a set of customized themed templates that our users can choose from to style their cms. I've identified blog post themes as very basic type of theme that is both easily available and flexible enough to be morphed in order to suit the requirements of different kinds of cms. I've decided to go with blog themes as a starting point. Here's my reasoning:-</p>
@@ -78,6 +78,9 @@
 	  </ol>The most important items for us a #2 and #4 but we'll keep everything in the database. This database will come in handy at the time of rendering the themes.We can just query it ask for the location of a particular file, get the file, render it and send it back to the client. We'll be using ulua+sqlite for creating an embedded database that can be used by anyone on any platform.
 	</li>
       </ol>
+      <div id="wordpress">
+        <p id="wp_multisite"> Heavy is a relative term. If we have to .While the <a href="/study/muddha.html">idea</a> of creating a lightweight content management system is good it will be a whole lot of work solving the problems that have already been solved. Instead of doing everythng from scrath it would be better to focus on improving the existing systems. Therefore I'm exploring the wordpress multisite option to create a dedicated wordpress install for everyone of our customers. </p>
+      </div>
     </div>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>
     <script src="/study/ga.js" type="text/javascript">	</script> 

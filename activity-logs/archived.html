@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="referrer" content="no-referrer">
+    <title>Todo list</title>
+    <link href="/study/index.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div id="ellobed_dev">
+      <dl>
+
+
+        <div id="ellobed_mongo">
+	  
+          <dt id="mongo_service"><strong>Create mongodb service</strong></dt>
+       	  <dd>Add the basic auth header in the proxy pass</dd>
+	  <dd>Collect metrics on what it takes for the entire stack to run</dd>        
+          <dd>Generate an answers file after <a href="#config_meta">querying</a>
+	    the client information from the meta database
+	  </dd>
+	  <dd id="mongo_http"><s>Expose mongodb api through <a href="http://restheart.org/">rest heart</a></s></dd>
+          <dd>
+	    <s>Hide the api behind openresty's proxy
+	      <small>
+		[Optional] Create listeners on the proxy that lets it execute commands thorough the rest api
+	    </small></s>
+	  </dd>
+	</div>
+
+        <div id="ellobed_nodebb">
+          <dt><strong>Nodebb setup</strong></dt>
+	  
+          <dd>Add sample json for the <a href="/study/forums.html#db_struct">database queries</a>
+	    that we've identified.</dd>
+	  <dd>Create an endpoint that allows the master service to return configuration data for individual services</dd>
+
+	  <s>
+	    <dd>Write a shell script that <a href="/study/forums.html#auto_ans">automates installation</a>
+	      and configuration</dd>
+	  </s>
+          <dd>
+	    <s>Filter the output body for admin pages using
+              <a href="">body_filter_by_lua</a>, header_filter_by_lua and <a href="https://github.com/openresty/lua-nginx-module#ngxresub">ngx.re.sub</a> to remove out unwanted content in the admin pages.
+              <small>[Use <a href="https://github.com/craigbarnes/lua-gumbo">lua gumbo</a> instead]</small>
+	    </s>
+            <small>We'll use client side javascript to show hide content dynamically</small>
+            <small>[10 Apr 2017]</small>
+	  </dd>
+          <s><dd>Install lua gumbo</dd>[10 Apr 2017]</s>
+          <dd><s>Use the rewrite module (either the the default nginx or the lua one) to
+	      reroute the "?embed=true" request to the /api endpoint for the forum service.
+	      This will give the user an easy way to embed the data in his app.[28 Mar 2017]</s> </dd>
+	</div>
+
+        <dt><strong>Business</strong></dt>
+        <div id="helpdesk_research">
+	  <dd>Research on helpdesk applications for schools and colleges</dd>
+          <dd>
+	    <s>Research on helpdesk applications for property managers</s>
+            <small>[3 Apr 2017]</small>
+	  </dd>
+	</div>
+        <s><dd>Collect data from the recent acquisition notes on student accommodation sector</dd> [26 March 2017] </s>
+        <dd>Use the data to estimate pricing schemes for helpdesk in housing sector</dd>
+        <dd>Study the sales pitch of <a href="https://www.lsdev.biz/accommodation-websites/">lightspeed dev</a></dd>
+	<div id="sales_copy">
+          <dd>
+	    <s>Find a good text rotator plugin for the home page showcase of services</s>
+	    <small>Found <a href="http://morphext.fyianlai.com/">Morph text</a> </small>
+	    [3 Apr 2017]
+	  </dd>
+	  <dd>
+	    <s>
+	      Find a good theme (opensource) that can be used to write a sales pitch  </s> <small>[We'll be going with the <a href="https://github.com/blackrockdigital/startbootstrap-agency/">agency theme</a> Because the timeline feature can be a really good tool for story telling. Some good ideas in there.] [28 Mar 2017] </small>	    
+	  </dd>
+          <dd><s>Install the dependencies for the selected themes</s> [4 Apr 2017]</dd>
+	</div>
+      </dl>
+    </div>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function ()
+       {
+	   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+       })();
+
+    </script>
+    <script src="/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="/study/index.js" type="text/javascript"></script>
+  </body>    
+</html>

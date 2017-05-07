@@ -37,7 +37,7 @@
         <li>Create topics for amazon ses notifications</li>
         <li>Verify email and s3 upload plugins for nodebb</li>
         <li>Link Adhar card to bank</li>
-       
+	
         <li>
 	  Explore <a href="https://github.com/lemonstand">Lemon Stand</a> themes
 	</li>
@@ -55,7 +55,7 @@
         <li>
 	  Verify whether lapis can be used in kong
           <ul>
-              <li>If lapis can used with kong just go crazy. Use its routing features, csrf protection, templating ( and whatever else you can get your hands on, it'll be a big big advantage to us) </li>
+            <li>If lapis can used with kong just go crazy. Use its routing features, csrf protection, templating ( and whatever else you can get your hands on, it'll be a big big advantage to us) </li>
           </ul>
 	</li>
 	
@@ -64,137 +64,61 @@
     </div>
     <!-- ------------------------------------ELLOBED LIST-------------------------------------------------- -->
     
-    <div id="ellobed_dev">
-      <dl>
+    <!-- ------------------------------------LOW PRIORITY-------------------------------------------------- -->
 
 
-        <div id="ellobed_mongo">
-	  
-          <dt id="mongo_service"><strong>Create mongodb service</strong></dt>
-       	  <dd>Add the basic auth header in the proxy pass</dd>
-	  <dd>Collect metrics on what it takes for the entire stack to run</dd>        
-          <dd>Generate an answers file after <a href="#config_meta">querying</a>
-	    the client information from the meta database
-	  </dd>
-	  <dd id="mongo_http"><s>Expose mongodb api through <a href="http://restheart.org/">rest heart</a></s></dd>
-          <dd>
-	    <s>Hide the api behind openresty's proxy
-	      <small>
-		[Optional] Create listeners on the proxy that lets it execute commands thorough the rest api
-	    </small></s>
-	  </dd>
+    <div id="low_prior">
+      <h1>Low priority</h1>
+      <ol>
+	<li>Research on GIC [<a href="/study/hotels.html#gic_realestate">why?</a>]</li>
+	<li>Write an article comparing wrinq to appfolio for Nannette</li>
+	<li>Investigate full text search capabilities of sqlite</li>
+	<li>Re purpose the spree commerce's hidden cost article [/books/studies/spree/top_5_hidden_costs.pdf]</li>
+	<li>Forward domain names to google dns manager</li>
+	
+	<div id="d_transfer">
+	  <li>Analyze the pitch sent to <a href="#its_iift">prospects</a>
+	    and find out the ways in which it can be improved for further communication
+	  </li>
+	  <li>
+       	    Transfer the existing domains to google domains
+            <small>[Transferring a domain name requires purchasing an additional year of registration. Since we don't have the billing information set up with google we must wait for this until we get a <a href="#bank">credit card</a>]</small>
+	  </li>
 	</div>
+	<li>Research on One person companies</li>
+	<li>Create an <a href="http://www.mca.gov.in/mcafoportal/showEformUpload.do">e filing account</a> with MCA</li>
 
-        <div id="ellobed_nodebb">
-          <dt><strong>Nodebb setup</strong></dt>
-	  
-          <dd>Add sample json for the <a href="/study/forums.html#db_struct">database queries</a>
-	    that we've identified.</dd>
-	  <dd>Create an endpoint that allows the master service to return configuration data for individual services</dd>
+	<li class="post"> Write a post exploring the childhood of Socrates.
+	  His relationship with his parents, his siblings, neighbours etc.
+	  <span class="origin"> 5 Oct 2016</span> </li>
 
-	  <s>
-	    <dd>Write a shell script that <a href="/study/forums.html#auto_ans">automates installation</a>
-	      and configuration</dd>
-	  </s>
-          <dd>
-	    <s>Filter the output body for admin pages using
-              <a href="">body_filter_by_lua</a>, header_filter_by_lua and <a href="https://github.com/openresty/lua-nginx-module#ngxresub">ngx.re.sub</a> to remove out unwanted content in the admin pages.
-              <small>[Use <a href="https://github.com/craigbarnes/lua-gumbo">lua gumbo</a> instead]</small>
-	    </s>
-            <small>We'll use client side javascript to show hide content dynamically</small>
-            <small>[10 Apr 2017]</small>
-	  </dd>
-          <s><dd>Install lua gumbo</dd>[10 Apr 2017]</s>
-          <dd><s>Use the rewrite module (either the the default nginx or the lua one) to
-	      reroute the "?embed=true" request to the /api endpoint for the forum service.
-	      This will give the user an easy way to embed the data in his app.[28 Mar 2017]</s> </dd>
-	</div>
+	<li class="post"> Write a post comparing Socrates' and Emersons views on poets
+	  <span class="origin">5 Oct 2016</span></li>
 
-        <dt><strong>Business</strong></dt>
-        <div id="helpdesk_research">
-	  <dd>Research on helpdesk applications for schools and colleges</dd>
-          <dd>
-	    <s>Research on helpdesk applications for property managers</s>
-            <small>[3 Apr 2017]</small>
-	  </dd>
-	</div>
-        <s><dd>Collect data from the recent acquisition notes on student accommodation sector</dd> [26 March 2017] </s>
-        <dd>Use the data to estimate pricing schemes for helpdesk in housing sector</dd>
-        <dd>Study the sales pitch of <a href="https://www.lsdev.biz/accommodation-websites/">lightspeed dev</a></dd>
-	<div id="sales_copy">
-          <dd>
-	    <s>Find a good text rotator plugin for the home page showcase of services</s>
-	    <small>Found <a href="http://morphext.fyianlai.com/">Morph text</a> </small>
-	    [3 Apr 2017]
-	  </dd>
-	  <dd>
-	    <s>
-	      Find a good theme (opensource) that can be used to write a sales pitch  </s> <small>[We'll be going with the <a href="https://github.com/blackrockdigital/startbootstrap-agency/">agency theme</a> Because the timeline feature can be a really good tool for story telling. Some good ideas in there.] [28 Mar 2017] </small>	    
-	  </dd>
-          <dd><s>Install the dependencies for the selected themes</s> [4 Apr 2017]</dd>
-	</div>
-      </dl>
+	<li class="post"> write a post explaining localhost tunneling with the
+	  help of ngrok and dynamic proxies in nginx
+	  <span class="origin">6 Oct 2016</span></li>
+	
+	<li class="write">Write a post explaining how to
+	  <a href="/study/mongodb.html#proxy_pool">pool redis client connections</a> with a proxy</li>
+	<li>Research on online to offline business model</li>
+      </ol>
     </div>
-</div>
-<!-- ------------------------------------LOW PRIORITY-------------------------------------------------- -->
 
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37138783-1']);
+      _gaq.push(['_trackPageview']);
 
-<div id="low_prior">
-  <h1>Low priority</h1>
-  <ol>
-    <li>Write an article comparing wrinq to appfolio for Nannette</li>
-    <li>Investigate full text search capabilities of sqlite</li>
-    <li>Re purpose the spree commerce's hidden cost article [/books/studies/spree/top_5_hidden_costs.pdf]</li>
-     <li>Forward domain names to google dns manager</li>
-       
-    <div id="d_transfer">
-      <li>Analyze the pitch sent to <a href="#its_iift">prospects</a>
-	and find out the ways in which it can be improved for further communication
-      </li>
-      <li>
-       	Transfer the existing domains to google domains
-        <small>[Transferring a domain name requires purchasing an additional year of registration. Since we don't have the billing information set up with google we must wait for this until we get a <a href="#bank">credit card</a>]</small>
-      </li>
-    </div>
-    <li>Study google domains</li>
-    <li>Check Aadhar card status</li>
-    <li>Research on One person companies</li>
-    <li>Understand the capabilities of
-      <a href="https://developers.google.com/domains/widget/v1/overview">google domain management</a> widget</li>
-    <li>Create an <a href="http://www.mca.gov.in/mcafoportal/showEformUpload.do">e filing account</a> with MCA</li>
+      (function ()
+       {
+	   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+       })();
 
-    <li class="post"> Write a post exploring the childhood of Socrates.
-      His relationship with his parents, his siblings, neighbours etc.
-      <span class="origin"> 5 Oct 2016</span> </li>
-
-    <li class="post"> Write a post comparing Socrates' and Emersons views on poets
-      <span class="origin">5 Oct 2016</span></li>
-
-    <li class="post"> write a post explaining localhost tunneling with the
-      help of ngrok and dynamic proxies in nginx
-      <span class="origin">6 Oct 2016</span></li>
-    
-    <li class="write">Write a post explaining how to
-      <a href="/study/mongodb.html#proxy_pool">pool redis client connections</a> with a proxy</li>
-    <li>Research on online to offline business model</li>
-    <li>Research on GIC [<a href="/study/hotels.html#gic_realestate">why?</a>]</li>
-  </ol>
-</div>
-
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-37138783-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function ()
-  {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-<script src="/jquery-1.11.1.min.js" type="text/javascript"></script>
-<script src="/study/index.js" type="text/javascript"></script>
-</body>    
+    </script>
+    <script src="/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="/study/index.js" type="text/javascript"></script>
+  </body>    
 </html>

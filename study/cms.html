@@ -90,6 +90,14 @@
       <p> The <a href="https://wordpress.org/plugins/booking/advanced/">opensource wordpress</a> booking calender would simplify the creation of booking websites</p>
       <p>wordpress 4.5+ offer domain mapping feature natively. Oh I could cry with joy!!</p>
       <p id="wp_plugin_management">Wordpress plugins can be <a href="https://codex.wordpress.org/Multisite_Network_Administration#Plugins">installed</a> on a per site basis or in a multinetwork setup</p>
+      <p id="wp_custom_filters"> While the wordpress rest api is very comprehensive, there are a few things missing like the ability to filter based on post_types etc. So we are left with three options:-
+        <ol>
+          <li>Extend the api itself by writing custom endpoints</li>
+          <li>Use body_filter_by_lua to filter the retruned data by the api before sending it downstream</li>
+          <li>Create a custom endpoint by directly accessing the mysql database</li>
+        </ol>
+	Option #1 would be the right way to do things. But I don't know much php and <a href="/activity-logs/todo.html#l_php">there would be a lot to learn</a> to get half decent at it. #2 looks like a good choice since we'll be proxying the api with nginx any way and it will let still let us use the official wordpress clients. The problem is backbone does not let us add query string parameters to the api calls. #3 would be the most flexible of all but it means that we'd have to write our own client api which can add more complexity. Ideally we can make use of #1 and #3 simultaneously. Doing most requests with the client api. writing a custom php route for cases that are hard to handle with the client and if we want absolute control we simply make a direct call to the database. The idea is to minimize the amount of code that we have to write.  
+      </p>
     </div>
     
 

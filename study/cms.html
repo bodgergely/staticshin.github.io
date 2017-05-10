@@ -98,6 +98,7 @@
         </ol>
 	Option #1 would be the right way to do things. But I don't know much php and <a href="/activity-logs/todo.html#l_php">there would be a lot to learn</a> to get half decent at it. #2 looks like a good choice since we'll be proxying the api with nginx any way and it will let still let us use the official wordpress clients. The problem is backbone does not let us add query string parameters to the api calls. #3 would be the most flexible of all but it means that we'd have to write our own client api which can add more complexity. Ideally we can make use of #1 and #3 simultaneously. Doing most requests with the client api. writing a custom php route for cases that are hard to handle with the client and if we want absolute control we simply make a direct call to the database. The idea is to minimize the amount of code that we have to write.  
       </p>
+      <p>It seems that the wordpress installs only creates the database in mysql.</p>
     </div>
     
 

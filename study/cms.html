@@ -99,6 +99,19 @@
 	Option #1 would be the right way to do things. But I don't know much php and <a href="/activity-logs/todo.html#l_php">there would be a lot to learn</a> to get half decent at it. #2 looks like a good choice since we'll be proxying the api with nginx any way and it will let still let us use the official wordpress clients. The problem is backbone does not let us add query string parameters to the api calls. #3 would be the most flexible of all but it means that we'd have to write our own client api which can add more complexity. Ideally we can make use of #1 and #3 simultaneously. Doing most requests with the client api. writing a custom php route for cases that are hard to handle with the client and if we want absolute control we simply make a direct call to the database. The idea is to minimize the amount of code that we have to write.  
       </p>
       <p>It seems that the wordpress installs only creates the database in mysql.</p>
+      <ol>
+
+	<li>PHP fm is a webserver that executes php scripts. Nginx can pass all the .php files to php fm server listening either on a port or a unix socket for processing and get back the output. </li>
+	<li>Digital Ocean has a good <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-the-nginx-web-server-on-a-virtual-private-server">tutorial</a> on the nginx directtory structure. We're more interested in the sites-available and the sites-enabled directories.</li>
+	<li>Instead of pulling my hair out trying to make nginx work with wordpress I can simply use easy engine to do all the hard work for me. Once easy engine has configrued everything I can then reroute all the requests through OR.</li>
+        <li>The ftp configuration can be supplied in the wpconfig file. This will make it a lot easier for me to allow wordpress updates and theme downloading for the users</li>
+      </ol>
+      <p><strong>Ashley rich's nginx configuration for wordpress</strong></p>
+      <p>So I found a good wordpress nginx implementation that apparently follows all the best practices defined in wordpress codex and has been tested in the prod. It will be a good starting point for me. I can always build upon this configuration later on. So some notes </p>
+      <ol>
+        <li>The configuration follows the pattern of "a config file per site name". That is every website  will have its own configuration. So if there is a website called singlesite you can find the configuration for it called singlesite.com. I like this pattern but since I won't be writing for multiple websites I don't think I'll need to keep a tab on all the configurations.</li>
+        <li>I need to define the directory structure for my wordpress installation. Since the root directive in each of these configurations point to the location of wordpress installs if I can standardize them I'll have an easier time in porting the configurations for both my production and my local deployments </li>
+      </ol>
     </div>
     
 

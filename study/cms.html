@@ -87,7 +87,7 @@
       <p>wordpress has wp-cli a command line tool that makes it easy to manage wp installations. What's more is that we can also configure multisite installs with this tool. Its a very good reason to learn its use.
         <small>We can use <a href="https://github.com/joewalnes/websocketd">websocketd</a> to interact with the command line tools. A tool that turns shell scripts into websocket is much more preferable because it gives realtime notifications on the output. As an alternative there is also <a href="https://github.com/jprjr/lua-resty-exec">lua-resty-exec</a> which is much more lightweight and straight forward. Furthermore we can attach it to client by calling the functions inside the content by lua block. </small>
       </p>
-      <p> The <a href="https://wordpress.org/plugins/booking/advanced/">opensource wordpress</a> booking calender would simplify the creation of booking websites <small>It seems that booking calander does not support the multisite feature natively. Which means we'll have to think of something else. </small></p>
+      <p id="wp_booking"> The <a href="https://wordpress.org/plugins/booking/advanced/">opensource wordpress</a> booking calender would simplify the creation of booking websites <small>It seems that booking calander does not support the multisite feature natively. Which means we'll have to think of something else. </small></p>
       <p>wordpress 4.5+ offer domain mapping feature natively. Oh I could cry with joy!!</p>
       <p id="wp_plugin_management">Wordpress plugins can be <a href="https://codex.wordpress.org/Multisite_Network_Administration#Plugins">installed</a> on a per site basis or in a multinetwork setup</p>
       <p id="wp_custom_filters"> While the wordpress rest api is very comprehensive, there are a few things missing like the ability to filter based on post_types etc. So we are left with three options:-
@@ -111,6 +111,7 @@
       <ol>
         <li>The configuration follows the pattern of "a config file per site name". That is every website  will have its own configuration. So if there is a website called singlesite you can find the configuration for it called singlesite.com. I like this pattern but since I won't be writing for multiple websites I don't think I'll need to keep a tab on all the configurations.</li>
         <li>I need to define the directory structure for my wordpress installation. Since the root directive in each of these configurations point to the location of wordpress installs if I can standardize them I'll have an easier time in porting the configurations for both my production and my local deployments </li>
+        <li>It seems that we can customize the <a href="https://wordpress.org/plugins/woocommerce-checkout-manager/">woocommerce checkout</a> field to add a datepicker. Which means that we probably wont be needing the <a href="#wp_booking">booking plugin</a> anymore.</li>
       </ol>
     </div>
     

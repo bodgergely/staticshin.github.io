@@ -48,6 +48,10 @@
           <li>Keep the client connection alive so that it does not have to deal with connection management issues.</li>
       </ol>
       <p>All of this sounds complex but is should be very easy to implement. Also since we are dealing with nginx here we can implement our changes in a running system by making effective use of proxy. So that the clients that are already connected to mongodb won't even notice if anything changed at all. </p>
+      <p><strong>Some experiments</strong></p>
+      <p>Today (18 May 2017) I stress tested a fairly complex wordpress page using <code>ab -n 10000 -c 1000 http://example.com/</code>. I was able to achieve around 4k req per second on my machine. What was astonishing however was the mysql which was proxied behind nginx only used 4 threads to serve all these requests. On lower parameters mysql ran perfectly fine without using any more threads. This sort of validates my feeling that nginx should not only be used to proxy http servers but also tcp servers because it absorbs all the load so well. In this case if mysql has to serve only a single client that is nginx it can perform very well even on an ordinary hardware. Of course a lot depends upon the type of queries but even if we manage to remove the overhead of client management by writing a few simple lines of nginx configuration this is a huge win for us. I have made up my mind all of my tcp servers will be proxied by nginx.
+	<small>I guess this would be a good time to test out the tcp_by_lua module of openresty and see how far we can take nginx tcp proxy. </small>
+      </p>
     </div>
     <p><small>-- <a href="/about.html">Akshat Jiwan Sharma</a></small></p>     
 

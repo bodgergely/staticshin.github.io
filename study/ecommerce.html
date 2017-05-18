@@ -168,6 +168,29 @@
       <p>We can use airbnb <a href="https://github.com/airbnb/superset">superset</a> for creating reports and analytics. The question is though can we share these reports with our users to create another revenue stream? [Yes we can <a href="http://airbnb.io/superset/security.html?highlight=permissions#gamma">there is a permissions</a> system] </p>
       <p>They also have an <a href="https://github.com/airbnb/stemcell">Ec2</a> instance creation tool. Looks good but not sure how this is different from the command line tools that aws already provides. Will have to study this in more detail. </p>
     </div>
+    <div id="big_comm">
+      <h1>Big Commerce</h1>
+      <ol>
+        <li>Looking at the bigcommerce stackoverflow page it seems to me that they use a <a href="http://stackoverflow.com/jobs/companies/bigcommerce">variety</a> of technologies. I guess it is common these days to have a very spread out technology stack. Although personally it would be impossible for me to manage if I were looking at so many different components. No surprise they are also using nginx!
+	</li>
+        <li>Faceted search is one of their big selling points (they use elastic search to power that). While search is a good feature from my, previous experience, I think that it is not a very good method of interaction with the application. Furthermore the kind of shops that we are planning to build will probably have very few items in the first place  that would make search pretty useless anyway. However I should take a look at some of their clients (or maybe we can simply read the case studies by elastic search to understand what kind of ecommerce companies need search) and try to figure out why product search is such an appealing feature for them.
+	  <small>[If we need a fulltext search engine we should first look at what mysql provides by default and if the offerings are not satisfactory only then we must look into using elastic search ]</small>
+	</li>
+        <li>Pricing starts at $29 per month. There is no free tier for users to play around. However I'm looking at two  pricing models. Pay as you go and a fixed yearly price. If you pay yearly upfront you can save more than 50% of the overall cost. Pay as you go you pay a daily fees for using the application, billed at the end of the month. This model is appealing because it allows the user to try the app without paying anything up front so he can take his time to evaluate and cancel the subscription if the app is not up to his satisfaction.</li>
+      </ol>
+      <p>
+	<strong>Big commerce product segments</strong> that we can use to segment our own users. Not all of them will completely translate to our product but we should be able to use most of these just as they are.
+      </p>
+      <ul>
+          <li>Apparel+Jewelry</li>
+          <li>Electronics</li>
+          <li>Health and Beauty</li>
+          <li>Sports and outdoors</li>
+          <li>Food and beverage</li>
+          <li>Automotive</li>
+          <li>Toys and games</li>
+      </ul>
+    </div>
     <!-- <h1>Squarespace</h1> -->
     <!-- <h1>For hotels</h1> -->
     <!-- <h1>etsy</h1> -->

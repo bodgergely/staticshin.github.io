@@ -11,8 +11,21 @@
     <div id="completed">
       <h1>Completed</h1>
       <ol>
+
         <s>
-	  <li>Create aliases on app and db server</li> [28 May 2017]
+	  <li>Analyze <a href="https://wordpress.com/">wordpress.com</a> website and find common themes that we can reuse for our own website.</li> [28 May 2017]
+          <small>As I accumulate themes and modify them to suit my goals I'll have to write test cases to ensure that they all live up to a certain standard. As a rule the tests will be limited only to the front end, that is the code that client interacts with. If the test passes for the client, it will be assumed that everything else on the backend works well. If it fails we'll find the point of failure fix it and then write a test case for it.</small>
+          <small>So instead of starting with unit test and then building integrated tests on top of it, I'll start with integrated tests, that test the application as a whole and then write unit tests whenever a fault is found with individual components. In other words we stick with the principle of positive testing. Everything works until it can be shown that it does not work.</small>
+          <small>Manual testing can't be avoided until I know for sure what components need to be tested and in what order. In a situation where I'm not able to make a decision I'll just start with a piece that is easy to test and keep building on top of it.</small>
+          <small>Writing an automation test will be very simple. I'll use qunit and run all the tests in the browsers itself.  I need figure out
+            <ol>
+              <li>What to test in a theme?</li>
+              <li>How to automatically generate themes for testing?</li>
+            </ol>
+	    
+	  </small>
+	</s>
+	  <s><li>Create aliases on app and db server</li></s> [28 May 2017]
           <small>This will serve as the base for automation tasks in the future and in the meantime it will make doing common tasks a lot easier. I don't have to be lazy about devops anymore.</small>
 	</s>
         <s><li>Custom user profiles -- Repurpose the wp media library to allow custom avatars. Rename the file to map to email id of the user.</li> [27 May 2017]</s>

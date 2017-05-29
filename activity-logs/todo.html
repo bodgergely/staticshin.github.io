@@ -12,7 +12,7 @@
       <li><a href="/activity-logs/completed.html">Completed</a></li>
     </ol>
 
-   <div id="todo">
+    <div id="todo">
       <h1>Todo</h1>
 
       <ol>
@@ -60,7 +60,21 @@
             <li>Remove all traces of file extensions</li>
             <li>Change the admin and login urls (will possibly have to use the rewrite rules in conjunction
 	      with ngx.exec, <a href="http://lua-users.org/wiki/StringLibraryTutorial">sting.find</a>
-	      will do the trick for matching patterns)
+	      will do the trick for matching patterns). How will this work? Its simple
+              <s>
+		<ol>
+                  <li>We do a string match.</li>
+                  <li>If a dirty url is found we do an ngx.redirect to a clean url</li>
+                  <li>For a clean url we do an exec to the dirty url</li>
+		</ol>
+		[This will not work as there will probably be an error for too many redirects]
+	      </s>
+              <ol>
+                <li>The urls are mapping to php files in the directory</li>
+                <li>All we need to do is to map the clean urls to the files in the directory</li>
+                <li>And send a 302 redirect on the dirty url</li>
+                <li>All the logic can be written in the rewrite_by_lua directive</li>
+              </ol>
 	    </li>
           </ol>
 	</li>
